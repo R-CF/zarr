@@ -1,0 +1,295 @@
+#' Array builder
+#'
+#' @description This class builds the metadata document for an array to be
+#'   created or modified. It can also be used to inspect the metadata document
+#'   of an existing Zarr array.
+#'
+#'   The Zarr core specification is quite complex for arrays, including codecs
+#'   and storage transformers that are part optional, part mandatory, and
+#'   dependent on each other. On top of that, extensions defined outside of the
+#'   core specification must also be handled in the same metadata document. This
+#'   class helps construct a valid metadata document, with support for (some)
+#'   extensions. (If you need support for a specific extension, open an issue on
+#'   Github.)
+#'
+#'   This class does not care about the "chunk_key_encoding" parameter. This is
+#'   addressed at the level of the store.
+#'
+#'   The "codecs" parameter has a default first codec of "transpose". This
+#'   ensures that R matrices and arrays can be stored in native column-major
+#'   order with the store still accessible to environments that use row-major
+#'   order by default, such as Python. A second default codec is "bytes" that
+#'   records the endianness of the data. Other codecs may be added by the user,
+#'   such as a compression codec.
+#'
+#'   This class only handles the mandatory attributes in a Zarr array metadata
+#'   document. Optional arguments may be set directly on the Zarr array after it
+#'   has been created.
+#' @docType class
+array_builder <- R6::R6Class('array_builder',
+  cloneable = FALSE,
+  private = list(
+    # The metadata items managed by the instance
+    .format = 3L,
+
+    .data_type = NULL,
+    .shape = NA,
+    .chunk_grid = NULL,
+    .codecs = list(),
+
+    # Should the array have major portability?
+    .portable = FALSE,
+
+    # Compile the metadata items into a list that is Zarr array compatible
+    build_metadata = function() {
+      meta <- list(zarr_format = private$.format,
+                   node_type = "array")
+      if (!is.na(private$.shape[1L]))
+        meta <- append(meta, list(shape = private$.shape))
+      if (!is.null(private$.data_type))
+        meta <- append(meta, private$.data_type$metadata_fragment())
+      if (!is.null(private$.chunk_grid))
+        meta <- append(meta, private$.chunk_grid$metadata_fragment())
+      if (length(private$.codecs)) {
+        codecs <- lapply(private$.codecs, function(cdc) cdc$metadata_fragment())
+        meta <- append(meta, setNames(list(codecs), 'codecs'))
+      }
+      meta
+    },
+
+    # This method is called after the data_type or portability has been set to
+    # update the list of codecs. Must have a data_type and a shape before any
+    # codecs can be set.
+    update_codecs = function() {
+      if (!is.null(private$.data_type) && !is.na(private$.shape[1L])) {
+        private$.codecs <- if (private$.portable || length(private$.shape) == 1L)
+          # No transpose codec
+          list(zarr_codec_bytes$new(private$.data_type))
+        else
+          list(zarr_codec_transpose$new(private$.shape),
+               zarr_codec_bytes$new(private$.data_type))
+      } else
+        private$.codecs <- list()
+    }
+  ),
+  public = list(
+    #' @description Create a new instance of the `array_builder` class.
+    #'   Optionally, a metadata document may be passed in as an argument to
+    #'   inspect the definition of an existing Zarr array, or to use as a
+    #'   template for a new metadata document.
+    #' @param metadata Optional. A JSON metadata document or list of metadata
+    #'   from an existing Zarr array. This document will not be modified through
+    #'   any operation in this class.
+    #' @return An instance of this class.
+    initialize = function(metadata = NULL) {
+      if (!is.null(metadata)) {
+        meta <- try(jsonlite::fromJSON(metadata), silent = TRUE)
+        if (inherits(meta, "try-error")) meta <- metadata
+
+        if (is.list(meta)) {
+          private$.format <- meta$zarr_format
+          private$.shape <- meta$shape
+          private$.data_type <- zarr_data_type$new(meta$data_type, meta$fill_value)
+          private$.chunk_grid <- chunk_grid_regular$new(meta$chunk_grid$configuration$chunk_shape)
+        }
+      }
+    },
+
+    #' @description Print the array metadata to the console.
+    print = function() {
+      cat('<Zarr array metadata>', if (self$is_valid()) 'VALID' else 'INCOMPLETE', '\n')
+      meta <- private$build_metadata()
+      cat(jsonlite::toJSON(meta, auto_unbox = TRUE, pretty = TRUE))
+      invisible(self)
+    },
+
+    #' @description Retrieve the metadata document to create a Zarr array.
+    #' @param format Either "list" or "JSON".
+    #' @return The metadata document in the requested format.
+    metadata = function(format = 'list') {
+      if (format == 'list')
+        private$build_metadata()
+      else if (format == 'JSON')
+        jsonlite::toJSON(private$build_metadata(), auto_unbox = TRUE, pretty = TRUE)
+      else
+        stop('Bad format for Zarr metadata.', call. = FALSE) # nocov
+    },
+
+    #' @description Adds a codec at the end of the currently registered codecs.
+    #'   Optionally, the `.position` argument may be used to indicate a specific
+    #'   position of the codec in the list. Codecs can only be added if their
+    #'   mode agrees with the mode of existing codecs - if this codec does not
+    #'   agree with the existing codecs, a warning will be issued and the new
+    #'   codec will not be registered.
+    #' @param codec The name of the codec. This must be a registered codec with
+    #'   an implementation that is available from this package.
+    #' @param .position Optional, the 1-based position where to insert the codec
+    #'   in the list. If the number is larger than the list, the codec will be
+    #'   appended at the end of the list of codecs.
+    #' @param ... Optional. Configuration parameters of the `codec`.
+    #'   Configuration parameters that can be extracted from the data_type or
+    #'   shape of the array, such as the shape dimensions for the transpose
+    #'   codec, need not be specified separately.
+    #' @return Self, invisibly.
+    add_codec = function(codec, .position = NULL, ...) {
+      if (is.null(private$.data_type) || is.na(private$.shape[1L]))
+        stop('Codecs can only be added after the array data_type and shape have been set.', call. = FALSE) # nocov
+
+      if (!is.character(codec) || length(codec) != 1L)
+        stop('Codec name must be a single character string.', call. = FALSE) # nocov
+
+      cdc <- switch(codec,
+                    'transpose' = zarr_codec_transpose$new(private$.shape),
+                    'bytes' = zarr_codec_bytes$new(private$.data_type),
+                    'blosc' = zarr_codec_blosc$new(..., data_type = private$.data_type),
+                    'crc32c' = zarr_codec_crc32c$new())
+      if (!inherits(cdc, 'zarr_codec'))
+        stop('Could not create a codec from the arguments.', call. = FALSE) # nocov
+
+      len <- length(private$.codecs)
+      if (is.null(.position) || .position > len) {
+        if (cdc$from == private$.codecs[[len]]$to)
+          private$.codecs <- append(private$.codecs, cdc)
+        else
+          stop('Codec has incompatible mode to follow previous codec.', call. = FALSE) #nocov
+      } else if (.position == 1) {
+        if (cdc$from == 'array' && private$.codecs[[1L]]$from == cdc$to)
+          private$.codecs <- append(cdc, private$.codecs)
+        else
+          stop('First codec must use an "array" mode for input and agree with the following codec.', call. = FALSE) # nocov
+      } else if (cdc$from == private$.codecs[[len - 1L]]$to && cdc$to == private$.codecs[[len]]$from)
+        private$.codecs <- append(private$.codecs, cdc, after = len - 1L)
+      else
+        stop('Codec has incompatible mode for inserting at position ', .position, call. = FALSE) # nocov
+
+      invisible(self)
+    },
+
+    #' @description Remove a codec from the list of codecs for the array. A
+    #' codec cannot be removed if the remaining codecs do not form a valid
+    #' chain due to mode conflicts.
+    #' @param codec The name of the codec to remove, a single character string.
+    remove_codec = function(codec) {
+      ndx <- which(sapply(private$.codecs, function(cdc) cdc$name) == codec)
+      if (length(ndx)) {
+        tst <- private$.codecs[-ndx]
+        if (len <- length(tst)) {
+          froms <- sapply(tst, function(t) t$from)
+          tos <- sapply(tst, function(t) t$to)
+          if (froms[1L] == 'array' && tos[len] == 'bytes' && all(froms[-1L] == tos[-len]))
+            private$.codecs <- tst
+          else
+            stop('Cannot remove codec as it will invalidate the codec list.', call. = FALSE) # nocov
+        } else
+          private$.codecs <- list()
+      }
+      invisible(self)
+    },
+
+    #' @description This method indicates if the current specification results
+    #'   in a valid metadata document to create a Zarr array.
+    #' @return `TRUE` if a valid metadata document can be generated, `FALSE`
+    #'   otherwise.
+    is_valid = function() {
+      !is.null(private$.data_type) &&
+      !is.na(private$.shape[1L]) &&
+      !is.null(private$.chunk_grid) &&
+      length(private$.codecs)
+    }
+  ),
+  active = list(
+    #' @field format The Zarr format to build the metadata for. The value must
+    #'   be 3. After changing the format, many fields will have been reset to a
+    #'   default value.
+    format = function(value) {
+      if (missing(value))
+        private$.format
+      else if (is.numeric(value)) {
+        value <- as.integer(value[1L])
+        if ((value == 2L || value == 3L) && private$.format != value) {
+          private$.format <- value
+          private$.data_type <- NULL
+        }
+      }
+    },
+
+    #' @field portable Logical flag to indicate if the array is specified for
+    #'   maximum portability across environments (e.g. Python, Java, C++).
+    #'   Default is `FALSE`. Setting the portability to `TRUE` implies that R
+    #'   data will be permuted before writing the array to the store. A value of
+    #'   `FALSE` is therefore more efficient.
+    portable = function(value) {
+      if (missing(value))
+        private$.portable
+      else if (is.logical(value) && length(value) == 1L) {
+        private$.portable <- value
+        private$update_codecs()
+      } else
+        stop('The portable property must be set with a single logical value.', call. = FALSE) # nocov
+    },
+
+    #' @field data_type The data type of the Zarr array. After changing the
+    #'   format, many fields will have been reset to a default value.
+    data_type = function(value) {
+      if (missing(value))
+        private$.data_type
+      else if (is.null(private$.data_type)) {
+        private$.data_type <- zarr_data_type$new(value)
+        private$update_codecs()
+      } else {
+        if (private$.data_type$data_type != value) {
+          private$.data_type$data_type <- value
+          private$update_codecs()
+        }
+      }
+    },
+
+    #' @field fill_value The value in the array of uninitialized data elements.
+    #' The `fill_value` has to agree with the `data_type` of the array.
+    fill_value = function(value) {
+      if (missing(value))
+        private$.data_type$fill_value
+      else
+        private$.data_type$fill_value <- value
+    },
+
+    #' @field shape The shape of the Zarr array, an integer vector of lengths
+    #' along the dimensions of the array. Setting the shape will reset the
+    #' chunking settings to their default values.
+    shape = function(value) {
+      if (missing(value))
+        private$.shape
+      else {
+        if (is.numeric(value)) {
+          private$.shape <- as.integer(value)
+          private$.chunk_grid <- chunk_grid_regular$new(private$.shape)
+          private$update_codecs()
+        } else
+          stop('Shape must be an integer vector of lengths along each dimension of the Zarr array.', call. = FALSE) # nocov
+      }
+    },
+
+    #' @field chunk_grid The shape of the chunks in which to store the Zarr
+    #'   array, an integer vector of lengths. The `shape` of the array must be
+    #'   set before setting this.
+    chunk_grid = function(value) {
+      if (missing(value))
+        private$.chunk_grid$shape
+      else {
+        if (is.numeric(value) && length(value) == length(private$.shape)) {
+            private$.chunk_grid <- chunk_grid_regular$new(as.integer(value))
+        } else
+          stop('Chunk_grid must be an integer vector of the same length as the Zarr array shape.', call. = FALSE) # nocov
+      }
+    },
+
+    #' @field codecs (read-only) Retrieve a `data.frame` of registered codec
+    #' modes and names for this array.
+    codecs = function(value) {
+      if (missing(value)) {
+        if (length(private$.codecs))
+          do.call(rbind, lapply(private$.codecs, function(cod) data.frame(mode = cod$mode(), codec = cod$name)))
+      }
+    }
+  )
+)

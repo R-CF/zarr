@@ -1,3 +1,5 @@
 ^LICENSE\.md$
-^zarr4R\.Rproj$
+^zarr\.Rproj$
 ^\.Rproj\.user$
+^README\.Rmd$
+^TODO$
