@@ -12,6 +12,14 @@ endianness of the data in the operation.
 \section{Super classes}{
 \code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_bytes}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{endian}}{Set or retrieve the endianness of the storage of the data
+with this codec. A string with value of "big" or "little".}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -34,7 +42,7 @@ endianness of the data in the operation.
 \subsection{Method \code{new()}}{
 Create a new "bytes" codec object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$new(data_type, endian = .Platform$endian)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$new(data_type, configuration = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -43,9 +51,10 @@ Create a new "bytes" codec object.
 \item{\code{data_type}}{The \link{zarr_data_type} instance of the Zarr array that
 this codec is used for.}
 
-\item{\code{endian}}{Optional. The endianness of the data storage, either "big"
-or "little". The default value is the endianness of the platform that the
-R session is running on.}
+\item{\code{configuration}}{Optional. A list with the configuration parameters
+for this codec. The element \code{endian} specifies the byte ordering of the
+data type of the Zarr array. A string with value "big" or "little". If
+not given, the default endianness of the platform is used.}
 }
 \if{html}{\out{</div>}}
 }

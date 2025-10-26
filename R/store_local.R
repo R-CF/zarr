@@ -24,45 +24,53 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @description Create an instance of this class.
     #'
     #'   If the location is not currently a Zarr store, it will be created,
-    #'   unless argument `create_new = FALSE`. This will write a small JSON file
-    #'   to the `root` location, identifying the location as a group in the Zarr
-    #'   store. The empty group may be converted to an array, by writing an
-    #'   array to the root.
+    #'   unless argument `metadata = NULL`. This will write the `metadata` as a
+    #'   small JSON file to the `root` location, identifying the location as a
+    #'   Zarr store, possibly for a single array.
     #'
     #'   The location on the file system must be writable by the process opening
     #'   or creating the store.
     #' @param root The path to the local store to be created or opened. The path
     #'   may use UTF-8 code points. Following the Zarr specification, it is
     #'   recommended that the root path has an extension of ".zarr" to easily
-    #'   identify the location as a Zarr store.
+    #'   identify the location as a Zarr store. When creating a file store, the
+    #'   root directory cannot already exist.
     #' @param read_only Flag to indicate if the store is opened read-only.
     #'   Default `FALSE`.
-    #' @param create_new Flag to indicate if a new store should be created if it
-    #'   does not exist. Default is `TRUE`. If `FALSE`, this method will only
-    #'   open an existing store and throw an error if the store does not exist.
-    #' @param version The version of the Zarr store. By default this is 3 but it
-    #'   may also be set to the older version 2.
+    #' @param metadata Optional. A list with the metadata of the object to
+    #'   create at the root of a new store, either a Zarr group or a Zarr array.
+    #'   Default is `NULL` which means that an existing store is opened. To
+    #'   create a new store, supply this argument. It is an error to supply a
+    #'   `metadata` document for an existing Zarr store.
     #' @return An instance of this class.
-    initialize = function(root, read_only = FALSE, create_new = TRUE, version = 3) {
-      super$initialize(read_only, version)
-      private$.root <- suppressWarnings(normalizePath(root))
+    initialize = function(root, read_only = FALSE, metadata = NULL) {
+      root <- suppressWarnings(normalizePath(uri_to_path(root)))
+      have_root <- dir.exists(root)
+      meta_path <- file.path(root, 'zarr.json')
+
+      if (is.null(metadata)) {
+        # Opening an existing store
+        if (!have_root)
+          stop('No Zarr store at the root location.', call. = FALSE) # nocov
+        if (file.exists(meta_path)) {
+          meta <- jsonlite::fromJSON(meta_path)
+          format <- meta$zarr_format
+          if (is.null(format) || !format %in% c(2, 3))
+            stop('Incompatible "zarr_format" found in the store:', format, call. = FALSE) # nocov
+        }
+      } else {
+        # Create a new store
+        if (have_root)
+          stop('Location for new Zarr store already exists.', call. = FALSE) # nocov
+        dir.create(root, recursive = TRUE, mode = '0771')
+        jsonlite::write_json(metadata, path = meta_path, pretty = T, auto_unbox = TRUE)
+        format <- metadata$zarr_format
+      }
+
+      super$initialize(read_only, version = format)
+      private$.root <- root
+      private$.supports_writes <- TRUE
       private$.supports_consolidated_metadata = FALSE
-
-      if(!dir.exists(private$.root) && create_new)
-        dir.create(private$.root, recursive = TRUE, mode = '0771')
-
-      path <- file.path(private$.root, 'zarr.json')
-      if (file.exists(path)) {
-        meta <- jsonlite::fromJSON(path)
-        format <- meta$zarr_format
-        if (is.null(format) || !format %in% c(2, 3))
-          stop('Incompatible "zarr_format" found in the store:', format, call. = FALSE) # nocov
-        else
-          private$.version <- version
-      } else if (create_new) {
-        jsonlite::write_json(list(zarr_format = jsonlite::unbox(3), node_type = jsonlite::unbox("group")), path = path, pretty = T)
-      } else
-        stop('No Zarr store at the root location.', call. = FALSE) # nocov
     },
 
     #' @description Check if a key exists in the store. The key can point to a
@@ -230,7 +238,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     get_metadata = function(path) {
       fn <- file.path(private$.root, path, 'zarr.json')
       if (file.exists(fn))
-        jsonlite::fromJSON(fn)
+        jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
       else
         NULL
     },
@@ -245,21 +253,24 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       else FALSE
     },
 
-    #' @description Create a new group in the store under the specified path to
-    #'   the `parent` argument. The `parent` path must point to a Zarr group.
-    #' @param parent The path to the parent group of the new group.
+    #' @description Create a new group in the store under the specified path.
+    #'   The `path` must point to a Zarr group.
+    #' @param path The path to the parent group of the new group.
     #' @param name The name of the new group.
     #' @return A list with the metadata of the group, or an error if the group
     #'   could not be created.
-    create_group = function(parent, name) {
-      if (!self$is_group(parent))
-        stop('Path does not point to a Zarr group: ', parent, call. = FALSE) # nocov
+    create_group = function(path, name) {
+      if (private$.read_only)
+        stop('Cannot write new objects to the Zarr store.', call. = FALSE) # nocov
+
+      if (!self$is_group(path))
+        stop('Path does not point to a Zarr group: ', path, call. = FALSE) # nocov
 
       # Create the sub-group
-      fp <- file.path(private$.root, parent, name)
+      fp <- file.path(private$.root, path, name)
       if (dir.create(fp, showWarnings = FALSE, recursive = FALSE, mode = '0771')) {
-        meta <- list(zarr_format = jsonlite::unbox(3), node_type = jsonlite::unbox('group'))
-        jsonlite::write_json(meta, path = file.path(fp, 'zarr.json'), pretty = T)
+        meta <- list(zarr_format = 3, node_type = 'group')
+        jsonlite::write_json(meta, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T)
         meta
       } else
         stop('Could not create a group at path: ', fp, call. = FALSE) # nocov
@@ -269,59 +280,24 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #'   the `parent` argument. The `parent` path must point to a Zarr group.
     #' @param parent The path to the parent group of the new array.
     #' @param name The name of the new array.
-    #' @param data_type The data type of the array on disk. This differs from
-    #'   the R types but they have to be compatible.
-    #' @param fill_value Optional. A single value within the domain of argument
-    #'   `data_type` that will be used for uninitialized portions of the array.
-    #'   This may be specified as a character string to support values that are
-    #'   not available in R.
-    #' @param shape A vector of integer values giving the length along each of
-    #'   the dimensions of the array.
-    #' @param chunking Optional. A vector of integer values of the same length
-    #'   as argument `shape` that give the lengths along each dimension of
-    #'   individual chunks. If omitted, this will take the values of argument
-    #'   `shape`: all data will be written as a single chunk.
-    #' @param codecs Optional A list with codecs and their parameters for
-    #'   encoding and decoding of chunks. The first codec must be an "array ->
-    #'   bytes" codec. If omitted, the default "bytes" codec will be used.
+    #' @param metadata A `list` with the metadata for the array. The list has to
+    #'   be valid for array construction. Use the [array_builder] class to
+    #'   create and or test for validity.
     #' @return A list with the metadata of the array, or an error if the array
     #'   could not be created.
-    create_array = function(parent, name, data_type, fill_value, shape, chunking, codecs) {
+    create_array = function(parent, name, metadata) {
+      if (private$.read_only)
+        stop('Cannot write new objects to the Zarr store.', call. = FALSE) # nocov
+
       if (!self$is_group(parent))
         stop('Path does not point to a Zarr group: ', parent, call. = FALSE) # nocov
-
-      if (!(data_type %in% names(dtype_map)))
-        stop('Invalid data type specified: ', data_type, call. = FALSE) # nocov
-      if (missing(fill_value)) {
-        fill_value <- if (data_type == 'bool') NA_logical
-                      else dtype_map[[data_type]]$fill_value
-      }
-
-      if (missing(chunking))
-        chunking <- shape
-      chunk_grid <- list(name = jsonlite::unbox('regular'),
-                         configuration = list(chunk_shape = chunking))
-
-      if (missing(codecs)) {
-        codec <- list(name = jsonlite::unbox('bytes'),
-                      configuration = list(endian = jsonlite::unbox(.Platform$endian)))
-      }
 
       # Create the array
       parent <- substring(parent, 2L)
       fp <- file.path(private$.root, parent, name)
       if (dir.create(fp, showWarnings = FALSE, recursive = FALSE, mode = '0771')) {
-        meta <- list(zarr_format = jsonlite::unbox(3),
-                     node_type = jsonlite::unbox('array'),
-                     shape = shape,
-                     data_type = jsonlite::unbox(data_type),
-                     chunk_grid = chunk_grid,
-                     chunk_key_encoding = list(name = jsonlite::unbox('default'),
-                                               configuration = list(separator = jsonlite::unbox('.'))),
-                     codecs = list(codec),
-                     fill_value = jsonlite::unbox(fill_value))
-        jsonlite::write_json(meta, path = file.path(fp, 'zarr.json'), pretty = T)
-        meta
+        jsonlite::write_json(metadata, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T)
+        metadata
       } else
         stop('Could not create an array at path: ', fp, call. = FALSE) # nocov
     }

@@ -31,11 +31,18 @@ definition.
 \section{Super classes}{
 \code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_transpose}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{order}}{Set or retrieve the 0-based ordering of the dimensions of
+the array when storing}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec_transpose-new}{\code{zarr_codec_transpose$new()}}
-\item \href{#method-zarr_codec_transpose-metadata_fragment}{\code{zarr_codec_transpose$metadata_fragment()}}
 \item \href{#method-zarr_codec_transpose-encode}{\code{zarr_codec_transpose$encode()}}
 \item \href{#method-zarr_codec_transpose-decode}{\code{zarr_codec_transpose$decode()}}
 }
@@ -43,6 +50,7 @@ definition.
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="mode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-mode'><code>zarr::zarr_codec$mode()</code></a></span></li>
 </ul>
 </details>
@@ -53,7 +61,7 @@ definition.
 \subsection{Method \code{new()}}{
 Create a new "transpose" codec object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$new(shape, order = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$new(shape, configuration = list())}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -61,28 +69,17 @@ Create a new "transpose" codec object.
 \describe{
 \item{\code{shape}}{The shape of the array that this codec operates on.}
 
-\item{\code{order}}{Optional. The ordering of the dimensions of the shape
-relative to the Zarr canonical arrangement. An integer vector with a
-length equal to the dimensions of argument \code{shape}. The ordering must
-be 0-based. If not given, the default R ordering is used.}
+\item{\code{configuration}}{Optional. A list with the configuration parameters
+for this codec. The element \code{order} specifies the ordering of the
+dimensions of the shape relative to the Zarr canonical arrangement. An
+integer vector with a length equal to the dimensions of argument
+\code{shape}. The ordering must be 0-based. If not given, the default R
+ordering is used.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 An instance of this class.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_transpose-metadata_fragment"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_transpose-metadata_fragment}{}}}
-\subsection{Method \code{metadata_fragment()}}{
-Return the metadata fragment that describes this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$metadata_fragment()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-A list with the metadata of this codec.
 }
 }
 \if{html}{\out{<hr>}}

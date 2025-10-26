@@ -58,8 +58,11 @@ chunking settings to their default values.}
 array, an integer vector of lengths. The \code{shape} of the array must be
 set before setting this.}
 
-\item{\code{codecs}}{(read-only) Retrieve a \code{data.frame} of registered codec
+\item{\code{codec_info}}{(read-only) Retrieve a \code{data.frame} of registered codec
 modes and names for this array.}
+
+\item{\code{codecs}}{(read-only) A list with validated and instantiated codecs
+for processing data associated with this array.}
 }
 \if{html}{\out{</div>}}
 }
@@ -140,7 +143,7 @@ mode agrees with the mode of existing codecs - if this codec does not
 agree with the existing codecs, a warning will be issued and the new
 codec will not be registered.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{array_builder$add_codec(codec, .position = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{array_builder$add_codec(codec, configuration, .position = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -149,14 +152,13 @@ codec will not be registered.
 \item{\code{codec}}{The name of the codec. This must be a registered codec with
 an implementation that is available from this package.}
 
+\item{\code{configuration}}{List with configuration parameters of the \code{codec}.
+May be \code{NULL} or \code{list()} for codecs that do not have configuration
+parameters.}
+
 \item{\code{.position}}{Optional, the 1-based position where to insert the codec
 in the list. If the number is larger than the list, the codec will be
 appended at the end of the list of codecs.}
-
-\item{\code{...}}{Optional. Configuration parameters of the \code{codec}.
-Configuration parameters that can be extracted from the data_type or
-shape of the array, such as the shape dimensions for the transpose
-codec, need not be specified separately.}
 }
 \if{html}{\out{</div>}}
 }

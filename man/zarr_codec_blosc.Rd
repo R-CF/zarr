@@ -12,11 +12,32 @@ reading.
 \section{Super classes}{
 \code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_blosc}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{cname}}{Set or retrieve the name of the compression algorithm. Must
+be one of "blosclz", "lz4", "lz4hc", "zstd" or "zlib".}
+
+\item{\code{clevel}}{Set or retrieve the compression level. Must
+be an integer between 0 (no compression) and 9 (maximum compression).}
+
+\item{\code{shuffle}}{Set or retrieve the data shuffling of the compression
+algorithm. Must be one of "shuffle", "noshuffle" or "bitshuffle".}
+
+\item{\code{typesize}}{Set or retrieve the size in bytes of the data type being
+compressed. It is highly recommended to leave this at the automatically
+determined value.}
+
+\item{\code{blocksize}}{Set or retrieve the size in bytes of the blocks being
+compressed. It is highly recommended to leave this at a value of 0 such
+that the blosc library will automatically determine the optimal value.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec_blosc-new}{\code{zarr_codec_blosc$new()}}
-\item \href{#method-zarr_codec_blosc-metadata_fragment}{\code{zarr_codec_blosc$metadata_fragment()}}
 \item \href{#method-zarr_codec_blosc-encode}{\code{zarr_codec_blosc$encode()}}
 \item \href{#method-zarr_codec_blosc-decode}{\code{zarr_codec_blosc$decode()}}
 }
@@ -24,6 +45,7 @@ reading.
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="mode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-mode'><code>zarr::zarr_codec$mode()</code></a></span></li>
 </ul>
 </details>
@@ -36,7 +58,7 @@ Create a new "blosc" codec object. The typesize argument is
 taken from the data type of the array passed in through the \code{data_type}
 argument and the shuffle argument is chosen based on the \code{data_type}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_blosc$new(data_type, cname = "zlib", clevel = 6L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_blosc$new(data_type, configuration = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -45,30 +67,14 @@ argument and the shuffle argument is chosen based on the \code{data_type}.
 \item{\code{data_type}}{The \link{zarr_data_type} instance of the Zarr array that
 this codec is used for.}
 
-\item{\code{cname}}{Optional. Character string with the name of the compression
-engine, either "blosclz", "lz4", "lz4hc", "zstd" or "zlib". Default is
-"zlib".}
-
-\item{\code{clevel}}{Optional. Compression level, a single integer value between
-0L (no compression) and 9L (maximum compression). Default is 6L.}
+\item{\code{configuration}}{Optional. A list with the configuration parameters
+for this codec. If not given, the default compression of "zstd" with
+level 1 will be used.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 An instance of this class.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_blosc-metadata_fragment"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_blosc-metadata_fragment}{}}}
-\subsection{Method \code{metadata_fragment()}}{
-Return the metadata fragment that describes this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_blosc$metadata_fragment()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-A list with the metadata of this codec.
 }
 }
 \if{html}{\out{<hr>}}

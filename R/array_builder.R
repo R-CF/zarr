@@ -83,14 +83,29 @@ array_builder <- R6::R6Class('array_builder',
     #' @return An instance of this class.
     initialize = function(metadata = NULL) {
       if (!is.null(metadata)) {
-        meta <- try(jsonlite::fromJSON(metadata), silent = TRUE)
-        if (inherits(meta, "try-error")) meta <- metadata
+        if (!is.list(metadata)) {
+          meta <- try(jsonlite::fromJSON(metadata, simplifyDataFrame = FALSE), silent = TRUE)
+          if (inherits(meta, "try-error")) {
+            warning('Argument `metadata` is not a valid JSON document. Discarding.', call. = FALSE) # nocov
+            meta <- list()
+          }
+        } else
+          meta <- metadata
 
-        if (is.list(meta)) {
-          private$.format <- meta$zarr_format
-          private$.shape <- meta$shape
-          private$.data_type <- zarr_data_type$new(meta$data_type, meta$fill_value)
-          private$.chunk_grid <- chunk_grid_regular$new(meta$chunk_grid$configuration$chunk_shape)
+        if (length(meta)) {
+          if (meta$zarr_format != 3)
+            stop('Metadata document is not for a Zarr version 3 object.', call. = FALSE) # nocov
+          self$format <- meta$zarr_format
+          if (meta$node_type != 'array')
+            stop('Metadata document is not for a Zarr array.', call. = FALSE) # nocov
+          self$shape <- meta$shape
+          self$data_type <- meta$data_type
+          self$fill_value <- meta$fill_value
+          self$chunk_grid <- meta$chunk_grid$configuration$chunk_shape # regular grid only
+
+          private$.codecs <- list() # Remove automatically generated codecs
+          if (length(meta$codecs))
+            lapply(meta$codecs, function(c) self$add_codec(c$name, c$configuration))
         }
       }
     },
@@ -107,9 +122,10 @@ array_builder <- R6::R6Class('array_builder',
     #' @param format Either "list" or "JSON".
     #' @return The metadata document in the requested format.
     metadata = function(format = 'list') {
+      format <- tolower(format)
       if (format == 'list')
         private$build_metadata()
-      else if (format == 'JSON')
+      else if (format == 'json')
         jsonlite::toJSON(private$build_metadata(), auto_unbox = TRUE, pretty = TRUE)
       else
         stop('Bad format for Zarr metadata.', call. = FALSE) # nocov
@@ -123,15 +139,14 @@ array_builder <- R6::R6Class('array_builder',
     #'   codec will not be registered.
     #' @param codec The name of the codec. This must be a registered codec with
     #'   an implementation that is available from this package.
+    #' @param configuration List with configuration parameters of the `codec`.
+    #'   May be `NULL` or `list()` for codecs that do not have configuration
+    #'   parameters.
     #' @param .position Optional, the 1-based position where to insert the codec
     #'   in the list. If the number is larger than the list, the codec will be
     #'   appended at the end of the list of codecs.
-    #' @param ... Optional. Configuration parameters of the `codec`.
-    #'   Configuration parameters that can be extracted from the data_type or
-    #'   shape of the array, such as the shape dimensions for the transpose
-    #'   codec, need not be specified separately.
     #' @return Self, invisibly.
-    add_codec = function(codec, .position = NULL, ...) {
+    add_codec = function(codec, configuration, .position = NULL) {
       if (is.null(private$.data_type) || is.na(private$.shape[1L]))
         stop('Codecs can only be added after the array data_type and shape have been set.', call. = FALSE) # nocov
 
@@ -139,16 +154,22 @@ array_builder <- R6::R6Class('array_builder',
         stop('Codec name must be a single character string.', call. = FALSE) # nocov
 
       cdc <- switch(codec,
-                    'transpose' = zarr_codec_transpose$new(private$.shape),
-                    'bytes' = zarr_codec_bytes$new(private$.data_type),
-                    'blosc' = zarr_codec_blosc$new(..., data_type = private$.data_type),
+                    'transpose' = zarr_codec_transpose$new(private$.shape, configuration),
+                    'bytes' = zarr_codec_bytes$new(private$.data_type, configuration),
+                    'blosc' = zarr_codec_blosc$new(data_type = private$.data_type, configuration),
+                    'gzip' = zarr_codec_gzip$new(configuration),
                     'crc32c' = zarr_codec_crc32c$new())
       if (!inherits(cdc, 'zarr_codec'))
         stop('Could not create a codec from the arguments.', call. = FALSE) # nocov
 
       len <- length(private$.codecs)
       if (is.null(.position) || .position > len) {
-        if (cdc$from == private$.codecs[[len]]$to)
+        if (!len) {
+          if (cdc$from == 'array')
+            private$.codecs <- list(cdc)
+          else
+            stop('Codec has incompatible mode to start chains of codecs.', call. = FALSE) #nocov
+        } else if (cdc$from == private$.codecs[[len]]$to)
           private$.codecs <- append(private$.codecs, cdc)
         else
           stop('Codec has incompatible mode to follow previous codec.', call. = FALSE) #nocov
@@ -283,13 +304,20 @@ array_builder <- R6::R6Class('array_builder',
       }
     },
 
-    #' @field codecs (read-only) Retrieve a `data.frame` of registered codec
+    #' @field codec_info (read-only) Retrieve a `data.frame` of registered codec
     #' modes and names for this array.
-    codecs = function(value) {
+    codec_info = function(value) {
       if (missing(value)) {
         if (length(private$.codecs))
           do.call(rbind, lapply(private$.codecs, function(cod) data.frame(mode = cod$mode(), codec = cod$name)))
       }
+    },
+
+    #' @field codecs (read-only) A list with validated and instantiated codecs
+    #'   for processing data associated with this array.
+    codecs = function(value) {
+      if (missing(value))
+        private$.codecs
     }
   )
 )

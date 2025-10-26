@@ -18,7 +18,6 @@ two don't match a warning is generated.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec_crc32c-new}{\code{zarr_codec_crc32c$new()}}
-\item \href{#method-zarr_codec_crc32c-metadata_fragment}{\code{zarr_codec_crc32c$metadata_fragment()}}
 \item \href{#method-zarr_codec_crc32c-encode}{\code{zarr_codec_crc32c$encode()}}
 \item \href{#method-zarr_codec_crc32c-decode}{\code{zarr_codec_crc32c$decode()}}
 }
@@ -26,6 +25,7 @@ two don't match a warning is generated.
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="mode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-mode'><code>zarr::zarr_codec$mode()</code></a></span></li>
 </ul>
 </details>
@@ -39,21 +39,17 @@ Create a new "crc32c" codec object.
 \if{html}{\out{<div class="r">}}\preformatted{zarr_codec_crc32c$new()}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{configuration}}{Optional. A list with the configuration parameters
+for this codec but since this codec doesn't have any the argument is
+always ignored.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 An instance of this class.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_crc32c-metadata_fragment"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_crc32c-metadata_fragment}{}}}
-\subsection{Method \code{metadata_fragment()}}{
-Return the metadata fragment that describes this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_crc32c$metadata_fragment()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-A list with the metadata of this codec.
 }
 }
 \if{html}{\out{<hr>}}

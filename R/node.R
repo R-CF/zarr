@@ -20,33 +20,18 @@ zarr_node <- R6::R6Class('zarr_node',
     # setting this property.
     .name = '',
 
-    # The parent `node` of this node. The root node has no parent and this value
-    # is `NULL` for the root node.
+    # The parent `node` of this node. This value is `NULL` for the root node.
     .parent = NULL,
 
     # The store where this node and all of its contents are persisted.
     .store = NULL,
 
-    # The metadata document of this node, either a group or an array.
+    # The metadata document of this node, a `list`.
     .metadata = list(),
 
     # Check the proposed name of the node before setting it.
-    # From the Zarr specification, the following constraints apply to node names:
-    # * must not be the empty string (""), except for the root node
-    # * must not be a string composed only of period characters, e.g. "." or ".."
-    # * must not start with the reserved prefix "__"
-    # Only characters in the sets [a-z, A-Z, 0-9, -, _, .] are allowed.
-    #
-    # This method will either set and return the private$.name property, or
-    # throw an error.
-    set_name = function(name) {
-      if (nzchar(name) &&
-          !grepl('^\\.*$', name) &&
-          !grepl('^__', name) &&
-          grepl('^[a-zA-Z0-9\\-_\\.]*$', name)) {
-        private$.name <- name
-      } else
-        stop('Invalid name for a Zarr node specified: ', name, call. = FALSE) # nocov
+    check_name = function(name) {
+      is.character(name) && length(name) == 1L && .is_valid_node_name(name)
     }
   ),
   public = list(
@@ -58,8 +43,13 @@ zarr_node <- R6::R6Class('zarr_node',
     #' @param store The store to persist data in. Ignored if a `parent` is
     #'   specified.
     initialize = function(name, metadata, parent, store) {
-      if (nzchar(name))
-        private$set_name(name)
+      if (missing(parent) || is.null(parent))
+        private$.name <- ''
+      else if (private$check_name(name))
+        private$.name <- name
+      else
+        stop('Invalid name for a Zarr object: ', name, call. = FALSE) # nocov
+
       private$.metadata <- metadata
       if (!missing(parent))
         private$.parent <- parent
@@ -86,8 +76,8 @@ zarr_node <- R6::R6Class('zarr_node',
         private$.store
     },
 
-    #' @field path The path of this node, relative to the root node of the
-    #' hierarchy.
+    #' @field path (read-only) The path of this node, relative to the root node
+    #'   of the hierarchy.
     path = function(value) {
       if (missing(value)) {
         if (nzchar(private$.name)) {
@@ -98,8 +88,8 @@ zarr_node <- R6::R6Class('zarr_node',
       }
     },
 
-    #' @field prefix The prefix of this node, relative to the root node of the
-    #' hierarchy.
+    #' @field prefix (read-only) The prefix of this node, relative to the root
+    #'   node of the hierarchy.
     prefix = function(value) {
       if (missing(value)) {
         if (nzchar(private$.name)) {

@@ -23,7 +23,6 @@ between 0L (no compression) and 9 (maximum compression).}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec_gzip-new}{\code{zarr_codec_gzip$new()}}
-\item \href{#method-zarr_codec_gzip-metadata_fragment}{\code{zarr_codec_gzip$metadata_fragment()}}
 \item \href{#method-zarr_codec_gzip-encode}{\code{zarr_codec_gzip$encode()}}
 \item \href{#method-zarr_codec_gzip-decode}{\code{zarr_codec_gzip$decode()}}
 }
@@ -31,6 +30,7 @@ between 0L (no compression) and 9 (maximum compression).}
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="mode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-mode'><code>zarr::zarr_codec$mode()</code></a></span></li>
 </ul>
 </details>
@@ -41,32 +41,20 @@ between 0L (no compression) and 9 (maximum compression).}
 \subsection{Method \code{new()}}{
 Create a new "gzip" codec object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_gzip$new(level = 6L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_gzip$new(configuration = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{level}}{Optional. Compression level, a single integer value between
-0L (no compression) and 9L (maximum compression). Default is 6L.}
+\item{\code{configuration}}{Optional. A list with the configuration parameters
+for this codec. The element \code{level} specifies the compression level of
+this codec, ranging from 0 (no compression) to 9 (maximum compression).}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 An instance of this class.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_gzip-metadata_fragment"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_gzip-metadata_fragment}{}}}
-\subsection{Method \code{metadata_fragment()}}{
-Return the metadata fragment that describes this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_gzip$metadata_fragment()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-A list with the metadata of this codec.
 }
 }
 \if{html}{\out{<hr>}}

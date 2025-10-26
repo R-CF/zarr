@@ -8,7 +8,9 @@ zarr_array <- R6::R6Class('zarr_array',
   inherit = zarr_node,
   cloneable = FALSE,
   private = list(
-
+    # The list of codec instances with which to encode a chunk-shaped array into
+    # a storable byte-stream, or decode in the reverse order.
+    .codecs = list()
   ),
   public = list(
     #' @description Initialize a new array in a Zarr hierarchy. The array must
@@ -20,9 +22,14 @@ zarr_array <- R6::R6Class('zarr_array',
     #' @param store The [zarr_store] instance to persist data in.
     #' @return An instance of `zarr_array`.
     initialize = function(name, metadata, parent, store) {
-      super$initialize(name, metadata, parent, store)
-      if (metadata$node_type != 'array')
+      ab <- array_builder$new(metadata)
+      if (!ab$is_valid())
         stop('Invalid metadata for an array.', call. = FALSE) # nocov
+
+      super$initialize(name, metadata, parent, store)
+
+      # Build a processor
+      private$.codecs <- ab$codecs
     },
 
     #' @description Print a summary of the array to the console.
@@ -34,6 +41,11 @@ zarr_array <- R6::R6Class('zarr_array',
     }
   ),
   active = list(
-
+    #' @field codecs The list of codecs that this array uses for encoding data
+    #' (and decoding in inverse order).
+    codecs = function(value) {
+      if (missing(value))
+        private$.codecs
+    }
   )
 )

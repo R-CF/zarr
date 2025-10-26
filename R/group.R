@@ -96,6 +96,9 @@ zarr_group <- R6::R6Class('zarr_group',
     #' @return The newly created `zarr_group` instance, or `NULL` if the group
     #'   could not be created.
     add_group = function(name) {
+      if (!private$check_name(name))
+        stop('Invalid name for a Zarr object: ', name, call. = FALSE) # nocov
+
       meta <- private$.store$create_group(self$path, name)
       if (is.list(meta)) {
         grp <- zarr_group$new(name, meta, self, self$store)
@@ -107,25 +110,14 @@ zarr_group <- R6::R6Class('zarr_group',
 
     #' @description Add an array to the Zarr hierarchy in the current group.
     #' @param name The name of the new array.
-    #' @param data_type The data type of the array on disk. This differs from
-    #'   the R types but they have to be compatible.
-    #' @param fill_value Optional. A single value within the domain of argument
-    #'   `data_type` that will be used for uninitialized portions of the array.
-    #'   This may be specified as a character string to support values that are
-    #'   not available in R.
-    #' @param shape A vector of integer values giving the length along each of
-    #'   the dimensions of the array.
-    #' @param chunking Optional. A vector of integer values of the same length
-    #'   as argument `shape` that give the lengths along each dimension of
-    #'   individual chunks. If omitted, this will take the values of argument
-    #'   `shape`: all data will be written as a single chunk.
-    #' @param codecs Optional A list with codecs and their parameters for
-    #'   encoding and decoding of chunks. The first codec must be an "array ->
-    #'   bytes" codec. If omitted, the default "bytes" codec will be used.
+    #' @param metadata A `list` with the metadata for the new array.
     #' @return The newly created `zarr_array` instance, or `NULL` if the array
     #'   could not be created.
-    add_array = function(name, data_type, fill_value, shape, chunking, codecs) {
-      meta <- private$.store$create_array(self$path, name, data_type, fill_value, shape, chunking, codecs)
+    add_array = function(name, metadata) {
+      if (!private$check_name(name))
+        stop('Invalid name for a Zarr object: ', name, call. = FALSE) # nocov
+
+      meta <- private$.store$create_array(self$path, name, metadata)
       if (is.list(meta)) {
         arr <- zarr_array$new(name, meta, self, self$store)
         private$.children <- append(private$.children, setNames(list(arr), name))
@@ -141,6 +133,46 @@ zarr_group <- R6::R6Class('zarr_group',
     children = function(value) {
       if (missing(value))
         private$.children
+    },
+
+    #' @field groups (read-only) Retrieve the paths to the sub-groups of the
+    #' hierarchy starting from the current group, as a character vector.
+    groups = function(value) {
+      if (missing(value)) {
+        chld <- lapply(private$.children, function(c) {if (inherits(c, 'zarr_group')) c$groups})
+        out <- c(self$path, unlist(chld[lengths(chld) > 0L]))
+        names(out) <- NULL
+        out
+      }
+    },
+
+    #' @field arrays (read-only) Retrieve the paths to the arrays of the
+    #' hierarchy starting from the current group, as a character vector.
+    arrays = function(value) {
+      if (missing(value)) {
+        out <- lapply(private$.children, function(c) {if (inherits(c, 'zarr_group')) c$arrays else c$path})
+        out <- unlist(out[lengths(out) > 0L])
+        names(out) <- NULL
+        out
+      }
     }
   )
 )
+
+# --- S3 functions ---
+#' Compact display of a Zarr group
+#' @param object A `zarr_group` instance.
+#' @param ... Ignored.
+#' @export
+str.zarr_group <- function(object, ...) {
+  len <- length(children <- object$children)
+  if (len) {
+    num_arrays <- sum(sapply(children, inherits, 'zarr_array'))
+    arrays <- if (num_arrays == 1L) '1 array' else paste(num_arrays, 'arrays')
+    num_groups <- len - num_arrays
+    groups <- if (num_groups == 1L) '1 sub-group' else paste(num_groups, 'sub-groups')
+    cat('Zarr group with', arrays, 'and', groups)
+  } else
+    cat('Zarr group without arrays or sub-groups')
+
+}

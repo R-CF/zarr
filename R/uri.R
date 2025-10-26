@@ -61,7 +61,9 @@ path_to_uri <- function(path) {
 
 # Decode
 uri_to_path <- function(url) {
-  stopifnot(startsWith(url, "file:"))
+  if(!startsWith(url, "file:"))
+    return(url)
+
   u <- sub("^file:", "", url)
   is_windows <- .Platform$OS.type == "windows"
 

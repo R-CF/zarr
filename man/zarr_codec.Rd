@@ -20,6 +20,10 @@ type of this codec, either "array" or "bytes".}
 
 \item{\code{to}}{(read-only) Character string that indicates the output data
 type of this codec, either "array" or "bytes".}
+
+\item{\code{configuration}}{(read-only) A list with the configuration parameters
+of the codec, exactly like they are defined in Zarr. This field is
+read-only but each codec class has fields to set individual parameters.}
 }
 \if{html}{\out{</div>}}
 }
@@ -28,30 +32,27 @@ type of this codec, either "array" or "bytes".}
 \itemize{
 \item \href{#method-zarr_codec-new}{\code{zarr_codec$new()}}
 \item \href{#method-zarr_codec-mode}{\code{zarr_codec$mode()}}
+\item \href{#method-zarr_codec-metadata_fragment}{\code{zarr_codec$metadata_fragment()}}
 \item \href{#method-zarr_codec-encode}{\code{zarr_codec$encode()}}
 \item \href{#method-zarr_codec-decode}{\code{zarr_codec$decode()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_extension" data-id="metadata_fragment"><a href='../../zarr/html/zarr_extension.html#method-zarr_extension-metadata_fragment'><code>zarr::zarr_extension$metadata_fragment()</code></a></span></li>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec-new"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new codec object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$new(name)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$new(name, configuration)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{The name of the codec, a single character string.}
+
+\item{\code{configuration}}{A list with the configuration parameters for this
+codec.}
 }
 \if{html}{\out{</div>}}
 }
@@ -70,6 +71,19 @@ bytes" or "bytes -> bytes".
 \if{html}{\out{<div class="r">}}\preformatted{zarr_codec$mode()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_codec-metadata_fragment"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec-metadata_fragment}{}}}
+\subsection{Method \code{metadata_fragment()}}{
+Return the metadata fragment that describes this codec.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$metadata_fragment()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A list with the metadata of this codec.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec-encode"></a>}}

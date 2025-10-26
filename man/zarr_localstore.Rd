@@ -71,15 +71,14 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 Create an instance of this class.
 
 If the location is not currently a Zarr store, it will be created,
-unless argument \code{create_new = FALSE}. This will write a small JSON file
-to the \code{root} location, identifying the location as a group in the Zarr
-store. The empty group may be converted to an array, by writing an
-array to the root.
+unless argument \code{metadata = NULL}. This will write the \code{metadata} as a
+small JSON file to the \code{root} location, identifying the location as a
+Zarr store, possibly for a single array.
 
 The location on the file system must be writable by the process opening
 or creating the store.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$new(root, read_only = FALSE, create_new = TRUE, version = 3)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$new(root, read_only = FALSE, metadata = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -88,17 +87,17 @@ or creating the store.
 \item{\code{root}}{The path to the local store to be created or opened. The path
 may use UTF-8 code points. Following the Zarr specification, it is
 recommended that the root path has an extension of ".zarr" to easily
-identify the location as a Zarr store.}
+identify the location as a Zarr store. When creating a file store, the
+root directory cannot already exist.}
 
 \item{\code{read_only}}{Flag to indicate if the store is opened read-only.
 Default \code{FALSE}.}
 
-\item{\code{create_new}}{Flag to indicate if a new store should be created if it
-does not exist. Default is \code{TRUE}. If \code{FALSE}, this method will only
-open an existing store and throw an error if the store does not exist.}
-
-\item{\code{version}}{The version of the Zarr store. By default this is 3 but it
-may also be set to the older version 2.}
+\item{\code{metadata}}{Optional. A list with the metadata of the object to
+create at the root of a new store, either a Zarr group or a Zarr array.
+Default is \code{NULL} which means that an existing store is opened. To
+create a new store, supply this argument. It is an error to supply a
+\code{metadata} document for an existing Zarr store.}
 }
 \if{html}{\out{</div>}}
 }
@@ -370,16 +369,16 @@ Test if \code{path} is pointing to a Zarr group.
 \if{html}{\out{<a id="method-zarr_localstore-create_group"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-create_group}{}}}
 \subsection{Method \code{create_group()}}{
-Create a new group in the store under the specified path to
-the \code{parent} argument. The \code{parent} path must point to a Zarr group.
+Create a new group in the store under the specified path.
+The \code{path} must point to a Zarr group.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$create_group(parent, name)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$create_group(path, name)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{parent}}{The path to the parent group of the new group.}
+\item{\code{path}}{The path to the parent group of the new group.}
 
 \item{\code{name}}{The name of the new group.}
 }
@@ -397,15 +396,7 @@ could not be created.
 Create a new array in the store under the specified path to
 the \code{parent} argument. The \code{parent} path must point to a Zarr group.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$create_array(
-  parent,
-  name,
-  data_type,
-  fill_value,
-  shape,
-  chunking,
-  codecs
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$create_array(parent, name, metadata)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -415,25 +406,9 @@ the \code{parent} argument. The \code{parent} path must point to a Zarr group.
 
 \item{\code{name}}{The name of the new array.}
 
-\item{\code{data_type}}{The data type of the array on disk. This differs from
-the R types but they have to be compatible.}
-
-\item{\code{fill_value}}{Optional. A single value within the domain of argument
-\code{data_type} that will be used for uninitialized portions of the array.
-This may be specified as a character string to support values that are
-not available in R.}
-
-\item{\code{shape}}{A vector of integer values giving the length along each of
-the dimensions of the array.}
-
-\item{\code{chunking}}{Optional. A vector of integer values of the same length
-as argument \code{shape} that give the lengths along each dimension of
-individual chunks. If omitted, this will take the values of argument
-\code{shape}: all data will be written as a single chunk.}
-
-\item{\code{codecs}}{Optional A list with codecs and their parameters for
-encoding and decoding of chunks. The first codec must be an "array ->
-bytes" codec. If omitted, the default "bytes" codec will be used.}
+\item{\code{metadata}}{A \code{list} with the metadata for the array. The list has to
+be valid for array construction. Use the \link{array_builder} class to
+create and or test for validity.}
 }
 \if{html}{\out{</div>}}
 }
