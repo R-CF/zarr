@@ -129,28 +129,74 @@ be created.
 \if{html}{\out{<a id="method-zarr-add_array"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-add_array}{}}}
 \subsection{Method \code{add_array()}}{
+Add an array in a group with a given path.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$add_array()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr$add_array(path, name, metadata)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{The path to the group of the new array, a single
+character string.}
+
+\item{\code{name}}{The name for the new array, a single character string.}
+
+\item{\code{metadata}}{A \code{list} with the metadata for the new array.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The newly created \link{zarr_array}, or \code{NULL} if the array could not
+be created.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-delete_group"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-delete_group}{}}}
 \subsection{Method \code{delete_group()}}{
+Delete a group from the Zarr object. This will also delete
+the group from the Zarr store. \strong{Warning:} this operation is
+irreversible for many stores!
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr$delete_group(path, recursive = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{The path to the group.}
+
+\item{\code{recursive}}{Logical, default \code{FALSE}. If \code{FALSE}, the operation will
+fail if the group has any arrays or sub-groups. If \code{TRUE}, the group
+and all Zarr objects contained by it will be deleted.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Self, invisible.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-delete_array"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-delete_array}{}}}
 \subsection{Method \code{delete_array()}}{
+Delete an array from the Zarr object. \strong{Warning:} this
+operation is irreversible for many stores!
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$delete_array()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr$delete_array(path)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{The path to the array.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Self, invisible.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-clone"></a>}}

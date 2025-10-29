@@ -84,16 +84,70 @@ zarr <- R6::R6Class("zarr",
         NULL
     },
 
-    add_array = function() {
-
+    #' @description Add an array in a group with a given path.
+    #' @param path The path to the group of the new array, a single
+    #'   character string.
+    #' @param name The name for the new array, a single character string.
+    #' @param metadata A `list` with the metadata for the new array.
+    #' @return The newly created [zarr_array], or `NULL` if the array could not
+    #'   be created.
+    add_array = function(path, name, metadata) {
+      grp <- self$get_node(path)
+      if (inherits(grp, 'zarr_group')) {
+        grp$add_array(name, metadata)
+      } else
+        NULL
     },
 
+    #' @description Delete a group from the Zarr object. This will also delete
+    #'   the group from the Zarr store. **Warning:** this operation is
+    #'   irreversible for many stores!
+    #' @param path The path to the group.
+    #' @param recursive Logical, default `FALSE`. If `FALSE`, the operation will
+    #'   fail if the group has any arrays or sub-groups. If `TRUE`, the group
+    #'   and all Zarr objects contained by it will be deleted.
+    #' @return Self, invisible.
     delete_group = function(path, recursive = FALSE) {
+      if (path == '/') {
+        # Deleting the root node: result will be a Zarr object with a basic root node
+        if (recursive || !length(private$.root$children)) {
+          if (private$.store$clear())
+            private$.root <- zarr_group$new(name = '', parent = NULL, store = private$.store,
+                                            metadata = private$.store$get_metadata(''))
+        } else
+          message('To delete a root group with sub-groups and/or arrays, use the `recursive = TRUE` argument.')
+      } else {
+        # Deleting a group somewhere in the hierarchy
+        grp <- self$get_node(path)
+        if (inherits(grp, 'zarr_group')) {
+          # Delete any contents below the group
+          if (recursive)
+            grp$delete_all()
 
+          # Delete the group
+          grp$parent$delete(grp$name)
+        }
+      }
+      invisible(self)
     },
 
-    delete_array = function() {
-
+    #' @description Delete an array from the Zarr object. **Warning:** this
+    #'   operation is irreversible for many stores!
+    #' @param path The path to the array.
+    #' @return Self, invisible.
+    delete_array = function(path) {
+      if (path == '/') {
+        # Deleting a single array Zarr: result will be a group Zarr
+        if (private$.store$clear())
+          private$.root <- zarr_group$new(name = '', parent = NULL, store = private$.store,
+                                          metadata = private$.store$get_metadata(''))
+      } else {
+        # Deleting an array somewhere in the hierarchy
+        arr <- self$get_node(path)
+        if (inherits(arr, 'zarr_array'))
+          arr$parent$delete(arr$name)
+      }
+      invisible(self)
     }
   ),
   active = list(
@@ -169,5 +223,5 @@ str.zarr <- function(object, ...) {
 #' @docType methods
 #' @examples
 `[[.zarr` <- function(x, i) {
-  x$get_node(i)
+  x$get_node(uri_to_path(i))
 }

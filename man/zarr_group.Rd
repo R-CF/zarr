@@ -36,9 +36,12 @@ hierarchy starting from the current group, as a character vector.}
 \item \href{#method-zarr_group-new}{\code{zarr_group$new()}}
 \item \href{#method-zarr_group-print}{\code{zarr_group$print()}}
 \item \href{#method-zarr_group-build_hierarchy}{\code{zarr_group$build_hierarchy()}}
+\item \href{#method-zarr_group-get_node}{\code{zarr_group$get_node()}}
 \item \href{#method-zarr_group-count_arrays}{\code{zarr_group$count_arrays()}}
 \item \href{#method-zarr_group-add_group}{\code{zarr_group$add_group()}}
 \item \href{#method-zarr_group-add_array}{\code{zarr_group$add_array()}}
+\item \href{#method-zarr_group-delete}{\code{zarr_group$delete()}}
+\item \href{#method-zarr_group-delete_all}{\code{zarr_group$delete_all()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -95,6 +98,31 @@ class.
 
 \subsection{Returns}{
 This \link{zarr_group} instance with all of its children linked.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_group-get_node"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_group-get_node}{}}}
+\subsection{Method \code{get_node()}}{
+Retrieve the group or array represented by the node located
+at the path relative from the current group.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_group$get_node(path)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{The path to the node to retrieve. The path is relative to the
+group, it must not start with a slash "/". The path may start with any
+number of double dots ".." separated by slashes "/" to denote groups
+higher up in the hierarchy.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The \link{zarr_group} or \link{zarr_array} instance located at \code{path}, or
+\code{NULL} if the \code{path} was not found.
 }
 }
 \if{html}{\out{<hr>}}
@@ -158,6 +186,47 @@ Add an array to the Zarr hierarchy in the current group.
 \subsection{Returns}{
 The newly created \code{zarr_array} instance, or \code{NULL} if the array
 could not be created.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_group-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_group-delete}{}}}
+\subsection{Method \code{delete()}}{
+Delete a group or an array contained by this group. When
+deleting a group it cannot contain other groups or arrays. \strong{Warning:}
+this operation is irreversible for many stores!
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_group$delete(name)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{The name of the group or array to delete. This will also
+accept a path to a group or array but the group or array must be a node
+directly under this group.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Self, invisibly.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_group-delete_all"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_group-delete_all}{}}}
+\subsection{Method \code{delete_all()}}{
+Delete all the groups and arrays contained by this group,
+including any sub-groups and arrays. Any specific metadata attached to
+this group is deleted as well - only a basic metadata document is
+maintained. \strong{Warning:} this operation is irreversible for many
+stores!
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_group$delete_all()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Self, invisibly.
 }
 }
 }

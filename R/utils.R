@@ -8,9 +8,26 @@
 # to the Zarr specification, characters and numbers can be any UTF-8 code point.
 # When portability is an issue, restrict characters and numbers to the set
 # [A-Za-z0-9].
-.is_valid_node_name = function(name) {
+.is_valid_node_name <- function(name) {
   nzchar(name) > 0L &&
   !grepl('^\\.*$', name) &&
   !grepl('^__', name) &&
   grepl("^[\\p{L}\\p{M}\\p{N}\\._-]+$", name, perl = TRUE)
+}
+
+# This function takes a path and turns it into a key by stripping the leading /
+.path2key <- function(path) {
+  substr(path, 2L, 10000L)
+}
+
+# This function takes a path and turns it into a prefix that points to the same
+# object as the path.
+.path2prefix <- function(path) {
+  paste0(substr(path, 2L, 10000L), '/')
+}
+
+# This function takes a prefix and turns it into a path that points to the same
+# object as the prefix.
+.prefix2path <- function(path) {
+  paste0('/', sub('/$', '', path))
 }

@@ -159,9 +159,9 @@ zarr_store <- R6::R6Class('zarr_store',
     },
 
     #' @description Retrieve the metadata document of the node at the location
-    #' indicated by the `path` argument.
-    #' @param path The path of the node whose metadata document to retrieve.
-    get_metadata = function(path) {
+    #' indicated by the `prefix` argument.
+    #' @param prefix The prefix of the node whose metadata document to retrieve.
+    get_metadata = function(prefix) {
       stop('Class', class(self)[1L], 'must implement this method.')
     },
 

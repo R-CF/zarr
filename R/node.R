@@ -83,7 +83,7 @@ zarr_node <- R6::R6Class('zarr_node',
         if (nzchar(private$.name)) {
           pp <- private$.parent$path
           if (pp == '/') paste0('/', private$.name)
-          else paste(pp, private$.name, sep = "/")
+          else paste(pp, private$.name, sep = '/')
         } else '/'
       }
     },

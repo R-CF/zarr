@@ -18,7 +18,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
   inherit = zarr_store,
   cloneable = FALSE,
   private = list(
-    .root = '/'    # The root of the zarr store as a file system path
+    .root = '.'    # The root of the zarr store as a file system path
   ),
   public = list(
     #' @description Create an instance of this class.
@@ -45,6 +45,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @return An instance of this class.
     initialize = function(root, read_only = FALSE, metadata = NULL) {
       root <- suppressWarnings(normalizePath(uri_to_path(root)))
+      root <- sub('/*$', '', root)
       have_root <- dir.exists(root)
       meta_path <- file.path(root, 'zarr.json')
 
@@ -69,7 +70,6 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
 
       super$initialize(read_only, version = format)
       private$.root <- root
-      private$.supports_writes <- TRUE
       private$.supports_consolidated_metadata = FALSE
     },
 
@@ -85,37 +85,55 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #'   Invoking this method deletes affected files on the file system and this
     #'   action can not be undone. The only file that will remain is "zarr.json"
     #'   in the root of this store.
-    #' @return Self, invisibly.
+    #' @return `TRUE` if the operation proceeded, `FALSE` otherwise.
     clear = function() {
-      # files <- rev(list.files(private$.root, all.files = TRUE, recursive = TRUE, include.dirs = TRUE))
-      unlink(paste0(private$.root, '/*'), recursive = TRUE)
-      jsonlite::write_json(list(zarr_format = jsonlite::unbox(3), node_type = jsonlite::unbox("group")),
-                           path = file.path(private$.root, 'zarr.json'), pretty = T)
-      invisible(self)
+      if (private$.read_only)
+        FALSE
+      else {
+        unlink(paste0(private$.root, '/*'), recursive = TRUE)
+        jsonlite::write_json(list(zarr_format = 3, node_type = "group"),
+                             path = file.path(private$.root, 'zarr.json'),
+                             auto_unbox = TRUE, pretty = T)
+        TRUE
+      }
     },
 
-    #' @description Remove a key from the store. The key typically points to an
-    #'   array but could also point to a group or a chunk. The location of the
-    #'   key itself is also removed.
-    #' @param key Character string. The item to remove from the store.
-    #' @return Self, invisibly.
+    #' @description Remove a key from the store. The key must point to an array
+    #'   or an empty group. The location of the key and all of its values are
+    #'   removed.
+    #' @param key Character string. The key to remove from the store.
+    #' @return `TRUE` if the operation proceeded, `FALSE` otherwise.
     erase = function(key) {
-      unlink(file.path(private$.root, key))
-      invisible(self)
+      if (private$.read_only)
+        FALSE
+      else {
+        fp <- file.path(private$.root, key)
+        dirs <- length(list.dirs(fp))
+        if (dirs > 1L)
+          FALSE
+        else
+          unlink(fp, recursive = TRUE) == 0
+      }
     },
 
-    #' @description Remove all keys and prefixes in the store that begin with a
-    #'   given prefix. The last location in the prefix is preserved while all
-    #'   keys below are removed from the store.
+    #' @description Remove all keys in the store that begin with a given prefix.
+    #'   The last location in the prefix is preserved while all keys below are
+    #'   removed from the store. Any metadata extensions added to the group
+    #'   pointed to by the prefix will be deleted as well - only a basic
+    #'   group-identifying metadata file will remain.
     #' @param prefix Character string. The prefix to groups or arrays to remove
     #'   from the store, including in child groups.
-    #' @return Self, invisibly.
+    #' @return `TRUE` if the operation proceeded, `FALSE` otherwise.
     erase_prefix = function(prefix) {
-      unlink(file.path(private$.root, paste0(prefix, "*")), recursive = TRUE)
-      prefix <- substr(prefix, 1L, nchar(prefix) - 1L)
-      jsonlite::write_json(list(zarr_format = jsonlite::unbox(3), node_type = jsonlite::unbox("group")),
-                           path = file.path(private$.root, prefix, 'zarr.json'), pretty = T)
-      invisible(self)
+      if (private$.read_only)
+        FALSE
+      else {
+        unlink(file.path(private$.root, paste0(prefix, '*')), recursive = TRUE)
+        jsonlite::write_json(list(zarr_format = 3, node_type = 'group'),
+                             path = file.path(private$.root, paste0(prefix, 'zarr.json')),
+                             auto_unbox = TRUE, pretty = T)
+        TRUE
+      }
     },
 
     #' @description Retrieve all keys and prefixes with a given prefix and which
@@ -165,7 +183,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #'   array. The key must be relative to the root of the store (so not start
     #'   with a "/") and may be composite. It must include the name of the file.
     #'   An example would be "group/subgroup/array/c0.0.0". The group hierarchy
-    #'   and the array must have been created before. If the `value` exists,
+    #'   and the array must have been created before. If the `key` exists,
     #'   nothing will be written.
     #' @param key The key whose value to set.
     #' @param value The value to set, a complete chunk of data.
@@ -180,8 +198,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       invisible(self)
     },
 
-    #' @description Retrieve the value associated with a given key. This method
-    #'   is part of the abstract store interface in ZEP0001.
+    #' @description Retrieve the value associated with a given key.
     #' @param key Character string. The key for which to get data.
     #' @param prototype Ignored. The only buffer type that is supported maps
     #'   directly to an R raw vector.
@@ -231,12 +248,13 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     },
 
     #' @description Retrieve the metadata document of the node at the location
-    #' indicated by the `path` argument.
-    #' @param path The path of the node whose metadata document to retrieve.
-    #' @return A list with the metadata, or `NULL` if the path is not pointing
+    #' indicated by the `prefix` argument.
+    #' @param prefix The prefix of the node whose metadata document to retrieve.
+    #' @return A list with the metadata, or `NULL` if the prefix is not pointing
     #' to a Zarr group or array.
-    get_metadata = function(path) {
-      fn <- file.path(private$.root, path, 'zarr.json')
+    get_metadata = function(prefix) {
+      fn <- if (prefix == '') file.path(private$.root, 'zarr.json')
+            else file.path(private$.root, paste0(prefix, 'zarr.json'))
       if (file.exists(fn))
         jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
       else
@@ -247,7 +265,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @param path The path to test.
     #' @return `TRUE` if the `path` points to a Zarr group, `FALSE` otherwise.
     is_group = function(path) {
-      meta <- self$get_metadata(path)
+      meta <- self$get_metadata(.path2prefix(path))
       if (is.null(meta)) FALSE
       else if (meta$node_type == 'group') TRUE
       else FALSE

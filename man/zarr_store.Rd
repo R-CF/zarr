@@ -368,15 +368,15 @@ Self, invisibly.
 \if{latex}{\out{\hypertarget{method-zarr_store-get_metadata}{}}}
 \subsection{Method \code{get_metadata()}}{
 Retrieve the metadata document of the node at the location
-indicated by the \code{path} argument.
+indicated by the \code{prefix} argument.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$get_metadata(path)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_store$get_metadata(prefix)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{path}}{The path of the node whose metadata document to retrieve.}
+\item{\code{prefix}}{The prefix of the node whose metadata document to retrieve.}
 }
 \if{html}{\out{</div>}}
 }

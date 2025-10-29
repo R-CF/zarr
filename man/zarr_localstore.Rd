@@ -139,16 +139,16 @@ in the root of this store.
 }
 
 \subsection{Returns}{
-Self, invisibly.
+\code{TRUE} if the operation proceeded, \code{FALSE} otherwise.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-erase"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-erase}{}}}
 \subsection{Method \code{erase()}}{
-Remove a key from the store. The key typically points to an
-array but could also point to a group or a chunk. The location of the
-key itself is also removed.
+Remove a key from the store. The key must point to an array
+or an empty group. The location of the key and all of its values are
+removed.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$erase(key)}\if{html}{\out{</div>}}
 }
@@ -156,21 +156,23 @@ key itself is also removed.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{key}}{Character string. The item to remove from the store.}
+\item{\code{key}}{Character string. The key to remove from the store.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Self, invisibly.
+\code{TRUE} if the operation proceeded, \code{FALSE} otherwise.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-erase_prefix"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-erase_prefix}{}}}
 \subsection{Method \code{erase_prefix()}}{
-Remove all keys and prefixes in the store that begin with a
-given prefix. The last location in the prefix is preserved while all
-keys below are removed from the store.
+Remove all keys in the store that begin with a given prefix.
+The last location in the prefix is preserved while all keys below are
+removed from the store. Any metadata extensions added to the group
+pointed to by the prefix will be deleted as well - only a basic
+group-identifying metadata file will remain.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$erase_prefix(prefix)}\if{html}{\out{</div>}}
 }
@@ -184,7 +186,7 @@ from the store, including in child groups.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Self, invisibly.
+\code{TRUE} if the operation proceeded, \code{FALSE} otherwise.
 }
 }
 \if{html}{\out{<hr>}}
@@ -271,7 +273,7 @@ file (shard or chunk of an array) in a store, rather than a group or an
 array. The key must be relative to the root of the store (so not start
 with a "/") and may be composite. It must include the name of the file.
 An example would be "group/subgroup/array/c0.0.0". The group hierarchy
-and the array must have been created before. If the \code{value} exists,
+and the array must have been created before. If the \code{key} exists,
 nothing will be written.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$set_if_not_exists(key, value)}\if{html}{\out{</div>}}
@@ -294,8 +296,7 @@ Self, invisibly, or an error.
 \if{html}{\out{<a id="method-zarr_localstore-get"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-get}{}}}
 \subsection{Method \code{get()}}{
-Retrieve the value associated with a given key. This method
-is part of the abstract store interface in ZEP0001.
+Retrieve the value associated with a given key.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$get(key, prototype, byte_range)}\if{html}{\out{</div>}}
 }
@@ -328,20 +329,20 @@ An raw vector of data, or \code{NULL} if no data was found.
 \if{latex}{\out{\hypertarget{method-zarr_localstore-get_metadata}{}}}
 \subsection{Method \code{get_metadata()}}{
 Retrieve the metadata document of the node at the location
-indicated by the \code{path} argument.
+indicated by the \code{prefix} argument.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$get_metadata(path)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$get_metadata(prefix)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{path}}{The path of the node whose metadata document to retrieve.}
+\item{\code{prefix}}{The prefix of the node whose metadata document to retrieve.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the metadata, or \code{NULL} if the path is not pointing
+A list with the metadata, or \code{NULL} if the prefix is not pointing
 to a Zarr group or array.
 }
 }

@@ -59,7 +59,7 @@ zarr_group <- R6::R6Class('zarr_group',
       if (len) {
         children <- vector("list", len)
         for (i in 1:len) {
-          meta <- private$.store$get_metadata(paste0(prefix, dirs[i]))
+          meta <- private$.store$get_metadata(paste0(prefix, dirs[i], '/'))
           if (!is.null(meta)) {
             if (meta$node_type == 'group') {
               grp <- zarr_group$new(dirs[i], meta, self, self$store)
@@ -74,6 +74,42 @@ zarr_group <- R6::R6Class('zarr_group',
         private$.children <- children
       }
       invisible(self)
+    },
+
+    #' @description Retrieve the group or array represented by the node located
+    #'   at the path relative from the current group.
+    #' @param path The path to the node to retrieve. The path is relative to the
+    #'   group, it must not start with a slash "/". The path may start with any
+    #'   number of double dots ".." separated by slashes "/" to denote groups
+    #'   higher up in the hierarchy.
+    #' @return The [zarr_group] or [zarr_array] instance located at `path`, or
+    #'   `NULL` if the `path` was not found.
+    get_node = function(path) {
+      if (missing(path) || !is.character(path) || !nzchar(path) || startsWith(path, '/'))
+        return(NULL)
+
+      matches <- regexec('^([^/]*)/(.*)', path)
+      if (matches[[1L]][1L] < 0L) {
+        if (path == '..')
+          private$.parent
+        else
+          private$.children[[path]]
+      } else {
+        parts <- regmatches(path, matches)[[1L]]
+        if (parts[2L] == '..') {
+          parent <- private$.parent
+          if (is.null(parent))
+            NULL
+          else
+            parent$get_node(parts[3L])
+        } else {
+          node <- private$.children[[parts[2L]]]
+          if (is.null(node))
+            NULL
+          else
+            node$get_node(parts[3L])
+        }
+      }
     },
 
     #' @description Count the number of arrays in this group, optionally
@@ -124,6 +160,36 @@ zarr_group <- R6::R6Class('zarr_group',
         arr
       } else
         NULL
+    },
+
+    #' @description Delete a group or an array contained by this group. When
+    #'   deleting a group it cannot contain other groups or arrays. **Warning:**
+    #'   this operation is irreversible for many stores!
+    #' @param name The name of the group or array to delete. This will also
+    #'   accept a path to a group or array but the group or array must be a node
+    #'   directly under this group.
+    #' @return Self, invisibly.
+    delete = function(name) {
+      name <- sub('.*/', '', name)
+      ndx <- match(name, names(private$.children))
+      if (!is.na(ndx) && private$.store$erase(.path2key(private$.children[[ndx]]$path)))
+        private$.children <- private$.children[-ndx]
+      invisible(self)
+    },
+
+    #' @description Delete all the groups and arrays contained by this group,
+    #'   including any sub-groups and arrays. Any specific metadata attached to
+    #'   this group is deleted as well - only a basic metadata document is
+    #'   maintained. **Warning:** this operation is irreversible for many
+    #'   stores!
+    #' @return Self, invisibly.
+    delete_all = function() {
+      prefix <- self$prefix
+      if (private$.store$erase_prefix(prefix)) {
+        private$.children <- list()
+        private$.metadata <- private$.store$get_metadata(prefix)
+      }
+      invisible(self)
     }
   ),
   active = list(
@@ -175,4 +241,26 @@ str.zarr_group <- function(object, ...) {
   } else
     cat('Zarr group without arrays or sub-groups')
 
+}
+
+#' Get a group or array from a Zarr group
+#'
+#' This method can be used to retrieve a group or array from the Zarr group by
+#' a relative path to the desired group or array.
+#'
+#' @param x A `zarr_group` object to extract a group or array from.
+#' @param i The path to a group or array in `x`. The path is relative to the
+#'   group, it must not start with a slash "/". The path may start with any
+#'   number of double dots ".." separated by slashes "/" to denote groups
+#'   higher up in the hierarchy.
+#'
+#' @return An instance of `zarr_group` or `zarr_array`, or `NULL` if the path is
+#'   not found.
+#' @export
+#'
+#' @aliases [[,zarr-method
+#' @docType methods
+#' @examples
+`[[.zarr_group` <- function(x, i) {
+  x$get_node(i)
 }

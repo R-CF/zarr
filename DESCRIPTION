@@ -16,4 +16,6 @@ Suggests:
     bit64,
     blosc,
     digest,
+    testthat (>= 3.0.0),
     zlib
+Config/testthat/edition: 3
