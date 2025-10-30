@@ -38,6 +38,20 @@ zarr_array <- R6::R6Class('zarr_array',
       cat('Path     :', self$path, '\n')
       cat('Shape    :', private$.metadata[['shape']], '\n')
       invisible(self)
+    },
+
+    #' @description Prints the hierarchy of the groups and
+    #'   arrays to the console. Usually called from the Zarr object or its root
+    #'   group to display the full group hierarchy.
+    #' @param idx,total Arguments to control indentation. Should both be 1 (the
+    #'   default) when called interactively.
+    hierarchy = function(idx = 1L, total = 1L) {
+      if (!nzchar(private$.name))
+        '\u2317 (root array)\n'
+      else {
+        knot <-  if (idx == total) '\u2514 ' else '\u251C '
+        paste0(knot, '\u2317 ', private$.name, '\n')
+      }
     }
   ),
   active = list(

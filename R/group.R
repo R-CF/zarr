@@ -45,6 +45,38 @@ zarr_group <- R6::R6Class('zarr_group',
       invisible(self)
     },
 
+    #' @description Prints the hierarchy of the group and its subgroups and
+    #'   arrays to the console. Usually called from the Zarr object or its root
+    #'   group to display the full group hierarchy.
+    #' @param idx,total Arguments to control indentation. Should both be 1 (the
+    #'   default) when called interactively. The values will be updated during
+    #'   recursion when there are groups below the current group.
+    hierarchy = function(idx = 1L, total = 1L) {
+      if (!nzchar(private$.name)) {
+        sep <- ''
+        knot <- ''
+      } else if (idx == total) {
+        sep <- '  '
+        knot <- '\u2514 '
+      } else {
+        sep <- '\u2502 '
+        knot <- '\u251C '
+      }
+
+      nm <- private$.name
+      if (!nzchar(nm))
+        nm <- '(root group)'
+      hier <- paste0(knot, '\u2630 ', nm, "\n")
+
+      # Sub-groups
+      ch <- length(private$.children)
+      if (ch > 0L) {
+        sg <- unlist(sapply(1L:ch, function(g) private$.children[[g]]$hierarchy(g, ch)), use.names = FALSE)
+        hier <- c(hier, paste0(sep, sg))
+      }
+      hier
+    },
+
     #' @description Return the hierarchy contained in the store as a tree of
     #'   group and array nodes. This method only has to be called after opening
     #'   an existing Zarr store - this is done automatically by user-facing
