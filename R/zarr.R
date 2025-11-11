@@ -45,7 +45,7 @@ zarr <- R6::R6Class("zarr",
                 else private$.root$count_arrays()
       cat('Arrays    :', arrays, '\n')
       if (fs)
-        cat('Total size:', 0, '\n')
+        cat('Total size:', .size_string(sum(file.size(list.files(private$.store$root, full.names = TRUE, recursive = TRUE)))), '\n')
     },
 
     #' @description Print the Zarr hierarchy to the console.
@@ -224,6 +224,8 @@ str.zarr <- function(object, ...) {
 #' @aliases [[,zarr-method
 #' @docType methods
 #' @examples
+#' z <- create_zarr()
+#' z[["/"]]
 `[[.zarr` <- function(x, i) {
   x$get_node(uri_to_path(i))
 }

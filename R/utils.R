@@ -37,3 +37,15 @@
 .prefix2path <- function(prefix) {
   paste0('/', sub('/$', '', prefix))
 }
+
+.size_string <- function(size_in_bytes) {
+  if (size_in_bytes < 1024) {
+    return(paste(size_in_bytes, "Bytes"))
+  } else if (size_in_bytes < 1048576) {
+    return(paste(round(size_in_bytes / 1024, 2), "KB"))
+  } else if (size_in_bytes < 1073741824) {
+    return(paste(round(size_in_bytes / 1048576, 2), "MB"))
+  } else {
+    return(paste(round(size_in_bytes / 1073741824, 2), "GB"))
+  }
+}

@@ -143,8 +143,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       keys
     },
 
-    #' @description Retrieve all keys and prefixes with a given prefix. This
-    #'   method is part of the abstract store interface in ZEP0001.
+    #' @description Retrieve all keys and prefixes with a given prefix.
     #' @param prefix Character string. The prefix whose nodes to list.
     #' @return A character vector with all paths found in the store below the
     #'   `prefix` location, both for groups and arrays.

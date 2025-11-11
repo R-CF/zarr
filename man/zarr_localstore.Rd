@@ -196,10 +196,9 @@ from the store, including in child groups.}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-list_dir}{}}}
 \subsection{Method \code{list_dir()}}{
 Retrieve all keys and prefixes with a given prefix and which
-do not contain the character "/" after the given prefix. This method is
-part of the abstract store interface in ZEP0001. In other words, this
-retrieves all the nodes in the store below the node indicated by the
-prefix.
+do not contain the character "/" after the given prefix. In other
+words, this retrieves all the nodes in the store below the node
+indicated by the prefix.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$list_dir(prefix)}\if{html}{\out{</div>}}
 }
@@ -220,8 +219,7 @@ below the \code{prefix}, both for groups and arrays.
 \if{html}{\out{<a id="method-zarr_localstore-list_prefix"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-list_prefix}{}}}
 \subsection{Method \code{list_prefix()}}{
-Retrieve all keys and prefixes with a given prefix. This
-method is part of the abstract store interface in ZEP0001.
+Retrieve all keys and prefixes with a given prefix.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$list_prefix(prefix)}\if{html}{\out{</div>}}
 }

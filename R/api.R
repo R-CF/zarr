@@ -69,7 +69,7 @@ as_zarr <- function(x, store = NULL) {
                            stop('Unsupported data type:', storage.mode(x), call. = FALSE))
     d <- dim(x) %||% length(x)
     ab$shape <- d
-    ab$chunk_shape <- pmin.int(d, 100L)
+    ab$chunk_shape <- pmin.int(d, Zarr.options$chunk_length)
     ab$add_codec('gzip', list(level = 6L))
 
     # Create the store and add the array to make the store valid

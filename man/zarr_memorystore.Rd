@@ -78,8 +78,8 @@ An instance of this class.
 \if{html}{\out{<a id="method-zarr_memorystore-exists"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_memorystore-exists}{}}}
 \subsection{Method \code{exists()}}{
-Check if a key exists in the store. The key can point to an
-array (having a metadata list as its value) or a chunk.
+Check if a key exists in the store. The key can point to a
+group, an array (having a metadata list as its value) or a chunk.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_memorystore$exists(key)}\if{html}{\out{</div>}}
 }
@@ -159,8 +159,8 @@ even if argument \code{prefix} does not point to any existing keys.
 \if{html}{\out{<a id="method-zarr_memorystore-list_dir"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_memorystore-list_dir}{}}}
 \subsection{Method \code{list_dir()}}{
-Retrieve all keys with a given prefix and which
-do not contain the character "/" after the given prefix. In other words, this
+Retrieve all keys with a given prefix and which do not
+contain the character "/" after the given prefix. In other words, this
 retrieves all the keys in the store below the key indicated by the
 prefix.
 \subsection{Usage}{
@@ -306,8 +306,6 @@ to a Zarr array.
 \if{latex}{\out{\hypertarget{method-zarr_memorystore-create_group}{}}}
 \subsection{Method \code{create_group()}}{
 Create a new group in the store under the specified path.
-This is a no-op for a memory store because it is a flat \verb{[key, value]}
-store with groups implied in keys.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_memorystore$create_group(path, name)}\if{html}{\out{</div>}}
 }
@@ -315,14 +313,18 @@ store with groups implied in keys.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{path}}{Ignored.}
+\item{\code{path}}{The path to the parent group of the new group. Ignored when
+creating a root group.}
 
-\item{\code{name}}{Ignored.}
+\item{\code{name}}{The name of the new group. This may be an empty string \code{""}
+to create a root group. It is an error to supply an empty string if a
+root group or array already exists.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the metadata of a generic group.
+A list with the metadata of the group, or an error if the group
+could not be created.
 }
 }
 \if{html}{\out{<hr>}}

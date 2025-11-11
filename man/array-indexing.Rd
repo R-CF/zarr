@@ -29,3 +29,9 @@ These operators can be used to extract or replace data from an array by
 indices. Normal R array selection rules apply. The only limitation is that
 the indices have to be consecutive.
 }
+\examples{
+x <- array(1:100, c(10, 10))
+z <- as_zarr(x)
+arr <- z[["/"]]
+arr[3:5, 7:9]
+}

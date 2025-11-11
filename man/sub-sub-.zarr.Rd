@@ -21,3 +21,7 @@ not found.
 This method can be used to retrieve a group or array from the Zarr object by
 its path.
 }
+\examples{
+z <- create_zarr()
+z[["/"]]
+}

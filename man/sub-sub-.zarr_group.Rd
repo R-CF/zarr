@@ -24,3 +24,10 @@ not found.
 This method can be used to retrieve a group or array from the Zarr group by
 a relative path to the desired group or array.
 }
+\examples{
+z <- create_zarr()
+z$add_group("/", "tst")
+z$add_group("/tst", "subtst")
+tst <- z[["/tst"]]
+tst[["subtst"]]
+}

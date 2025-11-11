@@ -184,6 +184,10 @@ str.zarr_array <- function(object, ...) {
 #' @export
 #' @docType methods
 #' @examples
+#' x <- array(1:100, c(10, 10))
+#' z <- as_zarr(x)
+#' arr <- z[["/"]]
+#' arr[3:5, 7:9]
 `[.zarr_array` <- function(x, ..., drop = TRUE) {
   indices <- as.list(substitute(list(...)))[-1L]
   selection <- .indices2selection(indices, x$shape)

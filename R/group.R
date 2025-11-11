@@ -298,6 +298,11 @@ str.zarr_group <- function(object, ...) {
 #' @aliases [[,zarr-group-method
 #' @docType methods
 #' @examples
+#' z <- create_zarr()
+#' z$add_group("/", "tst")
+#' z$add_group("/tst", "subtst")
+#' tst <- z[["/tst"]]
+#' tst[["subtst"]]
 `[[.zarr_group` <- function(x, i) {
   x$get_node(i)
 }
