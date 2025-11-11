@@ -54,9 +54,11 @@ The \code{fill_value} has to agree with the \code{data_type} of the array.}
 along the dimensions of the array. Setting the shape will reset the
 chunking settings to their default values.}
 
-\item{\code{chunk_grid}}{The shape of the chunks in which to store the Zarr
-array, an integer vector of lengths. The \code{shape} of the array must be
-set before setting this.}
+\item{\code{chunk_shape}}{The shape of each individual chunk in which to store
+the Zarr array. When setting, pass in an integer vector of lengths of
+the same size as the shape of the array. The \code{shape} of the array must
+be set before setting this. When reading, returns an instance of class
+\link{chunk_grid_regular}.}
 
 \item{\code{codec_info}}{(read-only) Retrieve a \code{data.frame} of registered codec
 modes and names for this array.}

@@ -1,18 +1,20 @@
 #' Zarr Store for the Local File System
 #'
 #' @description This class implements a Zarr store for the local file system.
-#' With this class Zarr stores on devices accessible through the local file
-#' system can be read and written to. This includes locally attached drives,
-#' removable media, NFS mounts, etc.
+#'   With this class Zarr stores on devices accessible through the local file
+#'   system can be read and written to. This includes locally attached drives,
+#'   removable media, NFS mounts, etc.
 #'
-#' The chunking pattern is to locate all the chunks in a single directory. That
-#' means that chunks have names like "c0.0.0" in the array directory.
+#'   The chunking pattern is to locate all the chunks of an array in a single
+#'   directory. That means that chunks have names like "c0.0.0" in the array
+#'   directory.
 #'
-#' This class performs no sanity checks on any of the arguments passed to the
-#' methods, for performance reasons. Since this class should be accessed through
-#' group and array objects, it is up to that code to ensure that arguments are
-#' valid, in particular keys and prefixes.
-#' @references https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
+#'   This class performs no sanity checks on any of the arguments passed to the
+#'   methods, for performance reasons. Since this class should be accessed
+#'   through group and array objects, it is up to that code to ensure that
+#'   arguments are valid, in particular keys and prefixes.
+#' @references
+#'   https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 #' @docType class
 zarr_localstore <- R6::R6Class('zarr_localstore',
   inherit = zarr_store,
@@ -23,13 +25,17 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
   public = list(
     #' @description Create an instance of this class.
     #'
-    #'   If the location is not currently a Zarr store, it will be created,
-    #'   unless argument `metadata = NULL`. This will write the `metadata` as a
-    #'   small JSON file to the `root` location, identifying the location as a
-    #'   Zarr store, possibly for a single array.
+    #'   If the root location does not exist, it will be created. The location
+    #'   on the file system must be writable by the process creating the store.
+    #'   The store is not yet functional in the sense that it is just an empty
+    #'   directory. Write a root group with `.$create_group('/', '')` or an
+    #'   array with `.$create_array('/', '', metadata)` for a single-array store
+    #'   before any other operations on the store.
     #'
-    #'   The location on the file system must be writable by the process opening
-    #'   or creating the store.
+    #'   If the root location does exist on the file system it must be a valid
+    #'   Zarr store, as determined by the presence of a "zarr.json" file. It is
+    #'   an error to try to open a Zarr store on an existing location where this
+    #'   metadata file is not present.
     #' @param root The path to the local store to be created or opened. The path
     #'   may use UTF-8 code points. Following the Zarr specification, it is
     #'   recommended that the root path has an extension of ".zarr" to easily
@@ -37,38 +43,26 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #'   root directory cannot already exist.
     #' @param read_only Flag to indicate if the store is opened read-only.
     #'   Default `FALSE`.
-    #' @param metadata Optional. A list with the metadata of the object to
-    #'   create at the root of a new store, either a Zarr group or a Zarr array.
-    #'   Default is `NULL` which means that an existing store is opened. To
-    #'   create a new store, supply this argument. It is an error to supply a
-    #'   `metadata` document for an existing Zarr store.
     #' @return An instance of this class.
-    initialize = function(root, read_only = FALSE, metadata = NULL) {
+    initialize = function(root, read_only = FALSE) {
       root <- suppressWarnings(normalizePath(uri_to_path(root)))
       root <- sub('/*$', '', root)
-      have_root <- dir.exists(root)
       meta_path <- file.path(root, 'zarr.json')
 
-      if (is.null(metadata)) {
+      if (dir.exists(root)) {
         # Opening an existing store
-        if (!have_root)
+        if (!file.exists(meta_path))
           stop('No Zarr store at the root location.', call. = FALSE) # nocov
-        if (file.exists(meta_path)) {
-          meta <- jsonlite::fromJSON(meta_path)
-          format <- meta$zarr_format
-          if (is.null(format) || !format %in% c(2, 3))
-            stop('Incompatible "zarr_format" found in the store:', format, call. = FALSE) # nocov
-        }
+        meta <- jsonlite::fromJSON(meta_path)
+        format <- meta$zarr_format
+        if (is.null(format) || format != 3)
+          stop('Incompatible "zarr_format" found in the store:', format, call. = FALSE) # nocov
       } else {
         # Create a new store
-        if (have_root)
-          stop('Location for new Zarr store already exists.', call. = FALSE) # nocov
         dir.create(root, recursive = TRUE, mode = '0771')
-        jsonlite::write_json(metadata, path = meta_path, pretty = T, auto_unbox = TRUE)
-        format <- metadata$zarr_format
       }
 
-      super$initialize(read_only, version = format)
+      super$initialize(read_only, version = 3L)
       private$.root <- root
       private$.supports_consolidated_metadata = FALSE
     },
@@ -137,11 +131,10 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     },
 
     #' @description Retrieve all keys and prefixes with a given prefix and which
-    #'   do not contain the character "/" after the given prefix. This method is
-    #'   part of the abstract store interface in ZEP0001. In other words, this
-    #'   retrieves all the nodes in the store below the node indicated by the
-    #'   prefix.
-    #' @param prefix Character string. The prefix to nodes to list.
+    #'   do not contain the character "/" after the given prefix. In other
+    #'   words, this retrieves all the nodes in the store below the node
+    #'   indicated by the prefix.
+    #' @param prefix Character string. The prefix whose nodes to list.
     #' @return A character array with all keys found in the store immediately
     #'   below the `prefix`, both for groups and arrays.
     list_dir = function(prefix) {
@@ -152,7 +145,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
 
     #' @description Retrieve all keys and prefixes with a given prefix. This
     #'   method is part of the abstract store interface in ZEP0001.
-    #' @param prefix Character string. The prefix to nodes to list.
+    #' @param prefix Character string. The prefix whose nodes to list.
     #' @return A character vector with all paths found in the store below the
     #'   `prefix` location, both for groups and arrays.
     list_prefix = function(prefix) {
@@ -169,12 +162,12 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #'   and the array must have been created before. If the `value` exists, it
     #'   will be overwritten.
     #' @param key The key whose value to set.
-    #' @param value The value to set, a complete chunk of data.
+    #' @param value The value to set, a complete chunk of data, a `raw` vector.
     #' @return Self, invisibly, or an error.
     set = function(key, value) {
       f <- file(file.path(private$.root, key), 'w+b')
+      on.exit(close(f))
       writeBin(value, f)
-      close(f)
       invisible(self)
     },
 
@@ -192,8 +185,8 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       path <- file.path(private$.root, key)
       if (!file.exists(path)) {
         f <- file(path, 'w+b')
+        on.exit(close(f))
         writeBin(value, f)
-        close(f)
       }
       invisible(self)
     },
@@ -211,9 +204,10 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #'   the object will be returned. If the given range is zero-length or
     #'   starts after the end of the object, an error will be returned.
     #' @return An raw vector of data, or `NULL` if no data was found.
-    get = function(key, prototype, byte_range) {
+    get = function(key, prototype = NULL, byte_range = NULL) {
+      # FIXME: Stop when key points to a zarr.json file
       f <- file.path(self$root, key)
-      if(!file.exists(f)) return(NULL)
+      if (!file.exists(f)) return(NULL)
 
       sz <- file.info(f)$size
       if (is.null(byte_range)) {
@@ -272,14 +266,26 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     },
 
     #' @description Create a new group in the store under the specified path.
-    #'   The `path` must point to a Zarr group.
-    #' @param path The path to the parent group of the new group.
-    #' @param name The name of the new group.
+    #' @param path The path to the parent group of the new group. Ignored when
+    #'   creating a root group.
+    #' @param name The name of the new group. This may be an empty string `""`
+    #'   to create a root group. It is an error to supply an empty string if a
+    #'   root group or array already exists.
     #' @return A list with the metadata of the group, or an error if the group
     #'   could not be created.
     create_group = function(path, name) {
       if (private$.read_only)
         stop('Cannot write new objects to the Zarr store.', call. = FALSE) # nocov
+
+      if (!nzchar(name)) {
+        # Create a root group
+        fn <- file.path(private$.root, 'zarr.json')
+        if (file.exists(fn))
+          stop('Cannot create a root group in an existing Zarr store.', call. = FALSE) # nocov
+        meta <- list(zarr_format = 3, node_type = 'group')
+        jsonlite::write_json(meta, path = fn, auto_unbox = TRUE, pretty = T)
+        return(meta)
+      }
 
       if (!self$is_group(path))
         stop('Path does not point to a Zarr group: ', path, call. = FALSE) # nocov
@@ -295,27 +301,48 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     },
 
     #' @description Create a new array in the store under the specified path to
-    #'   the `parent` argument. The `parent` path must point to a Zarr group.
-    #' @param parent The path to the parent group of the new array.
-    #' @param name The name of the new array.
+    #'   the `parent` argument.
+    #' @param parent The path to the parent group of the new array. Ignored when
+    #'   creating a root array.
+    #' @param name The name of the new array. This may be an empty string `""`
+    #'   to create a root array. It is an error to supply an empty string if a
+    #'   root group or array already exists.
     #' @param metadata A `list` with the metadata for the array. The list has to
     #'   be valid for array construction. Use the [array_builder] class to
-    #'   create and or test for validity.
+    #'   create and or test for validity. An element "chunk_key_encoding" will
+    #'   be added to the metadata.
     #' @return A list with the metadata of the array, or an error if the array
     #'   could not be created.
     create_array = function(parent, name, metadata) {
       if (private$.read_only)
         stop('Cannot write new objects to the Zarr store.', call. = FALSE) # nocov
 
+      make_meta <- function(metadata) {
+        chunk_grid <- match('chunk_grid', names(metadata))
+        chunk_key_encoding <- list(chunk_key_encoding = list(name = 'default',
+                                                             configuration = list(separator = '.')))
+        append(metadata, chunk_key_encoding, after = chunk_grid)
+      }
+
+      if (!nzchar(name)) {
+        # Create a root array
+        fn <- file.path(private$.root, 'zarr.json')
+        if (file.exists(fn))
+          stop('Cannot create a root array in an existing Zarr store.', call. = FALSE) # nocov
+        meta <- make_meta(metadata)
+        jsonlite::write_json(meta, path = fn, auto_unbox = TRUE, pretty = T)
+        return(meta)
+      }
+
       if (!self$is_group(parent))
         stop('Path does not point to a Zarr group: ', parent, call. = FALSE) # nocov
 
       # Create the array
-      parent <- substring(parent, 2L)
-      fp <- file.path(private$.root, parent, name)
+      fp <- file.path(paste0(private$.root, parent), name)
       if (dir.create(fp, showWarnings = FALSE, recursive = FALSE, mode = '0771')) {
-        jsonlite::write_json(metadata, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T)
-        metadata
+        meta <- make_meta(metadata)
+        jsonlite::write_json(meta, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T)
+        meta
       } else
         stop('Could not create an array at path: ', fp, call. = FALSE) # nocov
     }
@@ -337,6 +364,12 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     uri = function(value) {
       if (missing(value))
         path_to_uri(private$.root)
+    },
+
+    #' @field separator (read-only) The separator of the local file store,
+    #'   always a dot '.'.
+    separator = function(value) {
+      if (missing(value)) '.'
     }
   )
 )

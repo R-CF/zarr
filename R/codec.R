@@ -13,7 +13,11 @@ zarr_codec <- R6::R6Class('zarr_codec',
 
     # The input and output data object for the encoding operation
     .from = 'array',
-    .to   = 'bytes'
+    .to   = 'bytes',
+
+    # Print the configuration of the codec. To be implemented by descendant classes.
+    print_configuration = function() {
+    }
   ),
   public = list(
     #' @description Create a new codec object.
@@ -26,11 +30,18 @@ zarr_codec <- R6::R6Class('zarr_codec',
       private$.configuration <- configuration
     },
 
-    #' @description This method gives the operating mode of the encoding
-    #'   operation of the codec in form of a string "array -> array", "array ->
-    #'   bytes" or "bytes -> bytes".
-    mode = function() {
-      paste(private$.from, private$.to, sep = ' -> ')
+    #' @description Create a new, independent copy of this codec.
+    #' @return This method always throws an error.
+    copy = function() {
+      stop('Class', class(self)[1L], 'must implement the `copy()` method.', call. = FALSE) # nocov
+    },
+
+    #' @description Print a summary of the codec to the console.
+    print = function() {
+      cat('<Zarr codec>', private$.name, '\n')
+      cat('Mode         :', self$mode, '\n')
+      private$print_configuration()
+      invisible(self)
     },
 
     #' @description Return the metadata fragment that describes this codec.
@@ -59,6 +70,14 @@ zarr_codec <- R6::R6Class('zarr_codec',
     }
   ),
   active = list(
+    #' @field mode (read-only) Retrieve the operating mode of the encoding
+    #'   operation of the codec in form of a string "array -> array", "array ->
+    #'   bytes" or "bytes -> bytes".
+    mode = function(value) {
+      if (missing(value))
+        paste(private$.from, private$.to, sep = ' -> ')
+    },
+
     #' @field from (read-only) Character string that indicates the source data
     #' type of this codec, either "array" or "bytes".
     from = function(value) {
@@ -112,6 +131,13 @@ zarr_codec_transpose <- R6::R6Class('zarr_codec_transpose',
   inherit = zarr_codec,
   cloneable = FALSE,
   private = list (
+    # Print the configuration information to the console. This is called by
+    # zarr_codec$print().
+    print_configuration = function() {
+      cat('Configuration:\n')
+      cat('  order: [', paste(private$.configuration$order, collapse = ', '), ']\n', sep = '')
+    },
+
     # Check if the "order" argument is valid. Returns TRUE or FALSE. "order"
     # must have been cast to integer.
     check_order = function(order, len) {
@@ -121,26 +147,33 @@ zarr_codec_transpose <- R6::R6Class('zarr_codec_transpose',
   ),
   public = list(
     #' @description Create a new "transpose" codec object.
-    #' @param shape The shape of the array that this codec operates on.
+    #' @param shape_length The length of the shape of the array that this codec
+    #'   operates on.
     #' @param configuration Optional. A list with the configuration parameters
     #'   for this codec. The element `order` specifies the ordering of the
     #'   dimensions of the shape relative to the Zarr canonical arrangement. An
-    #'   integer vector with a length equal to the dimensions of argument
-    #'   `shape`. The ordering must be 0-based. If not given, the default R
+    #'   integer vector with a length equal to argument
+    #'   `shape_length`. The ordering must be 0-based. If not given, the default R
     #'   ordering is used.
     #' @return An instance of this class.
-    initialize = function(shape, configuration = list()) {
-      if ((shape_len <- length(shape)) < 2L)
+    initialize = function(shape_length, configuration = list()) {
+      if (shape_length < 2L)
         stop('Can only set a transpose codec on a matrix or array.', call. = FALSE) # nocov
 
       if (!length(configuration))
-        configuration <- list(order = seq(shape_len - 1L, 0L, -1L))
-      else if (!private$check_order(configuration$order, shape_len))
+        configuration <- list(order = seq(shape_length - 1L, 0L, -1L))
+      else if (!private$check_order(configuration$order, shape_length))
         stop('Dimension ordering does not match the shape.', call. = FALSE) # nocov
 
       super$initialize('transpose', configuration)
       private$.from <- 'array'
       private$.to <- 'array'
+    },
+
+    #' @description Create a new, independent copy of this codec.
+    #' @return An instance of `zarr_codec_transpose`.
+    copy = function() {
+      zarr_codec_transpose$new(length(private$.configuration$order), private$.configuration)
     },
 
     #' @description This method permutes a data object to match the desired
@@ -194,22 +227,39 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
   private = list(
     # The data type of the object that this codec operates on, an instance of
     # the data_type extension object.
-    .data_type = NULL
+    .data_type = NULL,
+
+    # The shape of a chunk of array data, an integer vector.
+    .chunk_shape = NULL,
+
+    # Print the configuration information to the console. This is called by
+    # zarr_codec$print().
+    print_configuration = function() {
+      cat('Configuration:\n')
+      cat('  endian:', private$.configuration$endian, '\n')
+    }
   ),
   public = list(
     #' @description Create a new "bytes" codec object.
     #' @param data_type The [zarr_data_type] instance of the Zarr array that
     #'   this codec is used for.
+    #' @param chunk_shape The shape of a chunk of data of the array, an integer
+    #'   vector.
     #' @param configuration Optional. A list with the configuration parameters
     #'   for this codec. The element `endian` specifies the byte ordering of the
     #'   data type of the Zarr array. A string with value "big" or "little". If
     #'   not given, the default endianness of the platform is used.
     #' @return An instance of this class.
-    initialize = function(data_type, configuration = NULL) {
+    initialize = function(data_type, chunk_shape, configuration = NULL) {
       if (inherits(data_type, 'zarr_data_type'))
         private$.data_type <- data_type
       else
         stop('Codec must be initialized with a `zarr_data_type` instance.', call. = FALSE) # nocov
+
+      if (is.integer(chunk_shape))
+        private$.chunk_shape <- chunk_shape
+      else
+        stop('Codec must be initialized with an integer vector giving the shape of a chunk of data.', call. = FALSE) # nocov
 
       if (is.null(configuration))
         configuration <- list(endian = .Platform$endian)
@@ -221,6 +271,12 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
       private$.to <- 'bytes'
 
       self$endian <- configuration$endian
+    },
+
+    #' @description Create a new, independent copy of this codec.
+    #' @return An instance of `zarr_codec_bytes`.
+    copy = function() {
+      zarr_codec_bytes$new(private$.data_type, private$.chunk_shape, private$.configuration)
     },
 
     #' @description Return the metadata fragment that describes this codec.
@@ -243,6 +299,7 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
     encode = function(data) {
       dt <- private$.data_type
       data[is.na(data)] <- dt$fill_value
+      dim(data) <- NULL
 
       if (dt$data_type == 'logical') {
         as.raw(as.integer(data))
@@ -261,7 +318,7 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
     decode = function(data) {
       dt <- private$.data_type
       n <- length(data) %/% dt$size
-      if (n %% dt$size)
+      if (length(data) %% dt$size)
         stop('Data length not a multiple of data type size.', call. = FALSE) # nocov
 
       out <- if (dt$data_type == 'logical') {
@@ -278,6 +335,7 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
       if (dt$data_type != 'logical')
         out[out == dt$fill_value] <- NA
 
+      dim(out) <- private$.chunk_shape
       out
     }
   ),
@@ -307,6 +365,17 @@ zarr_codec_blosc <- R6::R6Class('zarr_codec_blosc',
   private = list(
     # The zarr_data_type of the array using this codec.
     .data_type = NULL,
+
+    # Print the configuration information to the console. This is called by
+    # zarr_codec$print().
+    print_configuration = function() {
+      cat('Configuration:\n')
+      cat('  compressor:', private$.configuration$cname, '\n')
+      cat('  level     :', private$.configuration$clevel, '\n')
+      cat('  shuffle   :', private$.configuration$shuffle, '\n')
+      cat('  typesize  :', private$.configuration$typesize, '\n')
+      cat('  blocksize :', private$.configuration$blocksize, '\n')
+    },
 
     # Check the configuration parameters. Conf must be a list. If ok, the list
     # is returned. If not ok, an error is thrown.
@@ -374,6 +443,12 @@ zarr_codec_blosc <- R6::R6Class('zarr_codec_blosc',
       super$initialize('blosc', configuration)
       private$.from <- 'bytes'
       private$.to <- 'bytes'
+    },
+
+    #' @description Create a new, independent copy of this codec.
+    #' @return An instance of `zarr_codec_blosc`.
+    copy = function() {
+      zarr_codec_blosc$new(private$.data_type, private$.configuration)
     },
 
     #' @description This method compresses a data object using the "blosc"
@@ -475,6 +550,14 @@ zarr_codec_blosc <- R6::R6Class('zarr_codec_blosc',
 zarr_codec_gzip <- R6::R6Class('zarr_codec_gzip',
   inherit = zarr_codec,
   cloneable = FALSE,
+  private = list(
+    # Print the configuration information to the console. This is called by
+    # zarr_codec$print().
+    print_configuration = function() {
+      cat('Configuration:\n')
+      cat('  level:', private$.configuration$level, '\n')
+    }
+  ),
   public = list(
     #' @description Create a new "gzip" codec object.
     #' @param configuration Optional. A list with the configuration parameters
@@ -497,6 +580,12 @@ zarr_codec_gzip <- R6::R6Class('zarr_codec_gzip',
 
       private$.from <- 'bytes'
       private$.to <- 'bytes'
+    },
+
+    #' @description Create a new, independent copy of this codec.
+    #' @return An instance of `zarr_codec_gzip`.
+    copy = function() {
+      zarr_codec_gzip$new(private$.configuration)
     },
 
     #' @description This method encodes a data object.
@@ -556,10 +645,17 @@ zarr_codec_crc32c <- R6::R6Class('zarr_codec_crc32c',
       private$.to <- 'bytes'
     },
 
+    #' @description Create a new, independent copy of this codec.
+    #' @return An instance of `zarr_codec_crc32c`.
+    copy = function() {
+      zarr_codec_crc32c$new()
+    },
+
     #' @description This method computes the CRC32C checksum of a data object
-    #' and appends it to the data object.
-    #' @param data The data whose checksum to compute.
-    #' @return The input `data` object with the 32-bit checksum appended to it.
+    #'   and appends it to the data object.
+    #' @param data A raw vector whose checksum to compute.
+    #' @return The input `data` raw vector with the 32-bit checksum appended to
+    #'   it.
     encode = function(data) {
       dig <- writeBin(strtoi(digest::digest(data, 'crc32c', serialize = FALSE), base = 16L), raw())
       c(data, dig)
@@ -569,8 +665,8 @@ zarr_codec_crc32c <- R6::R6Class('zarr_codec_crc32c',
     #' 32-bits of a data object. It then computes the CRC32C checksum from the
     #' data object (less the trailing 32-bits) and compares the two values. If
     #' the values differ, a warning will be issued.
-    #' @param data The data whose checksum to verify.
-    #' @return The `data` object with the trailing 32-bits removed.
+    #' @param data The raw vector whose checksum to verify.
+    #' @return The `data` raw vector with the trailing 32-bits removed.
     decode = function(data) {
       len <- length(data)
       out <- data[1:(len - 4L)]

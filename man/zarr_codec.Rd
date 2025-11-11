@@ -15,6 +15,10 @@ the inverse process, whereby the codecs are applied in reverse order.
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
+\item{\code{mode}}{(read-only) Retrieve the operating mode of the encoding
+operation of the codec in form of a string "array -> array", "array ->
+bytes" or "bytes -> bytes".}
+
 \item{\code{from}}{(read-only) Character string that indicates the source data
 type of this codec, either "array" or "bytes".}
 
@@ -31,7 +35,8 @@ read-only but each codec class has fields to set individual parameters.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec-new}{\code{zarr_codec$new()}}
-\item \href{#method-zarr_codec-mode}{\code{zarr_codec$mode()}}
+\item \href{#method-zarr_codec-copy}{\code{zarr_codec$copy()}}
+\item \href{#method-zarr_codec-print}{\code{zarr_codec$print()}}
 \item \href{#method-zarr_codec-metadata_fragment}{\code{zarr_codec$metadata_fragment()}}
 \item \href{#method-zarr_codec-encode}{\code{zarr_codec$encode()}}
 \item \href{#method-zarr_codec-decode}{\code{zarr_codec$decode()}}
@@ -61,14 +66,25 @@ An instance of this class.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec-mode"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec-mode}{}}}
-\subsection{Method \code{mode()}}{
-This method gives the operating mode of the encoding
-operation of the codec in form of a string "array -> array", "array ->
-bytes" or "bytes -> bytes".
+\if{html}{\out{<a id="method-zarr_codec-copy"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec-copy}{}}}
+\subsection{Method \code{copy()}}{
+Create a new, independent copy of this codec.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$mode()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$copy()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+This method always throws an error.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_codec-print"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec-print}{}}}
+\subsection{Method \code{print()}}{
+Print a summary of the codec to the console.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$print()}\if{html}{\out{</div>}}
 }
 
 }

@@ -26,8 +26,14 @@
   paste0(substr(path, 2L, 10000L), '/')
 }
 
+# This function takes a prefix and turns it into a key that points to the same
+# object as the prefix.
+.prefix2key <- function(prefix) {
+  sub('/$', '', prefix)
+}
+
 # This function takes a prefix and turns it into a path that points to the same
 # object as the prefix.
-.prefix2path <- function(path) {
-  paste0('/', sub('/$', '', path))
+.prefix2path <- function(prefix) {
+  paste0('/', sub('/$', '', prefix))
 }

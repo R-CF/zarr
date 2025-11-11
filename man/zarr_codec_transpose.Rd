@@ -43,6 +43,7 @@ the array when storing}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec_transpose-new}{\code{zarr_codec_transpose$new()}}
+\item \href{#method-zarr_codec_transpose-copy}{\code{zarr_codec_transpose$copy()}}
 \item \href{#method-zarr_codec_transpose-encode}{\code{zarr_codec_transpose$encode()}}
 \item \href{#method-zarr_codec_transpose-decode}{\code{zarr_codec_transpose$decode()}}
 }
@@ -51,7 +52,7 @@ the array when storing}
 <details open><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="mode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-mode'><code>zarr::zarr_codec$mode()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -61,25 +62,39 @@ the array when storing}
 \subsection{Method \code{new()}}{
 Create a new "transpose" codec object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$new(shape, configuration = list())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$new(shape_length, configuration = list())}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{shape}}{The shape of the array that this codec operates on.}
+\item{\code{shape_length}}{The length of the shape of the array that this codec
+operates on.}
 
 \item{\code{configuration}}{Optional. A list with the configuration parameters
 for this codec. The element \code{order} specifies the ordering of the
 dimensions of the shape relative to the Zarr canonical arrangement. An
-integer vector with a length equal to the dimensions of argument
-\code{shape}. The ordering must be 0-based. If not given, the default R
+integer vector with a length equal to argument
+\code{shape_length}. The ordering must be 0-based. If not given, the default R
 ordering is used.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 An instance of this class.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_codec_transpose-copy"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_transpose-copy}{}}}
+\subsection{Method \code{copy()}}{
+Create a new, independent copy of this codec.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$copy()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+An instance of \code{zarr_codec_transpose}.
 }
 }
 \if{html}{\out{<hr>}}

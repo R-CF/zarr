@@ -65,7 +65,7 @@ zarr_group <- R6::R6Class('zarr_group',
 
       nm <- private$.name
       if (!nzchar(nm))
-        nm <- '(root group)'
+        nm <- '/ (root group)'
       hier <- paste0(knot, '\u2630 ', nm, "\n")
 
       # Sub-groups
@@ -178,12 +178,17 @@ zarr_group <- R6::R6Class('zarr_group',
 
     #' @description Add an array to the Zarr hierarchy in the current group.
     #' @param name The name of the new array.
-    #' @param metadata A `list` with the metadata for the new array.
+    #' @param metadata A `list` with the metadata for the new array, or an
+    #'   instance of class [array_builder] whose data make a valid array
+    #'   definition.
     #' @return The newly created `zarr_array` instance, or `NULL` if the array
     #'   could not be created.
     add_array = function(name, metadata) {
       if (!private$check_name(name))
         stop('Invalid name for a Zarr object: ', name, call. = FALSE) # nocov
+
+      if (inherits(metadata, 'array_builder'))
+        metadata <- metadata$metadata()
 
       meta <- private$.store$create_array(self$path, name, metadata)
       if (is.list(meta)) {
@@ -290,7 +295,7 @@ str.zarr_group <- function(object, ...) {
 #'   not found.
 #' @export
 #'
-#' @aliases [[,zarr-method
+#' @aliases [[,zarr-group-method
 #' @docType methods
 #' @examples
 `[[.zarr_group` <- function(x, i) {

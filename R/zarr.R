@@ -26,7 +26,7 @@ zarr <- R6::R6Class("zarr",
       private$.store <- store
 
       # Build the node hierarchy
-      metadata <- private$.store$get_metadata('')
+      metadata <- private$.store$get_metadata('/')
       private$.root <- if (metadata$node_type == 'group')
         zarr_group$new(name = "", parent = NULL, store = private$.store, metadata = metadata)$build_hierarchy()
       else
@@ -35,14 +35,17 @@ zarr <- R6::R6Class("zarr",
 
     #' @description Print a summary of the Zarr object to the console.
     print = function() {
+      fs <- inherits(private$.store, 'zarr_localstore')
       cat('<Zarr>\n')
       cat('Version   :', private$.store$version, '\n')
       cat('Store     :', private$.store$friendlyClassName, '\n')
-      cat('Location  :', private$.store$root, '\n')
+      if (fs)
+        cat('Location  :', private$.store$root, '\n')
       arrays <- if (inherits(private$.root, 'zarr_array')) '1 (single array store)'
                 else private$.root$count_arrays()
       cat('Arrays    :', arrays, '\n')
-      cat('Total size:', 0, '\n')
+      if (fs)
+        cat('Total size:', 0, '\n')
     },
 
     #' @description Print the Zarr hierarchy to the console.

@@ -23,6 +23,7 @@ between 0L (no compression) and 9 (maximum compression).}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec_gzip-new}{\code{zarr_codec_gzip$new()}}
+\item \href{#method-zarr_codec_gzip-copy}{\code{zarr_codec_gzip$copy()}}
 \item \href{#method-zarr_codec_gzip-encode}{\code{zarr_codec_gzip$encode()}}
 \item \href{#method-zarr_codec_gzip-decode}{\code{zarr_codec_gzip$decode()}}
 }
@@ -31,7 +32,7 @@ between 0L (no compression) and 9 (maximum compression).}
 <details open><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="mode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-mode'><code>zarr::zarr_codec$mode()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -55,6 +56,19 @@ this codec, ranging from 0 (no compression) to 9 (maximum compression).}
 }
 \subsection{Returns}{
 An instance of this class.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_codec_gzip-copy"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_gzip-copy}{}}}
+\subsection{Method \code{copy()}}{
+Create a new, independent copy of this codec.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_gzip$copy()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+An instance of \code{zarr_codec_gzip}.
 }
 }
 \if{html}{\out{<hr>}}

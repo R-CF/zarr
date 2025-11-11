@@ -24,6 +24,7 @@ with this codec. A string with value of "big" or "little".}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec_bytes-new}{\code{zarr_codec_bytes$new()}}
+\item \href{#method-zarr_codec_bytes-copy}{\code{zarr_codec_bytes$copy()}}
 \item \href{#method-zarr_codec_bytes-metadata_fragment}{\code{zarr_codec_bytes$metadata_fragment()}}
 \item \href{#method-zarr_codec_bytes-encode}{\code{zarr_codec_bytes$encode()}}
 \item \href{#method-zarr_codec_bytes-decode}{\code{zarr_codec_bytes$decode()}}
@@ -32,7 +33,7 @@ with this codec. A string with value of "big" or "little".}
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="mode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-mode'><code>zarr::zarr_codec$mode()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -42,7 +43,7 @@ with this codec. A string with value of "big" or "little".}
 \subsection{Method \code{new()}}{
 Create a new "bytes" codec object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$new(data_type, configuration = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$new(data_type, chunk_shape, configuration = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -50,6 +51,9 @@ Create a new "bytes" codec object.
 \describe{
 \item{\code{data_type}}{The \link{zarr_data_type} instance of the Zarr array that
 this codec is used for.}
+
+\item{\code{chunk_shape}}{The shape of a chunk of data of the array, an integer
+vector.}
 
 \item{\code{configuration}}{Optional. A list with the configuration parameters
 for this codec. The element \code{endian} specifies the byte ordering of the
@@ -60,6 +64,19 @@ not given, the default endianness of the platform is used.}
 }
 \subsection{Returns}{
 An instance of this class.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_codec_bytes-copy"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_bytes-copy}{}}}
+\subsection{Method \code{copy()}}{
+Create a new, independent copy of this codec.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$copy()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+An instance of \code{zarr_codec_bytes}.
 }
 }
 \if{html}{\out{<hr>}}

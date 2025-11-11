@@ -21,6 +21,6 @@ The Zarr object, or an error if the Zarr object could not be created.
 \description{
 This function creates a Zarr object from an R vector, matrix or array. The
 Zarr object will be a single Zarr array, with default settings derived from
-the R object (data type, shape) and this package (fill_value, chunk_grid,
-codecs).
+the R object (data type, shape). Data is chunked into chunks of length 100
+(or less is the array is smaller) and compressed.
 }

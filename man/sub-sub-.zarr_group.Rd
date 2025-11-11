@@ -3,7 +3,7 @@
 \docType{methods}
 \name{[[.zarr_group}
 \alias{[[.zarr_group}
-\alias{[[,zarr-method}
+\alias{[[,zarr-group-method}
 \title{Get a group or array from a Zarr group}
 \usage{
 \method{[[}{zarr_group}(x, i)

@@ -59,39 +59,3 @@ zarr_extension <- R6::R6Class('zarr_extension',
     }
   )
 )
-
-chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
-  inherit = zarr_extension,
-  cloneable = FALSE,
-  private = list(
-    .shape = NULL
-  ),
-  public = list(
-    initialize = function(shape) {
-      super$initialize('regular')
-      private$.shape <- shape
-    },
-
-    print = function() {
-      shp <- if (is.null(private$.shape)) ''
-             else paste0('[', paste(private$.shape, collapse = ', '), ']')
-      cat('<Zarr regular chunk grid>', shp, '\n')
-      invisible(self)
-    },
-
-    metadata_fragment = function() {
-      list(chunk_grid = list(name = 'regular',
-                             configuration = list(chunk_shape = private$.shape)))
-    }
-  ),
-  active = list(
-    shape = function(value) {
-      if (missing(value))
-        private$.shape
-      else {
-        # FIXME: Put in checks
-        private$.shape <- shape
-      }
-    }
-  )
-)

@@ -15,6 +15,13 @@ an object.
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
+\item{\code{data_type}}{(read-only) Retrieve the data type of the array.}
+
+\item{\code{shape}}{(read-only) Retrieve the shape of the array, an integer
+vector.}
+
+\item{\code{chunking}}{(read-only) The chunking engine for this array.}
+
 \item{\code{codecs}}{The list of codecs that this array uses for encoding data
 (and decoding in inverse order).}
 }
@@ -25,6 +32,9 @@ an object.
 \itemize{
 \item \href{#method-zarr_array-new}{\code{zarr_array$new()}}
 \item \href{#method-zarr_array-print}{\code{zarr_array$print()}}
+\item \href{#method-zarr_array-hierarchy}{\code{zarr_array$hierarchy()}}
+\item \href{#method-zarr_array-read}{\code{zarr_array$read()}}
+\item \href{#method-zarr_array-write}{\code{zarr_array$write()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -64,5 +74,72 @@ Print a summary of the array to the console.
 \if{html}{\out{<div class="r">}}\preformatted{zarr_array$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_array-hierarchy"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-hierarchy}{}}}
+\subsection{Method \code{hierarchy()}}{
+Prints the hierarchy of the groups and arrays to the
+console. Usually called from the Zarr object or its root group to
+display the full group hierarchy.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_array$hierarchy(idx, total)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{idx, total}}{Arguments to control indentation.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_array-read"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-read}{}}}
+\subsection{Method \code{read()}}{
+Read some or all of the array data for the array.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_array$read(selection)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{selection}}{A list as long as the array has dimensions where each
+element is a range of indices along the dimension to write. If missing,
+the entire array will be read.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A vector, matrix or array of data.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_array-write"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-write}{}}}
+\subsection{Method \code{write()}}{
+Write data for the array. The data will be chunked, encoded
+and persisted in the store that the array is using.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_array$write(data, selection)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{An R vector, matrix or array with the data to write. The data
+in the R object has to agree with the data type of the array.}
+
+\item{\code{selection}}{A list as long as the array has dimensions where each
+element is a range of indices along the dimension to write. If missing,
+the entire \code{data} object will be written.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Self, invisibly.
+}
 }
 }

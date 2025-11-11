@@ -40,6 +40,7 @@ object, starting from the root group, as a character vector.}
 \itemize{
 \item \href{#method-zarr-new}{\code{zarr$new()}}
 \item \href{#method-zarr-print}{\code{zarr$print()}}
+\item \href{#method-zarr-hierarchy}{\code{zarr$hierarchy()}}
 \item \href{#method-zarr-get_node}{\code{zarr$get_node()}}
 \item \href{#method-zarr-add_group}{\code{zarr$add_group()}}
 \item \href{#method-zarr-add_array}{\code{zarr$add_array()}}
@@ -75,6 +76,16 @@ Zarr objects are located.}
 Print a summary of the Zarr object to the console.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr-hierarchy"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr-hierarchy}{}}}
+\subsection{Method \code{hierarchy()}}{
+Print the Zarr hierarchy to the console.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr$hierarchy()}\if{html}{\out{</div>}}
 }
 
 }
@@ -156,8 +167,11 @@ be created.
 \if{latex}{\out{\hypertarget{method-zarr-delete_group}{}}}
 \subsection{Method \code{delete_group()}}{
 Delete a group from the Zarr object. This will also delete
-the group from the Zarr store. \strong{Warning:} this operation is
-irreversible for many stores!
+the group from the Zarr store. The root group cannot be deleted but it
+can be specified through \code{path = "/"} in which case the root group
+loses any specific group metadata (with only the basic parameters
+remaining), as well as any arrays and sub-groups if \code{recursive = TRUE}.
+\strong{Warning:} this operation is irreversible for many stores!
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr$delete_group(path, recursive = FALSE)}\if{html}{\out{</div>}}
 }
@@ -181,8 +195,10 @@ Self, invisible.
 \if{html}{\out{<a id="method-zarr-delete_array"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-delete_array}{}}}
 \subsection{Method \code{delete_array()}}{
-Delete an array from the Zarr object. \strong{Warning:} this
-operation is irreversible for many stores!
+Delete an array from the Zarr object. If the array is the
+root of the Zarr object, it will be converted into a regular Zarr
+object with a root group. \strong{Warning:} this operation is irreversible
+for many stores!
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr$delete_array(path)}\if{html}{\out{</div>}}
 }

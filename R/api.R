@@ -16,7 +16,9 @@
 #' my_zarr_object$store$root
 #' unlink(fn)
 create_zarr <- function(location) {
-  store <- zarr_localstore$new(location, metadata = list(zarr_format = 3, node_type = 'group'))
+  store <- if (missing(location) || !nzchar(location)) zarr_memorystore$new()
+           else zarr_localstore$new(location)
+  store$create_group(name = '')
   zarr$new(store)
 }
 
@@ -38,7 +40,7 @@ create_zarr <- function(location) {
 #' my_zarr_object$store$root
 #' unlink(fn)
 open_zarr <- function(location, read_only = FALSE) {
-  store <- zarr_localstore$new(location, read_only, metadata = NULL)
+  store <- zarr_localstore$new(location, read_only)
   zarr$new(store)
 }
 
@@ -46,8 +48,8 @@ open_zarr <- function(location, read_only = FALSE) {
 #'
 #' This function creates a Zarr object from an R vector, matrix or array. The
 #' Zarr object will be a single Zarr array, with default settings derived from
-#' the R object (data type, shape) and this package (fill_value, chunk_grid,
-#' codecs).
+#' the R object (data type, shape). Data is chunked into chunks of length 100
+#' (or less is the array is smaller) and compressed.
 #' @param x The R object to convert into a Zarr object. Must be a vector, matrix
 #'   or array of a numeric or logical type.
 #' @param store Optional. A location on a local file system where to persist the
@@ -55,6 +57,7 @@ open_zarr <- function(location, read_only = FALSE) {
 #'   specification, it is recommended to use a name that ends in ".zarr". If the
 #'   `store` argument is not given, a Zarr object is created in memory.
 #' @return The Zarr object, or an error if the Zarr object could not be created.
+#' @export
 as_zarr <- function(x, store = NULL) {
   if (is.numeric(x) || is.logical(x)) {
     # Build the array metadata from x
@@ -64,15 +67,25 @@ as_zarr <- function(x, store = NULL) {
                            'integer' = 'int32',
                            'double'  = 'float64',
                            stop('Unsupported data type:', storage.mode(x), call. = FALSE))
-    d <- dim(x)
-    ab$shape <- if (is.null(d)) length(x) else d
+    d <- dim(x) %||% length(x)
+    ab$shape <- d
+    ab$chunk_shape <- pmin.int(d, 100L)
+    ab$add_codec('gzip', list(level = 6L))
 
-    # Create the Zarr object
-    store <- zarr_localstore$new(root = store, metadata = ab$metadata())
+    # Create the store and add the array to make the store valid
+    store <- if (missing(store) || !nzchar(store))
+      zarr_memorystore$new()
+    else
+      zarr_localstore$new(root = store)
+    store$create_array(name = '', metadata = ab$metadata())
+
+    # Create the Zarr object and get a handle on the newly created array
     z <- zarr$new(store)
+    arr <- z[['/']]
 
     # Store the data from x
-
+    selection <- lapply(d, function(x) c(1L, x))
+    arr$write(x, selection)
 
     z
   }

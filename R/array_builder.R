@@ -34,7 +34,7 @@ array_builder <- R6::R6Class('array_builder',
 
     .data_type = NULL,
     .shape = NA,
-    .chunk_grid = NULL,
+    .chunk_shape = NULL,
     .codecs = list(),
 
     # Should the array have major portability?
@@ -48,8 +48,8 @@ array_builder <- R6::R6Class('array_builder',
         meta <- append(meta, list(shape = private$.shape))
       if (!is.null(private$.data_type))
         meta <- append(meta, private$.data_type$metadata_fragment())
-      if (!is.null(private$.chunk_grid))
-        meta <- append(meta, private$.chunk_grid$metadata_fragment())
+      if (!is.null(private$.chunk_shape))
+        meta <- append(meta, private$.chunk_shape$metadata_fragment())
       if (length(private$.codecs)) {
         codecs <- lapply(private$.codecs, function(cdc) cdc$metadata_fragment())
         meta <- append(meta, setNames(list(codecs), 'codecs'))
@@ -64,10 +64,10 @@ array_builder <- R6::R6Class('array_builder',
       if (!is.null(private$.data_type) && !is.na(private$.shape[1L])) {
         private$.codecs <- if (private$.portable || length(private$.shape) == 1L)
           # No transpose codec
-          list(zarr_codec_bytes$new(private$.data_type))
+          list(zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape))
         else
-          list(zarr_codec_transpose$new(private$.shape),
-               zarr_codec_bytes$new(private$.data_type))
+          list(zarr_codec_transpose$new(length(private$.shape)),
+               zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape))
       } else
         private$.codecs <- list()
     }
@@ -98,10 +98,12 @@ array_builder <- R6::R6Class('array_builder',
           self$format <- meta$zarr_format
           if (meta$node_type != 'array')
             stop('Metadata document is not for a Zarr array.', call. = FALSE) # nocov
+
+          # Set properties through the active fields, checking is done there.
           self$shape <- meta$shape
           self$data_type <- meta$data_type
           self$fill_value <- meta$fill_value
-          self$chunk_grid <- meta$chunk_grid$configuration$chunk_shape # regular grid only
+          self$chunk_shape <- meta$chunk_grid$configuration$chunk_shape # regular grid only
 
           private$.codecs <- list() # Remove automatically generated codecs
           if (length(meta$codecs))
@@ -154,8 +156,8 @@ array_builder <- R6::R6Class('array_builder',
         stop('Codec name must be a single character string.', call. = FALSE) # nocov
 
       cdc <- switch(codec,
-                    'transpose' = zarr_codec_transpose$new(private$.shape, configuration),
-                    'bytes' = zarr_codec_bytes$new(private$.data_type, configuration),
+                    'transpose' = zarr_codec_transpose$new(length(private$.shape), configuration),
+                    'bytes' = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape, configuration),
                     'blosc' = zarr_codec_blosc$new(data_type = private$.data_type, configuration),
                     'gzip' = zarr_codec_gzip$new(configuration),
                     'crc32c' = zarr_codec_crc32c$new())
@@ -214,7 +216,7 @@ array_builder <- R6::R6Class('array_builder',
     is_valid = function() {
       !is.null(private$.data_type) &&
       !is.na(private$.shape[1L]) &&
-      !is.null(private$.chunk_grid) &&
+      !is.null(private$.chunk_shape) &&
       length(private$.codecs)
     }
   ),
@@ -281,27 +283,25 @@ array_builder <- R6::R6Class('array_builder',
       if (missing(value))
         private$.shape
       else {
-        if (is.numeric(value)) {
-          private$.shape <- as.integer(value)
-          private$.chunk_grid <- chunk_grid_regular$new(private$.shape)
+        if (is.numeric(value) && all((value <- as.integer(value)) > 0L)) {
+          private$.shape <- value
+          private$.chunk_shape <- chunk_grid_regular$new(value, value)
           private$update_codecs()
         } else
           stop('Shape must be an integer vector of lengths along each dimension of the Zarr array.', call. = FALSE) # nocov
       }
     },
 
-    #' @field chunk_grid The shape of the chunks in which to store the Zarr
-    #'   array, an integer vector of lengths. The `shape` of the array must be
-    #'   set before setting this.
-    chunk_grid = function(value) {
+    #' @field chunk_shape The shape of each individual chunk in which to store
+    #'   the Zarr array. When setting, pass in an integer vector of lengths of
+    #'   the same size as the shape of the array. The `shape` of the array must
+    #'   be set before setting this. When reading, returns an instance of class
+    #'   [chunk_grid_regular].
+    chunk_shape = function(value) {
       if (missing(value))
-        private$.chunk_grid$shape
-      else {
-        if (is.numeric(value) && length(value) == length(private$.shape)) {
-            private$.chunk_grid <- chunk_grid_regular$new(as.integer(value))
-        } else
-          stop('Chunk_grid must be an integer vector of the same length as the Zarr array shape.', call. = FALSE) # nocov
-      }
+        private$.chunk_shape
+      else
+        private$.chunk_shape <- chunk_grid_regular$new(private$.shape, as.integer(value))
     },
 
     #' @field codec_info (read-only) Retrieve a `data.frame` of registered codec

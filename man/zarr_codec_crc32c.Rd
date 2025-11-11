@@ -18,6 +18,7 @@ two don't match a warning is generated.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec_crc32c-new}{\code{zarr_codec_crc32c$new()}}
+\item \href{#method-zarr_codec_crc32c-copy}{\code{zarr_codec_crc32c$copy()}}
 \item \href{#method-zarr_codec_crc32c-encode}{\code{zarr_codec_crc32c$encode()}}
 \item \href{#method-zarr_codec_crc32c-decode}{\code{zarr_codec_crc32c$decode()}}
 }
@@ -26,7 +27,7 @@ two don't match a warning is generated.
 <details open><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="mode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-mode'><code>zarr::zarr_codec$mode()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -53,6 +54,19 @@ An instance of this class.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_codec_crc32c-copy"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_crc32c-copy}{}}}
+\subsection{Method \code{copy()}}{
+Create a new, independent copy of this codec.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_crc32c$copy()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+An instance of \code{zarr_codec_crc32c}.
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_crc32c-encode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_crc32c-encode}{}}}
 \subsection{Method \code{encode()}}{
@@ -65,12 +79,13 @@ and appends it to the data object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{The data whose checksum to compute.}
+\item{\code{data}}{A raw vector whose checksum to compute.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The input \code{data} object with the 32-bit checksum appended to it.
+The input \code{data} raw vector with the 32-bit checksum appended to
+it.
 }
 }
 \if{html}{\out{<hr>}}
@@ -88,12 +103,12 @@ the values differ, a warning will be issued.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{The data whose checksum to verify.}
+\item{\code{data}}{The raw vector whose checksum to verify.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The \code{data} object with the trailing 32-bits removed.
+The \code{data} raw vector with the trailing 32-bits removed.
 }
 }
 }

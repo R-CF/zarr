@@ -38,6 +38,7 @@ that the blosc library will automatically determine the optimal value.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-zarr_codec_blosc-new}{\code{zarr_codec_blosc$new()}}
+\item \href{#method-zarr_codec_blosc-copy}{\code{zarr_codec_blosc$copy()}}
 \item \href{#method-zarr_codec_blosc-encode}{\code{zarr_codec_blosc$encode()}}
 \item \href{#method-zarr_codec_blosc-decode}{\code{zarr_codec_blosc$decode()}}
 }
@@ -46,7 +47,7 @@ that the blosc library will automatically determine the optimal value.}
 <details open><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="mode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-mode'><code>zarr::zarr_codec$mode()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -75,6 +76,19 @@ level 1 will be used.}
 }
 \subsection{Returns}{
 An instance of this class.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_codec_blosc-copy"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_blosc-copy}{}}}
+\subsection{Method \code{copy()}}{
+Create a new, independent copy of this codec.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_blosc$copy()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+An instance of \code{zarr_codec_blosc}.
 }
 }
 \if{html}{\out{<hr>}}

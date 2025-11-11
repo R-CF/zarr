@@ -233,6 +233,12 @@ zarr_store <- R6::R6Class('zarr_store',
     version = function(value) {
       if (missing(value))
         private$.version
+    },
+
+    #' @field separator (read-only) The separator of the store, a slash '/' by
+    #'   default. Sub-classes may override this.
+    separator = function(value) {
+      if (missing(values)) '/'
     }
   )
 )

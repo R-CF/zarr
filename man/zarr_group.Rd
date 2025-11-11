@@ -35,6 +35,7 @@ hierarchy starting from the current group, as a character vector.}
 \itemize{
 \item \href{#method-zarr_group-new}{\code{zarr_group$new()}}
 \item \href{#method-zarr_group-print}{\code{zarr_group$print()}}
+\item \href{#method-zarr_group-hierarchy}{\code{zarr_group$hierarchy()}}
 \item \href{#method-zarr_group-build_hierarchy}{\code{zarr_group$build_hierarchy()}}
 \item \href{#method-zarr_group-get_node}{\code{zarr_group$get_node()}}
 \item \href{#method-zarr_group-count_arrays}{\code{zarr_group$count_arrays()}}
@@ -82,6 +83,27 @@ Print a summary of the group to the console.
 \if{html}{\out{<div class="r">}}\preformatted{zarr_group$print()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_group-hierarchy"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_group-hierarchy}{}}}
+\subsection{Method \code{hierarchy()}}{
+Prints the hierarchy of the group and its subgroups and
+arrays to the console. Usually called from the Zarr object or its root
+group to display the full group hierarchy.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_group$hierarchy(idx = 1L, total = 1L)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{idx, total}}{Arguments to control indentation. Should both be 1 (the
+default) when called interactively. The values will be updated during
+recursion when there are groups below the current group.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-build_hierarchy"></a>}}
@@ -179,7 +201,9 @@ Add an array to the Zarr hierarchy in the current group.
 \describe{
 \item{\code{name}}{The name of the new array.}
 
-\item{\code{metadata}}{A \code{list} with the metadata for the new array.}
+\item{\code{metadata}}{A \code{list} with the metadata for the new array, or an
+instance of class \link{array_builder} whose data make a valid array
+definition.}
 }
 \if{html}{\out{</div>}}
 }

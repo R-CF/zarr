@@ -10,13 +10,14 @@ With this class Zarr stores on devices accessible through the local file
 system can be read and written to. This includes locally attached drives,
 removable media, NFS mounts, etc.
 
-The chunking pattern is to locate all the chunks in a single directory. That
-means that chunks have names like "c0.0.0" in the array directory.
+The chunking pattern is to locate all the chunks of an array in a single
+directory. That means that chunks have names like "c0.0.0" in the array
+directory.
 
 This class performs no sanity checks on any of the arguments passed to the
-methods, for performance reasons. Since this class should be accessed through
-group and array objects, it is up to that code to ensure that arguments are
-valid, in particular keys and prefixes.
+methods, for performance reasons. Since this class should be accessed
+through group and array objects, it is up to that code to ensure that
+arguments are valid, in particular keys and prefixes.
 }
 \references{
 https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
@@ -32,6 +33,9 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 \item{\code{root}}{(read-only) The root directory of the file system store.}
 
 \item{\code{uri}}{(read-only) The URI of the store location.}
+
+\item{\code{separator}}{(read-only) The separator of the local file store,
+always a dot '.'.}
 }
 \if{html}{\out{</div>}}
 }
@@ -70,15 +74,19 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 \subsection{Method \code{new()}}{
 Create an instance of this class.
 
-If the location is not currently a Zarr store, it will be created,
-unless argument \code{metadata = NULL}. This will write the \code{metadata} as a
-small JSON file to the \code{root} location, identifying the location as a
-Zarr store, possibly for a single array.
+If the root location does not exist, it will be created. The location
+on the file system must be writable by the process creating the store.
+The store is not yet functional in the sense that it is just an empty
+directory. Write a root group with \code{.$create_group('/', '')} or an
+array with \code{.$create_array('/', '', metadata)} for a single-array store
+before any other operations on the store.
 
-The location on the file system must be writable by the process opening
-or creating the store.
+If the root location does exist on the file system it must be a valid
+Zarr store, as determined by the presence of a "zarr.json" file. It is
+an error to try to open a Zarr store on an existing location where this
+metadata file is not present.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$new(root, read_only = FALSE, metadata = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$new(root, read_only = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -92,12 +100,6 @@ root directory cannot already exist.}
 
 \item{\code{read_only}}{Flag to indicate if the store is opened read-only.
 Default \code{FALSE}.}
-
-\item{\code{metadata}}{Optional. A list with the metadata of the object to
-create at the root of a new store, either a Zarr group or a Zarr array.
-Default is \code{NULL} which means that an existing store is opened. To
-create a new store, supply this argument. It is an error to supply a
-\code{metadata} document for an existing Zarr store.}
 }
 \if{html}{\out{</div>}}
 }
@@ -205,7 +207,7 @@ prefix.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{prefix}}{Character string. The prefix to nodes to list.}
+\item{\code{prefix}}{Character string. The prefix whose nodes to list.}
 }
 \if{html}{\out{</div>}}
 }
@@ -227,7 +229,7 @@ method is part of the abstract store interface in ZEP0001.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{prefix}}{Character string. The prefix to nodes to list.}
+\item{\code{prefix}}{Character string. The prefix whose nodes to list.}
 }
 \if{html}{\out{</div>}}
 }
@@ -256,7 +258,7 @@ will be overwritten.
 \describe{
 \item{\code{key}}{The key whose value to set.}
 
-\item{\code{value}}{The value to set, a complete chunk of data.}
+\item{\code{value}}{The value to set, a complete chunk of data, a \code{raw} vector.}
 }
 \if{html}{\out{</div>}}
 }
@@ -298,7 +300,7 @@ Self, invisibly, or an error.
 \subsection{Method \code{get()}}{
 Retrieve the value associated with a given key.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$get(key, prototype, byte_range)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$get(key, prototype = NULL, byte_range = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -371,7 +373,6 @@ Test if \code{path} is pointing to a Zarr group.
 \if{latex}{\out{\hypertarget{method-zarr_localstore-create_group}{}}}
 \subsection{Method \code{create_group()}}{
 Create a new group in the store under the specified path.
-The \code{path} must point to a Zarr group.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$create_group(path, name)}\if{html}{\out{</div>}}
 }
@@ -379,9 +380,12 @@ The \code{path} must point to a Zarr group.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{path}}{The path to the parent group of the new group.}
+\item{\code{path}}{The path to the parent group of the new group. Ignored when
+creating a root group.}
 
-\item{\code{name}}{The name of the new group.}
+\item{\code{name}}{The name of the new group. This may be an empty string \code{""}
+to create a root group. It is an error to supply an empty string if a
+root group or array already exists.}
 }
 \if{html}{\out{</div>}}
 }
@@ -395,7 +399,7 @@ could not be created.
 \if{latex}{\out{\hypertarget{method-zarr_localstore-create_array}{}}}
 \subsection{Method \code{create_array()}}{
 Create a new array in the store under the specified path to
-the \code{parent} argument. The \code{parent} path must point to a Zarr group.
+the \code{parent} argument.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$create_array(parent, name, metadata)}\if{html}{\out{</div>}}
 }
@@ -403,13 +407,17 @@ the \code{parent} argument. The \code{parent} path must point to a Zarr group.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{parent}}{The path to the parent group of the new array.}
+\item{\code{parent}}{The path to the parent group of the new array. Ignored when
+creating a root array.}
 
-\item{\code{name}}{The name of the new array.}
+\item{\code{name}}{The name of the new array. This may be an empty string \code{""}
+to create a root array. It is an error to supply an empty string if a
+root group or array already exists.}
 
 \item{\code{metadata}}{A \code{list} with the metadata for the array. The list has to
 be valid for array construction. Use the \link{array_builder} class to
-create and or test for validity.}
+create and or test for validity. An element "chunk_key_encoding" will
+be added to the metadata.}
 }
 \if{html}{\out{</div>}}
 }

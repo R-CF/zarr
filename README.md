@@ -7,14 +7,59 @@
 
 <!-- badges: end -->
 
-`zarr` is a package to access Zarr stores using native R code.
-
-This package implements a native R driver for `zarr` stores. It is
+`zarr` is a package to create and access Zarr stores using native R
+code. This package implements a native R driver for `zarr` stores. It is
 designed against the specification for Zarr core version 3.
+
+### Basic usage
+
+The easiest way to zarrify your data is simply to call `as_zarr()` on
+your R array-like object.
+
+``` r
+library(zarr)
+
+x <- array(runif(400), c(5, 20, 4))
+z <- as_zarr(x)
+#> Loading required namespace: zlib
+z
+#> <Zarr>
+#> Version   : 3 
+#> Store     : memory store 
+#> Arrays    : 1 (single array store)
+```
+
+`z` is an in-memory `zarr` object, with the R object broken up into
+chunks (if the dimensions are substantially large enough to warrant
+that) and compressed. If you prefer to persist your R object on file,
+provide a location where you want to store the data:
+
+``` r
+fn <- tempfile(fileext = ".zarr")
+z <- as_zarr(x, fn)
+z
+#> <Zarr>
+#> Version   : 3 
+#> Store     : Local file system store 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//Rtmp2s5eXe/filed6956246d23c.zarr 
+#> Arrays    : 1 (single array store) 
+#> Total size: 0
+```
+
+more
+
+    unlink(fn)
+
+### Development
+
+This package is in the early phases of development and should not be
+used for production environments. Things may fail and you are advised to
+ensure that you have backups of all data that you put in a Zarr store
+with this package.
 
 Like Zarr itself, this package is modular and allows for additional
 stores, codes, transformers and extensions to be added to this basic
-implementation.
-
-This project is in the very early stages of development and is not yet
-fit for any purpose whatsoever.
+implementation. If you have specific needs, open an [issue on
+Github](https://github.com/R-CF/zarr/issues) or, better yet, fork the
+code and submit code suggestions via a pull request. Specific guidance
+for developers is being drafted.

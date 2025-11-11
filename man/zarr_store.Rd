@@ -34,6 +34,9 @@ deleted.}
 \item{\code{supports_writes}}{Flag to indicate if the store can write data.}
 
 \item{\code{version}}{(read-only) The Zarr version of the store.}
+
+\item{\code{separator}}{(read-only) The separator of the store, a slash '/' by
+default. Sub-classes may override this.}
 }
 \if{html}{\out{</div>}}
 }
