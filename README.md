@@ -47,18 +47,36 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpxaLnDf/filef9c71c796390.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmppOxANV/file1071e9abfff2.zarr 
 #> Arrays    : 1 (single array store) 
 #> Total size: 1.22 KB
 ```
 
-Accessing data in a Zarr object is always through Zarr arrays identified
-by name. When using function `as_zarr()` you don’t specify a name but
-the Zarr object can only hold a single array, which is located at the
-root `"/"` of the Zarr object.
+Zarr objects are store on your file system as directories, each having
+at least a “zarr.json” file that contains identifying information and
+object parameters. Directories with Zarr arrays have additional files
+with names like ’c.1.0.0\` that contain the actual data, usually
+compressed to save disk space.
 
 ``` r
-# Get an array using list-like access on the Zarr object
+list.files(path = z$store$root, full.names = TRUE, recursive = TRUE)
+#> [1] "/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmppOxANV/file1071e9abfff2.zarr/c.0.0.0"  
+#> [2] "/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmppOxANV/file1071e9abfff2.zarr/zarr.json"
+```
+
+The total size that is printed to the console when inspecting a Zarr
+object sums up the size of both types of files in the root directory and
+any sub-directories.
+
+##### Reading and writing Zarr arrays
+
+You can access the data in a Zarr object through its arrays. When using
+function `as_zarr()` you don’t specify a name and the Zarr object can
+only hold a single array, which is located at the root `"/"` of the Zarr
+object.
+
+``` r
+# Get the root array using list-like access on the Zarr object
 arr <- z[["/"]]
 arr
 #> <Zarr array>  
@@ -151,12 +169,18 @@ arr[, 1:10, 1]
 #> [5,]    5   10   15   20   25   30   35   40   45    50
 ```
 
-Two things of interest here:
+A few things of interest here:
 
-1.  The data in the Zarr array is of type “int32”, the standard R
+1.  The `zarr` package uses the `R6` framework. That means that you
+    access fields of the objects with the dollar `$` sign, just like you
+    would with list elements. The Zarr array object has multiple
+    properties that you can access using this syntax, here retrieving
+    the shape of the Zarr array as an integer vector with
+    `d <- arr$shape`.
+2.  The data in the Zarr array is of type “int32”, the standard R
     integer. When writing data you should make sure that the object to
     be written is of the correct type, so using “-99L” here.
-2.  The data is recycled (from a single value to 6 elements in the Zarr
+3.  The data is recycled (from a single value to 6 elements in the Zarr
     array) using normal R rules. Do note, however, that only single
     values are recycled and the “broadcasting” is per dimension of the
     Zarr array.

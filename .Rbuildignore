@@ -5,3 +5,6 @@
 ^TODO$
 ^LocalStuff$
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
