@@ -45,6 +45,16 @@ hierarchy starting from the current group, as a character vector.}
 \item \href{#method-zarr_group-delete_all}{\code{zarr_group$delete_all()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="delete_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-delete_attributes'><code>zarr::zarr_node$delete_attributes()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="print_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-print_attributes'><code>zarr::zarr_node$print_attributes()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="save"><a href='../../zarr/html/zarr_node.html#method-zarr_node-save'><code>zarr::zarr_node$save()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="set_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-set_attribute'><code>zarr::zarr_node$set_attribute()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-new"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-new}{}}}

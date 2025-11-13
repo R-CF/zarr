@@ -58,6 +58,7 @@ default. Sub-classes may override this.}
 \item \href{#method-zarr_store-set}{\code{zarr_store$set()}}
 \item \href{#method-zarr_store-set_if_not_exists}{\code{zarr_store$set_if_not_exists()}}
 \item \href{#method-zarr_store-get_metadata}{\code{zarr_store$get_metadata()}}
+\item \href{#method-zarr_store-set_metadata}{\code{zarr_store$set_metadata()}}
 \item \href{#method-zarr_store-create_group}{\code{zarr_store$create_group()}}
 \item \href{#method-zarr_store-create_array}{\code{zarr_store$create_array()}}
 }
@@ -382,6 +383,31 @@ indicated by the \code{prefix} argument.
 \item{\code{prefix}}{The prefix of the node whose metadata document to retrieve.}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_store-set_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_store-set_metadata}{}}}
+\subsection{Method \code{set_metadata()}}{
+Set the metadata document of the node at the location
+indicated by the \code{prefix} argument. This is a no-op for stores that
+have no writing capability. Other stores must override this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_store$set_metadata(prefix, metadata)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{prefix}}{The prefix of the node whose metadata document to set.}
+
+\item{\code{metadata}}{The metadata to persist, either a \code{list} or an instance
+of \link{array_builder}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Self, invisible
 }
 }
 \if{html}{\out{<hr>}}

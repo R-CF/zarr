@@ -58,6 +58,7 @@ always a dot '.'.}
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize_prefix'><code>zarr::zarr_store$getsize_prefix()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href='../../zarr/html/zarr_store.html#method-zarr_store-is_empty'><code>zarr::zarr_store$is_empty()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href='../../zarr/html/zarr_store.html#method-zarr_store-list'><code>zarr::zarr_store$list()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="set_metadata"><a href='../../zarr/html/zarr_store.html#method-zarr_store-set_metadata'><code>zarr::zarr_store$set_metadata()</code></a></span></li>
 </ul>
 </details>
 }}

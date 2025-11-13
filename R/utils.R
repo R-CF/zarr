@@ -49,3 +49,27 @@
     return(paste(round(size_in_bytes / 1073741824, 2), "GB"))
   }
 }
+
+#' Convert a list into a data.frame while shortening long strings. List elements
+#' are pasted together.
+#' @param list A `list` with data to print, usually metadata.
+#' @param width Maximum width of character entries. If entries are longer than
+#'   width - 3, they are truncated and then '...' added.
+#' @return data.frame with slim columns
+#' @noRd
+.slim.data.frame <- function(list, width = 50L) {
+  maxw <- width - 3L
+  len <- length(list)
+  if (len) {
+    out <- vector('character', len)
+    for (i in seq(len)) {
+      c <- list[[i]]
+      c <- paste(c, collapse = ", ")
+      if (nchar(c) > width)
+        c <- paste0(substring(c, 1, maxw), '...')
+      out[i] <- c
+    }
+    out <- data.frame(name = names(list), value = out)
+    out
+  } else data.frame()
+}

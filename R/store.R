@@ -159,10 +159,21 @@ zarr_store <- R6::R6Class('zarr_store',
     },
 
     #' @description Retrieve the metadata document of the node at the location
-    #' indicated by the `prefix` argument.
+    #'   indicated by the `prefix` argument.
     #' @param prefix The prefix of the node whose metadata document to retrieve.
     get_metadata = function(prefix) {
       stop('Class', class(self)[1L], 'must implement this method.')
+    },
+
+    #' @description Set the metadata document of the node at the location
+    #'   indicated by the `prefix` argument. This is a no-op for stores that
+    #'   have no writing capability. Other stores must override this method.
+    #' @param prefix The prefix of the node whose metadata document to set.
+    #' @param metadata The metadata to persist, either a `list` or an instance
+    #' of [array_builder].
+    #' @return Self, invisible
+    set_metadata = function(prefix, metadata) {
+      invisible(self)
     },
 
     #' @description Create a new group in the store under the specified path to

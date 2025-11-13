@@ -254,6 +254,20 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         NULL
     },
 
+    #' @description Set the metadata document of the node at the location
+    #'   indicated by the `prefix` argument.
+    #' @param prefix The prefix of the node whose metadata document to set.
+    #' @param metadata The metadata to persist, either a `list` or an instance
+    #' of [array_builder].
+    #' @return Self, invisible
+    set_metadata = function(prefix, metadata) {
+      fn <- file.path(private$.root, paste0(prefix, 'zarr.json'))
+      if (inherits(metadata, 'array_builder'))
+        metadata <- metadata$metadata()
+      jsonlite::write_json(metadata, fn, pretty = TRUE, auto_unbox = TRUE)
+      invisible(self)
+    },
+
     #' @description Test if `path` is pointing to a Zarr group.
     #' @param path The path to test.
     #' @return `TRUE` if the `path` points to a Zarr group, `FALSE` otherwise.

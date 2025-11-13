@@ -42,6 +42,7 @@ zarr_group <- R6::R6Class('zarr_group',
         if (any(arrays))
           cat('Arrays   :', paste(names(self$children)[arrays], collapse = ', '))
       }
+      self$print_attributes()
       invisible(self)
     },
 

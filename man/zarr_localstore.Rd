@@ -53,6 +53,7 @@ always a dot '.'.}
 \item \href{#method-zarr_localstore-set_if_not_exists}{\code{zarr_localstore$set_if_not_exists()}}
 \item \href{#method-zarr_localstore-get}{\code{zarr_localstore$get()}}
 \item \href{#method-zarr_localstore-get_metadata}{\code{zarr_localstore$get_metadata()}}
+\item \href{#method-zarr_localstore-set_metadata}{\code{zarr_localstore$set_metadata()}}
 \item \href{#method-zarr_localstore-is_group}{\code{zarr_localstore$is_group()}}
 \item \href{#method-zarr_localstore-create_group}{\code{zarr_localstore$create_group()}}
 \item \href{#method-zarr_localstore-create_array}{\code{zarr_localstore$create_array()}}
@@ -344,6 +345,30 @@ indicated by the \code{prefix} argument.
 \subsection{Returns}{
 A list with the metadata, or \code{NULL} if the prefix is not pointing
 to a Zarr group or array.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_localstore-set_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_localstore-set_metadata}{}}}
+\subsection{Method \code{set_metadata()}}{
+Set the metadata document of the node at the location
+indicated by the \code{prefix} argument.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$set_metadata(prefix, metadata)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{prefix}}{The prefix of the node whose metadata document to set.}
+
+\item{\code{metadata}}{The metadata to persist, either a \code{list} or an instance
+of \link{array_builder}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Self, invisible
 }
 }
 \if{html}{\out{<hr>}}

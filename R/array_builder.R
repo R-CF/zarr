@@ -285,7 +285,7 @@ array_builder <- R6::R6Class('array_builder',
       else {
         if (is.numeric(value) && all((value <- as.integer(value)) > 0L)) {
           private$.shape <- value
-          private$.chunk_shape <- chunk_grid_regular$new(value, value)
+          private$.chunk_shape <- chunk_grid_regular$new(value, pmin.int(value, Zarr.options$chunk_length))
           private$update_codecs()
         } else
           stop('Shape must be an integer vector of lengths along each dimension of the Zarr array.', call. = FALSE) # nocov

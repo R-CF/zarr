@@ -44,10 +44,11 @@ zarr_array <- R6::R6Class('zarr_array',
     #' @description Print a summary of the array to the console.
     print = function() {
       cat('<Zarr array>', private$.name, '\n')
-      cat('Path     :', self$path, '\n')
-      cat('Data type:', private$.data_type$data_type, '\n')
-      cat('Shape    :', private$.metadata$shape, '\n')
-      cat('Chunking :', private$.metadata$chunk_grid$configuration$chunk_shape, '\n')
+      cat('Path      :', self$path, '\n')
+      cat('Data type :', private$.data_type$data_type, '\n')
+      cat('Shape     :', private$.metadata$shape, '\n')
+      cat('Chunking  :', private$.metadata$chunk_grid$configuration$chunk_shape, '\n')
+      self$print_attributes()
       invisible(self)
     },
 

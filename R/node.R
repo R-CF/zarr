@@ -26,8 +26,9 @@ zarr_node <- R6::R6Class('zarr_node',
     # The store where this node and all of its contents are persisted.
     .store = NULL,
 
-    # The metadata document of this node, a `list`.
+    # The metadata document of this node, a `list`. Flag if it has been edited.
     .metadata = list(),
+    .meta_dirty = FALSE,
 
     # Check the proposed name of the node before setting it.
     check_name = function(name) {
@@ -54,6 +55,68 @@ zarr_node <- R6::R6Class('zarr_node',
       if (!missing(parent))
         private$.parent <- parent
       private$.store <- if (is.null(private$.parent)) store else parent$store
+    },
+
+    #' @description Print the metadata "attributes" to the console. Usually
+    #' called by the [zarr_group] and [zarr_array] `print()` methods.
+    #' @param ... Arguments passed to embedded functions. Of particular interest
+    #' is `width = .` to specify the maximum width of the columns.
+    print_attributes = function(...) {
+      df <- .slim.data.frame(private$.metadata[['attributes']], ...)
+      if (nrow(df)) {
+        if (private$.meta_dirty)
+          cat('Attributes: (*)\n')
+        else
+          cat('Attributes:\n')
+        print(df, right = FALSE, row.names = FALSE)
+      }
+    },
+
+    #' @description Add an attribute to the metadata of the object. If an
+    #'   attribute `name` already exists, it will be overwritten.
+    #' @param name The name of the attribute. The name must begin with a letter
+    #'   and be composed of letters, digits, and underscores, with a maximum
+    #'   length of 255 characters.
+    #' @param value The value of the attribute. This can be of any supported
+    #'   type, including a vector or list of values. In general, an attribute
+    #'   should be a character value, a numeric value, a logical value, or a
+    #'   short vector or list of any of these.
+    #' @return Self, invisibly.
+    set_attribute = function(name, value) {
+      atts <- private$.metadata[['attributes']]
+      if (is.null(atts)) {
+        atts <- setNames(list(value), name)
+      } else {
+        atts[name] <- list(value)
+      }
+      private$.metadata[['attributes']] <- atts
+      private$.meta_dirty <- TRUE
+      invisible(self)
+    },
+
+    #' @description Delete attributes. If an attribute in `name` is not present
+    #' this method simply returns.
+    #' @param name Vector of names of the attributes to delete.
+    #' @return Self, invisibly.
+    delete_attributes = function(name) {
+      atts <- private$.metadata[['attributes']]
+      if (!is.null(atts)) {
+        atts[name] <- NULL
+        if (length(atts))
+          private$.metadata[['attributes']] <- atts
+        else
+          private$.metadata['attributes'] <- NULL
+      }
+      private$.meta_dirty <- TRUE
+      invisible(self)
+    },
+
+    #' @description Persist any edits to the group or array to the store.
+    save = function() {
+      if (private$.meta_dirty) {
+        private$.store$set_metadata(self$prefix, private$.metadata)
+        private$.meta_dirty <- FALSE
+      }
     }
   ),
   active = list(
@@ -103,6 +166,14 @@ zarr_node <- R6::R6Class('zarr_node',
     metadata = function(value) {
       if (missing(value))
         private$.metadata
+    },
+
+    #' @field attributes (read-only) Retrieve the list of attributes of this
+    #'   object. Attributes can be added or modified with the `set_attribute()`
+    #'   method or removed with the `delete_attributes()` method.
+    attributes = function(value) {
+      if (missing(value))
+        private$.metadata[['attributes']]
     }
   )
 )
