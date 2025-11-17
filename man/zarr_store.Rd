@@ -35,8 +35,11 @@ deleted.}
 
 \item{\code{version}}{(read-only) The Zarr version of the store.}
 
-\item{\code{separator}}{(read-only) The separator of the store, a slash '/' by
-default. Sub-classes may override this.}
+\item{\code{separator}}{(read-only) The default separator between elements of
+chunks of arrays in the store. Every store typically has a default
+which is used when creating arrays. The actual chunk separator being
+used is determined by looking at the "chunk_key_encoding" attribute of
+each array.}
 }
 \if{html}{\out{</div>}}
 }

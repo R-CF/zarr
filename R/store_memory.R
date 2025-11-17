@@ -202,21 +202,24 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     #' @param metadata A `list` with the metadata for the array. The list has to
     #'   be valid for array construction. Use the [array_builder] class to
     #'   create and or test for validity. An element "chunk_key_encoding" will
-    #'   be added to the metadata.
+    #'   be added to the metadata if it not already there or contains an invalid
+    #'   separator.
     #' @return A list with the metadata of the array, or an error if the array
     #'   could not be created.
     create_array = function(parent, name, metadata) {
-      chunk_grid <- match('chunk_grid', names(metadata))
-      chunk_key_encoding <- list(chunk_key_encoding = list(name = 'default',
-                                                           configuration = list(separator = '.')))
-      metadata <- append(metadata, chunk_key_encoding, after = chunk_grid)
+      cke <- metadata[['chunk_key_encoding']]
+      if (is.null(cke) || !(cke$configuration$separator %in% c('.', '/')))
+        metadata[['chunk_key_encoding']] <- list(name = 'default',
+                                                 configuration = list(separator = private$.chunk_sep))
 
       if (nzchar(name)) {
         # Adding an array to a group
         path <- .path2key(parent)
-        if (!(path %in% names(private$.keys)))
-          stop('Path does not point to a Zarr group: ', path, call. = FALSE) # nocov
-        key <- paste(path, name, sep = '/')
+        key <- if (nzchar(path)) {
+          if (!(path %in% names(private$.keys)))
+            stop('Path does not point to a Zarr group: ', path, call. = FALSE) # nocov
+          paste(path, name, sep = '/')
+        } else name
         if (key %in% names(private$.keys))
           stop('Key already exists in the store: ', key, call. = FALSE) # nocov
         private$.keys[key] <- list(metadata)

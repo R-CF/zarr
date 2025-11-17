@@ -162,7 +162,7 @@ array_builder <- R6::R6Class('array_builder',
                     'gzip' = zarr_codec_gzip$new(configuration),
                     'crc32c' = zarr_codec_crc32c$new())
       if (!inherits(cdc, 'zarr_codec'))
-        stop('Could not create a codec from the arguments.', call. = FALSE) # nocov
+        stop('Could not create a codec from the arguments:', codec, call. = FALSE) # nocov
 
       len <- length(private$.codecs)
       if (is.null(.position) || .position > len) {

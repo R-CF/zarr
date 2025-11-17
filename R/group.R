@@ -1,11 +1,11 @@
 #' Zarr Group
 #'
 #' @description This class implements a Zarr group. A Zarr group is a node in
-#'   the hierarchy of a Zarr data set. A group is a container for other groups
+#'   the hierarchy of a Zarr object. A group is a container for other groups
 #'   and arrays.
 #'
 #'   A Zarr group is identified by a JSON file having required metadata,
-#'   specifically the attribute '"node_type": "group"'.
+#'   specifically the attribute `"node_type": "group"`.
 #' @docType class
 zarr_group <- R6::R6Class('zarr_group',
   inherit = zarr_node,
@@ -15,8 +15,8 @@ zarr_group <- R6::R6Class('zarr_group',
     .children = list()
   ),
   public = list(
-    #' @description Initialize a new group in a Zarr hierarchy. The group must
-    #'   already exist in the store
+    #' @description Open a group in a Zarr hierarchy. The group must already
+    #'   exist in the store.
     #' @param name The name of the group. For a root group, this is the empty
     #'   string `""`.
     #' @param metadata List with the metadata of the group.

@@ -93,8 +93,8 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     },
 
     #' @description Remove a key from the store. The key must point to an array
-    #'   or an empty group. The location of the key and all of its values are
-    #'   removed.
+    #'   chunk or an empty group. The location of the key and all of its values
+    #'   are removed.
     #' @param key Character string. The key to remove from the store.
     #' @return `TRUE` if the operation proceeded, `FALSE` otherwise.
     erase = function(key) {
@@ -164,7 +164,11 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @param value The value to set, a complete chunk of data, a `raw` vector.
     #' @return Self, invisibly, or an error.
     set = function(key, value) {
-      f <- file(file.path(private$.root, key), 'w+b')
+      fp <- file.path(private$.root, key)
+      dir <- dirname(fp)
+      if (!dir.exists(dir))
+        dir.create(dir, recursive = TRUE, mode = '0770')
+      f <- file(fp, 'w+b')
       on.exit(close(f))
       writeBin(value, f)
       invisible(self)
@@ -181,9 +185,12 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @param value The value to set, a complete chunk of data.
     #' @return Self, invisibly, or an error.
     set_if_not_exists = function(key, value) {
-      path <- file.path(private$.root, key)
-      if (!file.exists(path)) {
-        f <- file(path, 'w+b')
+      fp <- file.path(private$.root, key)
+      if (!file.exists(fp)) {
+        dir <- dirname(fp)
+        if (!dir.exists(dir))
+          dir.create(dir, recursive = TRUE, mode = '0770')
+        f <- file(fp, 'w+b')
         on.exit(close(f))
         writeBin(value, f)
       }
@@ -246,7 +253,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @return A list with the metadata, or `NULL` if the prefix is not pointing
     #' to a Zarr group or array.
     get_metadata = function(prefix) {
-      fn <- if (prefix == '') file.path(private$.root, 'zarr.json')
+      fn <- if (prefix == '/') file.path(private$.root, 'zarr.json')
             else file.path(private$.root, paste0(prefix, 'zarr.json'))
       if (file.exists(fn))
         jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
@@ -323,28 +330,26 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @param metadata A `list` with the metadata for the array. The list has to
     #'   be valid for array construction. Use the [array_builder] class to
     #'   create and or test for validity. An element "chunk_key_encoding" will
-    #'   be added to the metadata.
+    #'   be added to the metadata if not already present or with a value other
+    #'   than a dot "." or a slash "/".
     #' @return A list with the metadata of the array, or an error if the array
     #'   could not be created.
     create_array = function(parent, name, metadata) {
       if (private$.read_only)
         stop('Cannot write new objects to the Zarr store.', call. = FALSE) # nocov
 
-      make_meta <- function(metadata) {
-        chunk_grid <- match('chunk_grid', names(metadata))
-        chunk_key_encoding <- list(chunk_key_encoding = list(name = 'default',
-                                                             configuration = list(separator = '.')))
-        append(metadata, chunk_key_encoding, after = chunk_grid)
-      }
+      cke <- metadata[['chunk_key_encoding']]
+      if (is.null(cke) || !(cke$configuration$separator %in% c('.', '/')))
+        metadata[['chunk_key_encoding']] <- list(name = 'default',
+                                                 configuration = list(separator = private$.chunk_sep))
 
       if (!nzchar(name)) {
         # Create a root array
         fn <- file.path(private$.root, 'zarr.json')
         if (file.exists(fn))
           stop('Cannot create a root array in an existing Zarr store.', call. = FALSE) # nocov
-        meta <- make_meta(metadata)
-        jsonlite::write_json(meta, path = fn, auto_unbox = TRUE, pretty = T)
-        return(meta)
+        jsonlite::write_json(metadata, path = fn, auto_unbox = TRUE, pretty = T)
+        return(metadata)
       }
 
       if (!self$is_group(parent))
@@ -353,9 +358,8 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       # Create the array
       fp <- file.path(paste0(private$.root, parent), name)
       if (dir.create(fp, showWarnings = FALSE, recursive = FALSE, mode = '0771')) {
-        meta <- make_meta(metadata)
-        jsonlite::write_json(meta, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T)
-        meta
+        jsonlite::write_json(metadata, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T)
+        metadata
       } else
         stop('Could not create an array at path: ', fp, call. = FALSE) # nocov
     }
@@ -379,10 +383,11 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         path_to_uri(private$.root)
     },
 
-    #' @field separator (read-only) The separator of the local file store,
-    #'   always a dot '.'.
+    #' @field separator (read-only) The default chunk separator of the local
+    #'   file store, usually a dot '.'.
     separator = function(value) {
-      if (missing(value)) '.'
+      if (missing(value))
+        private$.chunk_sep
     }
   )
 )

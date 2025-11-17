@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/R-CF/zarr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-CF/zarr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-`zarr` is a package to create and access Zarr stores using native R code. This package implements a native R driver for `zarr` stores. It is designed against the specification for Zarr core version 3.
+`zarr` is a package to create and access Zarr stores using native R code. It is designed against the specification for Zarr core version 3.
 
 ## Basic usage
 
@@ -31,13 +31,13 @@ z
 ```
 This uses information from the array (data type, dimensions) in combination with default Zarr settings (chunk size, data layout, compression). `z` is an in-memory `zarr` object consisting of a single array, with the R object broken up into chunks (if the dimensions are substantially large enough to warrant that) and compressed.
 
-If you prefer to persist your R object to file, provide a location where you want to store the data. It is recommended that the name of the store uses the ".zarr" extension.
+If you prefer to persist your R object to file, provide a location where you want to store the data. It is recommended that the name of the store uses the ".zarr" extension. At the same time you may give your Zarr array a name that you can later use to retrieve the array and its data.
 ```{r persist}
 fn <- tempfile(fileext = ".zarr")
-z <- as_zarr(x, fn)
+z <- as_zarr(x, name = "my_array", location = fn)
 z
 ```
-Zarr objects are store on your file system as directories, each having at least a "zarr.json" file that contains identifying information and object parameters. Directories with Zarr arrays have additional files with names like 'c.1.0.0` that contain the actual data, usually compressed to save disk space.
+Zarr objects are stored on your file system as directories, each having at least a "zarr.json" file that contains identifying information and object parameters. Directories with Zarr arrays have additional files with names like `c.1.0.0` that contain the actual data, usually compressed to save disk space. (The chunks may also be stored in directory trees, like `c/1/0` with the chunk in file `0`.)
 ```{r disk}
 list.files(path = z$store$root, full.names = TRUE, recursive = TRUE)
 ```
@@ -47,7 +47,7 @@ The total size that is printed to the console when inspecting a Zarr object sums
 You can access the data in a Zarr object through its arrays. When using function `as_zarr()` you don't specify a name and the Zarr object can only hold a single array, which is located at the root `"/"` of the Zarr object.
 ```{r array}
 # Get the root array using list-like access on the Zarr object
-arr <- z[["/"]]
+arr <- z[["/my_array"]]
 arr
 
 # Index the Zarr array like a regular R array
@@ -72,8 +72,8 @@ arr[, 1:10, 1]
 ```
 A few things of interest here:
 
- 1. The `zarr` package uses the `R6` framework. That means that you access fields of the objects with the dollar `$` sign, just like you would with list elements. The Zarr array object has multiple properties that you can access using this syntax, here retrieving the shape of the Zarr array as an integer vector with `d <- arr$shape`.
- 2. The data in the Zarr array is of type "int32", the standard R integer. When writing data you should make sure that the object to be written is of the correct type, so using "-99L" here.
+ 1. The `zarr` package uses the `R6` framework. That means that you access fields of the objects just like you would with list elements. The Zarr array object has multiple properties that you can access using this syntax, here retrieving the shape of the Zarr array as an integer vector with `d <- arr$shape`.
+ 2. The data in the Zarr array is of type "int32", the standard R integer. When writing data you should make sure that the object to be written is of the correct type, so using "-99L" here. Numeric data is stored by default as "float64", logical data as "int8".
  3. The data is recycled (from a single value to 6 elements in the Zarr array) using normal R rules. Do note, however, that only single values are recycled and the "broadcasting" is per dimension of the Zarr array.
  
 ```{r, include = FALSE}

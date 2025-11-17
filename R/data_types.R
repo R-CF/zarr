@@ -1,5 +1,5 @@
-#' Mapping Zarr v.3 core data_types to readBin() / writeBin() arguments
-#' float16 and r* are not supported
+# Mapping Zarr v.3 core data_types to readBin() / writeBin() arguments
+# float16 and r* are not supported
 zarr_v3_datatypes <- list(
   bool    = list(Rtype = 'logical',   size = 1L, signed = FALSE, fill_value = FALSE),
   int8    = list(Rtype = 'integer',   size = 1L, signed = TRUE,  fill_value = -127L),

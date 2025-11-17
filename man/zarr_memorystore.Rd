@@ -350,7 +350,8 @@ ignored if the \code{name} argument is the empty string.}
 \item{\code{metadata}}{A \code{list} with the metadata for the array. The list has to
 be valid for array construction. Use the \link{array_builder} class to
 create and or test for validity. An element "chunk_key_encoding" will
-be added to the metadata.}
+be added to the metadata if it not already there or contains an invalid
+separator.}
 }
 \if{html}{\out{</div>}}
 }

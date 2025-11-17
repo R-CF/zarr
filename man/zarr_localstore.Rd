@@ -34,8 +34,8 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 
 \item{\code{uri}}{(read-only) The URI of the store location.}
 
-\item{\code{separator}}{(read-only) The separator of the local file store,
-always a dot '.'.}
+\item{\code{separator}}{(read-only) The default chunk separator of the local
+file store, usually a dot '.'.}
 }
 \if{html}{\out{</div>}}
 }
@@ -150,8 +150,8 @@ in the root of this store.
 \if{latex}{\out{\hypertarget{method-zarr_localstore-erase}{}}}
 \subsection{Method \code{erase()}}{
 Remove a key from the store. The key must point to an array
-or an empty group. The location of the key and all of its values are
-removed.
+chunk or an empty group. The location of the key and all of its values
+are removed.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$erase(key)}\if{html}{\out{</div>}}
 }
@@ -440,7 +440,8 @@ root group or array already exists.}
 \item{\code{metadata}}{A \code{list} with the metadata for the array. The list has to
 be valid for array construction. Use the \link{array_builder} class to
 create and or test for validity. An element "chunk_key_encoding" will
-be added to the metadata.}
+be added to the metadata if not already present or with a value other
+than a dot "." or a slash "/".}
 }
 \if{html}{\out{</div>}}
 }

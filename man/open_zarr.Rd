@@ -18,13 +18,13 @@ opened in read-only mode. Default is \code{FALSE}.}
 A \link{zarr} object.
 }
 \description{
-This function opens a Zarr instance, connected to a store located on the
+This function opens a Zarr object, connected to a store located on the
 local file system.
 }
 \examples{
 fn <- tempfile(fileext = ".zarr")
 create_zarr(fn)
 my_zarr_object <- open_zarr(fn)
-my_zarr_object$store$root
+my_zarr_object
 unlink(fn)
 }

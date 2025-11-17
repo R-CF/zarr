@@ -22,6 +22,9 @@ vector.}
 
 \item{\code{chunking}}{(read-only) The chunking engine for this array.}
 
+\item{\code{chunk_separator}}{(read-only) Retrieve the separator to be used for
+creating store keys for chunks.}
+
 \item{\code{codecs}}{The list of codecs that this array uses for encoding data
 (and decoding in inverse order).}
 }

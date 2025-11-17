@@ -38,6 +38,7 @@ zarr_array <- R6::R6Class('zarr_array',
       private$.chunking$data_type <- private$.data_type
       private$.chunking$store <- store
       private$.chunking$array_prefix <- self$prefix
+      private$.chunking$chunk_separator <- metadata$chunk_key_encoding$configuration$separator
       private$.chunking$codecs <- ab$codecs
     },
 
@@ -143,6 +144,13 @@ zarr_array <- R6::R6Class('zarr_array',
     chunking = function(value) {
       if (missing(value))
         private$.chunking
+    },
+
+    #' @field chunk_separator (read-only) Retrieve the separator to be used for
+    #' creating store keys for chunks.
+    chunk_separator = function(value) {
+      if (missing(value))
+        private$.metadata$chunk_key_encoding$configuration$separator
     },
 
     #' @field codecs The list of codecs that this array uses for encoding data

@@ -9,8 +9,7 @@
 <!-- badges: end -->
 
 `zarr` is a package to create and access Zarr stores using native R
-code. This package implements a native R driver for `zarr` stores. It is
-designed against the specification for Zarr core version 3.
+code. It is designed against the specification for Zarr core version 3.
 
 ## Basic usage
 
@@ -22,7 +21,7 @@ library(zarr)
 
 x <- array(1:400, c(5, 20, 4))
 z <- as_zarr(x)
-#> Loading required namespace: zlib
+#> Loading required namespace: blosc
 z
 #> <Zarr>
 #> Version   : 3 
@@ -38,30 +37,33 @@ substantially large enough to warrant that) and compressed.
 
 If you prefer to persist your R object to file, provide a location where
 you want to store the data. It is recommended that the name of the store
-uses the “.zarr” extension.
+uses the “.zarr” extension. At the same time you may give your Zarr
+array a name that you can later use to retrieve the array and its data.
 
 ``` r
 fn <- tempfile(fileext = ".zarr")
-z <- as_zarr(x, fn)
+z <- as_zarr(x, name = "my_array", location = fn)
 z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmppOxANV/file1071e9abfff2.zarr 
-#> Arrays    : 1 (single array store) 
-#> Total size: 1.22 KB
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpHMs53u/filefb25412a784.zarr 
+#> Arrays    : 1 
+#> Total size: 1.09 KB
 ```
 
-Zarr objects are store on your file system as directories, each having
+Zarr objects are stored on your file system as directories, each having
 at least a “zarr.json” file that contains identifying information and
 object parameters. Directories with Zarr arrays have additional files
-with names like ’c.1.0.0\` that contain the actual data, usually
-compressed to save disk space.
+with names like `c.1.0.0` that contain the actual data, usually
+compressed to save disk space. (The chunks may also be stored in
+directory trees, like `c/1/0` with the chunk in file `0`.)
 
 ``` r
 list.files(path = z$store$root, full.names = TRUE, recursive = TRUE)
-#> [1] "/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmppOxANV/file1071e9abfff2.zarr/c.0.0.0"  
-#> [2] "/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmppOxANV/file1071e9abfff2.zarr/zarr.json"
+#> [1] "/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpHMs53u/filefb25412a784.zarr/my_array/c.0.0.0"  
+#> [2] "/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpHMs53u/filefb25412a784.zarr/my_array/zarr.json"
+#> [3] "/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpHMs53u/filefb25412a784.zarr/zarr.json"
 ```
 
 The total size that is printed to the console when inspecting a Zarr
@@ -77,13 +79,13 @@ object.
 
 ``` r
 # Get the root array using list-like access on the Zarr object
-arr <- z[["/"]]
+arr <- z[["/my_array"]]
 arr
-#> <Zarr array>  
-#> Path     : / 
-#> Data type: int32 
-#> Shape    : 5 20 4 
-#> Chunking : 5 20 4
+#> <Zarr array> my_array 
+#> Path      : /my_array 
+#> Data type : int32 
+#> Shape     : 5 20 4 
+#> Chunking  : 5 20 4
 
 # Index the Zarr array like a regular R array
 # Indexes are 1-based, as usual in R (Zarr specifies everything as 0-based)
@@ -172,14 +174,14 @@ arr[, 1:10, 1]
 A few things of interest here:
 
 1.  The `zarr` package uses the `R6` framework. That means that you
-    access fields of the objects with the dollar `$` sign, just like you
-    would with list elements. The Zarr array object has multiple
-    properties that you can access using this syntax, here retrieving
-    the shape of the Zarr array as an integer vector with
-    `d <- arr$shape`.
+    access fields of the objects just like you would with list elements.
+    The Zarr array object has multiple properties that you can access
+    using this syntax, here retrieving the shape of the Zarr array as an
+    integer vector with `d <- arr$shape`.
 2.  The data in the Zarr array is of type “int32”, the standard R
     integer. When writing data you should make sure that the object to
-    be written is of the correct type, so using “-99L” here.
+    be written is of the correct type, so using “-99L” here. Numeric
+    data is stored by default as “float64”, logical data as “int8”.
 3.  The data is recycled (from a single value to 6 elements in the Zarr
     array) using normal R rules. Do note, however, that only single
     values are recycled and the “broadcasting” is per dimension of the

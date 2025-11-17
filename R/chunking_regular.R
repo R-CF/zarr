@@ -17,6 +17,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
 
     # Map of [chunk_id] -> chunk_grid_regular_IO instance
     .chunk_map = NULL,
+    .chunk_sep = '/',
 
     # The underlying properties of the array
     .data_type = NULL,
@@ -72,7 +73,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       nd <- length(chunk_shape)
       data <- if (nd == 1L) vector(private$.data_type$Rtype, stop - start + 1L)
               else array(private$.data_type$fill_value, stop - start + 1L)
-      sep <- private$.store$separator
+      sep <- private$.chunk_sep
 
       # Identify chunks touched by the indices
       chunk_start_idx <- floor((start - 1L) / chunk_shape)
@@ -121,7 +122,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     write = function(data, start, stop) {
       chunk_shape  <- private$.chunk_shape
       nd <- length(chunk_shape)
-      sep <- private$.store$separator
+      sep <- private$.chunk_sep
 
       # Identify chunks touched by this hyperslab of data
       chunk_start_idx <- floor((start - 1L) / chunk_shape)
@@ -158,7 +159,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
           )
         }
 
-        # Queue async write
+        # Queue synchronous write
         private$.chunk_map[[chunk_key]]$write(
           data = data_slice,
           offset = overlap_start - chunk_origin,
@@ -181,6 +182,15 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     chunk_grid = function(value) {
       if (missing(value))
         private$.chunk_grid
+    },
+
+    #' @field chunk_separator Set or retrieve the separator to be used for
+    #' creating store keys for chunks.
+    chunk_separator = function(value) {
+      if (missing(value))
+        private$.chunk_sep
+      else
+        private$.chunk_sep <- value
     },
 
     #' @field data_type The data type of the array using the chunking scheme.
@@ -338,13 +348,18 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
     #' @return Self, invisibly.
     flush = function() {
       if (private$.buffer_stale) {
-        # Encode the buffer
-        buf <- private$.buffer
-        for (i in seq_len(length(private$.codecs)))
-          buf <- private$.codecs[[i]]$encode(buf)
+        if (all(is.na(private$.buffer))) {
+          # If the entire buffer is NA, don't write it, delete existing chunk
+          private$.store$erase(private$.chunk_key)
+        } else {
+          # Encode the buffer
+          buf <- private$.buffer
+          for (i in seq_len(length(private$.codecs)))
+            buf <- private$.codecs[[i]]$encode(buf)
 
-        # Write to the store
-        private$.store$set(private$.chunk_key, buf)
+          # Write to the store
+          private$.store$set(private$.chunk_key, buf)
+        }
         private$.buffer_stale <- FALSE
       }
       invisible(self)

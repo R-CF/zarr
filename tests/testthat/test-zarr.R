@@ -89,7 +89,7 @@ test_that("Single array Zarr", {
 
   # File store
   fn <- tempfile(fileext = '.zarr')
-  z <- as_zarr(x, fn)
+  z <- as_zarr(x, location = fn)
   tests(z)
   unlink(fn)
 

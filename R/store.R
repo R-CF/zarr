@@ -25,7 +25,8 @@ zarr_store <- R6::R6Class('zarr_store',
     .supports_writes = TRUE,                 # Flag to indicate if the store can write data.
 
     # Local properties
-    .version = 3L  # The zarr version, by default 3
+    .version = 3L,        # The zarr version, by default 3
+    .chunk_sep  = '.'     # The chunk separator
   ),
   public = list(
     #' @description Create an instance of this class. Since this class is
@@ -246,10 +247,13 @@ zarr_store <- R6::R6Class('zarr_store',
         private$.version
     },
 
-    #' @field separator (read-only) The separator of the store, a slash '/' by
-    #'   default. Sub-classes may override this.
+    #' @field separator (read-only) The default separator between elements of
+    #'   chunks of arrays in the store. Every store typically has a default
+    #'   which is used when creating arrays. The actual chunk separator being
+    #'   used is determined by looking at the "chunk_key_encoding" attribute of
+    #'   each array.
     separator = function(value) {
-      if (missing(values)) '/'
+      if (missing(values)) private$.chunk_sep
     }
   )
 )
