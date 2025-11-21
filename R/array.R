@@ -167,6 +167,11 @@ zarr_array <- R6::R6Class('zarr_array',
 #' @param object A `zarr_array` instance.
 #' @param ... Ignored.
 #' @export
+#' @examples
+#' fn <- system.file("extdata", "africa.zarr", package = "zarr")
+#' africa <- open_zarr(fn)
+#' tas <- africa[["/tas"]]
+#' str(tas)
 str.zarr_array <- function(object, ...) {
   cat('Zarr array: [', object$data_type$data_type, '] shape [',
       paste(object$shape, collapse = ', '), '] chunk [',

@@ -46,6 +46,7 @@ zarr <- R6::R6Class("zarr",
       cat('Arrays    :', arrays, '\n')
       if (fs)
         cat('Total size:', .size_string(sum(file.size(list.files(private$.store$root, full.names = TRUE, recursive = TRUE)))), '\n')
+      private$.root$print_attributes()
     },
 
     #' @description Print the Zarr hierarchy to the console.
@@ -201,6 +202,10 @@ zarr <- R6::R6Class("zarr",
 #' @param object A `zarr` instance.
 #' @param ... Ignored.
 #' @export
+#' @examples
+#' fn <- system.file("extdata", "africa.zarr", package = "zarr")
+#' africa <- open_zarr(fn)
+#' str(africa)
 str.zarr <- function(object, ...) {
   root <- object$root
   num_arrays <- if (inherits(root, 'zarr_array')) 1

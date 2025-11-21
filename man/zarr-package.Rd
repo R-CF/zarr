@@ -5,10 +5,18 @@
 \alias{zarr-package}
 \title{zarr: Native and Extensible R Driver for Zarr}
 \description{
-Zarr is a widely used format for the storage and retrieval of n-dimensional array data from data stores ranging from local file systems to the cloud. This library is a native Zarr implementation in R with support for all required features of Zarr version 3. It is designed to be extensible such that new stores, codecs and extensions can be added easily.
+The Zarr specification is widely used to build libraries for the storage and retrieval of n-dimensional array data from data stores ranging from local file systems to the cloud. This package is a native Zarr implementation in R with support for all required features of Zarr version 3. It is designed to be extensible such that new stores, codecs and extensions can be added easily.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/R-CF/zarr}
+  \item Report bugs at \url{https://github.com/R-CF/zarr/issues}
+}
+
 }
 \author{
-\strong{Maintainer}: Patrick Van Laake \email{patrick@vanlaake.net}
+\strong{Maintainer}: Patrick Van Laake \email{patrick@vanlaake.net} [copyright holder]
 
 }
 \keyword{internal}

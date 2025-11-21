@@ -14,3 +14,9 @@
 \description{
 Compact display of a Zarr group
 }
+\examples{
+fn <- system.file("extdata", "africa.zarr", package = "zarr")
+africa <- open_zarr(fn)
+root <- africa[["/"]]
+str(root)
+}

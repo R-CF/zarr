@@ -3,13 +3,13 @@
 \docType{methods}
 \name{as_zarr}
 \alias{as_zarr}
-\title{Convert an R object into a Zarr object.}
+\title{Convert an R object into a Zarr array}
 \usage{
 as_zarr(x, name = NULL, location = NULL)
 }
 \arguments{
-\item{x}{The R object to convert into a Zarr object. Must be a vector, matrix
-or array of a numeric or logical type.}
+\item{x}{The R object to convert. Must be a vector, matrix or array of a
+numeric or logical type.}
 
 \item{name}{Optional. The name of the Zarr array to be created.}
 
@@ -22,17 +22,23 @@ per the Zarr specification, it is recommended to use a location that ends
 in ".zarr" when providing a location for a new store. If argument \code{name} is
 given then the Zarr array will be created in the root of the Zarr store
 with that name. If the \code{name} argument is not given, a single-array Zarr
-store will be cre?ated. If the \code{location} argument is not given, a Zarr
+store will be created. If the \code{location} argument is not given, a Zarr
 object is created in memory.}
 }
 \value{
-If the \code{location} argument is a \code{zarr_group}, the same group is
-returned. Otherwise, the Zarr object that is newly created, or an error if
-the Zarr object could not be created.
+If the \code{location} argument is a \code{zarr_group}, the new Zarr array is
+returned. Otherwise, the Zarr object that is newly created and which
+contains the Zarr array, or an error if the Zarr object could not be
+created.
 }
 \description{
-This function creates a Zarr object from an R vector, matrix or array. The
-Zarr object will be a single Zarr array, with default settings derived from
-the R object (data type, shape). Data is chunked into chunks of length 100
-(or less if the array is smaller) and compressed.
+This function creates a Zarr object from an R vector, matrix or array.
+Default settings will be taken from the R object (data type, shape). Data is
+chunked into chunks of length 100 (or less if the array is smaller) and
+compressed.
+}
+\examples{
+x <- array(1:400, c(5, 20, 4))
+z <- as_zarr(x)
+z
 }

@@ -37,50 +37,35 @@ fn <- tempfile(fileext = ".zarr")
 z <- as_zarr(x, name = "my_array", location = fn)
 z
 ```
-Zarr objects are stored on your file system as directories, each having at least a "zarr.json" file that contains identifying information and object parameters. Directories with Zarr arrays have additional files with names like `c.1.0.0` that contain the actual data, usually compressed to save disk space. (The chunks may also be stored in directory trees, like `c/1/0` with the chunk in file `0`.)
-```{r disk}
-list.files(path = z$store$root, full.names = TRUE, recursive = TRUE)
-```
 The total size that is printed to the console when inspecting a Zarr object sums up the size of both types of files in the root directory and any sub-directories.
 
 ##### Reading and writing Zarr arrays
-You can access the data in a Zarr object through its arrays. When using function `as_zarr()` you don't specify a name and the Zarr object can only hold a single array, which is located at the root `"/"` of the Zarr object.
+You can access the data in a Zarr object through its arrays. If you didn't specify a name when using function `as_zarr()`, the Zarr object can only hold a single array, which is located at the root `"/"` of the Zarr object. If you did specify a name you should indicate the full path starting with a slash `"/"` for the root:
 ```{r array}
-# Get the root array using list-like access on the Zarr object
+# Get the array using list-like access on the Zarr object
 arr <- z[["/my_array"]]
 arr
 
 # Index the Zarr array like a regular R array
 # Indexes are 1-based, as usual in R (Zarr specifies everything as 0-based)
 arr[1:2, 11:16, 3]
-
-# ... including omitting dimensions ...
-arr[, 1:5,1:2]
-
-# ... and logical selections
-d <- arr$shape
-arr[1, which(seq(d[2]) <= 10), ]
-```
-In this last example you will have noticed that the degenerate first dimension was dropped. As in regular R, you have to explicitly indicate it if you want to keep degenerate dimensions:
-```{r degenerate}
-arr[1, which(seq(d[2]) <= 10), , drop = FALSE]
 ```
 You can also write to a Zarr array, but the process is a bit more complicated (due to a quirk in R):
 ```{r write}
 arr$write(-99L, selection = list(2:3, 5:7, 1))
+arr$write(NA_integer_, selection = list(1:5, 1, 1))
 arr[, 1:10, 1]
 ```
-A few things of interest here:
-
- 1. The `zarr` package uses the `R6` framework. That means that you access fields of the objects just like you would with list elements. The Zarr array object has multiple properties that you can access using this syntax, here retrieving the shape of the Zarr array as an integer vector with `d <- arr$shape`.
- 2. The data in the Zarr array is of type "int32", the standard R integer. When writing data you should make sure that the object to be written is of the correct type, so using "-99L" here. Numeric data is stored by default as "float64", logical data as "int8".
- 3. The data is recycled (from a single value to 6 elements in the Zarr array) using normal R rules. Do note, however, that only single values are recycled and the "broadcasting" is per dimension of the Zarr array.
- 
+The data in the Zarr array is of type "int32", the standard R integer. When writing data you should make sure that the object to be written is of the correct type, so using "-99L" and "NA_integer_" here. Numeric data is stored by default as "float64", logical data as "int8".
 ```{r, include = FALSE}
 unlink(fn)
 ```
 ## Installation
-You can install the development version of `zarr` from [GitHub](https://github.com/) with:
+Installation from CRAN of the latest release:
+```
+install.packages("zarr")
+```
+You can install the development version of `zarr` from [GitHub](https://github.com/R-CF/zarr) with:
 ```
 # install.packages("devtools")
 devtools::install_github("R-CF/zarr")

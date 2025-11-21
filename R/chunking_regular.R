@@ -372,6 +372,11 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
 #' @param object A `chunk_grid_regular` instance.
 #' @param ... Ignored.
 #' @export
+#' @examples
+#' fn <- system.file("extdata", "africa.zarr", package = "zarr")
+#' africa <- open_zarr(fn)
+#' tas <- africa[["/tas"]]
+#' str(tas$chunking)
 str.chunk_grid_regular <- function(object, ...) {
   cat('Zarr regular chunk grid: [', paste(object$chunk_shape, collapse = ', '), ']\n', sep = '')
 }

@@ -1,0 +1,48 @@
+{
+  "zarr_format": 3,
+  "node_type": "array",
+  "shape": [160, 260, 12],
+  "data_type": "float32",
+  "fill_value": 9.9692099683868667e+36,
+  "chunk_grid": {
+    "name": "regular",
+    "configuration": {
+      "chunk_shape": [80, 65, 12]
+    }
+  },
+  "codecs": [
+    {
+      "name": "transpose",
+      "configuration": {
+        "order": [2, 1, 0]
+      }
+    },
+    {
+      "name": "bytes",
+      "configuration": {
+        "endian": "little"
+      }
+    },
+    {
+      "name": "blosc",
+      "configuration": {
+        "level": 6,
+        "cname": "zstd",
+        "clevel": 1,
+        "shuffle": "shuffle",
+        "typesize": 4,
+        "blocksize": 0
+      }
+    }
+  ],
+  "chunk_key_encoding": {
+    "name": "default",
+    "configuration": {
+      "separator": "."
+    }
+  },
+  "attributes": {
+    "long_name": "near-surface temperature",
+    "units": "degrees Celsius"
+  }
+}

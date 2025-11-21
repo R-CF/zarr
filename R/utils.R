@@ -73,3 +73,9 @@
     out
   } else data.frame()
 }
+
+#' Test if vectors `x` and `y` have near-identical values.
+#' @noRd
+.near <- function(x, y) {
+  abs(x - y) <= max(Zarr.options$eps * max(abs(x), abs(y)), 1e-12)
+}

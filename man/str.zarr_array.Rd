@@ -14,3 +14,9 @@
 \description{
 Compact display of a Zarr array
 }
+\examples{
+fn <- system.file("extdata", "africa.zarr", package = "zarr")
+africa <- open_zarr(fn)
+tas <- africa[["/tas"]]
+str(tas)
+}

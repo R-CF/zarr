@@ -6,11 +6,11 @@
 \title{Zarr Group}
 \description{
 This class implements a Zarr group. A Zarr group is a node in
-the hierarchy of a Zarr data set. A group is a container for other groups
+the hierarchy of a Zarr object. A group is a container for other groups
 and arrays.
 
 A Zarr group is identified by a JSON file having required metadata,
-specifically the attribute '"node_type": "group"'.
+specifically the attribute \code{"node_type": "group"}.
 }
 \section{Super class}{
 \code{\link[zarr:zarr_node]{zarr::zarr_node}} -> \code{zarr_group}
@@ -59,8 +59,8 @@ hierarchy starting from the current group, as a character vector.}
 \if{html}{\out{<a id="method-zarr_group-new"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-new}{}}}
 \subsection{Method \code{new()}}{
-Initialize a new group in a Zarr hierarchy. The group must
-already exist in the store
+Open a group in a Zarr hierarchy. The group must already
+exist in the store.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_group$new(name, metadata, parent, store)}\if{html}{\out{</div>}}
 }

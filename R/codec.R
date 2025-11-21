@@ -333,7 +333,7 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
       }
 
       if (dt$data_type != 'logical')
-        out[out == dt$fill_value] <- NA
+        out[.near(out, dt$fill_value)] <- NA
 
       dim(out) <- private$.chunk_shape
       out
@@ -572,7 +572,7 @@ zarr_codec_gzip <- R6::R6Class('zarr_codec_gzip',
         configuration <- list(level = 6)
       else if (!is.list(configuration) || is.null(configuration$level))
         stop('`configuration` argument must be a list with a field `level`.', call. = FALSE) # nocov
-      else if (!is.integer(configuration$level) || length(configuration$level) != 1L ||
+      else if (!is.numeric(configuration$level) || length(configuration$level) != 1L ||
                !(configuration$level >= 0 && configuration$level <= 9))
         stop('Configuration parameter `level` must be a single integer value between 0 and 9.', call. = FALSE) # nocov
 

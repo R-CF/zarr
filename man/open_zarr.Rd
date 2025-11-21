@@ -22,9 +22,7 @@ This function opens a Zarr object, connected to a store located on the
 local file system.
 }
 \examples{
-fn <- tempfile(fileext = ".zarr")
-create_zarr(fn)
-my_zarr_object <- open_zarr(fn)
-my_zarr_object
-unlink(fn)
+fn <- system.file("extdata", "africa.zarr", package = "zarr")
+africa <- open_zarr(fn)
+africa
 }

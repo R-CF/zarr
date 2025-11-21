@@ -34,17 +34,15 @@ create_zarr <- function(location) {
 #' @return A [zarr] object.
 #' @export
 #' @examples
-#' fn <- tempfile(fileext = ".zarr")
-#' create_zarr(fn)
-#' my_zarr_object <- open_zarr(fn)
-#' my_zarr_object
-#' unlink(fn)
+#' fn <- system.file("extdata", "africa.zarr", package = "zarr")
+#' africa <- open_zarr(fn)
+#' africa
 open_zarr <- function(location, read_only = FALSE) {
   store <- zarr_localstore$new(location, read_only)
   zarr$new(store)
 }
 
-#' Convert an R object into a Zarr object.
+#' Convert an R object into a Zarr array
 #'
 #' This function creates a Zarr object from an R vector, matrix or array.
 #' Default settings will be taken from the R object (data type, shape). Data is
@@ -64,11 +62,16 @@ open_zarr <- function(location, read_only = FALSE) {
 #'   with that name. If the `name` argument is not given, a single-array Zarr
 #'   store will be created. If the `location` argument is not given, a Zarr
 #'   object is created in memory.
-#' @return If the `location` argument is a `zarr_group`, the same group is
-#'   returned. Otherwise, the Zarr object that is newly created, or an error if
-#'   the Zarr object could not be created.
+#' @return If the `location` argument is a `zarr_group`, the new Zarr array is
+#'   returned. Otherwise, the Zarr object that is newly created and which
+#'   contains the Zarr array, or an error if the Zarr object could not be
+#'   created.
 #' @docType methods
 #' @export
+#' @examples
+#' x <- array(1:400, c(5, 20, 4))
+#' z <- as_zarr(x)
+#' z
 as_zarr <- function(x, name = NULL, location = NULL) {
   if (is.numeric(x) || is.logical(x)) {
     # Build the array metadata from x
@@ -111,7 +114,10 @@ as_zarr <- function(x, name = NULL, location = NULL) {
     selection <- lapply(d, function(x) c(1L, x))
     arr$write(x, selection)
 
-    out
+    if (inherits(location, 'zarr_group'))
+      arr
+    else
+      out
   }
 }
 
@@ -140,6 +146,6 @@ define_array <- function(data_type, shape) {
   ab <- array_builder$new()
   ab$data_type <- data_type
   ab$shape <- as.integer(shape)
-  ab$add_codec('gzip', list(level = 6L))
+  ab$add_codec('blosc', list(level = 6L))
   ab
 }

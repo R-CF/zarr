@@ -268,6 +268,11 @@ zarr_group <- R6::R6Class('zarr_group',
 #' @param object A `zarr_group` instance.
 #' @param ... Ignored.
 #' @export
+#' @examples
+#' fn <- system.file("extdata", "africa.zarr", package = "zarr")
+#' africa <- open_zarr(fn)
+#' root <- africa[["/"]]
+#' str(root)
 str.zarr_group <- function(object, ...) {
   len <- length(children <- object$children)
   if (len) {
@@ -291,11 +296,9 @@ str.zarr_group <- function(object, ...) {
 #'   group, it must not start with a slash "/". The path may start with any
 #'   number of double dots ".." separated by slashes "/" to denote groups
 #'   higher up in the hierarchy.
-#'
 #' @return An instance of `zarr_group` or `zarr_array`, or `NULL` if the path is
 #'   not found.
 #' @export
-#'
 #' @aliases [[,zarr-group-method
 #' @docType methods
 #' @examples

@@ -14,3 +14,8 @@
 \description{
 Compact display of a Zarr object
 }
+\examples{
+fn <- system.file("extdata", "africa.zarr", package = "zarr")
+africa <- open_zarr(fn)
+str(africa)
+}
