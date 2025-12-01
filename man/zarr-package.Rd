@@ -3,9 +3,9 @@
 \docType{package}
 \name{zarr-package}
 \alias{zarr-package}
-\title{zarr: Native and Extensible R Driver for Zarr}
+\title{zarr: Native and Extensible R Driver for 'Zarr'}
 \description{
-The Zarr specification is widely used to build libraries for the storage and retrieval of n-dimensional array data from data stores ranging from local file systems to the cloud. This package is a native Zarr implementation in R with support for all required features of Zarr version 3. It is designed to be extensible such that new stores, codecs and extensions can be added easily.
+The 'Zarr' specification is widely used to build libraries for the storage and retrieval of n-dimensional array data from data stores ranging from local file systems to the cloud. This package is a native 'Zarr' implementation in R with support for all required features of 'Zarr' version 3. It is designed to be extensible such that new stores, codecs and extensions can be added easily.
 }
 \seealso{
 Useful links:

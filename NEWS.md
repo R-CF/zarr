@@ -1,3 +1,5 @@
+# zarr 0.1.1
+
 # zarr 0.1.0
 
 # zarr 0.0.0.9000 (development version)
