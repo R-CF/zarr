@@ -9,16 +9,19 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Imports: 
+    blosc,
     jsonlite,
     methods,
     R6
 Suggests: 
     bit64,
-    blosc,
     digest,
+    qs2,
     testthat (>= 3.0.0),
     zlib
 Config/testthat/edition: 3
 Config/Needs/website: rmarkdown
+Depends: 
+    R (>= 4.1)
 URL: https://github.com/R-CF/zarr
 BugReports: https://github.com/R-CF/zarr/issues

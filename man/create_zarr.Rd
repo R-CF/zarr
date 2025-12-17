@@ -17,9 +17,9 @@ the ".zarr" extension to identify the location as a Zarr store.}
 A \link{zarr} object.
 }
 \description{
-This function creates a Zarr instance, with a store located on the local file
-system. The root of the Zarr store will be a group to which other groups or
-arrays can be added.
+This function creates a Zarr v.3 instance, with a store located on the local
+file system. The root of the Zarr store will be a group to which other groups
+or arrays can be added.
 }
 \examples{
 fn <- tempfile(fileext = ".zarr")

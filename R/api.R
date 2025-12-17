@@ -1,8 +1,8 @@
 #' Create a Zarr store
 #'
-#' This function creates a Zarr instance, with a store located on the local file
-#' system. The root of the Zarr store will be a group to which other groups or
-#' arrays can be added.
+#' This function creates a Zarr v.3 instance, with a store located on the local
+#' file system. The root of the Zarr store will be a group to which other groups
+#' or arrays can be added.
 #' @param location Character string that indicates a location on a file system
 #'   where the data in the Zarr object will be persisted in a Zarr store in a
 #'   directory. The character string may contain UTF-8 characters and/or use a
@@ -25,7 +25,7 @@ create_zarr <- function(location) {
 #' Open a Zarr store
 #'
 #' This function opens a Zarr object, connected to a store located on the
-#' local file system.
+#' local file system. The Zarr object can be either v.2 or v.3.
 #' @param location Character string that indicates a location on a file system
 #'   where the Zarr store is to be found. The character string may contain UTF-8
 #'   characters and/or use a file URI format.

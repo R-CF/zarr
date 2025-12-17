@@ -12,11 +12,7 @@ zarr_array <- R6::R6Class('zarr_array',
     .data_type = NULL,
 
     # An instance of `chunk_grid_regular` to manage data chunking and I/O.
-    .chunking = NULL,
-
-    # The list of codec instances with which to encode a chunk-shaped array into
-    # a storable byte-stream, or decode in the reverse order.
-    .codecs = list()
+    .chunking = NULL
   ),
   public = list(
     #' @description Initialize a new array in a Zarr hierarchy. The array must
@@ -76,7 +72,6 @@ zarr_array <- R6::R6Class('zarr_array',
       if (missing(selection))
         selection <- lapply(array_shape, function(d) c(1L, d))
       if (length(selection) == length(array_shape)) {
-        # `data` is a hyperslab of any dimensions
         start <- sapply(selection, min)
         stop  <- sapply(selection, max)
         if (any(start < 1L | start > array_shape | stop > array_shape))
@@ -101,6 +96,7 @@ zarr_array <- R6::R6Class('zarr_array',
       array_shape <- private$.metadata$shape
       if (missing(selection))
         selection <- lapply(dim(data) %||% length(data), function(d) c(1L, d))
+
       nsel <- length(selection)
       if (nsel == length(array_shape)) {
         start <- sapply(selection, min)

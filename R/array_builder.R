@@ -64,10 +64,10 @@ array_builder <- R6::R6Class('array_builder',
       if (!is.null(private$.data_type) && !is.na(private$.shape[1L])) {
         private$.codecs <- if (private$.portable || length(private$.shape) == 1L)
           # No transpose codec
-          list(zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape))
+          list(bytes = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape))
         else
-          list(zarr_codec_transpose$new(length(private$.shape)),
-               zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape))
+          list(transpose = zarr_codec_transpose$new(length(private$.shape)),
+               bytes = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape))
       } else
         private$.codecs <- list()
     }
@@ -105,9 +105,11 @@ array_builder <- R6::R6Class('array_builder',
           self$fill_value <- meta$fill_value
           self$chunk_shape <- meta$chunk_grid$configuration$chunk_shape # regular grid only
 
-          private$.codecs <- list() # Remove automatically generated codecs
-          if (length(meta$codecs))
+          if (length(meta$codecs)) {
+            private$.codecs <- list()
             lapply(meta$codecs, function(c) self$add_codec(c$name, c$configuration))
+            names(private$.codecs) <- sapply(meta$codecs, function(c) c$name)
+          }
         }
       }
     },
@@ -159,6 +161,7 @@ array_builder <- R6::R6Class('array_builder',
                     'transpose' = zarr_codec_transpose$new(length(private$.shape), configuration),
                     'bytes' = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape, configuration),
                     'blosc' = zarr_codec_blosc$new(data_type = private$.data_type, configuration),
+                    'zstd' = zarr_codec_zstd$new(configuration),
                     'gzip' = zarr_codec_gzip$new(configuration),
                     'crc32c' = zarr_codec_crc32c$new())
       if (!inherits(cdc, 'zarr_codec'))
@@ -168,20 +171,20 @@ array_builder <- R6::R6Class('array_builder',
       if (is.null(.position) || .position > len) {
         if (!len) {
           if (cdc$from == 'array')
-            private$.codecs <- list(cdc)
+            private$.codecs <- setNames(list(cdc), cdc$name)
           else
             stop('Codec has incompatible mode to start chains of codecs.', call. = FALSE) #nocov
         } else if (cdc$from == private$.codecs[[len]]$to)
-          private$.codecs <- append(private$.codecs, cdc)
+          private$.codecs <- c(private$.codecs, setNames(list(cdc), cdc$name))
         else
           stop('Codec has incompatible mode to follow previous codec.', call. = FALSE) #nocov
       } else if (.position == 1) {
         if (cdc$from == 'array' && private$.codecs[[1L]]$from == cdc$to)
-          private$.codecs <- append(cdc, private$.codecs)
+          private$.codecs <- c(setNames(list(cdc), cdc$name), private$.codecs)
         else
           stop('First codec must use an "array" mode for input and agree with the following codec.', call. = FALSE) # nocov
       } else if (cdc$from == private$.codecs[[len - 1L]]$to && cdc$to == private$.codecs[[len]]$from)
-        private$.codecs <- append(private$.codecs, cdc, after = len - 1L)
+        private$.codecs <- append(private$.codecs, setNames(list(cdc), cdc$name), after = len - 1L)
       else
         stop('Codec has incompatible mode for inserting at position ', .position, call. = FALSE) # nocov
 

@@ -92,8 +92,10 @@ zarr_group <- R6::R6Class('zarr_group',
       if (len) {
         children <- vector("list", len)
         for (i in 1:len) {
-          meta <- private$.store$get_metadata(paste0(prefix, dirs[i], '/'))
-          if (!is.null(meta)) {
+          meta <- try(private$.store$get_metadata(paste0(prefix, dirs[i], '/')), silent = TRUE)
+          if (inherits(meta, "try-error"))
+            warning(paste0('Error reading metadata from location ', dirs[i], '. Ignoring.'), call. = FALSE)
+          else if (!is.null(meta)) {
             if (meta$node_type == 'group') {
               grp <- zarr_group$new(dirs[i], meta, self, self$store)
               grp$build_hierarchy()
@@ -102,8 +104,8 @@ zarr_group <- R6::R6Class('zarr_group',
               children[[i]] <- zarr_array$new(dirs[i], meta, self, self$store)
           }
         }
-        # FIXME: There could be empty entries in children (although there shouldn't be)
         names(children) <- dirs
+        children <- children[lengths(children) > 0L]
         private$.children <- children
       }
       invisible(self)

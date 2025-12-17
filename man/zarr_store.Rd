@@ -410,7 +410,7 @@ of \link{array_builder}.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Self, invisible
+Self, invisible.
 }
 }
 \if{html}{\out{<hr>}}

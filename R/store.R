@@ -1,6 +1,7 @@
 #' @import methods
 #' @import R6
 #' @import jsonlite
+#' @import blosc
 NULL
 
 #' Zarr Abstract Store
@@ -26,7 +27,79 @@ zarr_store <- R6::R6Class('zarr_store',
 
     # Local properties
     .version = 3L,        # The zarr version, by default 3
-    .chunk_sep  = '.'     # The chunk separator
+    .chunk_sep  = '.',    # The chunk separator
+
+    # Convert Zarr v.2 metadata to v.3 metadata. Argument meta is a list, atts
+    # is a list with attributes, possibly empty. Returns a list in v.3 format.
+    metadata_v2_to_v3 = function(meta, atts = list()) {
+      if (is.null(meta$zarr_format) || meta$zarr_format != 2L)
+        stop('Invalid metadata document.', call. = FALSE) # nocov
+
+      if (length(meta) == 1L) {
+        # Group metadata
+        v3 <- list(zarr_format = 3L, node_type = 'group')
+      } else {
+        # Array metadata
+        re <- regexec("^([<>|])([bfiu])([0-9]+)$", meta$dtype)
+        dtype <- regmatches(meta$dtype, re)[[1L]]
+        if (!length(dtype))
+          stop('Invalid dtype in metadata document.', call. = FALSE)
+
+        ab <- array_builder$new()
+        ab$data_type <- switch(dtype[3L],
+                               'b' = 'bool',
+                               'f' = paste0('float', 8L * as.integer(dtype[4L])),
+                               'i' = paste0('int', 8L * as.integer(dtype[4L])),
+                               'u' = paste0('uint', 8L * as.integer(dtype[4L])))
+        ab$shape <- meta$shape
+        ab$chunk_shape <- meta$chunks
+        if (!is.null(meta$fill_value)) {
+          if (dtype[3L] == 'f')
+            ab$fill_value <- as.numeric(meta$fill_value)
+          else if (dtype[3L] %in% c('u', 'i'))
+            ab$fill_value <- as.integer(meta$fill_value)
+          # FIXME: what about int64 data?
+        }
+
+        # Transpose codec is already set for 'F' ordering. If 'C' ordering,
+        # delete the codec
+        if (meta$order == 'C')
+          ab$remove_codec('transpose')
+
+        # Bytes codec
+        bytes <- ab$codecs$bytes
+        endian <- if (dtype[2L] == '>') 'big' else 'little'
+        if (is.null(bytes)) # Should never happen
+          ab$add_codec('bytes', configuration = list(endian = endian))
+        else
+          bytes$endian <- endian
+
+        # Compression codec
+        if (!is.null(meta$compressor)) {
+          ab$add_codec(meta$compressor$id, configuration = meta$compressor)
+        }
+
+        v3 <- ab$metadata()
+
+        # Chunk separator
+        sep <- meta$dimension_separator
+        if (is.null(sep)) sep <- '.'
+        v3 <- c(v3, list(chunk_key_encoding = list(name = 'default', configuration = list(separator = sep))))
+      }
+
+      if (length(atts))
+        v3$attributes <- atts
+      v3
+    },
+
+    # Convert Zarr v.3 metadata to v.2 metadata. Argument meta is a list.
+    # Returns a list in v.2 format which should only be used for writing to the
+    # store in JSON format.
+    metadata_v3_to_v2 = function(meta) {
+      browser()
+      if (is.null(meta$zarr_format) || meta$zarr_format != 3L)
+        stop('Invalid metadata document.', call. = FALSE) # nocov
+    }
   ),
   public = list(
     #' @description Create an instance of this class. Since this class is
@@ -172,7 +245,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @param prefix The prefix of the node whose metadata document to set.
     #' @param metadata The metadata to persist, either a `list` or an instance
     #' of [array_builder].
-    #' @return Self, invisible
+    #' @return Self, invisible.
     set_metadata = function(prefix, metadata) {
       invisible(self)
     },
@@ -253,7 +326,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #'   used is determined by looking at the "chunk_key_encoding" attribute of
     #'   each array.
     separator = function(value) {
-      if (missing(values)) private$.chunk_sep
+      if (missing(value)) private$.chunk_sep
     }
   )
 )

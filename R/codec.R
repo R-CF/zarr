@@ -397,9 +397,11 @@ zarr_codec_blosc <- R6::R6Class('zarr_codec_blosc',
           if (private$.data_type$data_type %in% c('bool', 'int8', 'uint8')) 'noshuffle'
           else if (private$.data_type$data_type %in% c('int16', 'uint16', 'int32', 'uint32', 'int64', 'float32')) 'shuffle'
           else 'bitshuffle'
-      else if (!is.character(conf$shuffle) || !(length(conf$shuffle) == 1L) ||
-               !(conf$shuffle %in% c('shuffle', 'noshuffle', 'bitshuffle')))
-        stop('Bad blosc shuffle parameter.', call. = FALSE) # nocov
+      else if (!(length(conf$shuffle) == 1L))
+        stop('Blosc shuffle parameter must be a single value.', call. = FALSE)
+      else if ((is.character(conf$shuffle) && !(conf$shuffle %in% c('shuffle', 'noshuffle', 'bitshuffle'))) ||
+               (is.integer(conf$shuffle) && !(conf$shuffle %in% 0L:2L)))
+        stop(paste('Bad blosc shuffle parameter:', conf$shuffle), call. = FALSE) # nocov
 
       if (is.null(conf$typesize))
         conf$typesize <- private$.data_type$size
@@ -539,6 +541,82 @@ zarr_codec_blosc <- R6::R6Class('zarr_codec_blosc',
         private$.configuration <- private$check_configuration(conf)
       }
     }
+  )
+)
+
+#' Zarr "zstd" codec
+#'
+#' @description This class provides the codec for "zstd" compression.
+#' @docType class
+zarr_codec_zstd <- R6::R6Class('zarr_codec_zstd',
+  inherit = zarr_codec,
+  cloneable = FALSE,
+  private = list(
+   # Print the configuration information to the console. This is called by
+   # zarr_codec$print().
+   print_configuration = function() {
+     cat('Configuration:\n')
+     cat('  level:', private$.configuration$level, '\n')
+   }
+  ),
+  public = list(
+   #' @description Create a new "zstd" codec object.
+   #' @param configuration Optional. A list with the configuration parameters
+   #'   for this codec. The element `level` specifies the compression level of
+   #'   this codec, ranging from 1 (no compression) to 20 (maximum compression).
+   #' @return An instance of this class.
+   initialize = function(configuration = NULL) {
+     if (!requireNamespace('qs2'))
+       stop('Must install package "qs2" for this functionality', call. = FALSE) # nocov
+
+     if (is.null(configuration))
+       configuration <- list(level = 6)
+     else if (!is.list(configuration) || is.null(configuration$level))
+       stop('`configuration` argument must be a list with a field `level`.', call. = FALSE) # nocov
+     else if (!is.numeric(configuration$level) || length(configuration$level) != 1L ||
+              !(configuration$level >= 1 && configuration$level <= 20))
+       stop('Configuration parameter `level` must be a single integer value between 1 and 20.', call. = FALSE) # nocov
+
+     super$initialize('zstd', configuration)
+
+     private$.from <- 'bytes'
+     private$.to <- 'bytes'
+   },
+
+   #' @description Create a new, independent copy of this codec.
+   #' @return An instance of `zarr_codec_zstd`.
+   copy = function() {
+     zarr_codec_zstd$new(private$.configuration)
+   },
+
+   #' @description This method encodes a raw data object.
+   #' @param data The raw data to be encoded.
+   #' @return The encoded raw data object.
+   encode = function(data) {
+     qs2::zstd_compress_raw(data, compress_level = private$.configuration$level)
+   },
+
+   #' @description This method decodes a raw data object.
+   #' @param data The raw data to be decoded.
+   #' @return The decoded raw data object.
+   decode = function(data) {
+     qs2::zstd_decompress_raw(data)
+   }
+  ),
+  active = list(
+   #' @field level The compression level of the zstd codec, an integer value
+   #' between 1L (fast) and 20 (maximum compression).
+   level = function(value) {
+     if (missing(value))
+       private$.configuration$level
+     else {
+       value <- as.integer(value)
+       if (length(value) == 1L && value >= 1 && value <= 20)
+         private$.configuration$level <- as.integer(value)
+       else
+         stop('Compression level of zstd must be an integer value between 1 and 20.', call. = FALSE) # nocov
+     }
+   }
   )
 )
 

@@ -74,6 +74,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       data <- if (nd == 1L) vector(private$.data_type$Rtype, stop - start + 1L)
               else array(private$.data_type$fill_value, stop - start + 1L)
       sep <- private$.chunk_sep
+      chunk_pre <- if (private$.store$version == 3L) paste0('c', sep) else ''
 
       # Identify chunks touched by the indices
       chunk_start_idx <- floor((start - 1L) / chunk_shape)
@@ -84,7 +85,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       # Loop over the chunks
       for (i in seq_len(nrow(grid_idx))) {
         cidx <- grid_idx[i, ]
-        chunk_key <- paste0(private$.array_prefix, paste('c', paste(cidx, collapse = sep), sep = sep))
+        chunk_key <- paste0(private$.array_prefix, chunk_pre, paste(cidx, collapse = sep))
 
         # Compute slice within the chunk
         chunk_origin  <- cidx * chunk_shape + 1L
@@ -110,6 +111,12 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
           seq(data_start[d] + 1L, data_start[d] + overlap_count[d]))
         data <- do.call(`[<-`, c(list(data), idx, list(value = chunk_data)))
       }
+
+      # Set the dims in the right order as per the transpose codec
+      dims <- length(private$.chunk_shape)
+      trans <- private$.codecs$transpose$configuration$order %||% 0L:(dims - 1L)
+      dim(data) <- dim(data)[dims - trans]
+
       data
     },
 

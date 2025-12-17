@@ -47,22 +47,24 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     initialize = function(root, read_only = FALSE) {
       root <- suppressWarnings(normalizePath(uri_to_path(root)))
       root <- sub('/*$', '', root)
-      meta_path <- file.path(root, 'zarr.json')
 
       if (dir.exists(root)) {
         # Opening an existing store
-        if (!file.exists(meta_path))
-          stop('No Zarr store at the root location.', call. = FALSE) # nocov
+        if (!file.exists(meta_path <- file.path(root, 'zarr.json')))
+          if (!file.exists(meta_path <- file.path(root, '.zgroup')))
+            if (!file.exists(meta_path <- file.path(root, '.zarray')))
+              stop('No Zarr store at the root location.', call. = FALSE) # nocov
         meta <- jsonlite::fromJSON(meta_path)
         format <- meta$zarr_format
-        if (is.null(format) || format != 3)
+        if (is.null(format) || !(format == 3L || format == 2L))
           stop('Incompatible "zarr_format" found in the store:', format, call. = FALSE) # nocov
       } else {
         # Create a new store
         dir.create(root, recursive = TRUE, mode = '0771')
+        format <- 3L
       }
 
-      super$initialize(read_only, version = 3L)
+      super$initialize(read_only, version = format)
       private$.root <- root
       private$.supports_consolidated_metadata = FALSE
     },
@@ -78,16 +80,21 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @description Clear the store. Remove all keys and values from the store.
     #'   Invoking this method deletes affected files on the file system and this
     #'   action can not be undone. The only file that will remain is "zarr.json"
-    #'   in the root of this store.
+    #'   or ".zgroup" (version 2) in the root of this store.
     #' @return `TRUE` if the operation proceeded, `FALSE` otherwise.
     clear = function() {
       if (private$.read_only)
         FALSE
       else {
         unlink(paste0(private$.root, '/*'), recursive = TRUE)
-        jsonlite::write_json(list(zarr_format = 3, node_type = "group"),
-                             path = file.path(private$.root, 'zarr.json'),
-                             auto_unbox = TRUE, pretty = T)
+        if (self$version == 3L)
+          jsonlite::write_json(list(zarr_format = 3, node_type = "group"),
+                               path = file.path(private$.root, 'zarr.json'),
+                               auto_unbox = TRUE, pretty = T)
+        else
+          jsonlite::write_json(list(zarr_format = 2),
+                               path = file.path(private$.root, '.zgroup'),
+                               auto_unbox = TRUE, pretty = T)
         TRUE
       }
     },
@@ -123,9 +130,14 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         FALSE
       else {
         unlink(file.path(private$.root, paste0(prefix, '*')), recursive = TRUE)
-        jsonlite::write_json(list(zarr_format = 3, node_type = 'group'),
-                             path = file.path(private$.root, paste0(prefix, 'zarr.json')),
-                             auto_unbox = TRUE, pretty = T)
+        if (self$version == 3L)
+          jsonlite::write_json(list(zarr_format = 3, node_type = 'group'),
+                               path = file.path(private$.root, paste0(prefix, 'zarr.json')),
+                               auto_unbox = TRUE, pretty = T)
+        else
+          jsonlite::write_json(list(zarr_format = 2),
+                               path = file.path(private$.root, paste0(prefix, '.zgroup')),
+                               auto_unbox = TRUE, pretty = T)
         TRUE
       }
     },
@@ -248,21 +260,39 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     },
 
     #' @description Retrieve the metadata document of the node at the location
-    #' indicated by the `prefix` argument.
+    #'   indicated by the `prefix` argument. The metadata will always be
+    #'   presented to the caller in the Zarr v.3 format.
     #' @param prefix The prefix of the node whose metadata document to retrieve.
     #' @return A list with the metadata, or `NULL` if the prefix is not pointing
-    #' to a Zarr group or array.
+    #'   to a Zarr group or array.
     get_metadata = function(prefix) {
-      fn <- if (prefix == '/') file.path(private$.root, 'zarr.json')
-            else file.path(private$.root, paste0(prefix, 'zarr.json'))
-      if (file.exists(fn))
-        jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
-      else
-        NULL
+      file_base <- if (prefix == '/') file.path(private$.root, '')
+                   else file.path(private$.root, prefix)
+      if (private$.version == 3L) {
+        fn <- paste0(file_base, 'zarr.json')
+        if (file.exists(fn))
+          jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
+        else
+          NULL
+      } else {
+        # Version 2
+        fn <- paste0(file_base, '.zgroup')
+        if (!file.exists(fn)) {
+          fn <- paste0(file_base, '.zarray')
+          if (!file.exists(fn)) return(NULL)
+        }
+
+        meta <- jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
+        # FIXME: Read .zattrs
+
+        private$metadata_v2_to_v3(meta)
+      }
     },
 
     #' @description Set the metadata document of the node at the location
-    #'   indicated by the `prefix` argument.
+    #'   indicated by the `prefix` argument. The formatting of the metadata
+    #'   should always use the Zarr v.3 format, it will be converted internally
+    #'   if the store is Zarr v.2.
     #' @param prefix The prefix of the node whose metadata document to set.
     #' @param metadata The metadata to persist, either a `list` or an instance
     #' of [array_builder].
@@ -271,6 +301,8 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       fn <- file.path(private$.root, paste0(prefix, 'zarr.json'))
       if (inherits(metadata, 'array_builder'))
         metadata <- metadata$metadata()
+      if (private$.version == 2L)
+        metadata <- private$metadata_v3_to_v2(metadata)
       jsonlite::write_json(metadata, fn, pretty = TRUE, auto_unbox = TRUE)
       invisible(self)
     },

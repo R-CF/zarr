@@ -19,7 +19,7 @@ A \link{zarr} object.
 }
 \description{
 This function opens a Zarr object, connected to a store located on the
-local file system.
+local file system. The Zarr object can be either v.2 or v.3.
 }
 \examples{
 fn <- system.file("extdata", "africa.zarr", package = "zarr")

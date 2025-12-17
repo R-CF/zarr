@@ -136,7 +136,7 @@ group, an array, or a chunk.
 Clear the store. Remove all keys and values from the store.
 Invoking this method deletes affected files on the file system and this
 action can not be undone. The only file that will remain is "zarr.json"
-in the root of this store.
+or ".zgroup" (version 2) in the root of this store.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$clear()}\if{html}{\out{</div>}}
 }
@@ -330,7 +330,8 @@ An raw vector of data, or \code{NULL} if no data was found.
 \if{latex}{\out{\hypertarget{method-zarr_localstore-get_metadata}{}}}
 \subsection{Method \code{get_metadata()}}{
 Retrieve the metadata document of the node at the location
-indicated by the \code{prefix} argument.
+indicated by the \code{prefix} argument. The metadata will always be
+presented to the caller in the Zarr v.3 format.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$get_metadata(prefix)}\if{html}{\out{</div>}}
 }
@@ -352,7 +353,9 @@ to a Zarr group or array.
 \if{latex}{\out{\hypertarget{method-zarr_localstore-set_metadata}{}}}
 \subsection{Method \code{set_metadata()}}{
 Set the metadata document of the node at the location
-indicated by the \code{prefix} argument.
+indicated by the \code{prefix} argument. The formatting of the metadata
+should always use the Zarr v.3 format, it will be converted internally
+if the store is Zarr v.2.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$set_metadata(prefix, metadata)}\if{html}{\out{</div>}}
 }
