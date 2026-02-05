@@ -266,19 +266,19 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @return A list with the metadata, or `NULL` if the prefix is not pointing
     #'   to a Zarr group or array.
     get_metadata = function(prefix) {
-      file_base <- if (prefix == '/') file.path(private$.root, '')
-                   else file.path(private$.root, prefix)
+      file_base <- if (prefix == '/') private$.root
+                   else paste(private$.root, trimws(prefix, 'right', '/'), sep = '/')
       if (private$.version == 3L) {
-        fn <- paste0(file_base, 'zarr.json')
+        fn <- paste(file_base, 'zarr.json', sep = '/')
         if (file.exists(fn))
           jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
         else
           NULL
       } else {
         # Version 2
-        fn <- paste0(file_base, '.zgroup')
+        fn <- paste(file_base, '.zgroup', sep = '/')
         if (!file.exists(fn)) {
-          fn <- paste0(file_base, '.zarray')
+          fn <- paste(file_base, '.zarray', sep = '/')
           if (!file.exists(fn)) return(NULL)
         }
 
