@@ -79,3 +79,12 @@
 .near <- function(x, y) {
   abs(x - y) <= max(Zarr.options$eps * max(abs(x), abs(y)), 1e-12)
 }
+
+#' Determines the protocol to be used with a specified store location.
+#' @noRd
+.protocol <- function(loc) {
+  if (grepl('^http(s)?://', loc, ignore.case = TRUE))
+    'http'
+  else
+    'local'
+}

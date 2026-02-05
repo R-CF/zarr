@@ -17,6 +17,17 @@ class helps construct a valid metadata document, with support for (some)
 extensions. (If you need support for a specific extension, open an issue on
 Github.)
 
+When creating array definitions, the default is to use R ordering, meaning
+that a transpose codec is added with the "order" parameters having the
+dimensions in reverse order. If you want to use a different ordering, for
+instance to have a Zarr store with maximum portability, delete the default
+transpose codec or set its ordering to the desired values. Note that the
+shape and chunk_shape parameters are set in reference to the ordering in
+the transpose codec (or the default 0, 1, ... is no transpose codec is
+present), but that within the R environment the shape and chunk shape are
+always set to R ordering. This is necessary to be able to apply array
+operations on the data in R.
+
 This class does not care about the "chunk_key_encoding" parameter. This is
 addressed at the level of the store.
 

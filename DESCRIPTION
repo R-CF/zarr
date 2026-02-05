@@ -15,6 +15,7 @@ Imports:
     R6
 Suggests: 
     bit64,
+    curl,
     digest,
     qs2,
     testthat (>= 3.0.0),

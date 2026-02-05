@@ -19,6 +19,8 @@ knitr::opts_chunk$set(
 
 `zarr` is a package to create and access Zarr stores using native R code. It is designed against the specification for Zarr core version 3.
 
+Zarr v.2 file and HTTP stores can be read and will be represented internally in the v.3 format.
+
 ## Basic usage
 
 The easiest way to zarrify your data is simply to call `as_zarr()` on your R vector, matrix or array.

@@ -24,13 +24,15 @@ create_zarr <- function(location) {
 
 #' Open a Zarr store
 #'
-#' This function opens a Zarr object, connected to a store located on the
-#' local file system. The Zarr object can be either v.2 or v.3.
+#' This function opens a Zarr object, connected to a store located on the local
+#' file system or on a remote server using the HTTP protocol. The Zarr object
+#' can be either v.2 or v.3.
 #' @param location Character string that indicates a location on a file system
-#'   where the Zarr store is to be found. The character string may contain UTF-8
-#'   characters and/or use a file URI format.
+#'   or a HTTP server where the Zarr store is to be found. The character string
+#'   may contain UTF-8 characters and/or use a file URI format.
 #' @param read_only Optional. Logical that indicates if the store is to be
-#' opened in read-only mode. Default is `FALSE`.
+#'   opened in read-only mode. Default is `FALSE` for a local file system store,
+#'   `TRUE` otherwise.
 #' @return A [zarr] object.
 #' @export
 #' @examples
@@ -38,7 +40,11 @@ create_zarr <- function(location) {
 #' africa <- open_zarr(fn)
 #' africa
 open_zarr <- function(location, read_only = FALSE) {
-  store <- zarr_localstore$new(location, read_only)
+  store <- switch(.protocol(location),
+                  'local' = zarr_localstore$new(location, read_only),
+                  'http'  = zarr_httpstore$new(location)
+                 )
+
   zarr$new(store)
 }
 

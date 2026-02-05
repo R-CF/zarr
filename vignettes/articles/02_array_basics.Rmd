@@ -83,7 +83,7 @@ On the top line we see that the document shown is a valid Zarr array metadata do
 
 > "zarr_format": 3
 
-This package is for Zarr version 3. Support for Zarr version 2 may be added in a later release.
+This package is for Zarr version 3 and the `array_builder` will only create metadata documents for version 3. You may persist your data in a Zarr version 2 store but within this package metadata is always shown in version 3 format.
 
 > "node_type": "array"
 
@@ -108,7 +108,7 @@ Every Zarr array has a `fill_value` for parts of the array that have not yet bee
     }
   }
   
-A Zarr array is stored in "chunked" format, where the array is cut up into chunks along each dimension. The default setting is to have chunks with a length of 100 along each dimension (or smaller if the Zarr array is smaller, as is the case here). This results in chunks with a maximum size of 8MB for numeric data, 4MB for integer data and 1MB for logical data, before compression. You may set this to a set of values that better aligns with your array size and your retrieval pattern.
+A Zarr array is stored in "chunked" format, where the array is cut up into chunks along each dimension. The default setting is to have chunks with a length of 100 along each dimension (or smaller if the Zarr array is smaller, as is the case here). This results in chunks with a maximum size of 8MB for numeric data, 4MB for integer data and 1MB for logical data, before compression, for a 3D Zarr array with shape `[100, 100, 100]`. You may set this to a set of values that better aligns with your array size and your retrieval pattern.
 
 > "codecs"
 
@@ -116,7 +116,7 @@ The codecs are a list of operations that are executed when writing a Zarr array 
 
 > "transpose"
 
-The first, optional processing step is the "transpose" codec. This is included by default with the indices of the array dimensions in reverse order. Zarr comes out of the C/Python environment and matrices and arrays are stored in row-major order. R, on the other hand, used column-major order. To ensure portability while reducing processing overhead this codec is included: if it is encountered with the dimension indices in reverse order, it is a no-op in R. If you want maximum portability of your Zarr store, including for use in C or Python with Zarr readers that do not support the transpose codec then you can delete this codec from the list. Do note, however, that this will increase processing time when writing and reading Zarr arrays in R.
+The first, optional, processing step is the "transpose" codec. This is included by default with the indices of the array dimensions in reverse order. Zarr comes out of the C/Python environment and matrices and arrays are stored in row-major order. R, on the other hand, used column-major order. To ensure portability while reducing processing overhead this codec is included: if it is encountered with the dimension indices in reverse order, it is a no-op in R. If you want maximum portability of your Zarr store, including for use in C or Python with Zarr readers that do not support the transpose codec then you can delete this codec from the list. Do note, however, that this will increase processing time when writing and reading Zarr arrays in R.
 
 > "bytes"
 
@@ -132,7 +132,7 @@ The `arr_def` variable is an instance of the `array_builder` class. Using that c
 ```{r chunk_set}
 arr_def$chunk_shape <- c(120, 31, 5)
 ```
-Adding and deleting a codec is a bit more complicated because when adding you have to specify the name of the codec but also provide a list with the configuration parameters, and figure out where in the list of codecs the new codec should be inserted; when deleting the remaining codecs have to form a valid process. You should consult the online documentation for the codec to find the right parameters. Once you have those parameters organized in a list, add a codec is easy. As an example, let's remove the `blosc` codec and insert the `gzip` codec instead.
+Adding and deleting a codec is a bit more complicated because when adding you have to specify the name of the codec but also provide a list with the configuration parameters, and figure out where in the list of codecs the new codec should be inserted; when deleting the remaining codecs have to form a valid process. You should consult the online documentation for the codec to find the right parameters. Once you have those parameters organized in a list, adding a codec is easy. As an example, let's remove the `blosc` codec and insert the `gzip` codec instead.
 ```{r codec_set}
 arr_def$remove_codec(codec = "blosc")
 arr_def$add_codec(codec = "gzip", configuration = list(level = 5))
@@ -182,7 +182,7 @@ arr[1, which(seq(d[2]) <= 10), ]
 # indicate that, just like with R arrays.
 arr[1, which(seq(d[2]) <= 10), , drop = FALSE]
 ```
-You can also write to a Zarr array directly, for instance to set smaller subsets of the Zarr array. The process is a bit more complicated, however (due to a quirk in R):
+You can also write to a Zarr array directly, for instance to write smaller subsets of the Zarr array. The process is a bit more complicated, however (due to a quirk in R):
 ```{r write}
 arr$write(NA_integer_, selection = list(1:5, 6, 1))
 arr$write(-99L, selection = list(2:3, 5:7, 1))

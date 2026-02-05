@@ -317,22 +317,25 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
     #' @return An R object with the shape of a chunk from the array.
     decode = function(data) {
       dt <- private$.data_type
+      Rtype <- dt$Rtype
       n <- length(data) %/% dt$size
       if (length(data) %% dt$size)
         stop('Data length not a multiple of data type size.', call. = FALSE) # nocov
 
-      out <- if (dt$data_type == 'logical') {
+      out <- if (Rtype == 'logical') {
         as.logical(as.integer(data))
-      } else if (dt$data_type == 'integer64') {
+      } else if (Rtype == 'integer64') {
         vals <- readBin(data, what = 'double', n = n, endian = private$.configuration$endian)
         class(vals) <- 'integer64'
         vals
       } else {
-        readBin(data, what = dt$Rtype, size = dt$size, signed = dt$signed,
+        readBin(data, what = Rtype, size = dt$size, signed = dt$signed,
                 n = n, endian = private$.configuration$endian)
       }
 
-      if (dt$data_type != 'logical')
+      if (is.nan(dt$fill_value))
+        out[which(is.nan(out))] <- NA
+      else if (!(Rtype %in% c('logical', 'integer64')))
         out[.near(out, dt$fill_value)] <- NA
 
       dim(out) <- private$.chunk_shape

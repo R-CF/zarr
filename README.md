@@ -11,6 +11,9 @@
 `zarr` is a package to create and access Zarr stores using native R
 code. It is designed against the specification for Zarr core version 3.
 
+Zarr v.2 file and HTTP stores can be read and will be represented
+internally in the v.3 format.
+
 ## Basic usage
 
 The easiest way to zarrify your data is simply to call `as_zarr()` on
@@ -47,7 +50,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpoFaubn/file78f3424d7023.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpgIAeKm/filee3f0693d71a7.zarr 
 #> Arrays    : 1 
 #> Total size: 1.09 KB
 ```

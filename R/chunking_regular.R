@@ -22,8 +22,22 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     # The underlying properties of the array
     .data_type = NULL,
     .codecs = list(),
+    .permute = NULL, # Permutation of Zarr array ordering to R ordering
     .store = NULL,
-    .array_prefix = ''
+    .array_prefix = '',
+
+    # Set the codecs of this chunk manager
+    set_codecs = function(codecs) {
+      private$.codecs <- codecs
+
+      transp <- codecs$transpose
+      private$.permute <- if (is.null(transp))  # C order
+        rev(seq_along(private$.chunk_shape))
+      else if (all(diff(transp$configuration$order) == -1))
+        NULL
+      else
+        ab$shape[transp$configuration$order]
+    }
   ),
   public = list(
     #' @description Initialize a new chunking scheme for an array.
@@ -68,11 +82,10 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #'   dimensionality of the Zarr array, indicating the starting and ending
     #'   (inclusive) indices of the data along each axis.
     #' @return A vector, matrix or array of data.
+
     read = function(start, stop) {
       chunk_shape  <- private$.chunk_shape
       nd <- length(chunk_shape)
-      data <- if (nd == 1L) vector(private$.data_type$Rtype, stop - start + 1L)
-              else array(private$.data_type$fill_value, stop - start + 1L)
       sep <- private$.chunk_sep
       chunk_pre <- if (private$.store$version == 3L) paste0('c', sep) else ''
 
@@ -81,6 +94,20 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       chunk_end_idx   <- floor((stop - 1L) / chunk_shape)
       grid_idx <- as.matrix(expand.grid(
         lapply(seq_len(nd), function(d) seq(chunk_start_idx[d], chunk_end_idx[d]))))
+
+      # Initialize the data structure
+      data <- if (private$.data_type$Rtype == 'integer64') {
+        # Assuming bit64 is already loaded when reaching here
+        if (nd == 1L) bit64::as.integer64(rep(0L, stop - start + 1L))
+        else {
+          a64 <- rep(bit64::as.integer64(0L), prod(stop - start + 1L))
+          dim(a64) <- stop - start + 1L
+          a64
+        }
+      } else {
+        if (nd == 1L) vector(private$.data_type$Rtype, stop - start + 1L)
+        else array(private$.data_type$fill_value, stop - start + 1L)
+      }
 
       # Loop over the chunks
       for (i in seq_len(nrow(grid_idx))) {
@@ -111,11 +138,6 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
           seq(data_start[d] + 1L, data_start[d] + overlap_count[d]))
         data <- do.call(`[<-`, c(list(data), idx, list(value = chunk_data)))
       }
-
-      # Set the dims in the right order as per the transpose codec
-      dims <- length(private$.chunk_shape)
-      trans <- private$.codecs$transpose$configuration$order %||% 0L:(dims - 1L)
-      dim(data) <- dim(data)[dims - trans]
 
       data
     },
@@ -218,7 +240,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       if (missing(value))
         private$.codecs
       else if (is.list(value) && all(sapply(value, inherits, 'zarr_codec')))
-        private$.codecs <- value
+        private$set_codecs(value)
       else
         stop('Invalid list of codecs for chunk management.', call. = FALSE) # nocov
     },
@@ -277,7 +299,13 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
           # Decode the chunk
           for (i in length(private$.codecs):1L)
             buf <- private$.codecs[[i]]$decode(buf)
-          buf
+
+          # If there is no transpose codec (always the first one) then the
+          # chunk is in canonical C order so flip the dimensions and permute.
+          if (private$.codecs[[1L]]$name != 'transpose') {
+            dim(buf) <- rev(private$.chunk_shape)
+            aperm(buf, rev(seq_along(private$.chunk_shape)))
+          } else buf
         }
       }
     },
@@ -333,7 +361,6 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
       # If data covers the full chunk, simply link it to the buffer
       if (all(data_size == private$.chunk_shape) && length(data_size) == nd) {
         private$.buffer <- data
-        private$.buffer_stale <- TRUE
       } else {
         private$load_chunk()
 
@@ -343,8 +370,8 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
           chunk_idx[[d]] <- seq.int(offset[d] + 1L, offset[d] + data_size[d])
 
         private$.buffer <- do.call(`[<-`, c(list(private$.buffer), chunk_idx, list(value = data)))
-        private$.buffer_stale <- TRUE
       }
+      private$.buffer_stale <- TRUE
 
       if (flush) self$flush()
       invisible(self)

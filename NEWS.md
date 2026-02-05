@@ -1,8 +1,10 @@
 # zarr (development version)
 
 - Zarr version 2 stores can be read. Data types supported are those also included in the v.3 core specification. The `compression` codec has to be one of those supported by the v.3 core specification or `zstd`. Filters are not yet supported.
+- HTTP stores can be read but only for Zarr v.2 with consolidated metadata present in the root group of the Zarr store.
 - The `blosc` package is now imported as it is the default compression codec.
 - `zstd` compression codec added.
+- Fixed reading `integer64` data.
 
 # zarr 0.1.1
 

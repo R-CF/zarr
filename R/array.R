@@ -11,6 +11,9 @@ zarr_array <- R6::R6Class('zarr_array',
     # The data type of the array, a zarr_data_type instance
     .data_type = NULL,
 
+    # The shape of the array in R terms, may be different from the shape in the metadata
+    #.shape = NULL,
+
     # An instance of `chunk_grid_regular` to manage data chunking and I/O.
     .chunking = NULL
   ),
