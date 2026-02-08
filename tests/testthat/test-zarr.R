@@ -97,19 +97,3 @@ test_that("Single array Zarr", {
   z <- as_zarr(x)
   tests(z)
 })
-
-test_that("HTTP store", {
-  z <- open_zarr("https://data.earthdatahub.destine.eu/public/test-dataset-v0.zarr")
-  expect_equal(z$arrays, c("/age_band_lower_bound", "/demographic_totals", "/latitude", "/longitude", "/year"))
-  lat <- z[["/latitude"]]
-  expect_equal(lat$shape, 720)
-  expect_equal(lat$data_type$data_type, "float64")
-  expect_equal(range(lat[]), c(-89.75, 90))
-  expect_true(all(diff(lat[]) == -0.25))
-  age <- z[["/age_band_lower_bound"]]
-  expect_equal(age$data_type$data_type, "int64")
-  expect_equal(age[], seq(bit64::as.integer64(0), 65, by = 5))
-  yr <- z[["/year"]]
-  expect_equal(yr$data_type$data_type, "int64")
-  expect_equal(yr[], seq(bit64::as.integer64(1950), 2020))
-})

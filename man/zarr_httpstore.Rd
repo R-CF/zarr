@@ -66,9 +66,11 @@ usually a slash '/'.}
 \subsection{Method \code{new()}}{
 Create an instance of this class.
 
-HTTP stores are read-only and they must have a consolidated metadata
-file at the URL. Only Zarr v.2 stores are currently supported (due to
-the lack of an agreed extension for consolidated metadata vor v.3).
+HTTP stores are read-only. Currently two types of Zarr store can be
+accessed. A Zarr v.2 consolidated metadata file at the root of the
+store (immediately below the URL) can identify a hierarchy of groups
+and arrays. Alternatively, a store with a single array, either v.2 or
+v.3.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_httpstore$new(url)}\if{html}{\out{</div>}}
 }

@@ -15,7 +15,26 @@ zarr_array <- R6::R6Class('zarr_array',
     #.shape = NULL,
 
     # An instance of `chunk_grid_regular` to manage data chunking and I/O.
-    .chunking = NULL
+    .chunking = NULL,
+
+    # Returns a list with pre, sep and scalar elements that describe the
+    # chunking key mechanism of the array.
+    chunk_key_encoding = function() {
+      if (private$.metadata$zarr_format == 2L) {
+        list(pre = '',
+             sep = private$.metadata$dimension_separator %||% '.',
+             scalar = '0')
+      } else {
+        if (private$.metadata$chunk_key_encoding$name == 'default')
+          list(pre = 'c',
+               sep = private$.metadata$chunk_key_encoding$configuration$separator,
+               scalar = 'c')
+        else # v2
+          list(pre = '',
+               sep = private$.metadata$chunk_key_encoding$configuration$separator %||% '.',
+               scalar = '0')
+      }
+    }
   ),
   public = list(
     #' @description Initialize a new array in a Zarr hierarchy. The array must
@@ -37,7 +56,7 @@ zarr_array <- R6::R6Class('zarr_array',
       private$.chunking$data_type <- private$.data_type
       private$.chunking$store <- store
       private$.chunking$array_prefix <- self$prefix
-      private$.chunking$chunk_separator <- metadata$chunk_key_encoding$configuration$separator
+      private$.chunking$chunk_encoding <- private$chunk_key_encoding()
       private$.chunking$codecs <- ab$codecs
     },
 

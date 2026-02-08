@@ -13,7 +13,7 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
   cloneable = FALSE,
   private = list(
     .base_url = '.',    # The root of the zarr store as an URL to a server
-    .metadata = list(), # The consolidated metadata of the store
+    .metadata = list(), # The consolidated metadata of the Zarr v.2 store
     .nodes    = '',     # Character vector of group and variable paths, but without the leading slash
 
     # Request an item from the HTPP store by key. The key must be fully formed
@@ -33,9 +33,11 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
   public = list(
     #' @description Create an instance of this class.
     #'
-    #'   HTTP stores are read-only and they must have a consolidated metadata
-    #'   file at the URL. Only Zarr v.2 stores are currently supported (due to
-    #'   the lack of an agreed extension for consolidated metadata vor v.3).
+    #'   HTTP stores are read-only. Currently two types of Zarr store can be
+    #'   accessed. A Zarr v.2 consolidated metadata file at the root of the
+    #'   store (immediately below the URL) can identify a hierarchy of groups
+    #'   and arrays. Alternatively, a store with a single array, either v.2 or
+    #'   v.3.
     #' @param url The path to the HTTP store to be opened. The URL may use UTF-8
     #'   code points.
     #' @return An instance of this class.
@@ -45,22 +47,42 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
 
       private$.base_url <- sub('/*$', '', url)
 
-      # Retrieve the consolidated metadata
-      meta <- private$request(".zmetadata")
-      if (is.null(meta))
-        stop('No consolidated metadata found.', call. = FALSE)
-      meta <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
-      if (meta$zarr_consolidated_format != 1)
-        stop('Unsupported version of consolidated metadata.', call. = FALSE)
-      private$.metadata <- meta$metadata
+      # First attempt: Locate Zarr v.3 array
+      meta <- private$request('zarr.json')
+      if (!is.null(meta)) {
+        private$.metadata <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
+        if (private$.metadata$node_type != 'array')
+          stop('Cannot read a group from a Zarr v.3 HTTP store.', call. = FALSE)
+        format <- private$.metadata$zarr_format
+        if (is.null(format) || format != 3L)
+          stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
+      } else {
+        # Second attempt: Locate Zarr v.2 array
+        meta <- private$request('.zarray')
+        if (!is.null(meta)) {
+          private$.metadata <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
+          format <- private$.metadata$zarr_format
+          if (is.null(format) || format != 2L)
+            stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
+        } else {
+          # Final attempt: Retrieve the consolidated metadata
+          meta <- private$request('.zmetadata')
+          if (is.null(meta))
+            stop('No compatible store found at ', url, call. = FALSE)
+          meta <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
+          if (meta$zarr_consolidated_format != 1L)
+            stop('Unsupported version of consolidated metadata.', call. = FALSE)
+          private$.metadata <- meta$metadata
 
-      # The groups and arrays in the store as node paths
-      private$.nodes <- unique(sub('/\\.z[a-z]+$', '', names(private$.metadata)))
-      private$.nodes <- private$.nodes[!startsWith(private$.nodes, '.z')]
+          # The groups and arrays in the store as node paths
+          private$.nodes <- unique(sub('/\\.z[a-z]+$', '', names(private$.metadata)))
+          private$.nodes <- private$.nodes[!startsWith(private$.nodes, '.z')]
 
-      format <- private$.metadata$.zgroup$zarr_format
-      if (is.null(format) || format != 2L)
-        stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
+          format <- private$.metadata$.zgroup$zarr_format
+          if (is.null(format) || format != 2L)
+            stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
+        }
+      }
 
       super$initialize(read_only = TRUE, version = format)
     },
@@ -151,23 +173,39 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
     #' @return A list with the metadata, or `NULL` if the prefix is not pointing
     #'   to a Zarr group or array.
     get_metadata = function(prefix) {
-      nm <- names(private$.metadata)
-      if (prefix == '/') prefix <- ''
-      m <- paste0(prefix, '.zgroup')
-      if (!(m %in% nm)) {
-        m <- paste0(prefix, '.zarray')
-        if (!(m %in% nm)) return(NULL)
-      }
-      meta <- private$metadata_v2_to_v3(private$.metadata[[m]])
+      if (private$.version == 3L)
+        # v.3 so a single array
+        return(private$.metadata)
 
-      # Add any attributes
-      m <- paste0(prefix, '.zattrs')
-      if (m %in% nm) {
-        atts <- private$.metadata[[m]]
-        if (length(atts))
+      # v.2
+      if (is.null(private$.metadata$zarr_consolidated_format)) {
+        # Store holds a single array
+        meta <- private$metadata_v2_to_v3(private$.metadata)
+        # Attributes
+        atts <- private$request('.zattrs')
+        if (!is.null(atts)) {
+          atts <- jsonlite::fromJSON(rawToChar(atts), simplifyDataFrame = FALSE)
           meta$attributes <- atts
-      }
+        }
+      } else {
+        # Consolidated metadata
+        nm <- names(private$.metadata)
+        if (prefix == '/') prefix <- ''
+        m <- paste0(prefix, '.zgroup')
+        if (!(m %in% nm)) {
+          m <- paste0(prefix, '.zarray')
+          if (!(m %in% nm)) return(NULL)
+        }
+        meta <- private$metadata_v2_to_v3(private$.metadata[[m]])
 
+        # Add any attributes
+        m <- paste0(prefix, '.zattrs')
+        if (m %in% nm) {
+          atts <- private$.metadata[[m]]
+          if (length(atts))
+            meta$attributes <- atts
+        }
+      }
       meta
     },
 

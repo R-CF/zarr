@@ -21,8 +21,8 @@ grid of the associated array.}
 \item{\code{chunk_grid}}{(read-only) The chunk grid of the associated array,
 i.e. the number of chunks in each dimension.}
 
-\item{\code{chunk_separator}}{Set or retrieve the separator to be used for
-creating store keys for chunks.}
+\item{\code{chunk_encoding}}{Set or retrieve the chunk key encoding to be used
+for creating store keys for chunks.}
 
 \item{\code{data_type}}{The data type of the array using the chunking scheme.
 This is set by the array when starting to use chunking for file I/O.}

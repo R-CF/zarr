@@ -17,7 +17,9 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
 
     # Map of [chunk_id] -> chunk_grid_regular_IO instance
     .chunk_map = NULL,
-    .chunk_sep = '/',
+
+    # Settings of the chunk key encoding
+    .cke = list(),
 
     # The underlying properties of the array
     .data_type = NULL,
@@ -86,8 +88,6 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     read = function(start, stop) {
       chunk_shape  <- private$.chunk_shape
       nd <- length(chunk_shape)
-      sep <- private$.chunk_sep
-      chunk_pre <- if (private$.store$version == 3L) paste0('c', sep) else ''
 
       # Identify chunks touched by the indices
       chunk_start_idx <- floor((start - 1L) / chunk_shape)
@@ -112,7 +112,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       # Loop over the chunks
       for (i in seq_len(nrow(grid_idx))) {
         cidx <- grid_idx[i, ]
-        chunk_key <- paste0(private$.array_prefix, chunk_pre, paste(cidx, collapse = sep))
+        chunk_key <- paste0(private$.array_prefix, private$.cke$pre, paste(cidx, collapse = private$.cke$sep))
 
         # Compute slice within the chunk
         chunk_origin  <- cidx * chunk_shape + 1L
@@ -151,7 +151,6 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     write = function(data, start, stop) {
       chunk_shape  <- private$.chunk_shape
       nd <- length(chunk_shape)
-      sep <- private$.chunk_sep
 
       # Identify chunks touched by this hyperslab of data
       chunk_start_idx <- floor((start - 1L) / chunk_shape)
@@ -163,7 +162,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       # Loop over the chunks
       for (i in seq_len(nrow(grid_idx))) {
         cidx <- grid_idx[i, ]
-        chunk_key <- paste0(private$.array_prefix, paste('c', paste(cidx, collapse = sep), sep = sep))
+        chunk_key <- paste0(private$.array_prefix, private$.cke$pre, paste(cidx, collapse = private$.cke$sep))
 
         # Compute slice within the chunk
         chunk_origin  <- cidx * chunk_shape + 1L
@@ -213,13 +212,13 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
         private$.chunk_grid
     },
 
-    #' @field chunk_separator Set or retrieve the separator to be used for
-    #' creating store keys for chunks.
-    chunk_separator = function(value) {
+    #' @field chunk_encoding Set or retrieve the chunk key encoding to be used
+    #'   for creating store keys for chunks.
+    chunk_encoding = function(value) {
       if (missing(value))
-        private$.chunk_sep
+        private$.cke
       else
-        private$.chunk_sep <- value
+        private$.cke <- value
     },
 
     #' @field data_type The data type of the array using the chunking scheme.
