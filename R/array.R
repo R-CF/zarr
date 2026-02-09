@@ -18,15 +18,15 @@ zarr_array <- R6::R6Class('zarr_array',
     .chunking = NULL,
 
     # Returns a list with pre, sep and scalar elements that describe the
-    # chunking key mechanism of the array.
+    # chunk key encoding of the array.
     chunk_key_encoding = function() {
-      if (private$.metadata$zarr_format == 2L) {
+      if (private$.store$version == 2L) { # This is not entirely correct: every array has a zarr_format setting
         list(pre = '',
              sep = private$.metadata$dimension_separator %||% '.',
              scalar = '0')
       } else {
         if (private$.metadata$chunk_key_encoding$name == 'default')
-          list(pre = 'c',
+          list(pre = paste0('c', private$.metadata$chunk_key_encoding$configuration$separator),
                sep = private$.metadata$chunk_key_encoding$configuration$separator,
                scalar = 'c')
         else # v2
@@ -56,8 +56,8 @@ zarr_array <- R6::R6Class('zarr_array',
       private$.chunking$data_type <- private$.data_type
       private$.chunking$store <- store
       private$.chunking$array_prefix <- self$prefix
-      private$.chunking$chunk_encoding <- private$chunk_key_encoding()
       private$.chunking$codecs <- ab$codecs
+      private$.chunking$chunk_encoding <- private$chunk_key_encoding()
     },
 
     #' @description Print a summary of the array to the console.

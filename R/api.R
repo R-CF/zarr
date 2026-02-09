@@ -44,7 +44,6 @@ open_zarr <- function(location, read_only = FALSE) {
                   'local' = zarr_localstore$new(location, read_only),
                   'http'  = zarr_httpstore$new(location)
                  )
-
   zarr$new(store)
 }
 
@@ -106,10 +105,11 @@ as_zarr <- function(x, name = NULL, location = NULL) {
 
       if (missing(name) || is.null(name) || !nzchar(name))
         store$create_array(name = '', metadata = ab$metadata())
-      else {
+      else if (.is_valid_node_name(name)) {
         store$create_group(name = '')
         store$create_array(parent = '/', name = name, metadata = ab$metadata())
-      }
+      } else
+        stop('Invalid name for a Zarr array: ', name, call. = FALSE)
 
       # Create the Zarr object and get a handle on the newly created array
       out <- zarr$new(store)

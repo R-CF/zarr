@@ -281,11 +281,15 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
           fn <- paste(file_base, '.zarray', sep = '/')
           if (!file.exists(fn)) return(NULL)
         }
-
         meta <- jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
-        # FIXME: Read .zattrs
 
-        private$metadata_v2_to_v3(meta)
+        # Attributes
+        fn <- paste(file_base, '.zattrs', sep = '/')
+        atts <- if (file.exists(fn))
+                  jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
+                else list()
+
+        private$metadata_v2_to_v3(meta, atts)
       }
     },
 

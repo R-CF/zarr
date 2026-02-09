@@ -39,7 +39,7 @@ zarr_node <- R6::R6Class('zarr_node',
     #' @description Initialize a new node in a Zarr hierarchy.
     #' @param name The name of the node.
     #' @param metadata List with the metadata of the node.
-    #' @param parent The parent node of this new node. May be omitted when
+    #' @param parent The parent node of this new node. Must be omitted when
     #' initializing a root node.
     #' @param store The store to persist data in. Ignored if a `parent` is
     #'   specified.

@@ -6,7 +6,15 @@
 \title{Zarr Store for HTTP access}
 \description{
 This class implements a Zarr HTTP store. With this class Zarr
-stores on web servers can be read. Only Zarr v.2 is supported currently.
+stores on web servers can be read. For Zarr v.2 HTTP stores there exists a
+standard for publishing arrays on the store, using consolidated metadata.
+This class will look for such metadata in the root of the store. If no
+consolidated metadata is found then a regular group or array is searched
+for. Note that if a group is found that there is no standard process to
+determine what arrays are available in the store and where they are located
+relative to the root. Typically such information is found in the attributes
+of the group and you are advised to inspect those attributes and refer to
+the documentation of the store publisher.
 
 This class performs no sanity checks on any of the arguments passed to the
 methods, for performance reasons. Since this class should be accessed
@@ -69,8 +77,8 @@ Create an instance of this class.
 HTTP stores are read-only. Currently two types of Zarr store can be
 accessed. A Zarr v.2 consolidated metadata file at the root of the
 store (immediately below the URL) can identify a hierarchy of groups
-and arrays. Alternatively, a store with a single array, either v.2 or
-v.3.
+and arrays. Alternatively, a store with a group or a single array,
+either v.2 or v.3.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_httpstore$new(url)}\if{html}{\out{</div>}}
 }

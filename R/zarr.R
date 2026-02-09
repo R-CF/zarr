@@ -28,9 +28,9 @@ zarr <- R6::R6Class("zarr",
       # Build the node hierarchy
       metadata <- private$.store$get_metadata('/')
       private$.root <- if (metadata$node_type == 'group')
-        zarr_group$new(name = "", parent = NULL, store = private$.store, metadata = metadata)$build_hierarchy()
+        zarr_group$new(name = '', parent = NULL, store = private$.store, metadata = metadata)$build_hierarchy()
       else
-        zarr_array$new(name = "", parent = NULL, store = private$.store, metadata = metadata)
+        zarr_array$new(name = '', parent = NULL, store = private$.store, metadata = metadata)
     },
 
     #' @description Print a summary of the Zarr object to the console.

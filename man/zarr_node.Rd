@@ -68,7 +68,7 @@ Initialize a new node in a Zarr hierarchy.
 
 \item{\code{metadata}}{List with the metadata of the node.}
 
-\item{\code{parent}}{The parent node of this new node. May be omitted when
+\item{\code{parent}}{The parent node of this new node. Must be omitted when
 initializing a root node.}
 
 \item{\code{store}}{The store to persist data in. Ignored if a \code{parent} is

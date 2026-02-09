@@ -27,7 +27,7 @@ zarr_store <- R6::R6Class('zarr_store',
 
     # Local properties
     .version = 3L,        # The zarr version, by default 3
-    .chunk_sep  = '.',    # The chunk separator
+    .chunk_sep  = '.',    # The chunk separator, default a dot '.'
 
     # Convert Zarr v.2 metadata to v.3 metadata. Argument meta is a list, atts
     # is a list with attributes, possibly empty. Returns a list in v.3 format.
@@ -79,12 +79,9 @@ zarr_store <- R6::R6Class('zarr_store',
           ab$add_codec(meta$compressor$id, configuration = meta$compressor)
         }
 
-        v3 <- ab$metadata()
-
-        # Chunk separator
-        sep <- meta$dimension_separator
-        if (is.null(sep)) sep <- '.'
-        v3 <- c(v3, list(chunk_key_encoding = list(name = 'default', configuration = list(separator = sep))))
+        v3 <- c(ab$metadata(),
+                list(chunk_key_encoding = list(name = 'default',
+                                               configuration = list(separator = meta$dimension_separator %||% '.'))))
       }
 
       if (length(atts))

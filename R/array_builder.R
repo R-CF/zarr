@@ -113,7 +113,12 @@ array_builder <- R6::R6Class('array_builder',
           # Set properties through the active fields, checking is done there.
           self$shape <- meta$shape
           self$data_type <- meta$data_type
-          self$fill_value <- meta$fill_value
+          self$fill_value <- if (is.character(meta$fill_value))
+            switch(meta$fill_value,
+                   'Infinity'  = Inf,
+                   '-Infinity' = -Inf,
+                   'NaN'       = NaN)
+          else meta$fill_value
           self$chunk_shape <- meta$chunk_grid$configuration$chunk_shape # regular grid only
 
           if (length(meta$codecs)) {
@@ -284,10 +289,12 @@ array_builder <- R6::R6Class('array_builder',
     #' @field fill_value The value in the array of uninitialized data elements.
     #' The `fill_value` has to agree with the `data_type` of the array.
     fill_value = function(value) {
-      if (missing(value))
-        private$.data_type$fill_value
-      else
-        private$.data_type$fill_value <- value
+      if (!is.null(private$.data_type)) {
+        if (missing(value))
+          private$.data_type$fill_value
+        else
+          private$.data_type$fill_value <- value
+      }
     },
 
     #' @field shape The shape of the Zarr array, an integer vector of lengths
