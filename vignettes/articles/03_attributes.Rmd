@@ -30,7 +30,7 @@ arr <- as_zarr(x, "bar", z[["/"]])
 arr$set_attribute("title", "Bar for foo")
 arr$set_attribute("valid_range", c(0, 1))
 arr$set_attribute("actual_range", range(x))
-arr
+arr 
 ```
 You can programmatically retrieve the full set of attributes with the `attributes` field of `zarr_group` and `zarr_array`. The attributes are returned to the caller as a `list`.
 

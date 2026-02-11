@@ -10,9 +10,10 @@
 
 `zarr` is a package to create and access Zarr stores using native R
 code. It is designed against the specification for Zarr core version 3.
+Supported stores comprise memory, the file system and HTTP.
 
-Zarr v.2 file and HTTP stores can be read and will be represented
-internally in the v.3 format.
+Zarr v.2 stores can be read and will be represented internally in the
+v.3 format.
 
 ## Basic usage
 
@@ -24,7 +25,6 @@ library(zarr)
 
 x <- array(1:400, c(5, 20, 4))
 z <- as_zarr(x)
-#> Loading required namespace: blosc
 z
 #> <Zarr>
 #> Version   : 3 
@@ -50,9 +50,9 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpgIAeKm/filee3f0693d71a7.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpG4NuwT/file799f7c599434.zarr 
 #> Arrays    : 1 
-#> Total size: 1.09 KB
+#> Total size: 1.12 KB
 ```
 
 The total size that is printed to the console when inspecting a Zarr

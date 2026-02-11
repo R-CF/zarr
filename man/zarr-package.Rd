@@ -11,6 +11,7 @@ The 'Zarr' specification is widely used to build libraries for the storage and r
 Useful links:
 \itemize{
   \item \url{https://github.com/R-CF/zarr}
+  \item \url{https://r-cf.github.io/zarr/}
   \item Report bugs at \url{https://github.com/R-CF/zarr/issues}
 }
 

@@ -31,7 +31,7 @@ z
 ```
 This creates a Zarr array in memory from an R vector of integers with a length of 500. The two vector properties *mode* and *length* are used to define the Zarr array, in combination with some default Zarr settings such as for the chunking and the compression.
 
-In general it is more useful to persist your data to a Zarr "store". The store is a directory on your local file system and you can store multiple Zarr arrays in one Zarr store, using a directory hierarchy of Zarr groups. These Zarr stores are identified by the presence of a "zarr.json" file, one for each Zarr group and array, a JSON document that defines what is contained in the directory. These Zarr stores can be used to persist data between R sessions, for instance as an alternative to ".Rdata" files.
+In general it is more useful to persist your data to a Zarr "store". The store is a directory on your local file system and you can put multiple Zarr arrays in one Zarr store, using a directory hierarchy of Zarr groups. These Zarr stores are identified by the presence of a "zarr.json" file, one for each Zarr group and array, a JSON document that defines what is contained in the directory. These Zarr stores can be used to persist data between R sessions, for instance as an alternative to ".Rdata" files.
 ```{r persist}
 x <- array(1:10000, c(500, 10, 2))
 
@@ -77,52 +77,61 @@ arr_def
 ```
 Ok, that is a lot of things all at once. Let's walk through this line-by-line
 
-> VALID
+```
+VALID
+```
 
 On the top line we see that the document shown is a valid Zarr array metadata document. You may also get `INCOMPLETE` if some configuration part is not yet fully defined.
 
-> "zarr_format": 3
-
+```
+"zarr_format": 3
+```
 This package is for Zarr version 3 and the `array_builder` will only create metadata documents for version 3. You may persist your data in a Zarr version 2 store but within this package metadata is always shown in version 3 format.
 
-> "node_type": "array"
-
+```
+"node_type": "array"
+```
 The metadata document is for a Zarr array. The only other option is `"group"`.
 
-> "shape": [240, 310, 5]
-
+```
+"shape": [240, 310, 5]
+```
 The shape specified in the call to `define_array()`. A shape can have any number of dimensions. The dimensions are specified in the regular R order.
 
-> "data_type": "int16"
-
+```
+"data_type": "int16"
+```
 Zarr supports a large number of data types while R only has a few. Data types are automatically translated between the two environments. The data type that you specify for the Zarr array is what will be used for the storage of the data in Zarr; in R, this data type would come out as an "integer".
 
-> "fill_value": -32767
-
+```
+"fill_value": -32767
+```
 Every Zarr array has a `fill_value` for parts of the array that have not yet been written or where there is no data. The equivalent in R is `NA`. Every data type has a default `fill_value` but you can also set your own. In R, you will rarely see the `fill_value` as the data is automatically transformed from `NA` in R to `fill_value` in Zarr and *vice-versa*.
 
-> "chunk_grid": {
+```
+"chunk_grid": {
     "name": "regular",
     "configuration": {
       "chunk_shape": [100, 100, 5]
     }
   }
-  
+```  
 A Zarr array is stored in "chunked" format, where the array is cut up into chunks along each dimension. The default setting is to have chunks with a length of 100 along each dimension (or smaller if the Zarr array is smaller, as is the case here). This results in chunks with a maximum size of 8MB for numeric data, 4MB for integer data and 1MB for logical data, before compression, for a 3D Zarr array with shape `[100, 100, 100]`. You may set this to a set of values that better aligns with your array size and your retrieval pattern.
 
-> "codecs"
-
+```
+"codecs"
+```
 The codecs are a list of operations that are executed when writing a Zarr array to a Zarr store ("encoding") and in reverse order when reading a Zarr array from a Zarr store into R ("decoding"). This is a big and complicated one so we'll look at the individual codecs.
 
-> "transpose"
+##### "transpose"
 
 The first, optional, processing step is the "transpose" codec. This is included by default with the indices of the array dimensions in reverse order. Zarr comes out of the C/Python environment and matrices and arrays are stored in row-major order. R, on the other hand, used column-major order. To ensure portability while reducing processing overhead this codec is included: if it is encountered with the dimension indices in reverse order, it is a no-op in R. If you want maximum portability of your Zarr store, including for use in C or Python with Zarr readers that do not support the transpose codec then you can delete this codec from the list. Do note, however, that this will increase processing time when writing and reading Zarr arrays in R.
 
-> "bytes"
+##### "bytes"
 
 The "bytes" codec is (effectively) mandatory. It takes an R object and turns it into a byte stream with multi-byte data processed according to a given byte ordering (or endianness). You very rarely, if ever, have to worry about this codec.
 
-> "blosc"
+##### "blosc"
 
 Most Zarr arrays are compressed when stored as that reduces required file storage and network transmission time. The default compression used in this package is "blosc", which includes a number of compression algorithms, here using "zstd". The "level" argument can be set from 0 (no compression) to 9 (maximum compression), with higher values leading to smaller chunk sizes but longer processing. The other arguments are selected automatically and are best left to their default values. There are several more compression libraries to choose from.
 

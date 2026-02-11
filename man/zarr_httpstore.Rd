@@ -100,7 +100,9 @@ An instance of this class.
 \if{latex}{\out{\hypertarget{method-zarr_httpstore-exists}{}}}
 \subsection{Method \code{exists()}}{
 Check if a key exists in the store. The key can point to a
-group, an array, or a metadata file.
+group, an array, or a metadata file. This check is only relevant for
+HTTP stores with consolidated metadata. In other cases the single group
+or array will be at the root.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_httpstore$exists(key)}\if{html}{\out{</div>}}
 }

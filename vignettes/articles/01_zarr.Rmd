@@ -71,4 +71,4 @@ unlink(fn)
 ```
 
 # Other Zarr stores
-Currently, this package only support local file system stores and memory stores. Support for online and cloud-based stores will be added in the near future.
+Currently, this package supports local file system stores, online HTTP stores and memory stores. Support for cloud-based stores will be added in the near future.

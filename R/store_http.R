@@ -21,7 +21,7 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
   cloneable = FALSE,
   private = list(
     .base_url = '.',          # The root of the zarr store as an URL to a server
-    .metadata = list(),       # The consolidated metadata of the Zarr v.2 store
+    .metadata = list(),       # The metadata of the object at the root of the store
     .nodes    = character(0), # Character vector of group and variable paths, but without the leading slash
 
     # Request an item from the HTPP store by key. The key must be fully formed
@@ -58,49 +58,54 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
       # First attempt: Locate Zarr v.3 array or group
       meta <- private$request('zarr.json')
       if (!is.null(meta)) {
-        private$.metadata <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
-        format <- private$.metadata$zarr_format
+        meta <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
+        format <- meta$zarr_format
         if (is.null(format) || format != 3L)
           stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
       } else {
-        # Second attempt: Locate Zarr v.2 group or array
-        meta <- private$request('.zarray')
-        if (is.null(meta))
-          meta <- private$request('.zgroup')
+        # Second attempt: Retrieve the consolidated metadata
+        meta <- private$request('.zmetadata')
         if (!is.null(meta)) {
-          private$.metadata <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
-          format <- private$.metadata$zarr_format
-          if (is.null(format) || format != 2L)
-            stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
-        } else {
-          # Final attempt: Retrieve the consolidated metadata
-          meta <- private$request('.zmetadata')
-          if (is.null(meta))
-            stop('No compatible store found at ', url, call. = FALSE)
           meta <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
           if (meta$zarr_consolidated_format != 1L)
             stop('Unsupported version of consolidated metadata.', call. = FALSE)
-          private$.metadata <- meta$metadata
+
+          format <- meta$metadata$.zgroup$zarr_format
+          if (is.null(format) || format != 2L)
+            stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
 
           # The groups and arrays in the store as node paths
-          private$.nodes <- unique(sub('/\\.z[a-z]+$', '', names(private$.metadata)))
+          private$.nodes <- unique(sub('/\\.z[a-z]+$', '', names(meta$metadata)))
           private$.nodes <- private$.nodes[!startsWith(private$.nodes, '.z')]
-
-          format <- private$.metadata$.zgroup$zarr_format
+        } else {
+          # Final attempt: Locate Zarr v.2 group or array
+          meta <- private$request('.zarray')
+          if (is.null(meta))
+            meta <- private$request('.zgroup')
+          if (is.null(meta))
+            stop('No compatible store found at ', url, call. = FALSE)
+          meta <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
+          format <- meta$zarr_format
           if (is.null(format) || format != 2L)
             stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
         }
       }
+      private$.metadata <- meta
 
       super$initialize(read_only = TRUE, version = format)
     },
 
     #' @description Check if a key exists in the store. The key can point to a
-    #'   group, an array, or a metadata file.
+    #'   group, an array, or a metadata file. This check is only relevant for
+    #'   HTTP stores with consolidated metadata. In other cases the single group
+    #'   or array will be at the root.
     #' @param key Character string. The key that the store will be searched for.
     #' @return `TRUE` if argument `key` is found, `FALSE` otherwise.
     exists = function(key) {
-      key %in% private$.nodes || key %in% names(private$.metadata)
+      if (is.null(private$.metadata$zarr_consolidated_format))
+        key == '/'
+      else
+        key %in% private$.nodes || key %in% names(private$.metadata$metadata)
     },
 
     #' @description Clearing the store is not supported.
@@ -131,9 +136,10 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
     #' @return A character array with all keys found in the store immediately
     #'   below the `prefix`, both for groups and arrays.
     list_dir = function(prefix) {
-      keys <- private$.nodes[startsWith(private$.nodes, prefix)]
       # FIXME: Test that the keys are indeed nodes, i.e. have a file 'zarr.json', '.zgroup' or '.zarray'.
-      keys
+      if (length(private$.nodes))
+        private$.nodes[startsWith(private$.nodes, prefix)]
+      else character(0)
     },
 
     #' @description Retrieve all keys and prefixes with a given prefix.
@@ -141,10 +147,14 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
     #' @return A character vector with all paths found in the store below the
     #'   `prefix` location, both for groups and arrays.
     list_prefix = function(prefix) {
-      nm <- names(private$.metadata)
-      keys <- nm[startsWith(nm, prefix)]
       # FIXME: Test that the keys are indeed nodes, i.e. have a file 'zarr.json'.
-      paste0('/', keys)
+      if (is.null(private$.metadata$zarr_consolidated_format))
+        character(0)
+      else {
+        nm <- names(private$.metadata$metadata)
+        keys <- nm[startsWith(nm, prefix)]
+        paste0('/', keys)
+      }
     },
 
     #' @description Storing a `(key, value)` pair is not supported.
@@ -194,19 +204,19 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
         meta <- private$metadata_v2_to_v3(private$.metadata, atts)
       } else {
         # Consolidated metadata
-        nm <- names(private$.metadata)
+        nm <- names(private$.metadata$metadata)
         if (prefix == '/') prefix <- ''
         m <- paste0(prefix, '.zgroup')
         if (!(m %in% nm)) {
           m <- paste0(prefix, '.zarray')
           if (!(m %in% nm)) return(NULL)
         }
-        meta <- private$metadata_v2_to_v3(private$.metadata[[m]])
+        meta <- private$metadata_v2_to_v3(private$.metadata$metadata[[m]])
 
         # Add any attributes
         m <- paste0(prefix, '.zattrs')
         if (m %in% nm) {
-          atts <- private$.metadata[[m]]
+          atts <- private$.metadata$metadata[[m]]
           if (length(atts))
             meta$attributes <- atts
         }
