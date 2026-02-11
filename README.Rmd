@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 `zarr` is a package to create and access Zarr stores using native R code. It is designed against the specification for Zarr core version 3. Supported stores comprise memory, the file system and HTTP.
 
-Zarr v.2 stores can be read and will be represented internally in the v.3 format.
+Zarr v.2 stores can be read and will be represented internally in the v.3 format. 
 
 ## Basic usage
 
