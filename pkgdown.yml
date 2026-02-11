@@ -6,7 +6,7 @@ articles:
   articles/02_array_basics: 02_array_basics.html
   articles/03_attributes: 03_attributes.html
   articles/04_http: 04_http.html
-last_built: 2026-02-11T10:19Z
+last_built: 2026-02-11T11:53Z
 urls:
   reference: https://r-cf.github.io/zarr/reference
   article: https://r-cf.github.io/zarr/articles
