@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@
       <h1>2. Working with arrays</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/R-CF/zarr/blob/v0.2.0/vignettes/articles/02_array_basics.Rmd" class="external-link"><code>vignettes/articles/02_array_basics.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/R-CF/zarr/blob/main/vignettes/articles/02_array_basics.Rmd" class="external-link"><code>vignettes/articles/02_array_basics.Rmd</code></a></small>
       <div class="d-none name"><code>02_array_basics.Rmd</code></div>
     </div>
 
@@ -119,11 +119,11 @@ alternative to “.Rdata” files.</p>
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/Rtmpxv8oi2/file1e2862300e0b.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/Rtmpf9Z7gn/file1de336374731.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 1 </span></span>
 <span><span class="co">#&gt; Total size: 2.91 KB</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpxv8oi2/file1e2862300e0b.zarr </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpf9Z7gn/file1de336374731.zarr </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
 <span><span class="co">#&gt; └ ⌗ top_array</span></span></code></pre></div>
 <p>If you have multiple R objects that you want to store in the Zarr
@@ -144,7 +144,7 @@ where you want to store the R object.</p>
 <span><span class="va">grp</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, name <span class="op">=</span> <span class="st">"サブグループ"</span><span class="op">)</span>  <span class="co"># = subgroup</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">w</span>, name <span class="op">=</span> <span class="st">"空の行列"</span>, location <span class="op">=</span> <span class="va">grp</span><span class="op">)</span>  <span class="co"># = empty matrix</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpxv8oi2/file1e2862300e0b.zarr </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpf9Z7gn/file1de336374731.zarr </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
 <span><span class="co">#&gt; ├ ⌗ top_array</span></span>
 <span><span class="co">#&gt; ├ ⌗ a_vector</span></span>
@@ -169,7 +169,7 @@ chunk in files like <code>0</code>, <code>1</code>, <code>2</code>,
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/Rtmpxv8oi2/file1e2862300e0b.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/Rtmpf9Z7gn/file1de336374731.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 3 </span></span>
 <span><span class="co">#&gt; Total size: 7.67 KB</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></code></pre></div>
