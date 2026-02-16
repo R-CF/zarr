@@ -120,8 +120,8 @@ Read some or all of the array data for the array.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{selection}}{A list as long as the array has dimensions where each
-element is a range of indices along the dimension to write. If missing,
-the entire array will be read.}
+element is a range of indices along the dimension to write. If missing
+or \code{NULL}, the entire array will be read.}
 }
 \if{html}{\out{</div>}}
 }

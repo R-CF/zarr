@@ -86,12 +86,12 @@ zarr_array <- R6::R6Class('zarr_array',
 
     #' @description Read some or all of the array data for the array.
     #' @param selection A list as long as the array has dimensions where each
-    #'   element is a range of indices along the dimension to write. If missing,
-    #'   the entire array will be read.
+    #'   element is a range of indices along the dimension to write. If missing
+    #'   or `NULL`, the entire array will be read.
     #' @return A vector, matrix or array of data.
     read = function(selection) {
       array_shape <- private$.metadata$shape
-      if (missing(selection))
+      if (missing(selection) || is.null(selection))
         selection <- lapply(array_shape, function(d) c(1L, d))
       if (length(selection) == length(array_shape)) {
         start <- sapply(selection, min)
@@ -203,15 +203,13 @@ str.zarr_array <- function(object, ...) {
 #' the indices have to be consecutive.
 #'
 #' @param x A `zarr_array` object of which to extract or replace the data.
-#' @param ... Indices specifying elements to extract or replace. Indices are
-#'   numeric, empty (missing) or `NULL`. Numeric values are coerced to integer
-#'   or whole numbers. The number of indices has to agree with the
-#'   dimensionality of the array.
+#' @param i,j,... Indices specifying elements to extract or replace. Indices are
+#'   numeric, empty (missing) or `NULL`. Numeric values are coerced to integer.
+#'   The number of indices has to agree with the dimensionality of the array.
 #' @param drop If `TRUE` (the default), degenerate dimensions are dropped, if
 #'   `FALSE` they are retained in the result.
 #' @return When extracting data, a vector, matrix or array, having dimensions as
-#'   specified in the indices. When replacing part of the Zarr array, returns
-#'   `x` invisibly.
+#'   specified in the indices.
 #' @name array-indexing
 #' @export
 #' @docType methods
@@ -220,32 +218,42 @@ str.zarr_array <- function(object, ...) {
 #' z <- as_zarr(x)
 #' arr <- z[["/"]]
 #' arr[3:5, 7:9]
-`[.zarr_array` <- function(x, ..., drop = TRUE) {
-  indices <- as.list(substitute(list(...)))[-1L]
-  selection <- .indices2selection(indices, x$shape)
-  data <- x$read(selection)
-  if (drop) drop(data) else data
-}
+"[.zarr_array" <- function(x, i, j, ..., drop = TRUE) {
+  sc <- sys.call()
+  args <- sc[-(1:2)]      # remove function name and x
+  args$drop <- NULL       # remove drop if present
 
-# --- Internal helper functions ---
-.indices2selection <- function(indices, shape) {
-  nd <- length(shape)
-  if (length(indices) != nd && !(length(indices) == 1L && is.symbol(indices[[1L]])))
-    stop('Invalid number of selection indices for the array.', call. = FALSE) # nocov
-  selection <- vector("list", nd)
+  if ((length(args) == 1L) && (identical(args[[1L]], quote(expr = ))))
+    selection <- NULL
+  else {
+    # Replace missing indices with NULL
+    indices <- lapply(args, function(arg) {
+      if (is.symbol(arg) && identical(arg, quote(expr = )))
+        NULL
+      else
+        eval(arg, parent.frame())
+    })
 
-  for (d in seq_len(nd)) {
-    if (d > length(indices) || is.symbol(indices[[d]]) || is.null(indices[[d]])) {
-      # Missing index
-      selection[[d]] <- c(1L, shape[d])
-    } else {
-      sel <- eval(indices[[d]], parent.frame())
-      if (is.logical(sel))
-        sel <- which(sel)
-      else if (any(sel < 0L))
-        sel <- setdiff(seq_len(shape[d]), abs(sel))
-      selection[[d]] <- range(sort(unique(sel)))
+    nd <- length(x$shape)
+    if (length(indices) != nd)
+      stop('Invalid number of selection indices for the array.', call. = FALSE) # nocov
+    selection <- vector("list", nd)
+
+    for (d in seq_len(nd)) {
+      if (is.null(indices[[d]])) {
+        # Missing index
+        selection[[d]] <- c(1L, x$shape[d])
+      } else {
+        sel <- eval(indices[[d]], parent.frame())
+        if (is.logical(sel))
+          sel <- which(sel)
+        else if (any(sel < 0L))
+          sel <- setdiff(seq_len(x$shape[d]), abs(sel))
+        selection[[d]] <- range(sel)
+      }
     }
   }
-  selection
+
+  data <- x$read(selection)
+  if (drop) drop(data) else data
 }

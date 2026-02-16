@@ -6,23 +6,21 @@
 \alias{[.zarr_array}
 \title{Extract or replace parts of a Zarr array}
 \usage{
-\method{[}{zarr_array}(x, ..., drop = TRUE)
+\method{[}{zarr_array}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{A \code{zarr_array} object of which to extract or replace the data.}
 
-\item{...}{Indices specifying elements to extract or replace. Indices are
-numeric, empty (missing) or \code{NULL}. Numeric values are coerced to integer
-or whole numbers. The number of indices has to agree with the
-dimensionality of the array.}
+\item{i, j, ...}{Indices specifying elements to extract or replace. Indices are
+numeric, empty (missing) or \code{NULL}. Numeric values are coerced to integer.
+The number of indices has to agree with the dimensionality of the array.}
 
 \item{drop}{If \code{TRUE} (the default), degenerate dimensions are dropped, if
 \code{FALSE} they are retained in the result.}
 }
 \value{
 When extracting data, a vector, matrix or array, having dimensions as
-specified in the indices. When replacing part of the Zarr array, returns
-\code{x} invisibly.
+specified in the indices.
 }
 \description{
 These operators can be used to extract or replace data from an array by
