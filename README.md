@@ -5,6 +5,16 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:
+Experimental](https://img.shields.io/badge/Lifecycle-Experimental-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![CRAN
+Status](https://www.r-pkg.org/badges/version/zarr)](https://cran.r-project.org/package=zarr)
+[![CRAN
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/zarr)](https://cran.r-project.org/package=zarr)
+[![License: GPL
+v3](https://img.shields.io/badge/License-MIT-blue.svg)](https://mit-license.org)
+[![Last
+commit](https://img.shields.io/github/last-commit/R-CF/zarr)](https://github.com/R-CF/zarr/commits/main)
 [![R-CMD-check](https://github.com/R-CF/zarr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-CF/zarr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -50,7 +60,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpRkZtao/file81aff3694c1.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpQnhb1c/file73311f13157.zarr 
 #> Arrays    : 1 
 #> Total size: 1.12 KB
 ```
