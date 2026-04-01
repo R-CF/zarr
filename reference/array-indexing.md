@@ -8,7 +8,7 @@ that the indices have to be consecutive.
 
 ``` r
 # S3 method for class 'zarr_array'
-x[..., drop = TRUE]
+x[i, j, ..., drop = TRUE]
 ```
 
 ## Arguments
@@ -17,12 +17,12 @@ x[..., drop = TRUE]
 
   A `zarr_array` object of which to extract or replace the data.
 
-- ...:
+- i, j, ...:
 
   Indices specifying elements to extract or replace. Indices are
   numeric, empty (missing) or `NULL`. Numeric values are coerced to
-  integer or whole numbers. The number of indices has to agree with the
-  dimensionality of the array.
+  integer. The number of indices has to agree with the dimensionality of
+  the array.
 
 - drop:
 
@@ -32,8 +32,7 @@ x[..., drop = TRUE]
 ## Value
 
 When extracting data, a vector, matrix or array, having dimensions as
-specified in the indices. When replacing part of the Zarr array, returns
-`x` invisibly.
+specified in the indices.
 
 ## Examples
 

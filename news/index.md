@@ -4,6 +4,8 @@
 
 ## zarr 0.2.0
 
+CRAN release: 2026-02-11
+
 - Zarr version 2 stores can be read. Data types supported are those also
   included in the v.3 core specification. The `compression` codec has to
   be one of those supported by the v.3 core specification or `zstd`.

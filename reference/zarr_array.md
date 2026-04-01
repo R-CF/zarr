@@ -132,8 +132,8 @@ Read some or all of the array data for the array.
 - `selection`:
 
   A list as long as the array has dimensions where each element is a
-  range of indices along the dimension to write. If missing, the entire
-  array will be read.
+  range of indices along the dimension to write. If missing or `NULL`,
+  the entire array will be read.
 
 #### Returns
 
