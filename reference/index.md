@@ -45,8 +45,18 @@
   : Zarr transpose codec
 - [`zarr_codec_zstd`](https://r-cf.github.io/zarr/reference/zarr_codec_zstd.md)
   : Zarr "zstd" codec
+- [`zarr_conv_ref`](https://r-cf.github.io/zarr/reference/zarr_conv_ref.md)
+  : Convention "ref"
+- [`zarr_conv_uom`](https://r-cf.github.io/zarr/reference/zarr_conv_uom.md)
+  : Convention "uom"
+- [`zarr_convention`](https://r-cf.github.io/zarr/reference/zarr_convention.md)
+  : Zarr convention
 - [`zarr_data_type`](https://r-cf.github.io/zarr/reference/zarr_data_type.md)
   : Zarr data types
+- [`zarr_domain`](https://r-cf.github.io/zarr/reference/zarr_domain.md)
+  : Zarr domain
+- [`zarr_domains()`](https://r-cf.github.io/zarr/reference/zarr_domains.md)
+  : List the Zarr domains registered in this session
 - [`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
   : Zarr extension support
 - [`zarr_group`](https://r-cf.github.io/zarr/reference/zarr_group.md) :
@@ -59,5 +69,9 @@
   : In-memory Zarr Store
 - [`zarr_node`](https://r-cf.github.io/zarr/reference/zarr_node.md) :
   Zarr Hierarchy node
+- [`zarr_register_domain()`](https://r-cf.github.io/zarr/reference/zarr_register_domain.md)
+  : Register a Zarr domain for this session
 - [`zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md) :
   Zarr Abstract Store
+- [`zarr_unregister_domain()`](https://r-cf.github.io/zarr/reference/zarr_unregister_domain.md)
+  : Unregister a Zarr domain from this session

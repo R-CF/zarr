@@ -22,6 +22,7 @@
     <li><a class="dropdown-item" href="../articles/02_array_basics.html">2. Working with arrays</a></li>
     <li><a class="dropdown-item" href="../articles/03_attributes.html">3. Working with attributes</a></li>
     <li><a class="dropdown-item" href="../articles/04_http.html">4. HTTP stores</a></li>
+    <li><a class="dropdown-item" href="../articles/05_extending.html">5. Extending Zarr</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -41,7 +42,10 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="zarr-development-version">zarr (development version)<a class="anchor" aria-label="anchor" href="#zarr-development-version"></a></h2>
-</div>
+<ul><li>Extensible domain and convention mechanisms added, following <a href="https://zarr.dev/zeps/draft/ZEP0004.html" class="external-link">ZEP0004</a>. This enables developers to extend this Zarr implementation with domain-specific interfaces.</li>
+<li>Metadata is now writable as a complete object - expert use only.</li>
+<li>Fixed listing of keys in memory stores</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="zarr-020">zarr 0.2.0<a class="anchor" aria-label="anchor" href="#zarr-020"></a></h2><p class="text-muted">CRAN release: 2026-02-11</p>
 <ul><li>Zarr version 2 stores can be read. Data types supported are those also included in the v.3 core specification. The <code>compression</code> codec has to be one of those supported by the v.3 core specification or <code>zstd</code>. Filters are not yet supported.</li>

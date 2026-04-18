@@ -1,0 +1,92 @@
+# 5. Extending Zarr
+
+Zarr is a generic specification for working with multi-dimensional data
+cubes. It is intentionally agnostic about the meaning of the data and
+the relationship between dimensions. To make Zarr useful in specific
+application domains it is necessary to attach “meaning” to the array
+data and its dimensions. A straightforward example is coordinate values
+along the dimensions of the array: rather than indices `[0..n-1]` (in
+Zarr, array indices are 0-based) one would like to use longitude and
+latitude values for geographic data, dates for temporal data, classes
+for categorical data, etc.
+
+This package implements two concepts to attach this meaning to data:
+domains and conventions. Both of these are extensible, meaning that it
+is relatively straightforward to create new domains and conventions and
+expose them through this package.
+
+## Domains
+
+A domain is best understood as an area of application for Zarr data. At
+the time of this writing there are two widely recognised domains:
+[OME-Zarr](https://ngff.openmicroscopy.org) for microscopy data and
+[GeoZarr](https://geozarr.org), a domain under development for attaching
+Earth-based coordinates to array dimensions.
+
+In R, a domain comes in the form of a package that has classes
+descending from base classes defined in this package, and which then
+registers itself with this package for a seamless operation. When
+opening a Zarr store using the standard function
+[`open_zarr()`](https://r-cf.github.io/zarr/reference/open_zarr.md) all
+the registered domains are called until the Zarr store is “claimed” by a
+domain. That domain then creates bespoke versions of classes
+`zarr_group` and `zarr_array` with domain-specific code for each of the
+objects in the Zarr store that it wants to manage. Any unclaimed nodes
+are managed as generic Zarr objects by this package.
+
+Creating a new domain is relatively straightforward using the
+`zarr_domain` base class in this package. Obviously, all the
+domain-specific processing has to be added by the package developers. At
+this time, no domain packages have been published on CRAN but there is
+one domain package under active development. Once published on CRAN or
+when a stable version is available in a public repository such as on
+GitHub, domain packages may be listed on this page by opening an
+[issue](https://github.com/R-CF/zarr/issues).
+
+## Conventions
+
+A convention is a set of attributes that presents a standard way of
+describing some feature. Convention attributes are stored in the
+metadata of a Zarr group or array. The concept and the format are
+currently being discussed among Zarr developers but a workable [draft
+implementation](https://github.com/zarr-conventions) is now being
+actively used and several conventions have been published. Conventions
+can be usefully classified into two groups:
+
+1.  **Generic conventions:** These are conventions that have a broad use
+    and which may be used in various domains. Examples of such
+    conventions are [ref](https://github.com/R-CF/zarr_convention_ref)
+    for a standard way to refer to Zarr objects or attributes elsewhere
+    in the store or in other stores,
+    [license](https://github.com/clbarnes/zarr-convention-license) for
+    attaching licensing information to a Zarr array or store, and
+    [uom](https://github.com/clbarnes/zarr-convention-uom) for
+    unit-of-measure information for data in a Zarr array. Such
+    conventions can be included in this package (`ref` and `uom` are
+    implemented) but their interpretation is up to the domain package.
+    If you would like to develop a generic convention, please open an
+    [issue](https://github.com/R-CF/zarr/issues) to present your
+    proposal.
+2.  **Domain-specific conventions:** Domain-specific conventions work
+    just like generic conventions except that they have a more limited
+    area of application. The GeoZarr community has already developed
+    some conventions such as
+    [spatial:](https://github.com/zarr-conventions/spatial) and
+    [proj:](https://github.com/zarr-experimental/geo-proj), which
+    provide a coordinate reference system for Zarr arrays.
+    Domain-specific conventions should be included in a domain package.
+    If you have an idea for a domain-specific convention, you should
+    reach out to the domain package developers.
+
+## Working with domains and conventions
+
+Zarr is a rather bare-bones specification for storing and accessing
+n-dimensional array data. This package maintains that lean approach.
+Domain packages add specific features and behaviour such that Zarr data
+becomes more useful in that specific domain. For guidance on working
+with domains and conventions you should therefore turn to the domain
+packages and their documentation.
+
+If you are a developer of a domain package or convention, please use the
+GitHub [issues](https://github.com/R-CF/zarr/issues) to discuss a
+proposal or implementation details.

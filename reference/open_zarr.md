@@ -40,6 +40,7 @@ africa
 #> Location  : /home/runner/work/_temp/Library/zarr/extdata/africa.zarr 
 #> Arrays    : 1 
 #> Total size: 540.36 KB 
+#> 
 #> Attributes:
 #>  name        value                                             
 #>  title       CRU TS4.08 Mean Temperature                       

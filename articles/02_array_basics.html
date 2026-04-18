@@ -37,6 +37,7 @@
     <li><a class="dropdown-item" href="../articles/02_array_basics.html">2. Working with arrays</a></li>
     <li><a class="dropdown-item" href="../articles/03_attributes.html">3. Working with attributes</a></li>
     <li><a class="dropdown-item" href="../articles/04_http.html">4. HTTP stores</a></li>
+    <li><a class="dropdown-item" href="../articles/05_extending.html">5. Extending Zarr</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -119,11 +120,11 @@ alternative to “.Rdata” files.</p>
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/Rtmp52UsSL/file1ecd28f4c75b.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/Rtmpfbal4z/file1cd07fc72427.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 1 </span></span>
 <span><span class="co">#&gt; Total size: 2.91 KB</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmp52UsSL/file1ecd28f4c75b.zarr </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpfbal4z/file1cd07fc72427.zarr </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
 <span><span class="co">#&gt; └ ⌗ top_array</span></span></code></pre></div>
 <p>If you have multiple R objects that you want to store in the Zarr
@@ -144,7 +145,7 @@ where you want to store the R object.</p>
 <span><span class="va">grp</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, name <span class="op">=</span> <span class="st">"サブグループ"</span><span class="op">)</span>  <span class="co"># = subgroup</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">w</span>, name <span class="op">=</span> <span class="st">"空の行列"</span>, location <span class="op">=</span> <span class="va">grp</span><span class="op">)</span>  <span class="co"># = empty matrix</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmp52UsSL/file1ecd28f4c75b.zarr </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpfbal4z/file1cd07fc72427.zarr </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
 <span><span class="co">#&gt; ├ ⌗ top_array</span></span>
 <span><span class="co">#&gt; ├ ⌗ a_vector</span></span>
@@ -169,7 +170,7 @@ chunk in files like <code>0</code>, <code>1</code>, <code>2</code>,
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/Rtmp52UsSL/file1ecd28f4c75b.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/Rtmpfbal4z/file1cd07fc72427.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 3 </span></span>
 <span><span class="co">#&gt; Total size: 7.67 KB</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></code></pre></div>

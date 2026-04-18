@@ -48,6 +48,7 @@ z[["/"]]
 #> Data type : float32 
 #> Shape     : 160 260 12 
 #> Chunking  : 80 65 12 
+#> 
 #> Attributes:
 #>  name      value                   
 #>  long_name near-surface temperature
@@ -77,6 +78,7 @@ the data.
 #> Version   : 2 
 #> Store     : HTTP store 
 #> Arrays    : 0 
+#> 
 #> Attributes:
 #>  name        value                                             
 #>  _creator    omero-zarr, 0.3.0                                 

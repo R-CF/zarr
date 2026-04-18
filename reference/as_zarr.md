@@ -20,7 +20,8 @@ as_zarr(x, name = NULL, location = NULL)
 
 - name:
 
-  Optional. The name of the Zarr array to be created.
+  Optional. The name of the Zarr array to be created. If omitted, an
+  array will be created at the root of the Zarr store.
 
 - location:
 

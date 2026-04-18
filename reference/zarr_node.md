@@ -43,7 +43,9 @@ validity of node names.
 
 - `metadata`:
 
-  (read-only) The metadata document of this node, a list.
+  The metadata document of this node, a `list`. CAUTION: Setting a list
+  that is not properly describing this object will render the object
+  invalid.
 
 - `attributes`:
 

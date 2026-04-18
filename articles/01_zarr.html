@@ -37,6 +37,7 @@
     <li><a class="dropdown-item" href="../articles/02_array_basics.html">2. Working with arrays</a></li>
     <li><a class="dropdown-item" href="../articles/03_attributes.html">3. Working with attributes</a></li>
     <li><a class="dropdown-item" href="../articles/04_http.html">4. HTTP stores</a></li>
+    <li><a class="dropdown-item" href="../articles/05_extending.html">5. Extending Zarr</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -74,7 +75,8 @@
 <p>Zarr is a widely used format for the storage and retrieval of
 n-dimensional array data from data stores ranging from local file
 systems to the cloud. This package is a native Zarr implementation in R
-with support for all required features of Zarr version 3.</p>
+with support for all required features of Zarr version 3 (with the
+exception of sharding).</p>
 </div>
 <div class="section level2">
 <h2 id="creating-zarr-objects">Creating Zarr objects<a class="anchor" aria-label="anchor" href="#creating-zarr-objects"></a>
@@ -154,7 +156,7 @@ groups and arrays. It is recommended that the name of the location has a
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/RtmpHPzkXY/file1e95759a7ae5.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/RtmpXWhKRE/file1c9811800a0a.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 0 </span></span>
 <span><span class="co">#&gt; Total size: 47 Bytes</span></span></code></pre></div>
 <p>The 47 bytes of storage are taken up by a “zarr.json” file. Every

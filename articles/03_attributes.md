@@ -15,6 +15,12 @@ same “zarr.json” metadata files as the structural information on groups
 and arrays and large attributes will thus slow down the opening and
 writing of groups and arrays.
 
+Attributes are also used to set the properties of Zarr stores, groups
+and arrays that are formatted according to a certain profile, such as
+GeoZarr for geo-spatial data. Such attributes are managed by the profile
+code and should not be modified manually unless the profile
+documentation allows it. See the Profiles article for more details.
+
 Attribute management is very easy, using two methods `set_attribute()`
 and `delete_attributes()`, available for both `zarr_group` and
 `zarr_array` instances.
@@ -34,6 +40,7 @@ z
 #> Version   : 3 
 #> Store     : memory store 
 #> Arrays    : 0 
+#> 
 #> Attributes: (*)
 #>  name    value                                    
 #>  title   Data set for intelligent analysis of foo.
@@ -52,6 +59,7 @@ arr
 #> Data type : float64 
 #> Shape     : 100 200 
 #> Chunking  : 100 100 
+#> 
 #> Attributes: (*)
 #>  name         value                                 
 #>  title        Bar for foo                           
@@ -75,6 +83,7 @@ arr
 #> Data type : float64 
 #> Shape     : 100 200 
 #> Chunking  : 100 100 
+#> 
 #> Attributes: (*)
 #>  name         value                                 
 #>  title        Bar for foo and baz too               
@@ -94,6 +103,7 @@ arr
 #> Data type : float64 
 #> Shape     : 100 200 
 #> Chunking  : 100 100 
+#> 
 #> Attributes: (*)
 #>  name  value                  
 #>  title Bar for foo and baz too

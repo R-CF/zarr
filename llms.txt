@@ -43,7 +43,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpQnhb1c/file73311f13157.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpXC5MEU/file673c7d19ce64.zarr 
 #> Arrays    : 1 
 #> Total size: 1.12 KB
 ```
@@ -123,8 +123,8 @@ ensure that you have backups of all data that you put in a Zarr store
 with this package.
 
 Like Zarr itself, this package is modular and allows for additional
-stores, codes, transformers and extensions to be added to this basic
-implementation. If you have specific needs, open an [issue on
+stores, codes, transformers, extensions and profiles to be added to this
+basic implementation. If you have specific needs, open an [issue on
 Github](https://github.com/R-CF/zarr/issues) or, better yet, fork the
 code and submit code suggestions via a pull request. Specific guidance
 for developers is being drafted.
@@ -176,8 +176,18 @@ for developers is being drafted.
   : Zarr transpose codec
 - [`zarr_codec_zstd`](https://r-cf.github.io/zarr/reference/zarr_codec_zstd.md)
   : Zarr "zstd" codec
+- [`zarr_conv_ref`](https://r-cf.github.io/zarr/reference/zarr_conv_ref.md)
+  : Convention "ref"
+- [`zarr_conv_uom`](https://r-cf.github.io/zarr/reference/zarr_conv_uom.md)
+  : Convention "uom"
+- [`zarr_convention`](https://r-cf.github.io/zarr/reference/zarr_convention.md)
+  : Zarr convention
 - [`zarr_data_type`](https://r-cf.github.io/zarr/reference/zarr_data_type.md)
   : Zarr data types
+- [`zarr_domain`](https://r-cf.github.io/zarr/reference/zarr_domain.md)
+  : Zarr domain
+- [`zarr_domains()`](https://r-cf.github.io/zarr/reference/zarr_domains.md)
+  : List the Zarr domains registered in this session
 - [`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
   : Zarr extension support
 - [`zarr_group`](https://r-cf.github.io/zarr/reference/zarr_group.md) :
@@ -190,8 +200,12 @@ for developers is being drafted.
   : In-memory Zarr Store
 - [`zarr_node`](https://r-cf.github.io/zarr/reference/zarr_node.md) :
   Zarr Hierarchy node
+- [`zarr_register_domain()`](https://r-cf.github.io/zarr/reference/zarr_register_domain.md)
+  : Register a Zarr domain for this session
 - [`zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md) :
   Zarr Abstract Store
+- [`zarr_unregister_domain()`](https://r-cf.github.io/zarr/reference/zarr_unregister_domain.md)
+  : Unregister a Zarr domain from this session
 
 # Articles
 
@@ -203,3 +217,5 @@ for developers is being drafted.
 - [3. Working with
   attributes](https://r-cf.github.io/zarr/articles/03_attributes.md):
 - [4. HTTP stores](https://r-cf.github.io/zarr/articles/04_http.md):
+- [5. Extending
+  Zarr](https://r-cf.github.io/zarr/articles/05_extending.md):

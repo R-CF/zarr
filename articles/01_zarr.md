@@ -5,7 +5,8 @@
 Zarr is a widely used format for the storage and retrieval of
 n-dimensional array data from data stores ranging from local file
 systems to the cloud. This package is a native Zarr implementation in R
-with support for all required features of Zarr version 3.
+with support for all required features of Zarr version 3 (with the
+exception of sharding).
 
 ## Creating Zarr objects
 
@@ -91,7 +92,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpHPzkXY/file1e95759a7ae5.zarr 
+#> Location  : /tmp/RtmpXWhKRE/file1c9811800a0a.zarr 
 #> Arrays    : 0 
 #> Total size: 47 Bytes
 ```

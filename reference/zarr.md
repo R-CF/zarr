@@ -34,6 +34,11 @@ A `zarr` object.
 
   (read-only) The store of the Zarr object.
 
+- `domain`:
+
+  (read-only) The `zarr_domain` instance managing the data in this
+  `zarr` object.
+
 - `groups`:
 
   (read-only) Retrieve the paths to the groups of the Zarr object,
