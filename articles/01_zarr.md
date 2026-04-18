@@ -92,7 +92,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpXWhKRE/file1c9811800a0a.zarr 
+#> Location  : /tmp/RtmpWazf6y/file1c544c12ba07.zarr 
 #> Arrays    : 0 
 #> Total size: 47 Bytes
 ```
