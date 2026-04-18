@@ -64,7 +64,7 @@ The data in the Zarr array is of type "int32", the standard R integer. When writ
 unlink(fn)
 ```
 ## Installation
-Installation from CRAN of the latest release:
+Installation from CRAN of the latest release: 
 ```
 install.packages("zarr")
 ```

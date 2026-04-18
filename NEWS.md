@@ -1,8 +1,9 @@
-# zarr (development version)
+# zarr 0.3.0
 
 - Extensible domain and convention mechanisms added, following [ZEP0004](https://zarr.dev/zeps/draft/ZEP0004.html). This enables developers to extend this Zarr implementation with domain-specific interfaces.
 - Metadata is now writable as a complete object - expert use only.
-- Fixed listing of keys in memory stores
+- Fixed listing of keys in memory stores.
+- Expanded documentation.
 
 # zarr 0.2.0
 
