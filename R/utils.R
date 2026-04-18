@@ -88,3 +88,54 @@
   else
     'local'
 }
+
+#' Register a Zarr domain for this session
+#' @param domain An instance of a class descending from `zarr_domain`.
+#' @return Nothing.
+#' @export
+zarr_register_domain <- function(domain) {
+  if (inherits(domain, "zarr_domain"))
+    Zarr.domains[[domain$name]] <- domain
+}
+
+#' Unregister a Zarr domain from this session
+#' @param domain The name of the `zarr_domain` to unregister.
+#' @return Nothing.
+#' @export
+zarr_unregister_domain <- function(domain) {
+  if (is.character(domain))
+    rm(list = domain, envir = Zarr.domains, inherits = FALSE)
+}
+
+#' List the Zarr domains registered in this session
+#' @return A list with instances of `zarr_domain` descendant classes.
+#' @export
+zarr_domains <- function() {
+  as.list(Zarr.domains)
+}
+
+#' Build a Zarr node
+#'
+#' This function polls the registered domains to see if they want to claim and
+#' build the indicated node in the Zarr hierarchy. If no domain claims the node
+#' a generic Zarr group or array is created.
+#' @param name Character, the name of the node to be created.
+#' @param metadata List, the metadata of the node to be created.
+#' @param parent A `zarr_node`, the parent of the node to be created. `NULL` for
+#'   the root node.
+#' @param store The `zarr_store` where the node is stored.
+#' @return The newly created node, either from a domain or a generic
+#'   `zarr_group` or `zarr_array`.
+#' @noRd
+.buildNode <- function(name, metadata, parent, store) {
+  for (d in zarr_domains()) {
+    node <- d$build(name, metadata, parent, store)
+    if (inherits(node, 'zarr_node')) return(node)
+  }
+
+  # Fallback: return generic node
+  if (metadata$node_type == 'group')
+    zarr_group$new(name, metadata, parent, store)
+  else
+    zarr_array$new(name, metadata, parent, store)
+}

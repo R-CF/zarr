@@ -7,6 +7,7 @@
 #'   A Zarr group is identified by a JSON file having required metadata,
 #'   specifically the attribute `"node_type": "group"`.
 #' @docType class
+#' @export
 zarr_group <- R6::R6Class('zarr_group',
   inherit = zarr_node,
   cloneable = FALSE,
@@ -35,6 +36,8 @@ zarr_group <- R6::R6Class('zarr_group',
       name <- if (nzchar(self$name)) self$name else '[root]'
       cat('<Zarr group>', name, '\n')
       cat('Path     :', self$path, '\n')
+      if (nzchar(private$.domain))
+        cat('Domain   :', private$.domain, '\n')
       if (length(self$children)) {
         arrays <- sapply(self$children, inherits, "zarr_array")
         if (any(!arrays))
@@ -42,6 +45,7 @@ zarr_group <- R6::R6Class('zarr_group',
         if (any(arrays))
           cat('Arrays   :', paste(names(self$children)[arrays], collapse = ', '))
       }
+      private$print_details()
       self$print_attributes()
       invisible(self)
     },
@@ -85,7 +89,6 @@ zarr_group <- R6::R6Class('zarr_group',
     #'   class.
     #' @return This [zarr_group] instance with all of its children linked.
     build_hierarchy = function() {
-      # FIXME: Make lapply once final and well-tested
       prefix <- self$prefix
       dirs <- private$.store$list_dir(prefix)
       len <- length(dirs)
@@ -96,12 +99,10 @@ zarr_group <- R6::R6Class('zarr_group',
           if (inherits(meta, "try-error"))
             warning(paste0('Error reading metadata from location ', dirs[i], '. Ignoring.'), call. = FALSE)
           else if (!is.null(meta)) {
-            if (meta$node_type == 'group') {
-              grp <- zarr_group$new(dirs[i], meta, self, self$store)
-              grp$build_hierarchy()
-              children[[i]] <- grp
-            } else if (meta$node_type == 'array')
-              children[[i]] <- zarr_array$new(dirs[i], meta, self, self$store)
+            node <- .buildNode(name = dirs[i], metadata = meta, parent = self, store = self$store)
+            children[[i]] <- if (inherits(node, 'zarr_node')) node else NULL
+            if (meta$node_type == 'group')
+              node$build_hierarchy()
           }
         }
         names(children) <- dirs

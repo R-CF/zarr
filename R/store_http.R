@@ -16,6 +16,7 @@
 #'   through group and array objects, it is up to that code to ensure that
 #'   arguments are valid, in particular keys and prefixes.
 #' @docType class
+#' @export
 zarr_httpstore <- R6::R6Class('zarr_httpstore',
   inherit = zarr_store,
   cloneable = FALSE,

@@ -15,6 +15,7 @@ NULL
 #' @references
 #'   https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html#abstract-store-interface
 #' @docType class
+#' @export
 zarr_store <- R6::R6Class('zarr_store',
   cloneable = FALSE,
   private = list(

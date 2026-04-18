@@ -37,6 +37,7 @@
 #'   document. Optional arguments may be set directly on the Zarr array after it
 #'   has been created.
 #' @docType class
+#' @export
 array_builder <- R6::R6Class('array_builder',
   cloneable = FALSE,
   private = list(

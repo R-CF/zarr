@@ -4,6 +4,7 @@
 #'   node in the hierarchy of a Zarr data set. The array contains the data for
 #'   an object.
 #' @docType class
+#' @export
 zarr_array <- R6::R6Class('zarr_array',
   inherit = zarr_node,
   cloneable = FALSE,
@@ -64,9 +65,12 @@ zarr_array <- R6::R6Class('zarr_array',
     print = function() {
       cat('<Zarr array>', private$.name, '\n')
       cat('Path      :', self$path, '\n')
+      if (nzchar(private$.domain))
+        cat('Domain    :', private$.domain, '\n')
       cat('Data type :', private$.data_type$data_type, '\n')
       cat('Shape     :', private$.metadata$shape, '\n')
       cat('Chunking  :', private$.metadata$chunk_grid$configuration$chunk_shape, '\n')
+      private$print_details()
       self$print_attributes()
       invisible(self)
     },

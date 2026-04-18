@@ -30,9 +30,32 @@ zarr_node <- R6::R6Class('zarr_node',
     .metadata = list(),
     .meta_dirty = FALSE,
 
+    # Name of the domain managing the node, if any. The name is set by the node
+    # in the domain.
+    .domain = '',
+
     # Check the proposed name of the node before setting it.
     check_name = function(name) {
       is.character(name) && length(name) == 1L && .is_valid_node_name(name)
+    },
+
+    # Print domain-specific details, if any. A domain can print any details for
+    # a group or an array. Details are printed after the Zarr object details and
+    # before the attributes. If printing details, implementations should start
+    # with an empty line to create visual separation between sections. This
+    # implementation on the base class prints nothing.
+    print_details = function() {
+      # Intentionally empty method
+    },
+
+    # Filter the attributes prior to printing. This is a private method that
+    # descendant classes (e.g. in domains) can override to remove or add
+    # attributes relevant to that class. The below base implementation simply
+    # returns all attributes. Descendant classes should NOT MODIFY the
+    # attributes of the node, only return a set of attributes that will be used
+    # for printing or other presentation purposes.
+    display_attributes = function() {
+      private$.metadata[['attributes']]
     }
   ),
   public = list(
@@ -62,12 +85,13 @@ zarr_node <- R6::R6Class('zarr_node',
     #' @param ... Arguments passed to embedded functions. Of particular interest
     #' is `width = .` to specify the maximum width of the columns.
     print_attributes = function(...) {
-      df <- .slim.data.frame(private$.metadata[['attributes']], ...)
+      atts <- private$display_attributes()
+      df <- .slim.data.frame(atts, ...)
       if (nrow(df)) {
         if (private$.meta_dirty)
-          cat('Attributes: (*)\n')
+          cat('\nAttributes: (*)\n')
         else
-          cat('Attributes:\n')
+          cat('\nAttributes:\n')
         print(df, right = FALSE, row.names = FALSE)
       }
     },
@@ -162,10 +186,16 @@ zarr_node <- R6::R6Class('zarr_node',
       }
     },
 
-    #' @field metadata (read-only) The metadata document of this node, a list.
+    #' @field metadata The metadata document of this node, a `list`. CAUTION:
+    #'   Setting a list that is not properly describing this object will render
+    #'   the object invalid.
     metadata = function(value) {
       if (missing(value))
         private$.metadata
+      else {
+        private$.metadata <- value
+        private$.meta_dirty <- TRUE
+      }
     },
 
     #' @field attributes (read-only) Retrieve the list of attributes of this

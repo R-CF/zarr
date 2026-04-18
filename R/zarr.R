@@ -9,11 +9,14 @@
 #'   class for managing Zarr arrays is [zarr_array]. The hierarchy is made up of
 #'   [zarr_group] instances. Each `zarr_array` is located in a `zarr_group`.
 #' @docType class
+#' @export
 zarr <- R6::R6Class("zarr",
   private = list(
     .store = NULL,
 
-    .root = NULL
+    .root = NULL,
+
+    .domain = NULL # The Zarr domain managing this zarr instance
   ),
   public = list(
     #' @description Create a new Zarr instance. The Zarr instance manages the
@@ -27,10 +30,9 @@ zarr <- R6::R6Class("zarr",
 
       # Build the node hierarchy
       metadata <- private$.store$get_metadata('/')
-      private$.root <- if (metadata$node_type == 'group')
-        zarr_group$new(name = '', parent = NULL, store = private$.store, metadata = metadata)$build_hierarchy()
-      else
-        zarr_array$new(name = '', parent = NULL, store = private$.store, metadata = metadata)
+      private$.root <- .buildNode(name = '', metadata = metadata, parent = NULL, store = private$.store)
+      if (inherits(private$.root, 'zarr_group'))
+        private$.root$build_hierarchy()
     },
 
     #' @description Print a summary of the Zarr object to the console.
@@ -171,6 +173,13 @@ zarr <- R6::R6Class("zarr",
     store = function(value) {
       if (missing(value))
         private$.store
+    },
+
+    #' @field domain (read-only) The `zarr_domain` instance managing the data
+    #' in this `zarr` object.
+    domain = function(value) {
+      if (missing(value))
+        private$.domain
     },
 
     #' @field groups (read-only) Retrieve the paths to the groups of the Zarr

@@ -27,6 +27,9 @@ class for managing Zarr arrays is \link{zarr_array}. The hierarchy is made up of
 
 \item{\code{store}}{(read-only) The store of the Zarr object.}
 
+\item{\code{domain}}{(read-only) The \code{zarr_domain} instance managing the data
+in this \code{zarr} object.}
+
 \item{\code{groups}}{(read-only) Retrieve the paths to the groups of the Zarr
 object, starting from the root group, as a character vector.}
 

@@ -1,5 +1,9 @@
 # zarr (development version)
 
+- Extensible domain and convention mechanisms added, following [ZEP0004](https://zarr.dev/zeps/draft/ZEP0004.html). This enables developers to extend this Zarr implementation with domain-specific interfaces.
+- Metadata is now writable as a complete object - expert use only.
+- Fixed listing of keys in memory stores
+
 # zarr 0.2.0
 
 - Zarr version 2 stores can be read. Data types supported are those also included in the v.3 core specification. The `compression` codec has to be one of those supported by the v.3 core specification or `zstd`. Filters are not yet supported.

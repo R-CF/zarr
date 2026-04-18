@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 # Zarr
 
-Zarr is a widely used format for the storage and retrieval of n-dimensional array data from data stores ranging from local file systems to the cloud. This package is a native Zarr implementation in R with support for all required features of Zarr version 3.
+Zarr is a widely used format for the storage and retrieval of n-dimensional array data from data stores ranging from local file systems to the cloud. This package is a native Zarr implementation in R with support for all required features of Zarr version 3 (with the exception of sharding).
 
 # Creating Zarr objects
 Creating a new Zarr object is very easy:

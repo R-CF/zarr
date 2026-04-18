@@ -11,7 +11,8 @@ as_zarr(x, name = NULL, location = NULL)
 \item{x}{The R object to convert. Must be a vector, matrix or array of a
 numeric or logical type.}
 
-\item{name}{Optional. The name of the Zarr array to be created.}
+\item{name}{Optional. The name of the Zarr array to be created. If omitted,
+an array will be created at the root of the Zarr store.}
 
 \item{location}{Optional. If supplied, either an existing \link{zarr_group} in a
 Zarr object, or a character string giving the location on a local file

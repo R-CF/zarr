@@ -13,6 +13,7 @@
 #'   through group and array objects, it is up to that code to ensure that
 #'   arguments are valid, in particular keys and prefixes.
 #' @docType class
+#' @export
 zarr_memorystore <- R6::R6Class('zarr_memorystore',
   inherit = zarr_store,
   cloneable = FALSE,
@@ -74,10 +75,11 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     #' @return A character array with all keys found in the store immediately
     #'   below the `prefix`.
     list_dir = function(prefix) {
-      if (nzchar(prefix)) {
-        keys <- names(private$.keys)
+      keys <- names(private$.keys)
+      if (nzchar(prefix))
         keys[startsWith(keys, prefix)]
-      } else character(0)
+      else
+        keys[!(keys == "root")] # List any root arrays
     },
 
     #' @description Retrieve all keys and prefixes with a given prefix.

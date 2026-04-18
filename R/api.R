@@ -55,7 +55,8 @@ open_zarr <- function(location, read_only = FALSE) {
 #' compressed.
 #' @param x The R object to convert. Must be a vector, matrix or array of a
 #'   numeric or logical type.
-#' @param name Optional. The name of the Zarr array to be created.
+#' @param name Optional. The name of the Zarr array to be created. If omitted,
+#'   an array will be created at the root of the Zarr store.
 #' @param location Optional. If supplied, either an existing [zarr_group] in a
 #'   Zarr object, or a character string giving the location on a local file
 #'   system where to persist the data. If the argument is a `zarr_group`,
@@ -93,19 +94,20 @@ as_zarr <- function(x, name = NULL, location = NULL) {
 
     if (inherits(location, 'zarr_group')) {
       if (missing(name) || is.null(name))
-        stop('Argument `name` must be privided.', call. = FALSE)
+        stop('Argument `name` must be provided.', call. = FALSE)
       out <- location
       arr <- out$add_array(name, ab)
     } else {
       # Create the store and add the array to make the store valid
-      store <- if (missing(location) || !nzchar(location))
+      store <- if (missing(location) || is.null(location) || !nzchar(location))
         zarr_memorystore$new()
       else
         zarr_localstore$new(root = location)
 
-      if (missing(name) || is.null(name) || !nzchar(name))
+      if (missing(name) || is.null(name) || !nzchar(name)) {
+        name <- ''
         store$create_array(name = '', metadata = ab$metadata())
-      else if (.is_valid_node_name(name)) {
+      } else if (.is_valid_node_name(name)) {
         store$create_group(name = '')
         store$create_array(parent = '/', name = name, metadata = ab$metadata())
       } else

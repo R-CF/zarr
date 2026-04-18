@@ -34,7 +34,9 @@ of the hierarchy.}
 \item{\code{prefix}}{(read-only) The prefix of this node, relative to the root
 node of the hierarchy.}
 
-\item{\code{metadata}}{(read-only) The metadata document of this node, a list.}
+\item{\code{metadata}}{The metadata document of this node, a \code{list}. CAUTION:
+Setting a list that is not properly describing this object will render
+the object invalid.}
 
 \item{\code{attributes}}{(read-only) Retrieve the list of attributes of this
 object. Attributes can be added or modified with the \code{set_attribute()}
