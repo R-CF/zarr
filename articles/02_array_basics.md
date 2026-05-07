@@ -17,6 +17,7 @@ The easiest way to create a Zarr object is to simply “cast” your R
 object to a Zarr object.
 
 ``` r
+
 library(zarr)
 
 x <- 1:500
@@ -44,6 +45,7 @@ be used to persist data between R sessions, for instance as an
 alternative to “.Rdata” files.
 
 ``` r
+
 x <- array(1:10000, c(500, 10, 2))
 
 # Create a Zarr array from an R array, with a name for the array
@@ -54,11 +56,11 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpDXdwL7/file1c8c7221436d.zarr 
+#> Location  : /tmp/RtmpCxc07U/file1c4623cca26b.zarr 
 #> Arrays    : 1 
 #> Total size: 2.91 KB
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpDXdwL7/file1c8c7221436d.zarr 
+#> <Zarr hierarchy> /tmp/RtmpCxc07U/file1c4623cca26b.zarr 
 #> ☰ / (root group)
 #> └ ⌗ top_array
 ```
@@ -69,6 +71,7 @@ an existing store requires you to indicate the group in the Zarr object
 where you want to store the R object.
 
 ``` r
+
 # Some R objects
 v <- runif(500)
 w <- matrix(nrow = 5, ncol = 3)
@@ -82,7 +85,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpDXdwL7/file1c8c7221436d.zarr 
+#> <Zarr hierarchy> /tmp/RtmpCxc07U/file1c4623cca26b.zarr 
 #> ☰ / (root group)
 #> ├ ⌗ top_array
 #> ├ ⌗ a_vector
@@ -96,6 +99,7 @@ directory trees, like `c/1/0` with the chunk in files like `0`, `1`,
 `2`, …)
 
 ``` r
+
 list.files(path = z$store$root, recursive = TRUE)
 #>  [1] "a_vector/c.0"                    "a_vector/c.1"                   
 #>  [3] "a_vector/c.2"                    "a_vector/c.3"                   
@@ -109,7 +113,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpDXdwL7/file1c8c7221436d.zarr 
+#> Location  : /tmp/RtmpCxc07U/file1c4623cca26b.zarr 
 #> Arrays    : 3 
 #> Total size: 7.67 KB
 unlink(fn)
@@ -141,6 +145,7 @@ you construct a valid “zarr.json” metadata document that you need when
 creating the Zarr array.
 
 ``` r
+
 arr_def <- define_array(data_type = "int16", shape = c(240, 310, 5))
 arr_def
 #> <Zarr array metadata> VALID 
@@ -293,6 +298,7 @@ different dimension, such as a “clean” portion of each dimension to
 avoid having unused parts in the outer-most chunks:
 
 ``` r
+
 arr_def$chunk_shape <- c(120, 31, 5)
 ```
 
@@ -307,6 +313,7 @@ example, let’s remove the `blosc` codec and insert the `gzip` codec
 instead.
 
 ``` r
+
 arr_def$remove_codec(codec = "blosc")
 arr_def$add_codec(codec = "gzip", configuration = list(level = 5))
 #> Loading required namespace: zlib
@@ -353,6 +360,7 @@ Once you are happy with the `arr_def` settings you can create as many
 Zarr arrays with it as you need.
 
 ``` r
+
 # Create a Zarr object in memory
 z <- create_zarr()
 
@@ -389,6 +397,7 @@ of the Zarr object. If you do specify a name, then the array is located
 at the root of the Zarr store or in a group below that.
 
 ``` r
+
 x <- array(1:400, c(5, 20, 4))
 
 fn <- tempfile(fileext = ".zarr")
@@ -474,6 +483,7 @@ smaller subsets of the Zarr array. The process is a bit more
 complicated, however (due to a quirk in R):
 
 ``` r
+
 arr$write(NA_integer_, selection = list(1:5, 6, 1))
 arr$write(-99L, selection = list(2:3, 5:7, 1))
 arr[, 1:10, 1]

@@ -41,8 +41,8 @@ as_zarr(x, name = NULL, location = NULL)
 ## Value
 
 If the `location` argument is a `zarr_group`, the new Zarr array is
-returned. Otherwise, the Zarr object that is newly created and which
-contains the Zarr array, or an error if the Zarr object could not be
+returned. Otherwise, the `zarr` object that is newly created and which
+contains the Zarr array, or an error if the `zarr` object could not be
 created.
 
 ## Examples

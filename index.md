@@ -14,6 +14,7 @@ The easiest way to zarrify your data is simply to call
 R vector, matrix or array.
 
 ``` r
+
 library(zarr)
 
 x <- array(1:400, c(5, 20, 4))
@@ -37,6 +38,7 @@ uses the “.zarr” extension. At the same time you may give your Zarr
 array a name that you can later use to retrieve the array and its data.
 
 ``` r
+
 fn <- tempfile(fileext = ".zarr")
 z <- as_zarr(x, name = "my_array", location = fn)
 z
@@ -62,6 +64,7 @@ Zarr object can only hold a single array, which is located at the root
 the full path starting with a slash `"/"` for the root:
 
 ``` r
+
 # Get the array using list-like access on the Zarr object
 arr <- z[["/my_array"]]
 arr
@@ -83,6 +86,7 @@ You can also write to a Zarr array, but the process is a bit more
 complicated (due to a quirk in R):
 
 ``` r
+
 arr$write(-99L, selection = list(2:3, 5:7, 1))
 arr$write(NA_integer_, selection = list(1:5, 1, 1))
 arr[, 1:10, 1]

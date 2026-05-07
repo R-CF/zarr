@@ -17,6 +17,7 @@ automatically read and groups and arrays will be added to the `zarr`
 object to represent the contents of the HTTP store.
 
 ``` r
+
 # Publicly accessible Zarr v.2 HTTP store with consolidated metadata
 z <- open_zarr("https://data.earthdatahub.destine.eu/public/test-dataset-v0.zarr")
 #> Loading required namespace: curl
@@ -41,6 +42,7 @@ attributes have to be examined manually; the Zarr specification has no
 standards for attribute contents.
 
 ``` r
+
 z <- open_zarr("https://raw.githubusercontent.com/R-CF/zarr/main/inst/extdata/africa.zarr/tas")
 z[["/"]]
 #> <Zarr array>  
@@ -72,6 +74,7 @@ for Zarr stores. You need to understand that specification to interpret
 the data.
 
 ``` r
+
 # A publicly accessible OME-Zarr data set
 (z <- open_zarr("https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr"))
 #> <Zarr>

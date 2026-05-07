@@ -23,38 +23,22 @@ convention is implemented here:
 
 - `uri`:
 
-  The "uri" attribute, a character string of an external Zarr store. The
-  URI must follow RFC 3986 and preferably points to a locatable resource
+  The "uri" field, a character string of an external Zarr store. The URI
+  must follow RFC 3986 and preferably points to a locatable resource
   like a file on a file system or a store on a web site that is
   accessible to the same process that opened up the Zarr store having
   this reference.
 
-- `array`:
+- `node`:
 
-  The "array" attribute, a character string giving the path to an array
-  in the current Zarr store or a store pointed at by the "uri"
-  attribute.
-
-- `group`:
-
-  The "group" attribute, a character string giving the path to a group
-  in the current Zarr store or a store pointed at by the "uri"
-  attribute.
+  The "node" field, a character string giving the path to a group or
+  array in the current Zarr store or in the store pointed at by the
+  "uri" field.
 
 - `attribute`:
 
-  The "attribute" attribute, a character string with a fully-qualified
-  path from the root of the metadata file to a referenced attribute.
-
-- `index`:
-
-  If the `attribute` attribute points at an array, the 0-based index
-  into the array.
-
-- `name`:
-
-  A character string. If the `attribute` attribute points at an array of
-  sub-schemas, the sub-schema whose "name" property has this value.
+  The "attribute" field, a character string with a JSON pointer to a
+  referenced attribute in the metadata of the referenced `node`.
 
 ## Methods
 
@@ -63,6 +47,8 @@ convention is implemented here:
 - [`zarr_conv_ref$new()`](#method-zarr_conv_ref-new)
 
 - [`zarr_conv_ref$write()`](#method-zarr_conv_ref-write)
+
+- [`zarr_conv_ref$parse_json_pointer()`](#method-zarr_conv_ref-parse_json_pointer)
 
 Inherited methods
 
@@ -102,3 +88,23 @@ Write the data of this instance in the attributes of a Zarr object.
 #### Returns
 
 The updated attributes.
+
+------------------------------------------------------------------------
+
+### Method `parse_json_pointer()`
+
+Validate and parse a JSON Pointer (RFC 6901) into its reference tokens.
+
+#### Usage
+
+    zarr_conv_ref$parse_json_pointer(ptr)
+
+#### Arguments
+
+- `ptr`:
+
+  The character string from the "attribute" field to parse.
+
+#### Returns
+
+Character vector of raw tokens, or throws an error.

@@ -26,6 +26,7 @@ and `delete_attributes()`, available for both `zarr_group` and
 `zarr_array` instances.
 
 ``` r
+
 library(zarr)
 
 # Create an in-memory Zarr object
@@ -76,6 +77,7 @@ new value for the attribute. In combination with accessing all
 attributes this allows you to update an existing attribute value too.
 
 ``` r
+
 arr$set_attribute("title", paste(arr$attributes[["title"]], "and baz too"))
 arr
 #> <Zarr array> bar 
@@ -96,6 +98,7 @@ If you want to delete one or more attributes, use the
 delete.
 
 ``` r
+
 arr$delete_attributes(c("valid_range", "actual_range"))
 arr
 #> <Zarr array> bar 

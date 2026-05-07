@@ -13,6 +13,7 @@ exception of sharding).
 Creating a new Zarr object is very easy:
 
 ``` r
+
 library(zarr)
 
 z <- create_zarr()
@@ -38,6 +39,7 @@ unlike directories and files on the disk in your computer. You may add
 as many groups as your data requires to any other group:
 
 ``` r
+
 # Add a group directly to the Zarr object
 grp1 <- z$add_group(path = "/", name = "first_group")
 grp2 <- z$add_group(path = "/", name = "second_group")
@@ -83,6 +85,7 @@ arrays. It is recommended that the name of the location has a “.zarr”
 extension so that it is easily recognizable as such.
 
 ``` r
+
 # Here we use a temporary file
 fn <- tempfile(fileext = ".zarr")
 
@@ -92,7 +95,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpWazf6y/file1c544c12ba07.zarr 
+#> Location  : /tmp/RtmpetjaxJ/file1c0ea96043b.zarr 
 #> Arrays    : 0 
 #> Total size: 47 Bytes
 ```
@@ -111,6 +114,7 @@ Opening a Zarr store from file is done with
 giving the location of the Zarr store on disk.
 
 ``` r
+
 unlink(fn)
 ```
 
