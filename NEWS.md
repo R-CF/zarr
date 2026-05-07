@@ -1,3 +1,9 @@
+# zarr (development version)
+
+- `zarr_conventions()` function returns `data.frame` of supported conventions.
+- Ref convention code updated.
+- Fixed deeply nested consolidated metadata.
+
 # zarr 0.3.0
 
 - Extensible domain and convention mechanisms added, following [ZEP0004](https://zarr.dev/zeps/draft/ZEP0004.html). This enables developers to extend this Zarr implementation with domain-specific interfaces.

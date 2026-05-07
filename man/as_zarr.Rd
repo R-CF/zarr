@@ -28,8 +28,8 @@ object is created in memory.}
 }
 \value{
 If the \code{location} argument is a \code{zarr_group}, the new Zarr array is
-returned. Otherwise, the Zarr object that is newly created and which
-contains the Zarr array, or an error if the Zarr object could not be
+returned. Otherwise, the \code{zarr} object that is newly created and which
+contains the Zarr array, or an error if the \code{zarr} object could not be
 created.
 }
 \description{

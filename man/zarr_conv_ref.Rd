@@ -26,30 +26,19 @@ convention is implemented here:
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{uri}}{The "uri" attribute, a character string of an external Zarr
+\item{\code{uri}}{The "uri" field, a character string of an external Zarr
 store. The URI must follow RFC 3986 and preferably points to a locatable
 resource like a file on a file system or a store on a web site that is
 accessible to the same process that opened up the Zarr store having this
 reference.}
 
-\item{\code{array}}{The "array" attribute, a character string giving the path to
-an array in the current Zarr store or a store pointed at by the "uri"
-attribute.}
+\item{\code{node}}{The "node" field, a character string giving the path to
+a group or array in the current Zarr store or in the  store pointed at by the "uri"
+field.}
 
-\item{\code{group}}{The "group" attribute, a character string giving the path to
-a group in the current Zarr store or a store pointed at by the "uri"
-attribute.}
-
-\item{\code{attribute}}{The "attribute" attribute, a character string with a
-fully-qualified path from the root of the metadata file to a referenced
-attribute.}
-
-\item{\code{index}}{If the \code{attribute} attribute points at an array, the 0-based
-index into the array.}
-
-\item{\code{name}}{A character string. If the \code{attribute} attribute points at an
-array of sub-schemas, the sub-schema whose "name" property has this
-value.}
+\item{\code{attribute}}{The "attribute" field, a character string with a JSON
+pointer to a referenced attribute in the metadata of the referenced
+\code{node}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -58,6 +47,7 @@ value.}
 \itemize{
 \item \href{#method-zarr_conv_ref-new}{\code{zarr_conv_ref$new()}}
 \item \href{#method-zarr_conv_ref-write}{\code{zarr_conv_ref$write()}}
+\item \href{#method-zarr_conv_ref-parse_json_pointer}{\code{zarr_conv_ref$parse_json_pointer()}}
 }
 }
 \if{html}{\out{
@@ -100,6 +90,27 @@ properties will be written to \code{attributes}.}
 }
 \subsection{Returns}{
 The updated attributes.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_conv_ref-parse_json_pointer"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_conv_ref-parse_json_pointer}{}}}
+\subsection{Method \code{parse_json_pointer()}}{
+Validate and parse a JSON Pointer (RFC 6901) into its
+reference tokens.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{zarr_conv_ref$parse_json_pointer(ptr)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{ptr}}{The character string from the "attribute" field to parse.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Character vector of raw tokens, or throws an error.
 }
 }
 }

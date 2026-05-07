@@ -25,25 +25,14 @@ zarr_conv_ref <- R6::R6Class('zarr_conv_ref',
     # the referenced object.
     .uri = character(0),
 
-    # Optional: Path to a Zarr array in the current Zarr store or the store in
-    # the external `.uri` reference.
-    .array = character(0),
+    # Mandatory: Path to a Zarr group or array in the current Zarr store
+    # (relative path) or the store in the external `.uri` reference (absolute
+    # path.
+    .node = character(0),
 
-    # Optional: Path to a Zarr array in the current Zarr store or the store in
-    # the external `.uri` reference.
-    .group = character(0),
-
-    # Optional: Fully-qualified path from the root of the metadata file to a
-    # referenced attribute.
-    .attribute = character(0),
-
-    # Optional: 0-based index into the array, if `.attribute` points at an
-    # array.
-    .index = numeric(0),
-
-    # Optional: If `.attribute` points at an array of sub-schemas, the
-    # sub-schema whose "name" property has this value.
-    .name = 'pixel'
+    # Optional: JSON pointer to a referenced attribute in the metadata of
+    # `node`.
+    .attribute = character(0)
   ),
   public = list(
     #' @description Create a new instance of a "ref" convention agent.
@@ -62,29 +51,43 @@ zarr_conv_ref <- R6::R6Class('zarr_conv_ref',
     #'   properties will be written to `attributes`.
     #' @return The updated attributes.
     write = function(attributes) {
-      if (nzchar(private$.array) == nzchar(private$.group))
-        stop('Either of `array` or `group` must be set.', call. = FALSE)
-      if (length(private$.index) && nzchar(private$.name))
-        stop('Only one of `index` or `name` may be set.', call. = FALSE)
+      if (!nzchar(private$.node))
+        stop('`node` field must be set.', call. = FALSE)
 
       if (nzchar(private$.uri))
         attributes$uri <- private$.uri
-      if (nzchar(private$.array))
-        attributes$array <- private$.array
-      else
-        attributes$group <- private$.group
-      if (nzchar(private$.attribute)) {
+      attributes$node <- private$.node
+      if (nzchar(private$.attribute))
         attributes$attribute <- private$.attribute
-        if (length(private$.index))
-          attributes$index <- private$.index
-        else if (nzchar(private$.name))
-          attributes$name <- private$.name
-      }
       attributes
+    },
+
+    #' @description Validate and parse a JSON Pointer (RFC 6901) into its
+    #'   reference tokens.
+    #' @param ptr The character string from the "attribute" field to parse.
+    #' @return Character vector of raw tokens, or throws an error.
+    parse_json_pointer = function(ptr) {
+      if (!is.character(ptr) || length(ptr) != 1L)
+        stop('`ptr` must be a single character string.', call. = FALSE)
+
+      # Empty string = valid pointer to the root document; no tokens
+      if (ptr == '') return(character(0L))
+
+      if (!startsWith(ptr, '/'))
+        stop('Invalid JSON Pointer: must be empty or start with "/".', call. = FALSE)
+
+      tokens <- strsplit(ptr, '/', fixed = TRUE)[[1L]][-1L]
+      invalid <- grepl('~(?![01])', tokens, perl = TRUE)
+      if (any(invalid))
+        stop('Invalid reference token(s): ', paste(tokens[invalid], collapse = ', '), call. = FALSE)
+
+      tokens <- gsub('~1', '/', tokens, fixed = TRUE)
+      tokens <- gsub('~0', '~', tokens, fixed = TRUE)
+      tokens
     }
   ),
   active = list(
-   #' @field uri The "uri" attribute, a character string of an external Zarr
+   #' @field uri The "uri" field, a character string of an external Zarr
    #'   store. The URI must follow RFC 3986 and preferably points to a locatable
    #'   resource like a file on a file system or a store on a web site that is
    #'   accessible to the same process that opened up the Zarr store having this
@@ -95,67 +98,31 @@ zarr_conv_ref <- R6::R6Class('zarr_conv_ref',
      else if (is.character(value) && length(value) == 1L) # FIXME: Must test for URI formatting
        private$.uri <- value
      else
-       stop('`uri` attribute must be a character string representing a URI.', call. = FALSE)
+       stop('`uri` field must be a character string representing a URI.', call. = FALSE)
    },
 
-   #' @field array The "array" attribute, a character string giving the path to
-   #'   an array in the current Zarr store or a store pointed at by the "uri"
-   #'   attribute.
-   array = function(value) {
+   #' @field node The "node" field, a character string giving the path to
+   #'   a group or array in the current Zarr store or in the  store pointed at by the "uri"
+   #'   field.
+   node = function(value) {
      if (missing(value))
-       private$.array
+       private$.node
      else if (is.character(value) && length(value) == 1L)
-       private$.array <- value
+       private$.node <- value
      else
-       stop('`array` attribute must be a character string.', call. = FALSE)
+       stop('`node` field must be a character string.', call. = FALSE)
    },
 
-   #' @field group The "group" attribute, a character string giving the path to
-   #'   a group in the current Zarr store or a store pointed at by the "uri"
-   #'   attribute.
-   group = function(value) {
-     if (missing(value))
-       private$.group
-     else if (is.character(value) && length(value) == 1L)
-       private$.group <- value
-     else
-       stop('`group` attribute must be a character string.', call. = FALSE)
-   },
-
-   #' @field attribute The "attribute" attribute, a character string with a
-   #'   fully-qualified path from the root of the metadata file to a referenced
-   #'   attribute.
+   #' @field attribute The "attribute" field, a character string with a JSON
+   #'   pointer to a referenced attribute in the metadata of the referenced
+   #'   `node`.
    attribute = function(value) {
      if (missing(value))
        private$.attribute
-     else if (is.numeric(value) && length(value) == 1L)
+     else if (self$parse_json_pointer(value))
        private$.attribute <- value
      else
-       stop('`attribute` attribute must be a character string.', call. = FALSE)
-   },
-
-   #' @field index If the `attribute` attribute points at an array, the 0-based
-   #'   index into the array.
-   index = function(value) {
-     if (missing(value))
-       private$.index
-     else if (is.integer(value) && length(value) == 1L)
-       private$.index <- value
-     else
-       stop('`index` attribute must be a single integer value.', call. = FALSE)
-   },
-
-   #'@field name A character string. If the `attribute` attribute points at an
-   #'  array of sub-schemas, the sub-schema whose "name" property has this
-   #'  value.
-   name = function(value) {
-     if (missing(value))
-       private$.name
-     else if (is.character(value) && length(value) == 1L)
-       private$.name <- value
-     else
-       stop('`name` attribute must be a character string.', call. = FALSE)
+       stop('`attribute` field must be a character string with a valid JSON pointer.', call. = FALSE)
    }
   )
 )
-

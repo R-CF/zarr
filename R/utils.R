@@ -114,6 +114,13 @@ zarr_domains <- function() {
   as.list(Zarr.domains)
 }
 
+#' List the Zarr conventions supported by this release
+#' @return A `data.frame` with descriptions of supported conventions.
+#' @export
+zarr_conventions <- function() {
+  Zarr.options$conventions
+}
+
 #' Build a Zarr node
 #'
 #' This function polls the registered domains to see if they want to claim and

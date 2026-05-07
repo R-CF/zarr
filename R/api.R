@@ -69,8 +69,8 @@ open_zarr <- function(location, read_only = FALSE) {
 #'   store will be created. If the `location` argument is not given, a Zarr
 #'   object is created in memory.
 #' @return If the `location` argument is a `zarr_group`, the new Zarr array is
-#'   returned. Otherwise, the Zarr object that is newly created and which
-#'   contains the Zarr array, or an error if the Zarr object could not be
+#'   returned. Otherwise, the `zarr` object that is newly created and which
+#'   contains the Zarr array, or an error if the `zarr` object could not be
 #'   created.
 #' @docType methods
 #' @export

@@ -138,9 +138,15 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
     #'   below the `prefix`, both for groups and arrays.
     list_dir = function(prefix) {
       # FIXME: Test that the keys are indeed nodes, i.e. have a file 'zarr.json', '.zgroup' or '.zarray'.
-      if (length(private$.nodes))
-        private$.nodes[startsWith(private$.nodes, prefix)]
-      else character(0)
+      if (length(private$.nodes)) {
+        if (nzchar(prefix)) {
+          keys <- private$.nodes[startsWith(private$.nodes, prefix)]
+          keys <- substr(keys, nchar(prefix) + 1L, nchar(keys))
+        } else
+          keys <- private$.nodes
+        # Keep only the first path component
+        unique(sub("/.*", "", keys))
+      } else character(0)
     },
 
     #' @description Retrieve all keys and prefixes with a given prefix.
