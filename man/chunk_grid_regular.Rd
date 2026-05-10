@@ -61,9 +61,11 @@ Initialize a new chunking scheme for an array.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{array_shape}}{Integer vector of the array dimensions.}
+\item{\code{array_shape}}{Integer vector of the array dimensions. This may be
+\code{NA} for a scalar array.}
 
-\item{\code{chunk_shape}}{Integer vector of the dimensions of each chunk.}
+\item{\code{chunk_shape}}{Integer vector of the dimensions of each chunk.
+Ignored for a scalar array.}
 }
 \if{html}{\out{</div>}}
 }
@@ -113,7 +115,8 @@ Read data from the Zarr array into an R object.
 \describe{
 \item{\code{start, stop}}{Integer vectors of the same length as the
 dimensionality of the Zarr array, indicating the starting and ending
-(inclusive) indices of the data along each axis.}
+(inclusive) indices of the data along each axis. These are ignored if
+the Zarr array is a scalar.}
 }
 \if{html}{\out{</div>}}
 }

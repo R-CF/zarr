@@ -576,9 +576,8 @@ zarr_codec_zstd <- R6::R6Class('zarr_codec_zstd',
        configuration <- list(level = 6)
      else if (!is.list(configuration) || is.null(configuration$level))
        stop('`configuration` argument must be a list with a field `level`.', call. = FALSE) # nocov
-     else if (!is.numeric(configuration$level) || length(configuration$level) != 1L ||
-              !(configuration$level >= 1 && configuration$level <= 20))
-       stop('Configuration parameter `level` must be a single integer value between 1 and 20.', call. = FALSE) # nocov
+     else if (!is.numeric(configuration$level) || length(configuration$level) != 1L)
+       stop('Configuration parameter `level` must be a single integer value.', call. = FALSE) # nocov
 
      super$initialize('zstd', configuration)
 

@@ -45,7 +45,7 @@ array_builder <- R6::R6Class('array_builder',
     .format = 3L,
 
     .data_type = NULL,
-    .shape = NA,
+    .shape = NA_integer_,
     .chunk_shape = NULL,
     .codecs = list(),
 
@@ -56,12 +56,13 @@ array_builder <- R6::R6Class('array_builder',
     build_metadata = function() {
       meta <- list(zarr_format = private$.format,
                    node_type = "array")
-      if (!is.na(private$.shape[1L]))
+      if (is.na(private$.shape[1L]))
+        meta <- append(meta, list(shape = list()))
+      else
         meta <- append(meta, list(shape = private$.shape))
       if (!is.null(private$.data_type))
         meta <- append(meta, private$.data_type$metadata_fragment())
-      if (!is.null(private$.chunk_shape))
-        meta <- append(meta, private$.chunk_shape$metadata_fragment())
+      meta <- append(meta, private$.chunk_shape$metadata_fragment())
       if (length(private$.codecs)) {
         codecs <- lapply(private$.codecs, function(cdc) cdc$metadata_fragment())
         meta <- append(meta, setNames(list(codecs), 'codecs'))
@@ -168,8 +169,8 @@ array_builder <- R6::R6Class('array_builder',
     #'   appended at the end of the list of codecs.
     #' @return Self, invisibly.
     add_codec = function(codec, configuration, .position = NULL) {
-      if (is.null(private$.data_type) || is.na(private$.shape[1L]))
-        stop('Codecs can only be added after the array data_type and shape have been set.', call. = FALSE) # nocov
+      if (is.null(private$.data_type))
+        stop('Codecs can only be added after the array data_type has been set.', call. = FALSE) # nocov
 
       if (!is.character(codec) || length(codec) != 1L)
         stop('Codec name must be a single character string.', call. = FALSE) # nocov
@@ -235,7 +236,6 @@ array_builder <- R6::R6Class('array_builder',
     #'   otherwise.
     is_valid = function() {
       !is.null(private$.data_type) &&
-      !is.na(private$.shape[1L]) &&
       !is.null(private$.chunk_shape) &&
       length(private$.codecs)
     }
@@ -305,12 +305,15 @@ array_builder <- R6::R6Class('array_builder',
       if (missing(value))
         private$.shape
       else {
-        if (is.numeric(value) && all((value <- as.integer(value)) > 0L)) {
+        if (!length(value)) { # Scalar value
+          private$.shape <- NA_integer_
+          private$.chunk_shape <- 1L
+        } else if (is.numeric(value) && all((value <- as.integer(value)) > 0L)) {
           private$.shape <- value
           private$.chunk_shape <- chunk_grid_regular$new(value, pmin.int(value, Zarr.options$chunk_length))
-          private$update_codecs()
         } else
           stop('Shape must be an integer vector of lengths along each dimension of the Zarr array.', call. = FALSE) # nocov
+        private$update_codecs()
       }
     },
 
@@ -322,8 +325,10 @@ array_builder <- R6::R6Class('array_builder',
     chunk_shape = function(value) {
       if (missing(value))
         private$.chunk_shape
-      else
+      else {
+        if (!length(value)) value <- 1L # Scalar array
         private$.chunk_shape <- chunk_grid_regular$new(private$.shape, as.integer(value))
+      }
     },
 
     #' @field codec_info (read-only) Retrieve a `data.frame` of registered codec

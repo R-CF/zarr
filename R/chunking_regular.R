@@ -11,6 +11,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     # The shape of the array and the chunk grid.
     .array_shape = NULL,
     .chunk_shape = NULL,
+    .scalar = FALSE,
 
     # The chunk grid, calculated from the array and chunk shapes
     .chunk_grid = NULL,
@@ -43,23 +44,31 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
   ),
   public = list(
     #' @description Initialize a new chunking scheme for an array.
-    #' @param array_shape Integer vector of the array dimensions.
+    #' @param array_shape Integer vector of the array dimensions. This may be
+    #'   `NA` for a scalar array.
     #' @param chunk_shape Integer vector of the dimensions of each chunk.
+    #'   Ignored for a scalar array.
     #' @return An instance of `chunk_grid_regular`.
     initialize = function(array_shape, chunk_shape) {
       super$initialize('regular')
 
-      if (is.integer(array_shape) && all(array_shape > 0L))
-        private$.array_shape <- array_shape
-      else
-        stop('Array shape must be defined using integer vector of positive values.', call. = FALSE) # nocov
+      if (is.na(array_shape[1L])) {
+        private$.array_shape <- NULL
+        private$.chunk_shape <- 1L
+        private$.scalar <- TRUE
+      } else {
+        if (is.integer(array_shape) && all(array_shape > 0L))
+          private$.array_shape <- array_shape
+        else
+          stop('Array shape must be defined using integer vector of positive values.', call. = FALSE) # nocov
 
-      if (is.integer(chunk_shape) && all(chunk_shape > 0L) && length(array_shape) == length(chunk_shape))
-        private$.chunk_shape <- chunk_shape
-      else
-        stop('Chunk shape is not valid for `array_shape`.', call. = FALSE) # nocov
+        if (is.integer(chunk_shape) && all(chunk_shape > 0L) && length(array_shape) == length(chunk_shape))
+          private$.chunk_shape <- chunk_shape
+        else
+          stop('Chunk shape is not valid for `array_shape`.', call. = FALSE) # nocov
 
-      private$.chunk_grid <- ceiling(array_shape / chunk_shape)
+        private$.chunk_grid <- ceiling(array_shape / chunk_shape)
+      }
       private$.chunk_map <- new.env(parent = emptyenv())
     },
 
@@ -67,7 +76,10 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #'   console.
     #' @return Self, invisibly.
     print = function() {
-      cat('<Zarr regular chunk grid> [', paste(private$.chunk_shape, collapse = ', '), ']\n', sep = '')
+      if (private$.scalar)
+        cat('<Zarr regular chunk grid> []\n', sep = '')
+      else
+        cat('<Zarr regular chunk grid> [', paste(private$.chunk_shape, collapse = ', '), ']\n', sep = '')
       invisible(self)
     },
 
@@ -76,18 +88,24 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #' @return A list with the metadata of this codec.
     metadata_fragment = function() {
       list(chunk_grid = list(name = 'regular',
-                             configuration = list(chunk_shape = private$.chunk_shape)))
+                             configuration = list(chunk_shape = if (private$.scalar) list()
+                                                                else private$.chunk_shape)))
     },
 
     #' @description Read data from the Zarr array into an R object.
     #' @param start,stop Integer vectors of the same length as the
     #'   dimensionality of the Zarr array, indicating the starting and ending
-    #'   (inclusive) indices of the data along each axis.
+    #'   (inclusive) indices of the data along each axis. These are ignored if
+    #'   the Zarr array is a scalar.
     #' @return A vector, matrix or array of data.
-
     read = function(start, stop) {
       chunk_shape  <- private$.chunk_shape
       nd <- length(chunk_shape)
+
+      if (private$.scalar) {
+        start <- 1L
+        stop <- 1L
+      }
 
       # Identify chunks touched by the indices
       chunk_start_idx <- floor((start - 1L) / chunk_shape)
@@ -112,7 +130,8 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       # Loop over the chunks
       for (i in seq_len(nrow(grid_idx))) {
         cidx <- grid_idx[i, ]
-        chunk_key <- paste0(private$.array_prefix, private$.cke$pre, paste(cidx, collapse = private$.cke$sep))
+        chunk_key <- if (private$.scalar) paste0(private$.array_prefix, private$.cke$scalar)
+                     else paste0(private$.array_prefix, private$.cke$pre, paste(cidx, collapse = private$.cke$sep))
 
         # Compute slice within the chunk
         chunk_origin  <- cidx * chunk_shape + 1L
@@ -152,6 +171,11 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       chunk_shape  <- private$.chunk_shape
       nd <- length(chunk_shape)
 
+      if (private$.scalar) {
+        start <- 1L
+        stop <- 1L
+      }
+
       # Identify chunks touched by this hyperslab of data
       chunk_start_idx <- floor((start - 1L) / chunk_shape)
       chunk_end_idx   <- floor((stop - 1L) / chunk_shape)
@@ -162,7 +186,8 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       # Loop over the chunks
       for (i in seq_len(nrow(grid_idx))) {
         cidx <- grid_idx[i, ]
-        chunk_key <- paste0(private$.array_prefix, private$.cke$pre, paste(cidx, collapse = private$.cke$sep))
+        chunk_key <- if (private$.scalar) paste0(private$.array_prefix, private$.cke$scalar)
+                     else paste0(private$.array_prefix, private$.cke$pre, paste(cidx, collapse = private$.cke$sep))
 
         # Compute slice within the chunk
         chunk_origin  <- cidx * chunk_shape + 1L
