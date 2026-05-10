@@ -117,11 +117,13 @@ This is set by the array when starting to use chunking for file I/O.</p></dd>
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>array_shape</code></dt>
-<dd><p>Integer vector of the array dimensions.</p></dd>
+<dd><p>Integer vector of the array dimensions. This may be
+<code>NA</code> for a scalar array.</p></dd>
 
 
 <dt><code>chunk_shape</code></dt>
-<dd><p>Integer vector of the dimensions of each chunk.</p></dd>
+<dd><p>Integer vector of the dimensions of each chunk.
+Ignored for a scalar array.</p></dd>
 
 
 </dl><p></p></div>
@@ -169,7 +171,8 @@ scheme.</p><div class="section">
 <p></p><div class="arguments"><dl><dt><code>start, stop</code></dt>
 <dd><p>Integer vectors of the same length as the
 dimensionality of the Zarr array, indicating the starting and ending
-(inclusive) indices of the data along each axis.</p></dd>
+(inclusive) indices of the data along each axis. These are ignored if
+the Zarr array is a scalar.</p></dd>
 
 
 </dl><p></p></div>

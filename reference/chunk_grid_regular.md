@@ -75,11 +75,13 @@ Initialize a new chunking scheme for an array.
 
 - `array_shape`:
 
-  Integer vector of the array dimensions.
+  Integer vector of the array dimensions. This may be `NA` for a scalar
+  array.
 
 - `chunk_shape`:
 
-  Integer vector of the dimensions of each chunk.
+  Integer vector of the dimensions of each chunk. Ignored for a scalar
+  array.
 
 #### Returns
 
@@ -129,7 +131,7 @@ Read data from the Zarr array into an R object.
 
   Integer vectors of the same length as the dimensionality of the Zarr
   array, indicating the starting and ending (inclusive) indices of the
-  data along each axis.
+  data along each axis. These are ignored if the Zarr array is a scalar.
 
 #### Returns
 
