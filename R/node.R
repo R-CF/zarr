@@ -39,6 +39,30 @@ zarr_node <- R6::R6Class('zarr_node',
       is.character(name) && length(name) == 1L && .is_valid_node_name(name)
     },
 
+    # Print one level of attributes to the console. Calls itself recursively to
+    # print nested attributes.
+    print_attribute_levels = function(atts, indent = 0L) {
+      pad  <- strrep("  ", indent)
+      width <- max(nchar(names(atts)))
+
+      for (nm in names(atts)) {
+        val <- atts[[nm]]
+
+        if (is.list(val) && !is.null(names(val))) {
+          cat(pad, formatC(nm, width = width, flag = "-"), ":\n", sep = "")
+          private$print_attribute_levels(val, indent + 1L)
+        } else if (is.list(val)) {
+          cat(pad, formatC(nm, width = width, flag = "-"), ": [",
+              paste(unlist(val), collapse = ", "), "]\n", sep = "")
+        } else if (length(val) > 1L) {
+          cat(pad, formatC(nm, width = width, flag = "-"), ": [",
+              paste(val, collapse = ", "), "]\n", sep = "")
+        } else {
+          cat(pad, formatC(nm, width = width, flag = "-"), ": ", val, "\n", sep = "")
+        }
+      }
+    },
+
     # Print domain-specific details, if any. A domain can print any details for
     # a group or an array. Details are printed after the Zarr object details and
     # before the attributes. If printing details, implementations should start
@@ -86,13 +110,12 @@ zarr_node <- R6::R6Class('zarr_node',
     #' is `width = .` to specify the maximum width of the columns.
     print_attributes = function(...) {
       atts <- private$display_attributes()
-      df <- .slim.data.frame(atts, ...)
-      if (nrow(df)) {
+      if (length(atts)) {
         if (private$.meta_dirty)
           cat('\nAttributes: (*)\n')
         else
           cat('\nAttributes:\n')
-        print(df, right = FALSE, row.names = FALSE)
+        private$print_attribute_levels(atts)
       }
     },
 

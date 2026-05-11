@@ -1,8 +1,10 @@
 # zarr (development version)
 
+- Nested attributes print better to the console.
 - `zarr_conventions()` function returns `data.frame` of supported conventions.
 - Ref convention code updated.
 - Fixed deeply nested consolidated metadata.
+- Fixed handling of scalar arrays.
 
 # zarr 0.3.0
 
