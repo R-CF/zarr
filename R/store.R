@@ -41,17 +41,21 @@ zarr_store <- R6::R6Class('zarr_store',
         v3 <- list(zarr_format = 3L, node_type = 'group')
       } else {
         # Array metadata
-        re <- regexec("^([<>|])([bfiu])([0-9]+)$", meta$dtype)
+        re <- regexec("^([<>|])([bfiuUO])([0-9]+)$", meta$dtype)
         dtype <- regmatches(meta$dtype, re)[[1L]]
-        if (!length(dtype))
+        if (!length(dtype)) {
           stop('Invalid dtype in metadata document.', call. = FALSE)
+        }
+        endian <- if (dtype[2L] == '>') 'big' else 'little'
 
         ab <- array_builder$new()
         ab$data_type <- switch(dtype[3L],
                                'b' = 'bool',
                                'f' = paste0('float', 8L * as.integer(dtype[4L])),
                                'i' = paste0('int', 8L * as.integer(dtype[4L])),
-                               'u' = paste0('uint', 8L * as.integer(dtype[4L])))
+                               'u' = paste0('uint', 8L * as.integer(dtype[4L])),
+                               'U' = 'string',
+                               'O' = 'string')
         ab$shape <- meta$shape
         ab$chunk_shape <- meta$chunks
         if (!is.null(meta$fill_value)) {
@@ -62,18 +66,21 @@ zarr_store <- R6::R6Class('zarr_store',
           # FIXME: what about int64 data?
         }
 
+        # Bytes codec - missing when array->bytes is vlen-utf8 or ucs-4
+        bytes <- ab$codecs$bytes
+        if (!is.null(bytes))
+          bytes$endian <- endian
+
+        # UCS-4 codec - make a mock configuration list
+        if (dtype[3L] == 'U') {
+          ab$remove_codec('vlen-utf8')
+          ab$add_codec('ucs-4', configuration = list(endian = endian, width = dtype[4L]))
+        }
+
         # Transpose codec is already set for 'F' ordering. If 'C' ordering,
         # delete the codec
         if (meta$order == 'C')
           ab$remove_codec('transpose')
-
-        # Bytes codec
-        bytes <- ab$codecs$bytes
-        endian <- if (dtype[2L] == '>') 'big' else 'little'
-        if (is.null(bytes)) # Should never happen
-          ab$add_codec('bytes', configuration = list(endian = endian))
-        else
-          bytes$endian <- endian
 
         # Compression codec
         if (!is.null(meta$compressor)) {
@@ -94,7 +101,6 @@ zarr_store <- R6::R6Class('zarr_store',
     # Returns a list in v.2 format which should only be used for writing to the
     # store in JSON format.
     metadata_v3_to_v2 = function(meta) {
-      browser()
       if (is.null(meta$zarr_format) || meta$zarr_format != 3L)
         stop('Invalid metadata document.', call. = FALSE) # nocov
     }

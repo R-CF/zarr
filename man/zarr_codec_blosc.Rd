@@ -6,7 +6,7 @@
 \title{Zarr blosc codec}
 \description{
 The Zarr "blosc" codec offers a number of compression options to
-reduce the size of a raw vector prior to storing, and uncompressing when
+reduce the size of a raw vector prior to storing, and decompressing when
 reading.
 }
 \section{Super classes}{

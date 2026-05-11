@@ -6,7 +6,7 @@
 \title{Zarr data types}
 \description{
 This class implements a Zarr data type as an extension point.
-This class also manages the "fill_value" attribute associated with the data
+This class also manages the 'fill_value' attribute associated with the data
 type.
 }
 \section{Super class}{

@@ -1,5 +1,6 @@
-# Mapping Zarr v.3 core data_types to readBin() / writeBin() arguments
-# float16 and r* are not supported
+# Mapping Zarr v.3 core data_types to readBin() / writeBin() arguments.
+# float16 and r* are not supported.
+# string is supported, a registered v.3 extension data type
 zarr_v3_datatypes <- list(
   bool    = list(Rtype = 'logical',   size = 1L, signed = FALSE, fill_value = FALSE),
   int8    = list(Rtype = 'integer',   size = 1L, signed = TRUE,  fill_value = -127L),
@@ -11,15 +12,16 @@ zarr_v3_datatypes <- list(
   uint32  = list(Rtype = 'integer64', size = 4L, signed = FALSE, fill_value = NA), # Set in code
   uint64  = list(Rtype = 'double',    size = 8L, signed = FALSE, fill_value = 1.844674e+19),
   float32 = list(Rtype = 'double',    size = 4L, signed = TRUE,  fill_value = 9.9692099683868690e+36),
-  float64 = list(Rtype = 'double',    size = 8L, signed = TRUE,  fill_value = 9.9692099683868690e+36)
+  float64 = list(Rtype = 'double',    size = 8L, signed = TRUE,  fill_value = 9.9692099683868690e+36),
   # complex64
   # complex128
+  string  = list(Rtype = 'character', size = 1L, signed = FALSE, fill_value = NA)
 )
 
 #' Zarr data types
 #'
 #' @description This class implements a Zarr data type as an extension point.
-#'   This class also manages the "fill_value" attribute associated with the data
+#'   This class also manages the 'fill_value' attribute associated with the data
 #'   type.
 #' @docType class
 zarr_data_type <- R6::R6Class('zarr_data_type',
@@ -57,7 +59,7 @@ zarr_data_type <- R6::R6Class('zarr_data_type',
     #' @return An instance of this class.
     initialize = function(data_type, fill_value = NULL) {
       if (data_type %in% c('int64', 'uint32') && !requireNamespace('bit64', quietly = TRUE))
-        stop('Package "bit64" must be installed for this data type.', call. = FALSE) # nocov
+        stop('Package \'bit64\' must be installed for this data type.', call. = FALSE) # nocov
 
       private$set_type(data_type)
       if (!is.null(fill_value))
@@ -126,33 +128,35 @@ zarr_data_type <- R6::R6Class('zarr_data_type',
 
 # Parse a Zarr v.2 dtype string
 zarr_v2_parse_dtype <- function(dtype) {
-  m <- regexec("^([<>|])([ifubS])([0-9]+)$", dtype)
+  m <- regexec('^([<>|])([ifubS])([0-9]+)$', dtype)
   parts <- regmatches(dtype, m)[[1L]]
   if (length(parts) == 0L)
-    stop("Unsupported dtype string: ", dtype)
+    stop('Unsupported dtype string: ', dtype)
 
   endian <- switch(parts[2L],
-                   "<" = "little",
-                   ">" = "big",
-                   "|" = "none")
+                   '<' = 'little',
+                   '>' = 'big',
+                   '|' = 'none')
   kind <- parts[3L]
-  size <- as.integer(parts[4L])
+  size <- if (length(parts) > 3L) as.integer(parts[4L]) else 1L # '|O' type
 
-  if (kind == "i" && size == 8L) {
-    list(Rtype = "integer64", size = size, signed = TRUE, endian = endian)
-  } else if (kind == "u" && size == 8L) {
-    list(Rtype = "integer64", size = size, signed = FALSE, endian = endian)
-  } else if (kind == "i") {
-    list(Rtype = "integer", size = size, signed = TRUE, endian = endian)
-  } else if (kind == "u") {
-    list(Rtype = "integer", size = size, signed = FALSE, endian = endian)
-  } else if (kind == "f") {
-    list(Rtype = "numeric", size = size, endian = endian)
-  } else if (kind == "b" && size == 1L) {
-    list(Rtype = "logical", size = 1L, endian = NULL)
-  } else if (kind == "S") {
-    list(Rtype = "bytes", size = size, endian = NULL)
-  } else
+  if (kind == 'i' && size == 8L)
+    list(Rtype = 'integer64', size = size, signed = TRUE, endian = endian)
+  else if (kind == 'u' && size == 8L)
+    list(Rtype = 'integer64', size = size, signed = FALSE, endian = endian)
+  else if (kind == 'i')
+    list(Rtype = 'integer', size = size, signed = TRUE, endian = endian)
+  else if (kind == 'u')
+    list(Rtype = 'integer', size = size, signed = FALSE, endian = endian)
+  else if (kind == 'f')
+    list(Rtype = 'numeric', size = size, endian = endian)
+  else if (kind == 'b' && size == 1L)
+    list(Rtype = 'logical', size = 1L, endian = NULL)
+  else if (kind == 'S')
+    list(Rtype = 'bytes', size = size, endian = NULL)
+  else if (kind %in% c('U', 'O'))
+    list(Rtype = 'string', size = 1L, endian = NULL)
+  else
     NULL
 }
 

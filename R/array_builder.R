@@ -74,15 +74,17 @@ array_builder <- R6::R6Class('array_builder',
     # update the list of codecs. Must have a data_type and a shape before any
     # codecs can be set.
     update_codecs = function() {
-      if (!is.null(private$.data_type) && !is.na(private$.shape[1L])) {
-        private$.codecs <- if (private$.portable || length(private$.shape) == 1L)
-          # No transpose codec
-          list(bytes = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape))
+      private$.codecs <- if (!is.null(private$.data_type) && !is.na(private$.shape[1L])) {
+        # Transpose?
+        cdc <- if (private$.portable || length(private$.shape) == 1L) list()
+               else list(transpose = zarr_codec_transpose$new(length(private$.shape)))
+        # Bytes or vlen-utf8?
+        if (private$.data_type$data_type == 'string')
+          c(cdc, list(`vlen-utf8` = zarr_codec_vlenutf8$new()))
         else
-          list(transpose = zarr_codec_transpose$new(length(private$.shape)),
-               bytes = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape))
+          c(cdc, list(bytes = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape)))
       } else
-        private$.codecs <- list()
+        list()
     }
   ),
   public = list(
@@ -178,6 +180,8 @@ array_builder <- R6::R6Class('array_builder',
       cdc <- switch(codec,
                     'transpose' = zarr_codec_transpose$new(length(private$.shape), configuration),
                     'bytes' = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape, configuration),
+                    'vlen-utf8' = zarr_codec_vlenutf8$new(),
+                    'ucs-4' = zarr_codec_ucs4$new(private$.chunk_shape$chunk_shape, configuration),
                     'blosc' = zarr_codec_blosc$new(data_type = private$.data_type, configuration),
                     'zstd' = zarr_codec_zstd$new(configuration),
                     'gzip' = zarr_codec_gzip$new(configuration),
@@ -190,12 +194,10 @@ array_builder <- R6::R6Class('array_builder',
         if (!len) {
           if (cdc$from == 'array')
             private$.codecs <- setNames(list(cdc), cdc$name)
-          else
-            stop('Codec has incompatible mode to start chains of codecs.', call. = FALSE) #nocov
+          else stop('Codec has incompatible mode to start chains of codecs.', call. = FALSE) #nocov
         } else if (cdc$from == private$.codecs[[len]]$to)
           private$.codecs <- c(private$.codecs, setNames(list(cdc), cdc$name))
-        else
-          stop('Codec has incompatible mode to follow previous codec.', call. = FALSE) #nocov
+        else stop('Codec has incompatible mode to follow previous codec.', call. = FALSE) #nocov
       } else if (.position == 1) {
         if (cdc$from == 'array' && private$.codecs[[1L]]$from == cdc$to)
           private$.codecs <- c(setNames(list(cdc), cdc$name), private$.codecs)

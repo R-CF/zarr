@@ -9,7 +9,7 @@ as_zarr(x, name = NULL, location = NULL)
 }
 \arguments{
 \item{x}{The R object to convert. Must be a vector, matrix or array of a
-numeric or logical type.}
+numeric, character or logical type.}
 
 \item{name}{Optional. The name of the Zarr array to be created. If omitted,
 an array will be created at the root of the Zarr store.}

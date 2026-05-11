@@ -356,10 +356,201 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
   )
 )
 
+#' Zarr vlen-utf8 codec
+#'
+#' @description The Zarr "vlen-utf8" codec encodes an R character object to a
+#'   raw byte string, and decodes a raw byte string to a R character object. The
+#'   character object, typically a vector but possibly a matrix or array, should
+#'   use UTF-8 encoding, which is the standard on modern platforms running R.
+#'
+#'   This codec is not part of the Zarr v.3 core specification but a commonly
+#'   used codec to serialize character strings into Zarr chunks. It is defined
+#'   for Zarr v.2. This implementation enables the use of the Zarr v.3
+#'   registered `"string"` data type, as well as Zarr v.2 `"|O"` data type.
+#'
+#'   The codec does not handle `NA` values. On encoding, `NA` values become
+#'   empty strings (`""`); on decoding empty strings are preserved (not set to
+#'   `NA`). This behaviour is adopted from Python, making it the most
+#'   interoperable arrangement. If support for `NA` values is needed at the
+#'   application level, use should be made of a sentinel character string (like
+#'   `"NO_DATA"`) which then gets set to `NA` in the application. This will
+#'   obviously not be interoperable, at least not outside of the application
+#'   ecosystem.
+#' @docType class
+zarr_codec_vlenutf8 <- R6::R6Class('zarr_codec_vlenutf8',
+  inherit = zarr_codec,
+  cloneable = FALSE,
+  public = list(
+    #' @description Create a new "vlen-utf8" codec object.
+    #' @return An instance of this class.
+    initialize = function() {
+      super$initialize('vlen-utf8', list()) # vlen-utf8 has no configuration parameters
+      private$.from <- 'array'
+      private$.to <- 'bytes'
+    },
+
+    #' @description Create a new, independent copy of this codec.
+    #' @return An instance of `zarr_codec_vlenutf8`.
+    copy = function() {
+      zarr_codec_vlenutf8$new()
+    },
+
+    #' @description Return the metadata fragment that describes this codec.
+    #' @return A list with the metadata of this codec, just the name.
+    metadata_fragment = function() {
+      list(name = 'vlen-utf8')
+    },
+
+    #' @description This method writes an R character object to a raw vector.
+    #'   Prior to writing, any `NA` values are converted to an empty string.
+    #' @param data The data to be encoded.
+    #' @return A raw vector with the encoded data object.
+    encode = function(data) {
+      dim(data) <- NULL
+
+      # Build output in a connection
+      con <- rawConnection(raw(0L), open = "wb")
+      on.exit(close(con))
+
+      # Write number of character strings as uint32 LE
+      writeBin(length(data), con, size = 4L, endian = "little")
+
+      # Convert each string to UTF-8 raw bytes and write to the connection
+      lapply(data, function(s) {
+        char_raw <- iconv(s, from = "", to = "UTF-8", toRaw = TRUE)[[1L]]
+        if (is.null(char_raw) || !(len <- length(char_raw)))
+          # NA or empty string, write a 0L
+          writeBin(0L, con, size = 4L)
+        else {
+          # Write the length of the string
+          writeBin(len, con, size = 4L, endian = "little")
+          # Write the string itself
+          writeBin(char_raw, con)
+        }
+      })
+
+      rawConnectionValue(con)
+    },
+
+    #' @description This method takes a raw vector and converts it to an R
+    #'   character object.
+    #' @param data The data to be decoded.
+    #' @return An R character object with the shape of a chunk from the array.
+    decode = function(data) {
+      con <- rawConnection(data, open = "rb")
+      on.exit(close(con))
+
+      nelem <- readBin(con, what = "integer", n = 1L, size = 4L, endian = "little")
+
+      out <- character(nelem)
+      for (i in seq_len(nelem)) {
+        len <- readBin(con, what = "integer", n = 1L, size = 4L, endian = "little")
+        if (len > 0L) {
+          bytes <- readBin(con, what = "raw", n = len)
+          s <- rawToChar(bytes)
+          Encoding(s) <- "UTF-8"
+          out[i] <- s
+        }
+      }
+      out
+    }
+  )
+)
+
+#' Numpy UCS-4 codec
+#'
+#' @description The Numpy UCS-4 format is a fixed-length character string format
+#'   where shorter string are padded on the right with 0's. This is not a Zarr
+#'   codec but specific to Numpy. It is included here because many Zarr v.2
+#'   stores have been written with this formatting of character strings. Since
+#'   it does not use a codec in Zarr v.2, it is an invalid configuration in Zarr
+#'   v.3 and this package because it embodies the `array -> bytes` step that is
+#'   mandatory in Zarr v.3 - this is why this mock codec is included. This
+#'   "codec" encodes an R character object to a raw byte string, and decodes a
+#'   raw byte string to a R character object. The character object, typically a
+#'   vector but possibly a matrix or array, should use UTF-8 encoding, which is
+#'   the standard on modern platforms running R.
+#'
+#'   This codec is not part of the Zarr v.3 core specification but a commonly
+#'   used process in Zarr v.2 on Python to serialize character strings into Zarr
+#'   chunks. This implementation enables the use of the Zarr v.2 `"<U*"` data
+#'   type. As a consequence, this codec can only decode data - new data is not
+#'   written in this format.
+#' @docType class
+zarr_codec_ucs4 <- R6::R6Class('zarr_codec_ucs4',
+  inherit = zarr_codec,
+  cloneable = FALSE,
+  private = list(
+    .chunk_shape = NULL,
+    .configuration = list()
+  ),
+  public = list(
+    #' @description Create a new UCS-4 codec object.
+    #' @param chunk_shape The shape of a chunk of data of the array, an integer
+    #'   vector.
+    #' @param configuration A list with the configuration parameters for this
+    #'   codec. This is a list created in this package, it does not exist in the
+    #'   Zarr store as the Numpy UCS-4 method is not a real codec. The element
+    #'   `endian` specifies the byte ordering of the data type of the Zarr
+    #'   array. A string with value "big" or "little". The element `width` given
+    #'   the fixed padded string width.
+    #' @return An instance of this class.
+    initialize = function(chunk_shape, configuration) {
+      super$initialize('ucs-4', list()) # ucs-4 has no configuration parameters
+      private$.chunk_shape <- chunk_shape
+      private$.configuration <- configuration
+      private$.from <- 'array'
+      private$.to <- 'bytes'
+    },
+
+    #' @description Create a new, independent copy of this codec.
+    #' @return An instance of `zarr_codec_ucs4`.
+    copy = function() {
+      zarr_codec_ucs4$new(private$.chunk_shape, private$.configuration)
+    },
+
+    #' @description Return the metadata fragment that describes this codec.
+    #' @return A list with the metadata of this codec, just the name.
+    metadata_fragment = function() {
+      list(name = 'ucs-4', configuration = private$.configuration)
+    },
+
+    #' @description This method takes a raw UCS-4 vector and converts it to an R
+    #'   character object.
+    #' @param data The data to be decoded.
+    #' @return An R character object with the shape of a chunk from the array.
+    decode = function(data) {
+      con <- rawConnection(data, open = "rb")
+      on.exit(close(con))
+
+      nelem <- prod(private$.chunk_shape)
+      width <- as.integer(private$.configuration$width)
+      stopifnot(length(data) %% (nelem * width * 4L) == 0L)
+
+      out <- character(nelem)
+      for (i in seq_len(nelem)) {
+        codepoints <- readBin(con, what = "integer", n = width, size = 4L, endian = "little")
+        last_nonzero <- max(which(codepoints != 0L))
+        out[i] <- if (!length(last_nonzero)) ''
+                  else intToUtf8(codepoints[seq_len(last_nonzero)]) # Convert codepoints to R string
+      }
+      out
+    }
+  ),
+  active = list(
+    #' @field endian (read-only) Retrieve the endianness of the storage of the
+    #'   data with this codec. A string with value of "big" or "little".
+    endian = function(value) {
+      if (missing(value))
+        private$.configuration$endian
+    }
+  )
+)
+
 #' Zarr blosc codec
 #'
 #' @description The Zarr "blosc" codec offers a number of compression options to
-#'   reduce the size of a raw vector prior to storing, and uncompressing when
+#'   reduce the size of a raw vector prior to storing, and decompressing when
 #'   reading.
 #' @docType class
 zarr_codec_blosc <- R6::R6Class('zarr_codec_blosc',
@@ -386,7 +577,7 @@ zarr_codec_blosc <- R6::R6Class('zarr_codec_blosc',
       if (is.null(conf$cname))
         conf$cname <- 'zstd'
       else if (!is.character(conf$cname) || !(length(conf$cname) == 1L) ||
-               !(conf$cname %in% c("blosclz", "lz4", "lz4hc", "zstd", "zlib")))
+               !(conf$cname %in% c('blosclz', 'lz4', 'lz4hc', 'zstd', 'zlib')))
         stop('Blosc configuration has bad compression name.', call. = FALSE) # nocov
 
       if (is.null(conf$clevel))

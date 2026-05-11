@@ -1,5 +1,6 @@
 # zarr (development version)
 
+- The Zarr-registered "string" data type, an extension to the core specification, is now supported. This uses the "vlen-utf8" codec, also a registered extension to the core specification. For Zarr v.2 stores, this corresponds to the "|O" data type; the "<U*" data type is also supported, using a mocked-up "ucs-4" codec (it is not a true codec or Zarr v.2 filter) to provide the mandatory "array -> bytes" codec. This means that you can now read Zarr arrays that haave character data. You can also create new Zarr arrays with character data.
 - Nested attributes print better to the console.
 - `zarr_conventions()` function returns `data.frame` of supported conventions.
 - Ref convention code updated.
