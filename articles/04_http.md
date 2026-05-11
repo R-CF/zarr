@@ -52,9 +52,8 @@ z[["/"]]
 #> Chunking  : 80 65 12 
 #> 
 #> Attributes:
-#>  name      value                   
-#>  long_name near-surface temperature
-#>  units     degrees Celsius
+#> long_name: near-surface temperature
+#> units    : degrees Celsius
 ```
 
 The downside of this approach is that you need to have knowledge of the
@@ -83,10 +82,18 @@ the data.
 #> Arrays    : 0 
 #> 
 #> Attributes:
-#>  name        value                                             
-#>  _creator    omero-zarr, 0.3.0                                 
-#>  multiscales list(axes = list(list(name = "t", type = "time"...
-#>  omero       list(list(active = TRUE, coefficient = 1, color...
+#> _creator   :
+#>   name   : omero-zarr
+#>   version: 0.3.0
+#> multiscales: [t, time, c, channel, z, space, micrometer, y, space, micrometer, x, space, micrometer, 1, 1, 1, 1, 1, scale, 0, 1, 1, 1, 2, 2, scale, 1, 1, 1, 1, 4, 4, scale, 2, 1, 1, 1, 8, 8, scale, 3, 1, 1, 1, 16, 16, scale, 4, loci.common.image.SimpleImageScaler, Bio-Formats 6.9.1, 0.4]
+#> omero      :
+#>   channels: [TRUE, 1, 00FF00, linear, FALSE, H2B-eGFP, 1093, 65535, 0, 0, TRUE, 1, FF0000, linear, FALSE, myr-tdTomato, 439, 65535, 0, 0]
+#>   id      : 1
+#>   rdefs   :
+#>     defaultT: 265
+#>     defaultZ: 494
+#>     model   : color
+#>   version : 0.4
 
 # The attribute "multiscales" indicates the details of the data sets in the store
 # The "path" element is the path to the individual arrays

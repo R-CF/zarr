@@ -120,9 +120,8 @@ the Zarr specification has no standards for attribute contents.</p>
 <span><span class="co">#&gt; Chunking  : 80 65 12 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt;  name      value                   </span></span>
-<span><span class="co">#&gt;  long_name near-surface temperature</span></span>
-<span><span class="co">#&gt;  units     degrees Celsius</span></span></code></pre></div>
+<span><span class="co">#&gt; long_name: near-surface temperature</span></span>
+<span><span class="co">#&gt; units    : degrees Celsius</span></span></code></pre></div>
 <p>The downside of this approach is that you need to have knowledge of
 the Zarr resource to be able to properly interpret the data.</p>
 </div>
@@ -145,10 +144,18 @@ specification to interpret the data.</p>
 <span><span class="co">#&gt; Arrays    : 0 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt;  name        value                                             </span></span>
-<span><span class="co">#&gt;  _creator    omero-zarr, 0.3.0                                 </span></span>
-<span><span class="co">#&gt;  multiscales list(axes = list(list(name = "t", type = "time"...</span></span>
-<span><span class="co">#&gt;  omero       list(list(active = TRUE, coefficient = 1, color...</span></span>
+<span><span class="co">#&gt; _creator   :</span></span>
+<span><span class="co">#&gt;   name   : omero-zarr</span></span>
+<span><span class="co">#&gt;   version: 0.3.0</span></span>
+<span><span class="co">#&gt; multiscales: [t, time, c, channel, z, space, micrometer, y, space, micrometer, x, space, micrometer, 1, 1, 1, 1, 1, scale, 0, 1, 1, 1, 2, 2, scale, 1, 1, 1, 1, 4, 4, scale, 2, 1, 1, 1, 8, 8, scale, 3, 1, 1, 1, 16, 16, scale, 4, loci.common.image.SimpleImageScaler, Bio-Formats 6.9.1, 0.4]</span></span>
+<span><span class="co">#&gt; omero      :</span></span>
+<span><span class="co">#&gt;   channels: [TRUE, 1, 00FF00, linear, FALSE, H2B-eGFP, 1093, 65535, 0, 0, TRUE, 1, FF0000, linear, FALSE, myr-tdTomato, 439, 65535, 0, 0]</span></span>
+<span><span class="co">#&gt;   id      : 1</span></span>
+<span><span class="co">#&gt;   rdefs   :</span></span>
+<span><span class="co">#&gt;     defaultT: 265</span></span>
+<span><span class="co">#&gt;     defaultZ: 494</span></span>
+<span><span class="co">#&gt;     model   : color</span></span>
+<span><span class="co">#&gt;   version : 0.4</span></span>
 <span></span>
 <span><span class="co"># The attribute "multiscales" indicates the details of the data sets in the store</span></span>
 <span><span class="co"># The "path" element is the path to the individual arrays</span></span>

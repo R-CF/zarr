@@ -42,10 +42,9 @@ africa
 #> Total size: 540.36 KB 
 #> 
 #> Attributes:
-#>  name        value                                             
-#>  title       CRU TS4.08 Mean Temperature                       
-#>  institution Data held at British Atmospheric Data Centre, R...
-#>  source      Test data for the R zarr package                  
-#>  comment     Do not use this data for any practical purpose ...
-#>  contact     https://github.com/R-CF/zarr/issues               
+#> title      : CRU TS4.08 Mean Temperature
+#> institution: Data held at British Atmospheric Data Centre, RAL, UK.
+#> source     : Test data for the R zarr package
+#> comment    : Do not use this data for any practical purpose other than testing the zarr package
+#> contact    : https://github.com/R-CF/zarr/issues
 ```

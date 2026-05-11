@@ -43,10 +43,9 @@ z
 #> Arrays    : 0 
 #> 
 #> Attributes: (*)
-#>  name    value                                    
-#>  title   Data set for intelligent analysis of foo.
-#>  creator ACME Inc.                                
-#>  license free (as in free lunch)
+#> title  : Data set for intelligent analysis of foo.
+#> creator: ACME Inc.
+#> license: free (as in free lunch)
 
 # Create an array and attach some attributes
 x <- array(runif(20000), c(100, 200))
@@ -62,10 +61,9 @@ arr
 #> Chunking  : 100 100 
 #> 
 #> Attributes: (*)
-#>  name         value                                 
-#>  title        Bar for foo                           
-#>  valid_range  0, 1                                  
-#>  actual_range 2.5581568479538e-05, 0.999872711254284
+#> title       : Bar for foo
+#> valid_range : [0, 1]
+#> actual_range: [2.5581568479538e-05, 0.999872711254284]
 ```
 
 You can programmatically retrieve the full set of attributes with the
@@ -87,10 +85,9 @@ arr
 #> Chunking  : 100 100 
 #> 
 #> Attributes: (*)
-#>  name         value                                 
-#>  title        Bar for foo and baz too               
-#>  valid_range  0, 1                                  
-#>  actual_range 2.5581568479538e-05, 0.999872711254284
+#> title       : Bar for foo and baz too
+#> valid_range : [0, 1]
+#> actual_range: [2.5581568479538e-05, 0.999872711254284]
 ```
 
 If you want to delete one or more attributes, use the
@@ -108,8 +105,7 @@ arr
 #> Chunking  : 100 100 
 #> 
 #> Attributes: (*)
-#>  name  value                  
-#>  title Bar for foo and baz too
+#> title: Bar for foo and baz too
 ```
 
 The `(*)` after the the heading “Attributes:” indicates that there are

@@ -108,10 +108,9 @@ instances.</p>
 <span><span class="co">#&gt; Arrays    : 0 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attributes: (*)</span></span>
-<span><span class="co">#&gt;  name    value                                    </span></span>
-<span><span class="co">#&gt;  title   Data set for intelligent analysis of foo.</span></span>
-<span><span class="co">#&gt;  creator ACME Inc.                                </span></span>
-<span><span class="co">#&gt;  license free (as in free lunch)</span></span>
+<span><span class="co">#&gt; title  : Data set for intelligent analysis of foo.</span></span>
+<span><span class="co">#&gt; creator: ACME Inc.</span></span>
+<span><span class="co">#&gt; license: free (as in free lunch)</span></span>
 <span></span>
 <span><span class="co"># Create an array and attach some attributes</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20000</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span><span class="op">)</span></span>
@@ -127,10 +126,9 @@ instances.</p>
 <span><span class="co">#&gt; Chunking  : 100 100 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attributes: (*)</span></span>
-<span><span class="co">#&gt;  name         value                                 </span></span>
-<span><span class="co">#&gt;  title        Bar for foo                           </span></span>
-<span><span class="co">#&gt;  valid_range  0, 1                                  </span></span>
-<span><span class="co">#&gt;  actual_range 2.5581568479538e-05, 0.999872711254284</span></span></code></pre></div>
+<span><span class="co">#&gt; title       : Bar for foo</span></span>
+<span><span class="co">#&gt; valid_range : [0, 1]</span></span>
+<span><span class="co">#&gt; actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
 <p>You can programmatically retrieve the full set of attributes with the
 <code>attributes</code> field of <code>zarr_group</code> and
 <code>zarr_array</code>. The attributes are returned to the caller as a
@@ -149,10 +147,9 @@ too.</p>
 <span><span class="co">#&gt; Chunking  : 100 100 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attributes: (*)</span></span>
-<span><span class="co">#&gt;  name         value                                 </span></span>
-<span><span class="co">#&gt;  title        Bar for foo and baz too               </span></span>
-<span><span class="co">#&gt;  valid_range  0, 1                                  </span></span>
-<span><span class="co">#&gt;  actual_range 2.5581568479538e-05, 0.999872711254284</span></span></code></pre></div>
+<span><span class="co">#&gt; title       : Bar for foo and baz too</span></span>
+<span><span class="co">#&gt; valid_range : [0, 1]</span></span>
+<span><span class="co">#&gt; actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
 <p>If you want to delete one or more attributes, use the
 <code>delete_attributes()</code> method which takes a vector of
 attribute names to delete.</p>
@@ -166,8 +163,7 @@ attribute names to delete.</p>
 <span><span class="co">#&gt; Chunking  : 100 100 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attributes: (*)</span></span>
-<span><span class="co">#&gt;  name  value                  </span></span>
-<span><span class="co">#&gt;  title Bar for foo and baz too</span></span></code></pre></div>
+<span><span class="co">#&gt; title: Bar for foo and baz too</span></span></code></pre></div>
 <p>The <code>(*)</code> after the the heading “Attributes:” indicates
 that there are unsaved changes to the attributes, meaning that the
 changes have not been persisted to a Zarr store. If you wish to persist
