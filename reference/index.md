@@ -43,6 +43,10 @@
   : Zarr gzip codec
 - [`zarr_codec_transpose`](https://r-cf.github.io/zarr/reference/zarr_codec_transpose.md)
   : Zarr transpose codec
+- [`zarr_codec_ucs4`](https://r-cf.github.io/zarr/reference/zarr_codec_ucs4.md)
+  : Numpy UCS-4 codec
+- [`zarr_codec_vlenutf8`](https://r-cf.github.io/zarr/reference/zarr_codec_vlenutf8.md)
+  : Zarr vlen-utf8 codec
 - [`zarr_codec_zstd`](https://r-cf.github.io/zarr/reference/zarr_codec_zstd.md)
   : Zarr "zstd" codec
 - [`zarr_conv_ref`](https://r-cf.github.io/zarr/reference/zarr_conv_ref.md)

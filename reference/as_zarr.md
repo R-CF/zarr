@@ -16,7 +16,7 @@ as_zarr(x, name = NULL, location = NULL)
 - x:
 
   The R object to convert. Must be a vector, matrix or array of a
-  numeric or logical type.
+  numeric, character or logical type.
 
 - name:
 

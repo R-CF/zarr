@@ -35,6 +35,8 @@
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_codec_crc32c.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_codec_gzip.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_codec_transpose.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_codec_ucs4.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_codec_vlenutf8.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_codec_zstd.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_conv_ref.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_conv_uom.html</loc></url>

@@ -1,7 +1,7 @@
 # Zarr blosc codec
 
 The Zarr "blosc" codec offers a number of compression options to reduce
-the size of a raw vector prior to storing, and uncompressing when
+the size of a raw vector prior to storing, and decompressing when
 reading.
 
 ## Super classes

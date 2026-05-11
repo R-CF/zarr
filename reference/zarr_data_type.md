@@ -1,7 +1,7 @@
 # Zarr data types
 
 This class implements a Zarr data type as an extension point. This class
-also manages the "fill_value" attribute associated with the data type.
+also manages the 'fill_value' attribute associated with the data type.
 
 ## Super class
 
