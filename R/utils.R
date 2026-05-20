@@ -38,6 +38,27 @@
   paste0('/', sub('/$', '', prefix))
 }
 
+# Parse the metadata to a list. Argument txt is a JSON object.
+# This function has some error correction code to correct for known problems but
+# most malformed JSON objects will fail hard.
+.parse_metadata <- function(txt) {
+  result <- tryCatch(
+    jsonlite::fromJSON(txt, simplifyDataFrame = FALSE),
+    error = function(e) {
+      if (grepl("lexical error", conditionMessage(e))) {
+        txt |>
+          gsub(pattern = ":\\s*-Inf", replacement = ': "-Infinity"', x = _) |>
+          gsub(pattern = ":\\s*Inf",  replacement = ': "Infinity"',  x = _) |>
+          gsub(pattern = ":\\s*NaN",  replacement = ': "NaN"',       x = _) |>
+          jsonlite::fromJSON(simplifyDataFrame = FALSE)
+      } else {
+        stop(e)
+      }
+    }
+  )
+  result
+}
+
 .size_string <- function(size_in_bytes) {
   if (size_in_bytes < 1024) {
     return(paste(size_in_bytes, "Bytes"))

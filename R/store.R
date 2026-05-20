@@ -59,10 +59,10 @@ zarr_store <- R6::R6Class('zarr_store',
         ab$shape <- meta$shape
         ab$chunk_shape <- meta$chunks
         if (!is.null(meta$fill_value)) {
-          if (dtype[3L] == 'f')
-            ab$fill_value <- as.numeric(meta$fill_value)
-          else if (dtype[3L] %in% c('u', 'i'))
-            ab$fill_value <- as.integer(meta$fill_value)
+          #if (dtype[3L] == 'f')
+          #  ab$fill_value <- as.numeric(meta$fill_value)
+          #else if (dtype[3L] %in% c('u', 'i'))
+            ab$fill_value <- meta$fill_value #as.integer(meta$fill_value)
           # FIXME: what about int64 data?
         }
 

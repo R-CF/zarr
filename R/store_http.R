@@ -59,7 +59,7 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
       # First attempt: Locate Zarr v.3 array or group
       meta <- private$request('zarr.json')
       if (!is.null(meta)) {
-        meta <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
+        meta <- .parse_metadata(rawToChar(meta))
         format <- meta$zarr_format
         if (is.null(format) || format != 3L)
           stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
@@ -67,7 +67,7 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
         # Second attempt: Retrieve the consolidated metadata
         meta <- private$request('.zmetadata')
         if (!is.null(meta)) {
-          meta <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
+          meta <- .parse_metadata(rawToChar(meta))
           if (meta$zarr_consolidated_format != 1L)
             stop('Unsupported version of consolidated metadata.', call. = FALSE)
 
@@ -85,7 +85,7 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
             meta <- private$request('.zgroup')
           if (is.null(meta))
             stop('No compatible store found at ', url, call. = FALSE)
-          meta <- jsonlite::fromJSON(rawToChar(meta), simplifyDataFrame = FALSE)
+          meta <- .parse_metadata(rawToChar(meta))
           format <- meta$zarr_format
           if (is.null(format) || format != 2L)
             stop('Incompatible "zarr_format" found in the store:', format %||% '(null)', call. = FALSE) # nocov
@@ -207,7 +207,7 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
         # Store holds a single array
         atts <- private$request('.zattrs')
         if (!is.null(atts))
-          atts <- jsonlite::fromJSON(rawToChar(atts), simplifyDataFrame = FALSE)
+          atts <- .parse_metadata(rawToChar(atts))
         meta <- private$metadata_v2_to_v3(private$.metadata, atts)
       } else {
         # Consolidated metadata

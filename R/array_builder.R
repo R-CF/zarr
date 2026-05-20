@@ -99,7 +99,7 @@ array_builder <- R6::R6Class('array_builder',
     initialize = function(metadata = NULL) {
       if (!is.null(metadata)) {
         if (!is.list(metadata)) {
-          meta <- try(jsonlite::fromJSON(metadata, simplifyDataFrame = FALSE), silent = TRUE)
+          meta <- .parse_metadata(metadata)
           if (inherits(meta, "try-error")) {
             warning('Argument `metadata` is not a valid JSON document. Discarding.', call. = FALSE) # nocov
             meta <- list()
@@ -117,12 +117,7 @@ array_builder <- R6::R6Class('array_builder',
           # Set properties through the active fields, checking is done there.
           self$shape <- meta$shape
           self$data_type <- meta$data_type
-          self$fill_value <- if (is.character(meta$fill_value))
-            switch(meta$fill_value,
-                   'Infinity'  = Inf,
-                   '-Infinity' = -Inf,
-                   'NaN'       = NaN)
-          else meta$fill_value
+          self$fill_value <- meta$fill_value
           self$chunk_shape <- meta$chunk_grid$configuration$chunk_shape # regular grid only
 
           if (length(meta$codecs)) {
@@ -295,8 +290,35 @@ array_builder <- R6::R6Class('array_builder',
       if (!is.null(private$.data_type)) {
         if (missing(value))
           private$.data_type$fill_value
-        else
-          private$.data_type$fill_value <- value
+        else {
+          dt <- private$.data_type$data_type
+          private$.data_type$fill_value <- if (is.na(value))
+            value
+          else if (is.numeric(value)) {
+            switch(dt,
+              'int32' = if (value < -.Machine$integer.max || value > .Machine$integer.max) NA_integer_ else as.integer(value),
+              'int64' = ,
+              'uint32' = if (value < -.Machine$integer.max || value > .Machine$integer.max) bit64::NA_integer64_ else bit64::as.integer64(value),
+              'int8' = ,
+              'int16' = ,
+              'uint8' = ,
+              'uint16' = as.integer(value),
+              value  # float — pass through
+              )
+          } else if (is.character(value)) {
+            if (dt %in% c('float32', 'float64')) {
+              switch(value,
+                'Infinity'  = Inf,
+                '-Infinity' = -Inf,
+                'NaN'       = NaN,
+                stop('Invalid `fill_value`', call. = FALSE))
+            } else if (dt == 'string')
+              value
+            else
+              stop('Invalid `fill_value`', call. = FALSE)
+          } else
+            stop('Invalid `fill_value`', call. = FALSE)
+        }
       }
     },
 

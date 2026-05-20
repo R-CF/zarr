@@ -54,7 +54,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
           if (!file.exists(meta_path <- file.path(root, '.zgroup')))
             if (!file.exists(meta_path <- file.path(root, '.zarray')))
               stop('No Zarr store at the root location.', call. = FALSE) # nocov
-        meta <- jsonlite::fromJSON(meta_path)
+        meta <- .parse_metadata(rawToChar(readBin(meta_path, "raw", file.size(meta_path))))
         format <- meta$zarr_format
         if (is.null(format) || !(format == 3L || format == 2L))
           stop('Incompatible "zarr_format" found in the store:', format, call. = FALSE) # nocov
@@ -271,7 +271,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       if (private$.version == 3L) {
         fn <- paste(file_base, 'zarr.json', sep = '/')
         if (file.exists(fn))
-          jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
+          .parse_metadata(rawToChar(readBin(fn, "raw", file.size(fn))))
         else
           NULL
       } else {
@@ -281,12 +281,12 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
           fn <- paste(file_base, '.zarray', sep = '/')
           if (!file.exists(fn)) return(NULL)
         }
-        meta <- jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
+        meta <- .parse_metadata(rawToChar(readBin(fn, "raw", file.size(fn))))
 
         # Attributes
         fn <- paste(file_base, '.zattrs', sep = '/')
         atts <- if (file.exists(fn))
-                  jsonlite::fromJSON(fn, simplifyDataFrame = FALSE)
+                  .parse_metadata(rawToChar(readBin(fn, "raw", file.size(fn))))
                 else list()
 
         private$metadata_v2_to_v3(meta, atts)
