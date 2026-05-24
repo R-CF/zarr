@@ -88,7 +88,9 @@ zarr_array <- R6::R6Class('zarr_array',
       }
     },
 
-    #' @description Read some or all of the array data for the array.
+    #' @description Read some or all of the array data for the array. For all
+    #'   types other than logical, any data elements with the `fill_value` of
+    #'   the Zarr data type are set to `NA`.
     #' @param selection A list as long as the array has dimensions where each
     #'   element is a range of indices along the dimension to write. If missing
     #'   or `NULL`, the entire array will be read.
@@ -102,13 +104,27 @@ zarr_array <- R6::R6Class('zarr_array',
         stop  <- sapply(selection, max)
         if (any(start < 1L | start > array_shape | stop > array_shape))
           stop('Array selection indices are out of bounds.', call. = FALSE) # nocov
-        private$.chunking$read(start, stop)
+        data <- private$.chunking$read(start, stop)
+
+        fill <- private$.data_type$fill_value
+        Rtype <- private$.data_type$Rtype
+        if (is.nan(fill))
+          data[which(is.nan(data))] <- NA
+        else if (Rtype == 'integer')
+          data[data == fill] <- NA
+        else if (!(Rtype %in% c('logical', 'integer64')))
+          data[.near(data, fill)] <- NA
       } else
         stop('`selection` list must have the same length as the shape of the array.', call. = FALSE) # nocov
+
+      data
     },
 
     #' @description Write data for the array. The data will be chunked, encoded
-    #'   and persisted in the store that the array is using.
+    #'   and persisted in the store that the array is using. Prior to writing,
+    #'   any `NA` values are assigned the `fill_value` of the `data_type` of the
+    #'   Zarr array. Note that the logical type cannot encode `NA` in Zarr and
+    #'   any `NA` values are set to `FALSE`.
     #' @param data An R vector, matrix or array with the data to write. The data
     #'   in the R object has to agree with the data type of the array.
     #' @param selection A list as long as the array has dimensions where each
@@ -142,6 +158,8 @@ zarr_array <- R6::R6Class('zarr_array',
           if ((proddim <- prod(sdim)) != prod(ddim))
             data <- array(rep(data, each = proddim), dim = sdim)
         }
+        dt <- private$.data_type
+        data[is.na(data)] <- dt$fill_value
         private$.chunking$write(data, start, stop)
       } else
         stop('`selection` list must have the same length as the shape of the array.', call. = FALSE) # nocov

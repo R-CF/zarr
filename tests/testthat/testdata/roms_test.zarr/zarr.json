@@ -1,0 +1,11 @@
+{
+  "attributes": {
+    "Conventions": "CF-1.13",
+    "title": "Synthetic minimal ROMS-like Zarr v3 test store",
+    "institution": "cf-zarr test fixture",
+    "source": "synthetic",
+    "comment": "All CF cross-references span group boundaries intentionally, to exercise backends that implement full cross-group resolution."
+  },
+  "zarr_format": 3,
+  "node_type": "group"
+}

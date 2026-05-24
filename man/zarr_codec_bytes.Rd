@@ -97,10 +97,7 @@ A list with the metadata of this codec.
 \if{latex}{\out{\hypertarget{method-zarr_codec_bytes-encode}{}}}
 \subsection{Method \code{encode()}}{
 This method writes an R object to a raw vector in the data
-type of the Zarr array. Prior to writing, any \code{NA} values are assigned
-the \code{fill_value} of the \code{data_type} of the Zarr array. Note that the
-logical type cannot encode \code{NA} in Zarr and any \code{NA} values are set to
-\code{FALSE}.
+type of the Zarr array.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$encode(data)}\if{html}{\out{</div>}}
 }
@@ -121,9 +118,7 @@ A raw vector with the encoded data object.
 \if{latex}{\out{\hypertarget{method-zarr_codec_bytes-decode}{}}}
 \subsection{Method \code{decode()}}{
 This method takes a raw vector and converts it to an R
-object of an appropriate type. For all types other than logical, any
-data elements with the \code{fill_value} of the Zarr data type are set to
-\code{NA}.
+object of an appropriate type.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$decode(data)}\if{html}{\out{</div>}}
 }

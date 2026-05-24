@@ -167,3 +167,21 @@ zarr_conventions <- function() {
   else
     zarr_array$new(name, metadata, parent, store)
 }
+
+# This internal function supports codec management for sharding
+.build_codec_pipeline <- function(codec_configs, data_type, chunk_shape) {
+  codecs <- list()
+  for (cfg in codec_configs) {
+    cdc <- switch(cfg$name,
+      'transpose' = zarr_codec_transpose$new(length(chunk_shape), cfg$configuration),
+      'bytes'     = zarr_codec_bytes$new(data_type, chunk_shape, cfg$configuration),
+      'crc32c'    = zarr_codec_crc32c$new(),
+      'blosc'     = zarr_codec_blosc$new(data_type = data_type, cfg$configuration),
+      'zstd'      = zarr_codec_zstd$new(cfg$configuration),
+      'gzip'      = zarr_codec_gzip$new(cfg$configuration),
+      stop(paste('Unknown codec:', cfg$name), call. = FALSE)
+    )
+    codecs <- c(codecs, stats::setNames(list(cdc), cfg$name))
+  }
+  codecs
+}

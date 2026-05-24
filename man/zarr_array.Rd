@@ -111,7 +111,9 @@ display the full group hierarchy.
 \if{html}{\out{<a id="method-zarr_array-read"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_array-read}{}}}
 \subsection{Method \code{read()}}{
-Read some or all of the array data for the array.
+Read some or all of the array data for the array. For all
+types other than logical, any data elements with the \code{fill_value} of
+the Zarr data type are set to \code{NA}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_array$read(selection)}\if{html}{\out{</div>}}
 }
@@ -134,7 +136,10 @@ A vector, matrix or array of data.
 \if{latex}{\out{\hypertarget{method-zarr_array-write}{}}}
 \subsection{Method \code{write()}}{
 Write data for the array. The data will be chunked, encoded
-and persisted in the store that the array is using.
+and persisted in the store that the array is using. Prior to writing,
+any \code{NA} values are assigned the \code{fill_value} of the \code{data_type} of the
+Zarr array. Note that the logical type cannot encode \code{NA} in Zarr and
+any \code{NA} values are set to \code{FALSE}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{zarr_array$write(data, selection)}\if{html}{\out{</div>}}
 }

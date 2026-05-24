@@ -28,15 +28,37 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
     # Request an item from the HTPP store by key. The key must be fully formed
     # to start from the base URL of the store. The content item of the response
     # is returned as a raw vector.
-    request = function(key) {
+    request = function(key, byte_range = NULL) {
       url <- paste(private$.base_url, key, sep = '/')
-      req <- curl::curl_fetch_memory(url)
-      if (req$status_code == 200)
+
+      if (is.null(byte_range)) {
+        req <- curl::curl_fetch_memory(url)
+        ok <- req$status_code == 200L
+      } else {
+        h <- curl::new_handle()
+
+        if (length(byte_range) == 1L) {
+          if (byte_range >= 0L) {
+            range_str <- paste0("bytes=", byte_range, "-")
+          } else {
+            range_str <- paste0("bytes=-", abs(byte_range))
+          }
+        } else {
+          # Convert exclusive end to inclusive
+          range_str <- paste0("bytes=", byte_range[1L], "-", byte_range[2L] - 1L)
+        }
+
+        curl::handle_setheaders(h, "Range" = range_str)
+        req <- curl::curl_fetch_memory(url, handle = h)
+        ok <- req$status_code %in% c(200L, 206L)  # 206 = Partial Content
+      }
+
+      if (ok)
         req$content
-      else if (req$status_code == 404)
+      else if (req$status_code == 404L)
         NULL
       else
-        stop(paste('Error', req$status_code, 'on key', key), call. = FALSE)
+        stop(paste("Error", req$status_code, "on key", key), call. = FALSE)
     }
   ),
   public = list(
@@ -184,10 +206,17 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
     #' @param key Character string. The key for which to get data.
     #' @param prototype Ignored. The only buffer type that is supported maps
     #'   directly to an R raw vector.
-    #' @param byte_range Ignored. The full data value is always returned.
+    #' @param byte_range If `NULL`, all data associated with the key is
+    #'   retrieved. If a single positive integer, all bytes starting from a
+    #'   given byte offset to the end of the object are returned. If a single
+    #'   negative integer, the final bytes are returned. If an integer vector of
+    #'   length 2, request a specific range of bytes where the end is exclusive.
+    #'   If the range ends after the end of the object, the entire remainder of
+    #'   the object will be returned. If the given range is zero-length or
+    #'   starts after the end of the object, an error will be returned.
     #' @return A raw vector with the data pointed at by the key.
     get = function(key, prototype = NULL, byte_range = NULL) {
-      private$request(key)
+      private$request(key, byte_range)
     },
 
     #' @description Retrieve the metadata document of the node at the location

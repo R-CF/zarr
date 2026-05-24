@@ -85,7 +85,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
 
     #' @description Return the metadata fragment that describes this chunking
     #'   scheme.
-    #' @return A list with the metadata of this codec.
+    #' @return A list with the metadata of this chunking scheme.
     metadata_fragment = function() {
       list(chunk_grid = list(name = 'regular',
                              configuration = list(chunk_shape = if (private$.scalar) list()
@@ -123,7 +123,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
           a64
         }
       } else {
-        if (nd == 1L) vector(private$.data_type$Rtype, stop - start + 1L)
+        if (nd == 1L) rep(private$.data_type$fill_value, stop - start + 1L)
         else array(private$.data_type$fill_value, stop - start + 1L)
       }
 
@@ -426,6 +426,7 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
 )
 
 # --- S3 functions ---
+
 #' Compact display of a regular chunk grid
 #' @param object A `chunk_grid_regular` instance.
 #' @param ... Ignored.

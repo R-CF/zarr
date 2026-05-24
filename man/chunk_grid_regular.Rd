@@ -98,7 +98,7 @@ scheme.
 }
 
 \subsection{Returns}{
-A list with the metadata of this codec.
+A list with the metadata of this chunking scheme.
 }
 }
 \if{html}{\out{<hr>}}

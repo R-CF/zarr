@@ -62,11 +62,17 @@ array_builder <- R6::R6Class('array_builder',
         meta <- append(meta, list(shape = private$.shape))
       if (!is.null(private$.data_type))
         meta <- append(meta, private$.data_type$metadata_fragment())
+
       meta <- append(meta, private$.chunk_shape$metadata_fragment())
-      if (length(private$.codecs)) {
-        codecs <- lapply(private$.codecs, function(cdc) cdc$metadata_fragment())
-        meta <- append(meta, setNames(list(codecs), 'codecs'))
-      }
+      if (!inherits(private$.chunk_shape, 'chunk_grid_sharded') && length(private$.codecs))
+        meta <- append(meta, setNames(list(lapply(private$.codecs,
+                                                  function(cdc) cdc$metadata_fragment())), 'codecs'))
+
+      # meta <- append(meta, private$.chunk_shape$metadata_fragment())
+      # if (length(private$.codecs)) {
+      #   codecs <- lapply(private$.codecs, function(cdc) cdc$metadata_fragment())
+      #   meta <- append(meta, setNames(list(codecs), 'codecs'))
+      # }
       meta
     },
 
@@ -173,14 +179,35 @@ array_builder <- R6::R6Class('array_builder',
         stop('Codec name must be a single character string.', call. = FALSE) # nocov
 
       cdc <- switch(codec,
-                    'transpose' = zarr_codec_transpose$new(length(private$.shape), configuration),
-                    'bytes' = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape, configuration),
-                    'vlen-utf8' = zarr_codec_vlenutf8$new(),
-                    'ucs-4' = zarr_codec_ucs4$new(private$.chunk_shape$chunk_shape, configuration),
-                    'blosc' = zarr_codec_blosc$new(data_type = private$.data_type, configuration),
-                    'zstd' = zarr_codec_zstd$new(configuration),
-                    'gzip' = zarr_codec_gzip$new(configuration),
-                    'crc32c' = zarr_codec_crc32c$new())
+        'transpose'        = zarr_codec_transpose$new(length(private$.shape), configuration),
+        'bytes'            = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape, configuration),
+        'vlen-utf8'        = zarr_codec_vlenutf8$new(),
+        'ucs-4'            = zarr_codec_ucs4$new(private$.chunk_shape$chunk_shape, configuration),
+        'blosc'            = zarr_codec_blosc$new(data_type = private$.data_type, configuration),
+        'zstd'             = zarr_codec_zstd$new(configuration),
+        'gzip'             = zarr_codec_gzip$new(configuration),
+        'crc32c'           = zarr_codec_crc32c$new(),
+        'sharding_indexed' = {
+          outer_shape <- private$.chunk_shape$chunk_shape
+          inner_shape <- as.integer(configuration$chunk_shape)
+          index_loc   <- configuration$index_location %||% 'end'
+
+          inner_codecs <- .build_codec_pipeline(configuration$codecs, private$.data_type, inner_shape)
+          index_codecs <- .build_codec_pipeline(configuration$index_codecs, zarr_data_type$new('uint64'), as.integer(c(prod(outer_shape / inner_shape), 2L)))
+
+          private$.chunk_shape <- chunk_grid_sharded$new(
+            array_shape  = private$.shape,
+            chunk_shape  = outer_shape,
+            inner_shape  = inner_shape,
+            index_loc    = index_loc,
+            inner_codecs = inner_codecs,
+            index_codecs = index_codecs
+          )
+
+          zarr_codec_sharding$new(configuration)
+        },
+        stop(paste('Unknown codec:', codec), call. = FALSE)
+      )
       if (!inherits(cdc, 'zarr_codec'))
         stop('Could not create a codec from the arguments:', codec, call. = FALSE) # nocov
 
@@ -316,7 +343,9 @@ array_builder <- R6::R6Class('array_builder',
               value
             else
               stop('Invalid `fill_value`', call. = FALSE)
-          } else
+          } else if (is.logical(value) && dt == 'bool')
+            value
+          else
             stop('Invalid `fill_value`', call. = FALSE)
         }
       }

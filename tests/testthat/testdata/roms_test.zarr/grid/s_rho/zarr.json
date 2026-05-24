@@ -1,0 +1,50 @@
+{
+  "shape": [
+    5
+  ],
+  "data_type": "float64",
+  "chunk_grid": {
+    "name": "regular",
+    "configuration": {
+      "chunk_shape": [
+        5
+      ]
+    }
+  },
+  "chunk_key_encoding": {
+    "name": "default",
+    "configuration": {
+      "separator": "/"
+    }
+  },
+  "fill_value": 0.0,
+  "codecs": [
+    {
+      "name": "bytes",
+      "configuration": {
+        "endian": "little"
+      }
+    },
+    {
+      "name": "zstd",
+      "configuration": {
+        "level": 0,
+        "checksum": false
+      }
+    }
+  ],
+  "attributes": {
+    "standard_name": "ocean_s_coordinate_g2",
+    "long_name": "S-coordinate at rho-points",
+    "units": "1",
+    "positive": "up",
+    "axis": "Z",
+    "formula_terms": "s: /grid/s_rho  C: /grid/Cs_r  eta: /ocean/zeta  h: /grid/h  hc: /grid/hc"
+  },
+  "dimension_names": [
+    "s_rho"
+  ],
+  "zarr_format": 3,
+  "node_type": "array",
+  "storage_transformers": []
+}

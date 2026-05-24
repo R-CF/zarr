@@ -290,15 +290,11 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
     },
 
     #' @description This method writes an R object to a raw vector in the data
-    #'   type of the Zarr array. Prior to writing, any `NA` values are assigned
-    #'   the `fill_value` of the `data_type` of the Zarr array. Note that the
-    #'   logical type cannot encode `NA` in Zarr and any `NA` values are set to
-    #'   `FALSE`.
+    #'   type of the Zarr array.
     #' @param data The data to be encoded.
     #' @return A raw vector with the encoded data object.
     encode = function(data) {
       dt <- private$.data_type
-      data[is.na(data)] <- dt$fill_value
       dim(data) <- NULL
 
       if (dt$data_type == 'logical') {
@@ -310,9 +306,7 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
     },
 
     #' @description This method takes a raw vector and converts it to an R
-    #'   object of an appropriate type. For all types other than logical, any
-    #'   data elements with the `fill_value` of the Zarr data type are set to
-    #'   `NA`.
+    #'   object of an appropriate type.
     #' @param data The data to be decoded.
     #' @return An R object with the shape of a chunk from the array.
     decode = function(data) {
@@ -328,15 +322,12 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
         vals <- readBin(data, what = 'double', n = n, endian = private$.configuration$endian)
         class(vals) <- 'integer64'
         vals
-      } else {
+      } else if (dt$size < 4L)
         readBin(data, what = Rtype, size = dt$size, signed = dt$signed,
                 n = n, endian = private$.configuration$endian)
-      }
-
-      if (is.nan(dt$fill_value))
-        out[which(is.nan(out))] <- NA
-      else if (!(Rtype %in% c('logical', 'integer64')))
-        out[.near(out, dt$fill_value)] <- NA
+      else
+        readBin(data, what = Rtype, size = dt$size,
+                n = n, endian = private$.configuration$endian)
 
       dim(out) <- private$.chunk_shape
       out
@@ -940,12 +931,51 @@ zarr_codec_crc32c <- R6::R6Class('zarr_codec_crc32c',
     #' @return The `data` raw vector with the trailing 32-bits removed.
     decode = function(data) {
       len <- length(data)
-      out <- data[1:(len - 4L)]
-      chk_stored <- readBin(data[(len - 3L):len], 'integer')
-      chk_calc <- strtoi(digest::digest(out, 'crc32c', serialize = FALSE), base = 16L)
-      if (chk_stored != chk_calc)
-        warning('Checksum failed on raw data object!', call. = FALSE) # nocov
+      out <- data[1L:(len - 4L)]
+      chk_stored <- data[(len - 3L):len]
+      chk_calc   <- rev(digest::digest(out, algo = 'crc32c', serialize = FALSE, raw = TRUE))
+      if (!identical(chk_stored, chk_calc))
+        warning('Checksum failed on raw data object!', call. = FALSE)
       out
     }
   )
 )
+
+#' Zarr sharding codec
+#'
+#' @description The Zarr sharding codec is not a true codec in the sense that it
+#'   does not encode or decode - that is left up to regular codec defined inside
+#'   this "codec" configuration. This implementation can read from a store using
+#'   sharding, writing is not supported.
+#' @docType class
+zarr_codec_sharding <- R6::R6Class('zarr_codec_sharding',
+  inherit = zarr_codec,
+  cloneable = FALSE,
+  private = list(
+    print_configuration = function() {
+      cat('Configuration:\n')
+      cat('  chunk_shape:    [', paste(private$.inner_shape, collapse = ', '), ']\n', sep = '')
+      cat('  index_location: ',  private$.index_loc, '\n', sep = '')
+      cat('  codecs:         [', paste(sapply(private$.inner_codecs, function(c) c$name), collapse = ', '), ']\n', sep = '')
+    }
+  ),
+  public = list(
+    #' @description Create a new "crc32c" codec object.
+    #' @param configuration Optional. A list with the configuration parameters
+    #'   for this codec but since this codec doesn't have any the argument is
+    #'   always ignored.
+    #' @return An instance of this class.
+    initialize = function(configuration) {
+      super$initialize('sharding_indexed', configuration)
+      private$.from <- 'array'
+      private$.to <- 'bytes'
+    },
+
+    #' @description Create a new, independent copy of this codec.
+    #' @return An instance of `zarr_codec_sharding`.
+    copy = function() {
+      zarr_codec_sharding$new(private$.configuration)
+    }
+  )
+)
+

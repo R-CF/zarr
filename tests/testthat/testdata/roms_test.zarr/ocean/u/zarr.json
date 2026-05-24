@@ -1,0 +1,57 @@
+{
+  "shape": [
+    3,
+    5,
+    8,
+    9
+  ],
+  "data_type": "float32",
+  "chunk_grid": {
+    "name": "regular",
+    "configuration": {
+      "chunk_shape": [
+        1,
+        5,
+        8,
+        9
+      ]
+    }
+  },
+  "chunk_key_encoding": {
+    "name": "default",
+    "configuration": {
+      "separator": "/"
+    }
+  },
+  "fill_value": 0.0,
+  "codecs": [
+    {
+      "name": "bytes",
+      "configuration": {
+        "endian": "little"
+      }
+    },
+    {
+      "name": "zstd",
+      "configuration": {
+        "level": 0,
+        "checksum": false
+      }
+    }
+  ],
+  "attributes": {
+    "standard_name": "sea_water_x_velocity",
+    "long_name": "u-momentum component",
+    "units": "m s-1",
+    "coordinates": "/time/ocean_time /grid/s_rho /grid/lon_u /grid/lat_u"
+  },
+  "dimension_names": [
+    "time",
+    "s_rho",
+    "eta_u",
+    "xi_u"
+  ],
+  "zarr_format": 3,
+  "node_type": "array",
+  "storage_transformers": []
+}

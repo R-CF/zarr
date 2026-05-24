@@ -277,7 +277,14 @@ Retrieve the value associated with a given key.
 \item{\code{prototype}}{Ignored. The only buffer type that is supported maps
 directly to an R raw vector.}
 
-\item{\code{byte_range}}{Ignored. The full data value is always returned.}
+\item{\code{byte_range}}{If \code{NULL}, all data associated with the key is
+retrieved. If a single positive integer, all bytes starting from a
+given byte offset to the end of the object are returned. If a single
+negative integer, the final bytes are returned. If an integer vector of
+length 2, request a specific range of bytes where the end is exclusive.
+If the range ends after the end of the object, the entire remainder of
+the object will be returned. If the given range is zero-length or
+starts after the end of the object, an error will be returned.}
 }
 \if{html}{\out{</div>}}
 }
