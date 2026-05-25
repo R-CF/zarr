@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>2. Working with arrays • zarr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="2. Working with arrays">
 </head>
@@ -120,11 +120,11 @@ alternative to “.Rdata” files.</p>
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/RtmpyDWfou/file1bd14915aeef.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/Rtmpck3rdt/file1d3e1fc90011.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 1 </span></span>
 <span><span class="co">#&gt; Total size: 2.91 KB</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/RtmpyDWfou/file1bd14915aeef.zarr </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpck3rdt/file1d3e1fc90011.zarr </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
 <span><span class="co">#&gt; └ ⌗ top_array</span></span></code></pre></div>
 <p>If you have multiple R objects that you want to store in the Zarr
@@ -145,7 +145,7 @@ where you want to store the R object.</p>
 <span><span class="va">grp</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, name <span class="op">=</span> <span class="st">"サブグループ"</span><span class="op">)</span>  <span class="co"># = subgroup</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">w</span>, name <span class="op">=</span> <span class="st">"空の行列"</span>, location <span class="op">=</span> <span class="va">grp</span><span class="op">)</span>  <span class="co"># = empty matrix</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/RtmpyDWfou/file1bd14915aeef.zarr </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpck3rdt/file1d3e1fc90011.zarr </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
 <span><span class="co">#&gt; ├ ⌗ top_array</span></span>
 <span><span class="co">#&gt; ├ ⌗ a_vector</span></span>
@@ -165,14 +165,14 @@ chunk in files like <code>0</code>, <code>1</code>, <code>2</code>,
 <span><span class="co">#&gt;  [9] "top_array/c.2.0.0"               "top_array/c.3.0.0"              </span></span>
 <span><span class="co">#&gt; [11] "top_array/c.4.0.0"               "top_array/zarr.json"            </span></span>
 <span><span class="co">#&gt; [13] "zarr.json"                       "サブグループ/zarr.json"         </span></span>
-<span><span class="co">#&gt; [15] "サブグループ/空の行列/zarr.json"</span></span>
+<span><span class="co">#&gt; [15] "サブグループ/空の行列/c.0.0"     "サブグループ/空の行列/zarr.json"</span></span>
 <span><span class="va">z</span></span>
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/RtmpyDWfou/file1bd14915aeef.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/Rtmpck3rdt/file1d3e1fc90011.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 3 </span></span>
-<span><span class="co">#&gt; Total size: 7.67 KB</span></span>
+<span><span class="co">#&gt; Total size: 7.7 KB</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></code></pre></div>
 <p>A couple of things to note:</p>
 <ul>

@@ -102,9 +102,7 @@ A list with the metadata of this codec.
 ### Method `encode()`
 
 This method writes an R object to a raw vector in the data type of the
-Zarr array. Prior to writing, any `NA` values are assigned the
-`fill_value` of the `data_type` of the Zarr array. Note that the logical
-type cannot encode `NA` in Zarr and any `NA` values are set to `FALSE`.
+Zarr array.
 
 #### Usage
 
@@ -125,8 +123,7 @@ A raw vector with the encoded data object.
 ### Method `decode()`
 
 This method takes a raw vector and converts it to an R object of an
-appropriate type. For all types other than logical, any data elements
-with the `fill_value` of the Zarr data type are set to `NA`.
+appropriate type.
 
 #### Usage
 

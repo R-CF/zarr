@@ -56,11 +56,11 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpyDWfou/file1bd14915aeef.zarr 
+#> Location  : /tmp/Rtmpck3rdt/file1d3e1fc90011.zarr 
 #> Arrays    : 1 
 #> Total size: 2.91 KB
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpyDWfou/file1bd14915aeef.zarr 
+#> <Zarr hierarchy> /tmp/Rtmpck3rdt/file1d3e1fc90011.zarr 
 #> ☰ / (root group)
 #> └ ⌗ top_array
 ```
@@ -85,7 +85,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpyDWfou/file1bd14915aeef.zarr 
+#> <Zarr hierarchy> /tmp/Rtmpck3rdt/file1d3e1fc90011.zarr 
 #> ☰ / (root group)
 #> ├ ⌗ top_array
 #> ├ ⌗ a_vector
@@ -108,14 +108,14 @@ list.files(path = z$store$root, recursive = TRUE)
 #>  [9] "top_array/c.2.0.0"               "top_array/c.3.0.0"              
 #> [11] "top_array/c.4.0.0"               "top_array/zarr.json"            
 #> [13] "zarr.json"                       "サブグループ/zarr.json"         
-#> [15] "サブグループ/空の行列/zarr.json"
+#> [15] "サブグループ/空の行列/c.0.0"     "サブグループ/空の行列/zarr.json"
 z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpyDWfou/file1bd14915aeef.zarr 
+#> Location  : /tmp/Rtmpck3rdt/file1d3e1fc90011.zarr 
 #> Arrays    : 3 
-#> Total size: 7.67 KB
+#> Total size: 7.7 KB
 unlink(fn)
 ```
 

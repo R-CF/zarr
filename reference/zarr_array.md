@@ -121,7 +121,9 @@ hierarchy.
 
 ### Method `read()`
 
-Read some or all of the array data for the array.
+Read some or all of the array data for the array. For all types other
+than logical, any data elements with the `fill_value` of the Zarr data
+type are set to `NA`.
 
 #### Usage
 
@@ -144,7 +146,10 @@ A vector, matrix or array of data.
 ### Method [`write()`](https://rdrr.io/r/base/write.html)
 
 Write data for the array. The data will be chunked, encoded and
-persisted in the store that the array is using.
+persisted in the store that the array is using. Prior to writing, any
+`NA` values are assigned the `fill_value` of the `data_type` of the Zarr
+array. Note that the logical type cannot encode `NA` in Zarr and any
+`NA` values are set to `FALSE`.
 
 #### Usage
 

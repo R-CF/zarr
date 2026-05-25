@@ -10,6 +10,8 @@
   Convert an R object into a Zarr array
 - [`chunk_grid_regular`](https://r-cf.github.io/zarr/reference/chunk_grid_regular.md)
   : Chunk management
+- [`chunk_grid_sharded`](https://r-cf.github.io/zarr/reference/chunk_grid_sharded.md)
+  : Sharding chunk management
 - [`create_zarr()`](https://r-cf.github.io/zarr/reference/create_zarr.md)
   : Create a Zarr store
 - [`define_array()`](https://r-cf.github.io/zarr/reference/define_array.md)
@@ -18,6 +20,8 @@
   Open a Zarr store
 - [`str(`*`<chunk_grid_regular>`*`)`](https://r-cf.github.io/zarr/reference/str.chunk_grid_regular.md)
   : Compact display of a regular chunk grid
+- [`str(`*`<chunk_grid_sharded>`*`)`](https://r-cf.github.io/zarr/reference/str.chunk_grid_sharded.md)
+  : Compact display of a sharding chunk grid
 - [`str(`*`<zarr>`*`)`](https://r-cf.github.io/zarr/reference/str.zarr.md)
   : Compact display of a Zarr object
 - [`str(`*`<zarr_array>`*`)`](https://r-cf.github.io/zarr/reference/str.zarr_array.md)
@@ -41,6 +45,8 @@
   : Zarr CRC32C codec
 - [`zarr_codec_gzip`](https://r-cf.github.io/zarr/reference/zarr_codec_gzip.md)
   : Zarr gzip codec
+- [`zarr_codec_sharding`](https://r-cf.github.io/zarr/reference/zarr_codec_sharding.md)
+  : Zarr sharding codec
 - [`zarr_codec_transpose`](https://r-cf.github.io/zarr/reference/zarr_codec_transpose.md)
   : Zarr transpose codec
 - [`zarr_codec_ucs4`](https://r-cf.github.io/zarr/reference/zarr_codec_ucs4.md)

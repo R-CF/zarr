@@ -4,48 +4,20 @@ This class implements the regular chunk grid for Zarr arrays. It manages
 reading from and writing to Zarr stores, using the codecs for data
 transformation.
 
-## Super class
+## Super classes
 
 [`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\>
+[`zarr::chunking`](https://r-cf.github.io/zarr/reference/chunking.md)
 -\> `chunk_grid_regular`
 
 ## Active bindings
-
-- `chunk_shape`:
-
-  (read-only) The dimensions of each chunk in the chunk grid of the
-  associated array.
-
-- `chunk_grid`:
-
-  (read-only) The chunk grid of the associated array, i.e. the number of
-  chunks in each dimension.
-
-- `chunk_encoding`:
-
-  Set or retrieve the chunk key encoding to be used for creating store
-  keys for chunks.
-
-- `data_type`:
-
-  The data type of the array using the chunking scheme. This is set by
-  the array when starting to use chunking for file I/O.
 
 - `codecs`:
 
   The list of codecs used by the chunking scheme. These are set by the
   array when starting to use chunking for file I/O. Upon reading, the
   list of registered codecs.
-
-- `store`:
-
-  The store of the array using the chunking scheme. This is set by the
-  array when starting to use chunking for file I/O.
-
-- `array_prefix`:
-
-  The prefix of the array using the chunking scheme. This is set by the
-  array when starting to use chunking for file I/O.
 
 ## Methods
 
@@ -113,7 +85,7 @@ Return the metadata fragment that describes this chunking scheme.
 
 #### Returns
 
-A list with the metadata of this codec.
+A list with the metadata of this chunking scheme.
 
 ------------------------------------------------------------------------
 
