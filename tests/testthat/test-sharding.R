@@ -9,7 +9,7 @@ test_that("sharding codec is detected and parsed from metadata", {
   # float2d
   arr <- z[["/float2d"]]
   expect_s3_class(arr$chunking, "chunk_grid_sharded")
-  expect_equal(arr$chunking$shard_shape, c(40L, 40L))
+  expect_equal(arr$chunking$chunk_shape, c(40L, 40L))
   expect_equal(arr$chunking$inner_shape, c(10L, 10L))
 
   # float2d: single element reads are correct
@@ -43,7 +43,7 @@ test_that("sharding codec is detected and parsed from metadata", {
   # int3d
   arr <- z[["/int3d"]]
   expect_s3_class(arr$chunking, "chunk_grid_sharded")
-  expect_equal(arr$chunking$shard_shape, c(16L, 16L, 16L))
+  expect_equal(arr$chunking$chunk_shape, c(16L, 16L, 16L))
   expect_equal(arr$chunking$inner_shape, c(8L, 8L, 8L))
 
   # int3d: single element reads are correct (no compression, zstd)
@@ -75,7 +75,7 @@ test_that("sharding codec is detected and parsed from metadata", {
   # float1d
   arr <- z[["/float1d"]]
   expect_s3_class(arr$chunking, "chunk_grid_sharded")
-  expect_equal(arr$chunking$shard_shape, c(400L))
+  expect_equal(arr$chunking$chunk_shape, c(400L))
   expect_equal(arr$chunking$inner_shape, c(100L))
 
   # float1d: single element reads are correct (gzip)

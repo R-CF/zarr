@@ -9,33 +9,15 @@ This class implements the regular chunk grid for Zarr
 arrays. It manages reading from and writing to Zarr stores, using the
 codecs for data transformation.
 }
-\section{Super class}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{chunk_grid_regular}
+\section{Super classes}{
+\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:chunking]{zarr::chunking}} -> \code{chunk_grid_regular}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{chunk_shape}}{(read-only) The dimensions of each chunk in the chunk
-grid of the associated array.}
-
-\item{\code{chunk_grid}}{(read-only) The chunk grid of the associated array,
-i.e. the number of chunks in each dimension.}
-
-\item{\code{chunk_encoding}}{Set or retrieve the chunk key encoding to be used
-for creating store keys for chunks.}
-
-\item{\code{data_type}}{The data type of the array using the chunking scheme.
-This is set by the array when starting to use chunking for file I/O.}
-
 \item{\code{codecs}}{The list of codecs used by the chunking scheme. These are
 set by the array when starting to use chunking for file I/O. Upon
 reading, the list of registered codecs.}
-
-\item{\code{store}}{The store of the array using the chunking scheme.
-This is set by the array when starting to use chunking for file I/O.}
-
-\item{\code{array_prefix}}{The prefix of the array using the chunking scheme.
-This is set by the array when starting to use chunking for file I/O.}
 }
 \if{html}{\out{</div>}}
 }

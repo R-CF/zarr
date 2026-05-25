@@ -9,6 +9,7 @@
 - Better testing of fill values.
 - Fixed deeply nested consolidated metadata.
 - Fixed handling of scalar arrays.
+- R dependency bumped to 4.2.
 
 # zarr 0.3.0
 

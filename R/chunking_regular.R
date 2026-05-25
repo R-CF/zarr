@@ -5,36 +5,18 @@
 #'   codecs for data transformation.
 #' @docType class
 chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
-  inherit = zarr_extension,
+  inherit = chunking,
   cloneable = FALSE,
   private = list(
-    # The shape of the array and the chunk grid.
-    .array_shape = NULL,
-    .chunk_shape = NULL,
-    .scalar = FALSE,
-
-    # The chunk grid, calculated from the array and chunk shapes
-    .chunk_grid = NULL,
-
-    # Map of [chunk_id] -> chunk_grid_regular_IO instance
-    .chunk_map = NULL,
-
-    # Settings of the chunk key encoding
-    .cke = list(),
-
     # The underlying properties of the array
-    .data_type = NULL,
     .codecs = list(),
-    .permute = NULL, # Permutation of Zarr array ordering to R ordering
-    .store = NULL,
-    .array_prefix = '',
 
     # Set the codecs of this chunk manager
     set_codecs = function(codecs) {
       private$.codecs <- codecs
 
       transp <- codecs$transpose
-      private$.permute <- if (is.null(transp))  # C order
+      if (is.null(transp))  # C order
         rev(seq_along(private$.chunk_shape))
       else if (all(diff(transp$configuration$order) == -1))
         NULL
@@ -50,26 +32,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #'   Ignored for a scalar array.
     #' @return An instance of `chunk_grid_regular`.
     initialize = function(array_shape, chunk_shape) {
-      super$initialize('regular')
-
-      if (is.na(array_shape[1L])) {
-        private$.array_shape <- NULL
-        private$.chunk_shape <- 1L
-        private$.scalar <- TRUE
-      } else {
-        if (is.integer(array_shape) && all(array_shape > 0L))
-          private$.array_shape <- array_shape
-        else
-          stop('Array shape must be defined using integer vector of positive values.', call. = FALSE) # nocov
-
-        if (is.integer(chunk_shape) && all(chunk_shape > 0L) && length(array_shape) == length(chunk_shape))
-          private$.chunk_shape <- chunk_shape
-        else
-          stop('Chunk shape is not valid for `array_shape`.', call. = FALSE) # nocov
-
-        private$.chunk_grid <- ceiling(array_shape / chunk_shape)
-      }
-      private$.chunk_map <- new.env(parent = emptyenv())
+      super$initialize('regular', array_shape, chunk_shape)
     },
 
     #' @description Print a short description of this chunking scheme to the
@@ -223,40 +186,6 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     }
   ),
   active = list(
-    #' @field chunk_shape (read-only) The dimensions of each chunk in the chunk
-    #' grid of the associated array.
-    chunk_shape = function(value) {
-      if (missing(value))
-        private$.chunk_shape
-    },
-
-    #' @field chunk_grid (read-only) The chunk grid of the associated array,
-    #'   i.e. the number of chunks in each dimension.
-    chunk_grid = function(value) {
-      if (missing(value))
-        private$.chunk_grid
-    },
-
-    #' @field chunk_encoding Set or retrieve the chunk key encoding to be used
-    #'   for creating store keys for chunks.
-    chunk_encoding = function(value) {
-      if (missing(value))
-        private$.cke
-      else
-        private$.cke <- value
-    },
-
-    #' @field data_type The data type of the array using the chunking scheme.
-    #'   This is set by the array when starting to use chunking for file I/O.
-    data_type = function(value) {
-      if (missing(value))
-        private$.data_type
-      else if (inherits(value, 'zarr_data_type'))
-        private$.data_type <- value
-      else
-        stop('Must set a valid data type.', call. = FALSE) # nocov
-    },
-
     #' @field codecs The list of codecs used by the chunking scheme. These are
     #' set by the array when starting to use chunking for file I/O. Upon
     #' reading, the list of registered codecs.
@@ -267,26 +196,6 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
         private$set_codecs(value)
       else
         stop('Invalid list of codecs for chunk management.', call. = FALSE) # nocov
-    },
-
-    #' @field store The store of the array using the chunking scheme.
-    #'   This is set by the array when starting to use chunking for file I/O.
-    store = function(value) {
-      if (missing(value))
-        private$.store
-      else if (inherits(value, 'zarr_store'))
-        private$.store <- value
-      else
-        stop('Bad assignment of store.', call. = FALSE) # nocov
-    },
-
-    #' @field array_prefix The prefix of the array using the chunking scheme.
-    #'   This is set by the array when starting to use chunking for file I/O.
-    array_prefix = function(value) {
-      if (missing(value))
-        private$.array_prefix
-      else
-        private$.array_prefix <- value
     }
   )
 )

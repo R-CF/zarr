@@ -1,32 +1,45 @@
+#' Sharding chunk management
+#'
+#' @description This class implements the sharded chunk grid for Zarr
+#'   arrays. It manages reading from Zarr stores, using the
+#'   codecs for data transformation included in the sharding configuration.
+#'   Writing is not supported with this codec. Storing a scalar array in a
+#'   sharded grid is not possible either and totally useless anyway.
+#' @docType class
 chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
+  inherit = chunking,
   cloneable = FALSE,
   private = list(
-    .store        = NULL,
-    .array_shape  = NULL,
-    .chunk_shape  = NULL,  # outer chunk shape (= shard shape)
-    .data_type    = NULL,
-    .array_prefix = '',
-    .cke          = list(),
-
     .inner_shape  = NULL,  # inner chunk shape
     .inner_grid   = NULL,  # prod(.chunk_shape / .inner_shape) inner chunks
     .index_loc    = NULL,  # "end" or "start"
     .inner_codecs = NULL,  # instantiated inner codec pipeline
     .index        = NULL,  # cached index matrix [n_inner x 2] (offset, length)
-    .index_codecs = NULL,  # instantiated index codec pipeline
-    .chunk_map    = NULL   # key -> chunk_grid_regular_IO, reusing existing class
+    .index_codecs = NULL   # instantiated index codec pipeline
   ),
   public = list(
+    #' @description Initialize a new sharded chunking scheme for an array.
+    #' @param array_shape Integer vector of the array dimensions.
+    #' @param chunk_shape Integer vector of the dimensions of each outer chunk,
+    #'   i.e. the size of a shard.
+    #' @param inner_shape Integer vector of the dimensions of each inner chunk,
+    #'   i.e. the size of a single chunk inside a shard.
+    #' @param index_loc Location of the shard index in the shard file, either
+    #'   "start" or "end".
+    #' @param inner_codecs,index_codecs List of `zarr_codec` instances to decode
+    #'   the inner chunks and the index, respectively.
+    #' @return An instance of `chunk_grid_sharded`.
     initialize = function(array_shape, chunk_shape, inner_shape, index_loc,
                           inner_codecs, index_codecs) {
-      private$.array_shape  <- array_shape
-      private$.chunk_shape  <- chunk_shape
+      super$initialize('sharding_indexed', array_shape, chunk_shape)
+      if (private$.scalar)
+        stop('Cannot use sharding on a scalar array', call. = FALSE)
+
       private$.inner_shape  <- inner_shape
       private$.inner_grid   <- as.integer(chunk_shape / inner_shape)
       private$.index_loc    <- index_loc
       private$.inner_codecs <- inner_codecs
       private$.index_codecs <- index_codecs
-      private$.chunk_map    <- new.env(parent = emptyenv())
     },
 
     #' @description Print a short description of this sharded chunking scheme to
@@ -37,6 +50,9 @@ chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
       invisible(self)
     },
 
+    #' @description Return the metadata fragment that describes this chunking
+    #'   scheme.
+    #' @return A list with the metadata of this chunking scheme.
     metadata_fragment = function() {
       list(
         chunk_grid = list(
@@ -59,6 +75,11 @@ chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
       )
     },
 
+    #' @description Read data from the Zarr array into an R object.
+    #' @param start,stop Integer vectors of the same length as the
+    #'   dimensionality of the Zarr array, indicating the starting and ending
+    #'   (inclusive) indices of the data along each axis.
+    #' @return A vector, matrix or array of data.
     read = function(start, stop) {
       shard_shape <- private$.chunk_shape
       inner_shape <- private$.inner_shape
@@ -112,61 +133,34 @@ chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
     }
   ),
   active = list(
-    #' @field shard_shape (read-only) The dimensions of each shard in the chunk
-    #' grid of the associated array.
-    shard_shape = function(value) {
-      if (missing(value))
-        private$.chunk_shape
-    },
-
     #' @field inner_shape (read-only) The dimensions of each chunk in the shard.
     inner_shape = function(value) {
       if (missing(value))
         private$.inner_shape
     },
 
-    #' @field data_type The data type of the array using the chunking scheme.
-    #'   This is set by the array when starting to use chunking for file I/O.
-    data_type = function(value) {
-      if (missing(value))
-        private$.data_type
-      else if (inherits(value, 'zarr_data_type'))
-        private$.data_type <- value
-      else
-        stop('Must set a valid data type.', call. = FALSE) # nocov
-    },
-
-    store = function(value) {
-      if (missing(value))
-        private$.store
-      else if (inherits(value, 'zarr_store'))
-        private$.store <- value
-      else
-        stop('Bad assignment of store.', call. = FALSE)
-    },
-
-    array_prefix = function(value) {
-      if (missing(value))
-        private$.array_prefix
-      else
-        private$.array_prefix <- value
-    },
-
-    chunk_encoding = function(value) {
-      if (missing(value))
-        private$.cke
-      else
-        private$.cke <- value
-    },
-
+    #' @field codecs (read-only) The list of codecs used by the sharding scheme.
     codecs = function(value) {
       if (missing(value))
-        private$.codecs
-      # read-only from outside — inner and index codecs are set at construction
+        private$.inner_codecs
+    },
+
+    #' @field index_codecs (read-only) The list of codecs used by the sharding
+    #'   scheme for the indexing of the internal chunks.
+    index_codecs = function(value) {
+      if (missing(value))
+        private$.index_codecs
     }
   )
 )
 
+#' Reader class for sharded arrays
+#'
+#' @description Process the data of an individual chunk in a shard file on a
+#'   sharded grid. This class will read the chunk from the shard file in the
+#'   store using its byte range and decode it.
+#' @docType class
+#' @keywords internal
 chunk_grid_sharded_IO <- R6::R6Class('chunk_grid_sharded_IO',
   cloneable = FALSE,
   private = list(
