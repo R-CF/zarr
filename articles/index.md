@@ -8,5 +8,7 @@
 - [3. Working with
   attributes](https://r-cf.github.io/zarr/articles/03_attributes.md):
 - [4. HTTP stores](https://r-cf.github.io/zarr/articles/04_http.md):
-- [5. Extending
-  Zarr](https://r-cf.github.io/zarr/articles/05_extending.md):
+- [5. Parallel
+  processing](https://r-cf.github.io/zarr/articles/05_parallel.md):
+- [6. Extending
+  Zarr](https://r-cf.github.io/zarr/articles/06_extending.md):

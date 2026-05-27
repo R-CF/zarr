@@ -91,7 +91,10 @@ A list with the metadata of this chunking scheme.
 
 ### Method `read()`
 
-Read data from the Zarr array into an R object.
+Read data from the Zarr array into an R object. The read can span
+multiple chunks. Reads will be parallelised if
+`future::plan(multisession)` is set; by default the reading is
+sequential.
 
 #### Usage
 
@@ -113,7 +116,7 @@ A vector, matrix or array of data.
 
 ### Method [`write()`](https://rdrr.io/r/base/write.html)
 
-Write data to the array.
+Write data to the array. Writing data always uses a sequential plan.
 
 #### Usage
 

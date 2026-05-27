@@ -1,8 +1,11 @@
 # Reader class for sharded arrays
 
-Process the data of an individual chunk in a shard file on a sharded
-grid. This class will read the chunk from the shard file in the store
-using its byte range and decode it.
+Process the data of an individual shard file. This class reads the shard
+index and decodes inner chunks on demand, caching decoded inner chunks
+to avoid redundant I/O and decoding on overlapping selections. Inner
+chunks needed for a given read are fetched in a single coalesced
+byte-range request covering all required inner chunks, minimising the
+number of store requests — particularly important for HTTP stores.
 
 ## Methods
 
@@ -77,6 +80,10 @@ Create a new IO handler for a single shard.
 ### Method `read()`
 
 Read a region from this shard.
+
+Inner chunks needed for this read are fetched in a single coalesced
+byte-range request. Previously decoded inner chunks are served from
+cache without any store access.
 
 #### Usage
 

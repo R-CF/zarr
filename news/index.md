@@ -19,7 +19,9 @@
 - Better testing of fill values.
 - Fixed deeply nested consolidated metadata.
 - Fixed handling of scalar arrays.
-- R dependency bumped to 4.2.
+- R dependency bumped to 4.2
+- Using Rcpp for performance bottlenecks, using `future` for optional
+  parallel processing of chunks and shards.
 
 ## zarr 0.3.0
 

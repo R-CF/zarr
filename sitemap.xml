@@ -7,7 +7,8 @@
 <url><loc>https://r-cf.github.io/zarr/articles/02_array_basics.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/articles/03_attributes.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/articles/04_http.html</loc></url>
-<url><loc>https://r-cf.github.io/zarr/articles/05_extending.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/articles/05_parallel.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/articles/06_extending.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/articles/index.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/authors.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/index.html</loc></url>
@@ -22,6 +23,7 @@
 <url><loc>https://r-cf.github.io/zarr/reference/chunking.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/create_zarr.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/define_array.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/fill_array_impl.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/index.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/open_zarr.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/str.chunk_grid_regular.html</loc></url>
