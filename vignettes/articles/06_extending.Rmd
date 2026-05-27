@@ -1,5 +1,5 @@
 ---
-title: "5. Extending Zarr"
+title: "6. Extending Zarr"
 output:
   html_document:
     toc: true

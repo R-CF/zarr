@@ -7,6 +7,7 @@ Zarr.options <- new.env(parent = emptyenv())
   # User-modifiable options
   assign("chunk_length", 100L, envir = Zarr.options)
   assign("eps", .Machine$double.eps^0.5, envir = Zarr.options)
+  assign("parallel_threshold", 20, envir = Zarr.options)
 
   # Register the generic conventions for Zarr
   assign("conventions", data.frame(

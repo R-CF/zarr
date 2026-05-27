@@ -87,7 +87,10 @@ A list with the metadata of this chunking scheme.
 \if{html}{\out{<a id="method-chunk_grid_regular-read"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular-read}{}}}
 \subsection{Method \code{read()}}{
-Read data from the Zarr array into an R object.
+Read data from the Zarr array into an R object. The read can
+span multiple chunks. Reads will be parallelised if
+\code{future::plan(multisession)} is set; by default the reading is
+sequential.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular$read(start, stop)}\if{html}{\out{</div>}}
 }
@@ -110,7 +113,8 @@ A vector, matrix or array of data.
 \if{html}{\out{<a id="method-chunk_grid_regular-write"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular-write}{}}}
 \subsection{Method \code{write()}}{
-Write data to the array.
+Write data to the array. Writing data always uses a
+sequential plan.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular$write(data, start, stop)}\if{html}{\out{</div>}}
 }

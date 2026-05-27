@@ -55,30 +55,32 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
                                                                 else private$.chunk_shape)))
     },
 
-    #' @description Read data from the Zarr array into an R object.
+    #' @description Read data from the Zarr array into an R object. The read can
+    #'   span multiple chunks. Reads will be parallelised if
+    #'   `future::plan(multisession)` is set; by default the reading is
+    #'   sequential.
     #' @param start,stop Integer vectors of the same length as the
     #'   dimensionality of the Zarr array, indicating the starting and ending
     #'   (inclusive) indices of the data along each axis. These are ignored if
     #'   the Zarr array is a scalar.
     #' @return A vector, matrix or array of data.
     read = function(start, stop) {
-      chunk_shape  <- private$.chunk_shape
+      chunk_shape <- private$.chunk_shape
       nd <- length(chunk_shape)
 
       if (private$.scalar) {
         start <- 1L
-        stop <- 1L
+        stop  <- 1L
       }
 
       # Identify chunks touched by the indices
       chunk_start_idx <- floor((start - 1L) / chunk_shape)
-      chunk_end_idx   <- floor((stop - 1L) / chunk_shape)
+      chunk_end_idx   <- floor((stop  - 1L) / chunk_shape)
       grid_idx <- as.matrix(expand.grid(
         lapply(seq_len(nd), function(d) seq(chunk_start_idx[d], chunk_end_idx[d]))))
 
-      # Initialize the data structure
+      # Output array
       data <- if (private$.data_type$Rtype == 'integer64') {
-        # Assuming bit64 is already loaded when reaching here
         if (nd == 1L) bit64::as.integer64(rep(0L, stop - start + 1L))
         else {
           a64 <- rep(bit64::as.integer64(0L), prod(stop - start + 1L))
@@ -86,45 +88,101 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
           a64
         }
       } else {
-        if (nd == 1L) rep(private$.data_type$fill_value, stop - start + 1L)
+        if (nd == 1L) vector(private$.data_type$Rtype, stop - start + 1L)
         else array(private$.data_type$fill_value, stop - start + 1L)
       }
 
-      # Loop over the chunks
-      for (i in seq_len(nrow(grid_idx))) {
+      # Compute chunk geometry for all chunks upfront
+      chunk_info <- lapply(seq_len(nrow(grid_idx)), function(i) {
         cidx <- grid_idx[i, ]
-        chunk_key <- if (private$.scalar) paste0(private$.array_prefix, private$.cke$scalar)
-                     else paste0(private$.array_prefix, private$.cke$pre, paste(cidx, collapse = private$.cke$sep))
+        chunk_key <- if (private$.scalar)
+          paste0(private$.array_prefix, private$.cke$scalar)
+        else
+          paste0(private$.array_prefix, private$.cke$pre,
+                 paste(cidx, collapse = private$.cke$sep))
 
-        # Compute slice within the chunk
         chunk_origin  <- cidx * chunk_shape + 1L
         overlap_start <- pmax(start, chunk_origin)
-        overlap_end   <- pmin(stop, chunk_origin + chunk_shape - 1L)
+        overlap_end   <- pmin(stop,  chunk_origin + chunk_shape - 1L)
         overlap_count <- overlap_end - overlap_start + 1L
 
-        # Get or create chunk IO object
-        if (!exists(chunk_key, private$.chunk_map, inherits = FALSE)) {
-          private$.chunk_map[[chunk_key]] <- chunk_grid_regular_IO$new(
-            key = chunk_key,
-            chunk_shape = chunk_shape,
-            dtype = private$.data_type,
-            store = private$.store,
-            codecs = private$.codecs
-          )
-        }
+        list(
+          key           = chunk_key,
+          cidx          = cidx,
+          origin        = chunk_origin,
+          overlap_start = overlap_start,
+          overlap_end   = overlap_end,
+          overlap_count = overlap_count,
+          offset        = overlap_start - chunk_origin
+        )
+      })
 
-        # Read overlapping chunk data and copy into data
-        chunk_data <- private$.chunk_map[[chunk_key]]$read(overlap_start - chunk_origin, overlap_count)
-        data_start <- overlap_start - start
+      # Capture values needed by fetch_chunk() — avoids serialising private env
+      chunk_shape_  <- chunk_shape
+      data_type_    <- private$.data_type
+      store_        <- private$.store
+      codecs_       <- private$.codecs
+
+      fetch_chunk <- function(info) {
+        # Use cached IO instance in sequential context
+        io <- chunk_grid_regular_IO$new(
+          key        = info$key,
+          chunk_shape = chunk_shape_,
+          dtype      = data_type_,
+          store      = store_,
+          codecs     = codecs_
+        )
+        list(
+          chunk_data    = io$read(info$offset, info$overlap_count),
+          overlap_start = info$overlap_start,
+          overlap_end   = info$overlap_end,
+          overlap_count = info$overlap_count
+        )
+      }
+
+      use_parallel <- length(chunk_info) > Zarr.options$parallel_threshold &&
+                      requireNamespace('future.apply', quietly = TRUE) &&
+                      requireNamespace('future', quietly = TRUE) &&
+                      !inherits(future::plan(), 'sequential')
+
+      if (use_parallel) {
+        # Parallel fetch + decode — fresh IO instance per chunk, no cache sharing
+        chunk_results <- future.apply::future_lapply(chunk_info, fetch_chunk,
+                                                     future.seed     = NULL,
+                                                     future.packages = 'zarr')
+      } else {
+        # Sequential — reuse cached IO instances from .chunk_map
+        chunk_results <- lapply(chunk_info, function(info) {
+          if (!exists(info$key, private$.chunk_map, inherits = FALSE))
+            private$.chunk_map[[info$key]] <- chunk_grid_regular_IO$new(
+              key         = info$key,
+              chunk_shape = chunk_shape,
+              dtype       = private$.data_type,
+              store       = private$.store,
+              codecs      = private$.codecs
+            )
+          list(
+            chunk_data    = private$.chunk_map[[info$key]]$read(info$offset, info$overlap_count),
+            overlap_start = info$overlap_start,
+            overlap_end   = info$overlap_end,
+            overlap_count = info$overlap_count
+          )
+        })
+      }
+
+      # Sequential assembly into output array
+      for (res in chunk_results) {
+        data_start <- res$overlap_start - start
         idx <- lapply(seq_len(nd), function(d)
-          seq(data_start[d] + 1L, data_start[d] + overlap_count[d]))
-        data <- do.call(`[<-`, c(list(data), idx, list(value = chunk_data)))
+          seq(data_start[d] + 1L, data_start[d] + res$overlap_count[d]))
+        data <- do.call(`[<-`, c(list(data), idx, list(value = res$chunk_data)))
       }
 
       data
     },
 
-    #' @description Write data to the array.
+    #' @description Write data to the array. Writing data always uses a
+    #'   sequential plan.
     #' @param data An R object with the same dimensionality as the Zarr array.
     #' @param start,stop Integer vectors of the same length as the
     #'   dimensionality of the Zarr array, indicating the starting and ending

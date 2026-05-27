@@ -2,6 +2,8 @@
 #' @import R6
 #' @import jsonlite
 #' @import blosc
+#' @useDynLib zarr, .registration=TRUE
+#' @importFrom Rcpp sourceCpp
 NULL
 
 #' Zarr Abstract Store
