@@ -98,10 +98,11 @@ zarr <- R6::R6Class("zarr",
     },
 
     #' @description Add an array in a group with a given path.
-    #' @param path The path to the group of the new array, a single
-    #'   character string.
+    #' @param path The path to the group of the new array, a single character
+    #'   string.
     #' @param name The name for the new array, a single character string.
-    #' @param metadata A `list` with the metadata for the new array.
+    #' @param metadata A `list` with the metadata for the new array, or a valid
+    #'   [array_builder] instance.
     #' @return The newly created [zarr_array], or `NULL` if the array could not
     #'   be created.
     add_array = function(path, name, metadata) {

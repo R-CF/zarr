@@ -18,6 +18,7 @@ Suggests:
     bit64,
     curl,
     digest,
+    future,
     future.apply,
     qs2,
     testthat (>= 3.0.0),

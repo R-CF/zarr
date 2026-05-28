@@ -322,6 +322,8 @@ array_builder <- R6::R6Class('array_builder',
           private$.data_type$fill_value <- if (is.na(value))
             value
           else if (is.numeric(value)) {
+            if (dt == 'string')
+              stop('Invalid `fill_value`', call. = FALSE)
             switch(dt,
               'int32' = if (value < -.Machine$integer.max || value > .Machine$integer.max) NA_integer_ else as.integer(value),
               'int64' = ,

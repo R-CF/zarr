@@ -112,7 +112,7 @@ zarr_array <- R6::R6Class('zarr_array',
           data[which(is.nan(data))] <- NA
         else if (Rtype == 'integer')
           data[data == fill] <- NA
-        else if (!(Rtype %in% c('logical', 'integer64')))
+        else if (!(Rtype %in% c('logical', 'integer64', 'character'))) # FIXME: is.na(integer64)??
           data[.near(data, fill)] <- NA
       } else
         stop('`selection` list must have the same length as the shape of the array.', call. = FALSE) # nocov

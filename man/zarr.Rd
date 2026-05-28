@@ -151,12 +151,13 @@ Add an array in a group with a given path.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{path}}{The path to the group of the new array, a single
-character string.}
+\item{\code{path}}{The path to the group of the new array, a single character
+string.}
 
 \item{\code{name}}{The name for the new array, a single character string.}
 
-\item{\code{metadata}}{A \code{list} with the metadata for the new array.}
+\item{\code{metadata}}{A \code{list} with the metadata for the new array, or a valid
+\link{array_builder} instance.}
 }
 \if{html}{\out{</div>}}
 }
