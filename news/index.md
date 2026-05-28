@@ -1,6 +1,6 @@
 # Changelog
 
-## zarr (development version)
+## zarr 0.4.0
 
 - Reading of sharded Zarr stores is now supported.
 - The Zarr-registered “string” data type, an extension to the core
