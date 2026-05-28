@@ -182,7 +182,9 @@ Add an array in a group with a given path.
 
 - `metadata`:
 
-  A `list` with the metadata for the new array.
+  A `list` with the metadata for the new array, or a valid
+  [array_builder](https://r-cf.github.io/zarr/reference/array_builder.md)
+  instance.
 
 #### Returns
 
