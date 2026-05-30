@@ -30,7 +30,7 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/01_zarr.html">1. Zarr for R</a></li>
@@ -64,7 +64,7 @@
       <h1>5. Parallel processing</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/R-CF/zarr/blob/main/vignettes/articles/05_parallel.Rmd" class="external-link"><code>vignettes/articles/05_parallel.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/R-CF/zarr/blob/HEAD/vignettes/articles/05_parallel.Rmd" class="external-link"><code>vignettes/articles/05_parallel.Rmd</code></a></small>
       <div class="d-none name"><code>05_parallel.Rmd</code></div>
     </div>
 
@@ -262,11 +262,11 @@ benefiting from the cache:</p>
 <code>zarr</code> package automatically. If <code>zarr</code> has
 compiled code (which it does, for the array assembly step), the package
 must be installed — not just loaded via
-<code>devtools::load_all()</code> — for workers to use it. During
-development, run <code>devtools::install()</code> before starting a
+<code><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">devtools::load_all()</a></code> — for workers to use it. During
+development, run <code><a href="https://devtools.r-lib.org/reference/install.html" class="external-link">devtools::install()</a></code> before starting a
 parallel plan, and reset the plan after each reinstall:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Windows compatibility</strong> —

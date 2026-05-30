@@ -2,6 +2,8 @@
 
 ## zarr 0.4.0
 
+CRAN release: 2026-05-28
+
 - Reading of sharded Zarr stores is now supported.
 - The Zarr-registered “string” data type, an extension to the core
   specification, is now supported. This uses the “vlen-utf8” codec, also

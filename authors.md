@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/R-CF/zarr/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/R-CF/zarr/blob/HEAD/DESCRIPTION)
 
 Van Laake P (2026). *zarr: Native and Extensible R Driver for 'Zarr'*. R
 package version 0.4.0, <https://github.com/R-CF/zarr>.
