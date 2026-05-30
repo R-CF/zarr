@@ -94,7 +94,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpNQPCmw/file1c607a4433cc.zarr 
+#> Location  : /tmp/RtmpCcxtv6/file1c91284c6d30.zarr 
 #> Arrays    : 0 
 #> Total size: 47 Bytes
 ```
