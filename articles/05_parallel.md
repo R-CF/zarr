@@ -203,11 +203,9 @@ r2 <- arr[1:50, 1:50, 1]
 **Package availability** — each worker loads the `zarr` package
 automatically. If `zarr` has compiled code (which it does, for the array
 assembly step), the package must be installed — not just loaded via
-[`devtools::load_all()`](https://devtools.r-lib.org/reference/load_all.html)
-— for workers to use it. During development, run
-[`devtools::install()`](https://devtools.r-lib.org/reference/install.html)
-before starting a parallel plan, and reset the plan after each
-reinstall:
+`devtools::load_all()` — for workers to use it. During development, run
+`devtools::install()` before starting a parallel plan, and reset the
+plan after each reinstall:
 
 ``` r
 
