@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>cs Convention — GeoZarr SWG · June 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0f1117; height: 100%; }
+  #root { height: 100%; }
+  button { cursor: pointer; }
+  pre { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const T = {
+  bg:      "#0f1117",
+  surface: "#181c27",
+  card:    "#1e2333",
+  border:  "#2a3048",
+  accent:  "#4a9eff",
+  green:   "#3ecf8e",
+  amber:   "#f5a623",
+  red:     "#e05c5c",
+  muted:   "#6b7a99",
+  text:    "#dde3f0",
+  textSub: "#8a96b3",
+  font:    "'IBM Plex Mono', 'Fira Code', monospace",
+  sans:    "'IBM Plex Sans', 'Segoe UI', sans-serif",
+};
+
+const Badge = ({ label, color = T.accent }) => (
+  <span style={{
+    fontFamily: T.font, fontSize: 10, fontWeight: 600,
+    color, border: `1px solid ${color}`, borderRadius: 3,
+    padding: "1px 6px", letterSpacing: "0.05em", whiteSpace: "nowrap",
+  }}>{label}</span>
+);
+
+const Tag = ({ children, color = T.muted }) => (
+  <span style={{
+    fontFamily: T.font, fontSize: 10, color,
+    background: color + "18", borderRadius: 3,
+    padding: "2px 7px", whiteSpace: "nowrap",
+  }}>{children}</span>
+);
+
+const SectionTitle = ({ children }) => (
+  <div style={{
+    fontFamily: T.sans, fontSize: 11, fontWeight: 700,
+    color: T.muted, letterSpacing: "0.12em", textTransform: "uppercase",
+    marginBottom: 10,
+  }}>{children}</div>
+);
+
+const TreeNode = ({ label, type = "group", tags = [], indent = 0, highlight, dim }) => {
+  const icon = type === "array" ? "▪" : type === "root" ? "◆" : "▸";
+  const col  = type === "array" ? T.green : type === "root" ? T.accent : T.text;
+  return (
+    <div style={{
+      display: "flex", alignItems: "center", gap: 6,
+      paddingLeft: indent * 16, paddingTop: 2, paddingBottom: 2,
+      opacity: dim ? 0.35 : 1,
+      background: highlight ? T.accent + "12" : "transparent",
+      borderRadius: 4,
+    }}>
+      <span style={{ fontFamily: T.font, fontSize: 11, color: col, minWidth: 10 }}>{icon}</span>
+      <span style={{ fontFamily: T.font, fontSize: 11, color: dim ? T.muted : col, flex: 1 }}>{label}</span>
+      <div style={{ display: "flex", gap: 4 }}>{tags.map((t, i) => <Tag key={i} color={t.color}>{t.label}</Tag>)}</div>
+    </div>
+  );
+};
+
+const CsBox = ({ title, lines, color = T.accent }) => (
+  <div style={{
+    background: T.surface, border: `1px solid ${color}40`,
+    borderRadius: 6, padding: "10px 14px", flex: 1,
+  }}>
+    <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 700, color, marginBottom: 8 }}>{title}</div>
+    <pre style={{
+      margin: 0, fontFamily: T.font, fontSize: 10.5,
+      color: T.textSub, lineHeight: 1.65, whiteSpace: "pre",
+    }}>{lines}</pre>
+  </div>
+);
+
+const Arrow = ({ label }) => (
+  <div style={{
+    display: "flex", flexDirection: "column", alignItems: "center",
+    justifyContent: "center", gap: 3, padding: "0 6px", flexShrink: 0,
+  }}>
+    <div style={{ fontFamily: T.sans, fontSize: 9, color: T.muted }}>{label}</div>
+    <div style={{ fontSize: 18, color: T.muted, lineHeight: 1 }}>→</div>
+  </div>
+);
+
+// ── SLIDE 1: CMIP6 ───────────────────────────────────────────────────────────
+const Slide1 = () => (
+  <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+    <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
+      <div style={{ fontFamily: T.sans, fontSize: 22, fontWeight: 700, color: T.text }}>
+        CMIP6 — Simple case, compact encoding
+      </div>
+      <Badge label="GFDL-ESM4 · tasmin · daily · 1926–1949" color={T.green} />
+    </div>
+
+    <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+      <div style={{ flex: "0 0 220px", background: T.card, borderRadius: 8, padding: "14px 12px", border: `1px solid ${T.border}` }}>
+        <SectionTitle>Zarr store</SectionTitle>
+        <TreeNode type="root" label="tasmin.zarr" />
+        <TreeNode type="array" label="tasmin" indent={1}
+          tags={[{ label: "[8605 × 180 × 288]", color: T.green }]} />
+        <TreeNode type="array" label="(no coordinate arrays)" indent={1}
+          tags={[{ label: "cs handles it", color: T.amber }]} dim />
+      </div>
+
+      <Arrow label="described by" />
+
+      <CsBox title="cs attribute — inline, ~30 lines total" color={T.green} lines={
+`"cs": {
+  "crs": [
+    {
+      "name": "WGS84",
+      "axes": [
+        { "name": "lon", "abbreviation": "X",
+          "coordinates": [{
+            "unit": "degrees",
+            "values": { "regular": [0.625, 1.25] },
+            "boundaries": { "regular": [-0.625, 0.625] }
+          }] },
+        { "name": "lat", "abbreviation": "Y",
+          "coordinates": [{
+            "unit": "degrees",
+            "values": { "regular": [-89.5, 1.0] },
+            "boundaries": { "regular": [-0.5, 0.5] }
+          }] }
+      ],
+      "id": { "proj:code": "EPSG:4326" }
+    },
+    {
+      "axes": [{
+        "name": "time", "abbreviation": "T",
+        "coordinates": [{
+          "time": {
+            "unit": "days",
+            "epoch": "1850-01-01",
+            "calendar": "noleap"   ← model calendar
+          },
+          "values": { "regular": [27895.5, 1] },
+          "boundaries": { "regular": [-0.5, 0.5] }
+        }]
+      }]
+    }
+  ]
+}`} />
+    </div>
+
+    <div style={{ display: "flex", gap: 12 }}>
+      {[
+        { color: T.green,  label: "No coordinate arrays needed",  text: "Regular lat/lon/time fully encoded inline. Zero extra arrays in the store." },
+        { color: T.amber,  label: "Model calendar first-class",   text: '"noleap" calendar specified directly.' },
+        { color: T.accent, label: "Cell bounds included",         text: "Boundary extents on every axis — essential for area-conservative remapping." },
+      ].map(({ color, label, text }) => (
+        <div key={label} style={{
+          flex: 1, background: T.card, border: `1px solid ${color}30`,
+          borderLeft: `3px solid ${color}`, borderRadius: 6, padding: "10px 14px",
+        }}>
+          <div style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 700, color, marginBottom: 4 }}>{label}</div>
+          <div style={{ fontFamily: T.sans, fontSize: 12, color: T.textSub }}>{text}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+// ── SLIDE 2: EOPF ────────────────────────────────────────────────────────────
+const Slide2 = () => {
+  const [view, setView] = useState("before");
+  const xyTag  = { label: "x / y repeated", color: T.red };
+  const refTag = { label: "→ ref", color: T.accent };
+
+  // Real groups that contain r10m/x from the live product
+  const r10mGroups = [
+    "conditions/mask/detector_footprint/r10m",
+    "measurements/reflectance/r10m",
+    "quality/atmosphere/r10m",
+    "quality/mask/r10m",
+  ];
+  const r20mGroups = [
+    "conditions/mask/detector_footprint/r20m",
+    "measurements/reflectance/r20m",
+    "quality/atmosphere/r20m",
+    "quality/mask/r20m",
+  ];
+  const r60mGroups = [
+    "conditions/mask/detector_footprint/r60m",
+    "conditions/mask/l1c_classification/r60m",
+    "conditions/mask/l2a_classification/r60m",
+    "measurements/reflectance/r60m",
+    "quality/atmosphere/r60m",
+    "quality/mask/r60m",
+  ];
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
+        <div style={{ fontFamily: T.sans, fontSize: 22, fontWeight: 700, color: T.text }}>
+          EOPF Sentinel-2 L2A — Coordinate redundancy
+        </div>
+        <Badge label="S2C_MSIL2A_20260529 · live product" color={T.amber} />
+      </div>
+
+      <div style={{ display: "flex", gap: 0, alignSelf: "flex-start", borderRadius: 6, overflow: "hidden", border: `1px solid ${T.border}` }}>
+        {["before", "after"].map(v => (
+          <button key={v} onClick={() => setView(v)} style={{
+            fontFamily: T.sans, fontSize: 12, fontWeight: 600,
+            padding: "6px 22px", border: "none",
+            background: view === v ? T.accent : T.card,
+            color: view === v ? "#fff" : T.muted,
+            transition: "background 0.2s",
+          }}>{v === "before" ? "Current EOPF (no cs)" : "With cs convention"}</button>
+        ))}
+      </div>
+
+      {view === "before" ? (
+        <div style={{ display: "flex", gap: 14 }}>
+
+          {/* Store tree — real hierarchy, abbreviated */}
+          <div style={{ flex: "0 0 380px", background: T.card, borderRadius: 8, padding: "12px 10px", border: `1px solid ${T.red}40`, overflowY: "auto", maxHeight: 420 }}>
+            <SectionTitle>Real store hierarchy (S2C_MSIL2A_20260529)</SectionTitle>
+
+            <TreeNode type="root" label="S2C_MSIL2A_20260529….zarr" />
+
+            <TreeNode label="conditions/mask/detector_footprint" indent={1} />
+            {["r10m","r20m","r60m"].map(r => (
+              <span key={r}>
+                <TreeNode label={r} indent={2} />
+                <TreeNode type="array" label="b0x …" indent={3} />
+                <TreeNode type="array" label="x" indent={3} tags={[xyTag]} />
+                <TreeNode type="array" label="y" indent={3} tags={[xyTag]} />
+              </span>
+            ))}
+
+            <TreeNode label="conditions/mask/l1c_classification/r60m" indent={1} />
+            <TreeNode type="array" label="b00" indent={2} />
+            <TreeNode type="array" label="x" indent={2} tags={[xyTag]} />
+            <TreeNode type="array" label="y" indent={2} tags={[xyTag]} />
+
+            <TreeNode label="conditions/mask/l2a_classification" indent={1} />
+            {["r20m","r60m"].map(r => (
+              <span key={r}>
+                <TreeNode label={r} indent={2} />
+                <TreeNode type="array" label="scl" indent={3} />
+                <TreeNode type="array" label="x" indent={3} tags={[xyTag]} />
+                <TreeNode type="array" label="y" indent={3} tags={[xyTag]} />
+              </span>
+            ))}
+
+            <TreeNode label="measurements/reflectance" indent={1} />
+            {["r10m","r20m","r60m"].map(r => (
+              <span key={r}>
+                <TreeNode label={r} indent={2} />
+                <TreeNode type="array" label="b0x …" indent={3} />
+                <TreeNode type="array" label="x" indent={3} tags={[xyTag]} />
+                <TreeNode type="array" label="y" indent={3} tags={[xyTag]} />
+              </span>
+            ))}
+
+            <TreeNode label="quality/atmosphere" indent={1} />
+            {["r10m","r20m","r60m"].map(r => (
+              <span key={r}>
+                <TreeNode label={r} indent={2} />
+                <TreeNode type="array" label="aot, wvp" indent={3} />
+                <TreeNode type="array" label="x" indent={3} tags={[xyTag]} />
+                <TreeNode type="array" label="y" indent={3} tags={[xyTag]} />
+              </span>
+            ))}
+
+            <TreeNode label="quality/mask" indent={1} />
+            {["r10m","r20m","r60m"].map(r => (
+              <span key={r}>
+                <TreeNode label={r} indent={2} />
+                <TreeNode type="array" label="b0x …" indent={3} />
+                <TreeNode type="array" label="x" indent={3} tags={[xyTag]} />
+                <TreeNode type="array" label="y" indent={3} tags={[xyTag]} />
+              </span>
+            ))}
+
+            <TreeNode label="quality/probability/r20m" indent={1} />
+            <TreeNode type="array" label="cld, snw" indent={2} />
+            <TreeNode type="array" label="x" indent={2} tags={[xyTag]} />
+            <TreeNode type="array" label="y" indent={2} tags={[xyTag]} />
+          </div>
+
+          {/* Problem callout */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
+
+            {/* Verified fact box */}
+            <div style={{
+              background: T.surface, border: `1px solid ${T.amber}40`,
+              borderRadius: 6, padding: "10px 14px",
+              fontFamily: T.font, fontSize: 11, color: T.textSub, lineHeight: 1.7,
+            }}>
+              <span style={{ color: T.amber, fontWeight: 600 }}>Verified in R · </span>
+              {`z[["conditions/mask/detector_footprint/r10m/x"]][]\n`}
+              {`z[["measurements/reflectance/r10m/x"]][]\n`}
+              {`z[["quality/atmosphere/r10m/x"]][]\n`}
+              {`z[["quality/mask/r10m/x"]][]`}
+              <div style={{ marginTop: 8, color: T.green }}>
+                identical() → TRUE — all four arrays byte-for-byte the same
+              </div>
+            </div>
+
+            <div style={{
+              background: T.card, border: `1px solid ${T.red}40`,
+              borderLeft: `3px solid ${T.red}`, borderRadius: 6, padding: "14px 18px",
+            }}>
+              <div style={{ fontFamily: T.sans, fontSize: 13, fontWeight: 700, color: T.red, marginBottom: 10 }}>
+                The issue — not storage, but design
+              </div>
+              {[
+                ["Flattened hierarchy",       "Self-contained groups satisfy downstream tools but it violates the Zarr philosophy, requires dubious design fixes and causes multiple problems."],
+                ["No single source of truth", "x/y appears ~14 times across groups and resolutions. No mechanism asserts they are the same coordinate."],
+                ["No formal identity",        "A generic reader cannot know from metadata alone that these arrays share semantic meaning."],
+                ["Invisible contract",        "The shared coordinate structure is a convention within EOPF but opaque to any external tool, validator, or standard."],
+                ["Maintenance burden",        "A change to grid origin, CRS, or pixel size requires updating every copy independently — with no consistency enforcement."],
+                ["Scalability cost",          "Every new group added to the store must carry its own x/y copies. The duplication compounds with the hierarchy."],
+              ].map(([t, d]) => (
+                <div key={t} style={{ display: "flex", gap: 10, marginBottom: 8 }}>
+                  <span style={{ color: T.red, fontFamily: T.font, fontSize: 12, minWidth: 14, marginTop: 1 }}>✗</span>
+                  <div>
+                    <span style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 700, color: T.text }}>{t}: </span>
+                    <span style={{ fontFamily: T.sans, fontSize: 12, color: T.textSub }}>{d}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div style={{ display: "flex", gap: 14 }}>
+
+          {/* Store tree — after */}
+          <div style={{ flex: "0 0 340px", background: T.card, borderRadius: 8, padding: "12px 10px", border: `1px solid ${T.green}40` }}>
+            <SectionTitle>With cs — CRS defined once per resolution</SectionTitle>
+            <TreeNode type="root" label="S2C_MSIL2A_20260529….zarr" />
+            <TreeNode label="coordinates" indent={1} tags={[{ label: "cs: 3 CRS objects", color: T.green }]} highlight />
+            <TreeNode label="r10m" indent={2} tags={[{ label: "UTM origin + step", color: T.green }]} highlight />
+            <TreeNode label="r20m" indent={2} tags={[{ label: "UTM origin + step", color: T.green }]} highlight />
+            <TreeNode label="r60m" indent={2} tags={[{ label: "UTM origin + step", color: T.green }]} highlight />
+
+            <div style={{ borderTop: `1px solid ${T.border}`, margin: "8px 0" }} />
+
+            <TreeNode label="measurements/reflectance/r10m" indent={1} />
+            <TreeNode type="array" label="b02, b03, b04, b08" indent={2} />
+            <TreeNode type="array" label="(cs: → coordinates/r10m)" indent={2} tags={[refTag]} />
+
+            <TreeNode label="quality/atmosphere/r10m" indent={1} />
+            <TreeNode type="array" label="aot, wvp" indent={2} />
+            <TreeNode type="array" label="(cs: → coordinates/r10m)" indent={2} tags={[refTag]} />
+
+            <TreeNode label="conditions/mask/…/r10m" indent={1} />
+            <TreeNode type="array" label="b0x …" indent={2} />
+            <TreeNode type="array" label="(cs: → coordinates/r10m)" indent={2} tags={[refTag]} />
+
+            <TreeNode label="… all other r10m groups → same ref" indent={1} dim />
+            <TreeNode label="… r20m groups → coordinates/r20m" indent={1} dim />
+            <TreeNode label="… r60m groups → coordinates/r60m" indent={1} dim />
+          </div>
+
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
+            <CsBox title="cs on coordinates/r10m group — UTM Zone 25N, 10 m pixels" color={T.green} lines={
+`{
+  "UTM_25N_10m": {
+    "axes": [
+      {
+        "name": "x", "abbreviation": "X",
+        "direction": "east",
+        "coordinates": [{
+          "unit": "metre",
+          "values": { "regular": [399960.0, 10.0] },
+          "boundaries": { "regular": [-5.0, 5.0] }
+        }]
+      },
+      {
+        "name": "y", "abbreviation": "Y",
+        "direction": "north",
+        "coordinates": [{
+          "unit": "metre",
+          "values": { "regular": [8200020.0, -10.0] },
+          "boundaries": { "regular": [-5.0, 5.0] }
+        }]
+      }
+    ],
+    "id": { "proj:code": "EPSG:32625" }
+  }
+}
+
+← 4 numbers replace multiple copies of up to 10980-element float32 arrays`} />
+
+            <div style={{
+              background: T.card, border: `1px solid ${T.green}30`,
+              borderLeft: `3px solid ${T.green}`, borderRadius: 6, padding: "10px 14px",
+            }}>
+              {[
+                ["Single source of truth",  "One CRS object per resolution, referenced by every group that shares it"],
+                ["Declarative identity",    "Any tool reading cs metadata knows these groups share the same coordinate system without empirical checking"],
+                ["Validated consistency",   "Schema validation can enforce that references resolve and match dimension sizes"],
+                ["Trivial maintenance",     "Grid origin or CRS change? Update one object, not fourteen arrays"],
+              ].map(([t, d]) => (
+                <div key={t} style={{ display: "flex", gap: 8, marginBottom: 5 }}>
+                  <span style={{ color: T.green, fontFamily: T.font, fontSize: 12, minWidth: 14 }}>✓</span>
+                  <span style={{ fontFamily: T.sans, fontSize: 12, color: T.text, fontWeight: 600, minWidth: 150 }}>{t}</span>
+                  <span style={{ fontFamily: T.sans, fontSize: 12, color: T.textSub }}>{d}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ── SLIDE 3: ROMS ────────────────────────────────────────────────────────────
+const Slide3 = () => (
+  <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+    <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
+      <div style={{ fontFamily: T.sans, fontSize: 22, fontWeight: 700, color: T.text }}>
+        ROMS ocean model — Complexity is in the data
+      </div>
+      <Badge label="curvilinear · sigma levels · parametric vertical" color={T.accent} />
+    </div>
+
+    <div style={{ display: "flex", gap: 16 }}>
+      <div style={{ flex: "0 0 260px", display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ background: T.card, borderRadius: 8, padding: "14px 12px", border: `1px solid ${T.border}` }}>
+          <SectionTitle>Coordinate system components</SectionTitle>
+          {[
+            { crs: "Horizontal CRS", axes: "η, ξ (curvilinear)", note: "geolocation arrays → lat/lon", color: T.accent },
+            { crs: "Vertical CRS",   axes: "s (sigma levels)",   note: "parametric formula + terms",   color: T.amber },
+            { crs: "Temporal CRS",   axes: "ocean_time",         note: "seconds since epoch",          color: T.green },
+          ].map(({ crs, axes, note, color }) => (
+            <div key={crs} style={{ borderLeft: `3px solid ${color}`, paddingLeft: 10, marginBottom: 10 }}>
+              <div style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 700, color }}>{crs}</div>
+              <div style={{ fontFamily: T.font, fontSize: 11, color: T.text }}>{axes}</div>
+              <div style={{ fontFamily: T.sans, fontSize: 11, color: T.textSub }}>{note}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ background: T.card, border: `1px solid ${T.muted}30`, borderRadius: 6, padding: "10px 14px" }}>
+          <div style={{ fontFamily: T.sans, fontSize: 11, fontWeight: 700, color: T.muted, marginBottom: 6 }}>The key point</div>
+          <div style={{ fontFamily: T.sans, fontSize: 12, color: T.textSub, lineHeight: 1.6 }}>
+            A ROMS cs description is verbose. That reflects the genuine complexity of the coordinate system — not a deficiency of the convention. A cf: extension cannot defer this.
+          </div>
+        </div>
+      </div>
+
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+        <CsBox title="Horizontal CRS — curvilinear grid with geolocation arrays" color={T.accent} lines={
+`{
+  "name": "ROMS curvilinear grid",
+  "axes": [
+    { "name": "eta_rho", "abbreviation": "Y", "direction": "north",
+      "coordinates": [{ "unit": "metre",
+        "values": { "regular": [0, 1000] } }] },
+    { "name": "xi_rho",  "abbreviation": "X", "direction": "east",
+      "coordinates": [{ "unit": "metre",
+        "values": { "regular": [0, 1000] } }] }
+  ],
+  "geolocation": {
+    "geodetic": {
+      "x": { "node": "lon_rho" },   ← 2-D geolocation array
+      "y": { "node": "lat_rho" },
+      "crs": { "proj:code": "EPSG:4326" }
+    }
+  }
+}`} />
+
+        <CsBox title="Vertical CRS — ocean sigma (s-coordinate) parametric levels" color={T.amber} lines={
+`{
+  "axes": [{
+    "name": "s_rho", "abbreviation": "Z", "direction": "up",
+    "coordinates": [{
+      "unit": "1",
+      "values": { "external": { "node": "s_rho" } },
+      "parametric": {
+        "formula": "ocean_s_coordinate_g2",   ← CF Appendix D
+        "terms": {
+          "s":       { "external": { "node": "s_rho"  } },
+          "C":       { "external": { "node": "Cs_r"   } },
+          "eta":     { "external": { "node": "zeta"   } },
+          "depth":   { "external": { "node": "h"      } },
+          "depth_c": { "explicit": [250.0] }
+        }
+      }
+    }]
+  }]
+}`} />
+      </div>
+    </div>
+
+    <div style={{
+      background: T.card, border: `1px solid ${T.border}`,
+      borderRadius: 6, padding: "10px 18px",
+      display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap",
+    }}>
+      <div style={{ fontFamily: T.sans, fontSize: 12, fontWeight: 700, color: T.text }}>
+        What no other convention provides today:
+      </div>
+      {[
+        ["Geolocation arrays",              T.accent],
+        ["Parametric vertical coordinates", T.amber],
+        ["CF formula terms",               T.amber],
+        ["Model calendar",                 T.green],
+        ["Cell bounds",                    T.green],
+      ].map(([label, color]) => (
+        <Badge key={label} label={label} color={color} />
+      ))}
+    </div>
+  </div>
+);
+
+// ── Shell ────────────────────────────────────────────────────────────────────
+const SLIDES = [
+  { id: 1, label: "CMIP6", sub: "simple",     component: Slide1 },
+  { id: 2, label: "EOPF",  sub: "redundancy", component: Slide2 },
+  { id: 3, label: "ROMS",  sub: "complexity", component: Slide3 },
+];
+
+function App() {
+  const [active, setActive] = useState(1);
+  const Slide = SLIDES.find(s => s.id === active).component;
+
+  return (
+    <div style={{
+      background: T.bg, minHeight: "100vh",
+      fontFamily: T.sans, padding: 28,
+      display: "flex", flexDirection: "column",
+    }}>
+      <div style={{
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        borderBottom: `1px solid ${T.border}`, paddingBottom: 14, marginBottom: 22,
+        flexWrap: "wrap", gap: 10,
+      }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+          <span style={{ fontFamily: T.font, fontSize: 13, color: T.accent, fontWeight: 700 }}>cs</span>
+          <span style={{ fontFamily: T.sans, fontSize: 13, color: T.muted }}>Coordinate Set Convention · GeoZarr SWG · June 2026</span>
+        </div>
+
+        <div style={{ display: "flex", gap: 4 }}>
+          {SLIDES.map(s => (
+            <button key={s.id} onClick={() => setActive(s.id)} style={{
+              fontFamily: T.sans, fontSize: 12, fontWeight: 600,
+              padding: "5px 16px", borderRadius: 5,
+              border: `1px solid ${active === s.id ? T.accent : T.border}`,
+              background: active === s.id ? T.accent + "20" : "transparent",
+              color: active === s.id ? T.accent : T.muted,
+              transition: "all 0.15s",
+            }}>
+              {s.label}
+              <span style={{ fontWeight: 400, marginLeft: 4, fontSize: 10 }}>{s.sub}</span>
+            </button>
+          ))}
+        </div>
+
+        <div style={{ display: "flex", gap: 6 }}>
+          {[["←", -1], ["→", 1]].map(([arrow, dir]) => (
+            <button key={arrow} onClick={() => setActive(a => Math.min(3, Math.max(1, a + dir)))} style={{
+              fontFamily: T.font, fontSize: 14, padding: "4px 12px",
+              borderRadius: 4, border: `1px solid ${T.border}`,
+              background: "transparent", color: T.muted,
+            }}>{arrow}</button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ flex: 1 }}>
+        <Slide />
+      </div>
+
+      <div style={{
+        borderTop: `1px solid ${T.border}`, marginTop: 24, paddingTop: 10,
+        display: "flex", justifyContent: "space-between",
+        fontFamily: T.font, fontSize: 10, color: T.muted,
+      }}>
+        <span>R-CF/zarr_convention_cs · e4dbf0b7-7a00-4ce6-b23e-484292014ab4</span>
+        <span>slide {active} / {SLIDES.length}</span>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
