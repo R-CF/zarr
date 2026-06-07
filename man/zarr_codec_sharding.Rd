@@ -11,58 +11,60 @@ this "codec" configuration. This implementation can read from a store using
 sharding, writing is not supported.
 }
 \section{Super classes}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_sharding}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr_codec}} -> \code{zarr_codec_sharding}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_codec_sharding-new}{\code{zarr_codec_sharding$new()}}
-\item \href{#method-zarr_codec_sharding-copy}{\code{zarr_codec_sharding$copy()}}
+  \itemize{
+    \item \href{#method-zarr_codec_sharding-initialize}{\code{zarr_codec_sharding$new()}}
+    \item \href{#method-zarr_codec_sharding-copy}{\code{zarr_codec_sharding$copy()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="decode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-decode'><code>zarr::zarr_codec$decode()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="encode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-encode'><code>zarr::zarr_codec$encode()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="decode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-decode'><code>zarr_codec$decode()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="encode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-encode'><code>zarr_codec$encode()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr_codec$metadata_fragment()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr_codec$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_sharding-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_sharding-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new "crc32c" codec object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_sharding$new(configuration)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{configuration}}{Optional. A list with the configuration parameters
+\if{html}{\out{<a id="method-zarr_codec_sharding-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_sharding-initialize}{}}}
+\subsection{\code{zarr_codec_sharding$new()}}{
+  Create a new "crc32c" codec object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_sharding$new(configuration)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{configuration}}{Optional. A list with the configuration parameters
 for this codec but since this codec doesn't have any the argument is
 always ignored.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_sharding-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_sharding-copy}{}}}
-\subsection{Method \code{copy()}}{
-Create a new, independent copy of this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_sharding$copy()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_sharding$copy()}}{
+  Create a new, independent copy of this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_sharding$copy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{zarr_codec_sharding}.
+  }
 }
 
-\subsection{Returns}{
-An instance of \code{zarr_codec_sharding}.
-}
-}
 }

@@ -12,103 +12,100 @@ and compared to the checksum of the remainder of the raw vector - if the
 two don't match a warning is generated.
 }
 \section{Super classes}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_crc32c}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr_codec}} -> \code{zarr_codec_crc32c}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_codec_crc32c-new}{\code{zarr_codec_crc32c$new()}}
-\item \href{#method-zarr_codec_crc32c-copy}{\code{zarr_codec_crc32c$copy()}}
-\item \href{#method-zarr_codec_crc32c-encode}{\code{zarr_codec_crc32c$encode()}}
-\item \href{#method-zarr_codec_crc32c-decode}{\code{zarr_codec_crc32c$decode()}}
+  \itemize{
+    \item \href{#method-zarr_codec_crc32c-initialize}{\code{zarr_codec_crc32c$new()}}
+    \item \href{#method-zarr_codec_crc32c-copy}{\code{zarr_codec_crc32c$copy()}}
+    \item \href{#method-zarr_codec_crc32c-encode}{\code{zarr_codec_crc32c$encode()}}
+    \item \href{#method-zarr_codec_crc32c-decode}{\code{zarr_codec_crc32c$decode()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr_codec$metadata_fragment()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr_codec$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_crc32c-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_crc32c-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new "crc32c" codec object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_crc32c$new()}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-zarr_codec_crc32c-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_crc32c-initialize}{}}}
+\subsection{\code{zarr_codec_crc32c$new()}}{
+  Create a new "crc32c" codec object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_crc32c$new()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{configuration}}{Optional. A list with the configuration parameters
-for this codec but since this codec doesn't have any the argument is
-always ignored.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_crc32c-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_crc32c-copy}{}}}
-\subsection{Method \code{copy()}}{
-Create a new, independent copy of this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_crc32c$copy()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_crc32c$copy()}}{
+  Create a new, independent copy of this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_crc32c$copy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{zarr_codec_crc32c}.
+  }
 }
 
-\subsection{Returns}{
-An instance of \code{zarr_codec_crc32c}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_crc32c-encode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_crc32c-encode}{}}}
-\subsection{Method \code{encode()}}{
-This method computes the CRC32C checksum of a data object
+\subsection{\code{zarr_codec_crc32c$encode()}}{
+  This method computes the CRC32C checksum of a data object
 and appends it to the data object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_crc32c$encode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_crc32c$encode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{A raw vector whose checksum to compute.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The input \code{data} raw vector with the 32-bit checksum appended to
+it.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{A raw vector whose checksum to compute.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The input \code{data} raw vector with the 32-bit checksum appended to
-it.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_crc32c-decode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_crc32c-decode}{}}}
-\subsection{Method \code{decode()}}{
-This method extracts the CRC32C checksum from the trailing
+\subsection{\code{zarr_codec_crc32c$decode()}}{
+  This method extracts the CRC32C checksum from the trailing
 32-bits of a data object. It then computes the CRC32C checksum from the
 data object (less the trailing 32-bits) and compares the two values. If
 the values differ, a warning will be issued.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_crc32c$decode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_crc32c$decode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The raw vector whose checksum to verify.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The \code{data} raw vector with the trailing 32-bits removed.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The raw vector whose checksum to verify.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The \code{data} raw vector with the trailing 32-bits removed.
-}
-}
 }

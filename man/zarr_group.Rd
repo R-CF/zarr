@@ -13,254 +13,282 @@ A Zarr group is identified by a JSON file having required metadata,
 specifically the attribute \code{"node_type": "group"}.
 }
 \section{Super class}{
-\code{\link[zarr:zarr_node]{zarr::zarr_node}} -> \code{zarr_group}
+\code{\link[zarr:zarr_node]{zarr_node}} -> \code{zarr_group}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{children}}{(read-only) The children of the group. This is a list of
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{children}}{(read-only) The children of the group. This is a list of
 \code{zarr_group} and \code{zarr_array} instances, or the empty list if the group
 has no children.}
 
-\item{\code{groups}}{(read-only) Retrieve the paths to the sub-groups of the
+    \item{\code{groups}}{(read-only) Retrieve the paths to the sub-groups of the
 hierarchy starting from the current group, as a character vector.}
 
-\item{\code{arrays}}{(read-only) Retrieve the paths to the arrays of the
+    \item{\code{arrays}}{(read-only) Retrieve the paths to the arrays of the
 hierarchy starting from the current group, as a character vector.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_group-new}{\code{zarr_group$new()}}
-\item \href{#method-zarr_group-print}{\code{zarr_group$print()}}
-\item \href{#method-zarr_group-hierarchy}{\code{zarr_group$hierarchy()}}
-\item \href{#method-zarr_group-build_hierarchy}{\code{zarr_group$build_hierarchy()}}
-\item \href{#method-zarr_group-get_node}{\code{zarr_group$get_node()}}
-\item \href{#method-zarr_group-count_arrays}{\code{zarr_group$count_arrays()}}
-\item \href{#method-zarr_group-add_group}{\code{zarr_group$add_group()}}
-\item \href{#method-zarr_group-add_array}{\code{zarr_group$add_array()}}
-\item \href{#method-zarr_group-delete}{\code{zarr_group$delete()}}
-\item \href{#method-zarr_group-delete_all}{\code{zarr_group$delete_all()}}
+  \itemize{
+    \item \href{#method-zarr_group-initialize}{\code{zarr_group$new()}}
+    \item \href{#method-zarr_group-print}{\code{zarr_group$print()}}
+    \item \href{#method-zarr_group-hierarchy_nodes}{\code{zarr_group$hierarchy_nodes()}}
+    \item \href{#method-zarr_group-hierarchy}{\code{zarr_group$hierarchy()}}
+    \item \href{#method-zarr_group-build_hierarchy}{\code{zarr_group$build_hierarchy()}}
+    \item \href{#method-zarr_group-get_node}{\code{zarr_group$get_node()}}
+    \item \href{#method-zarr_group-count_arrays}{\code{zarr_group$count_arrays()}}
+    \item \href{#method-zarr_group-add_group}{\code{zarr_group$add_group()}}
+    \item \href{#method-zarr_group-add_array}{\code{zarr_group$add_array()}}
+    \item \href{#method-zarr_group-delete}{\code{zarr_group$delete()}}
+    \item \href{#method-zarr_group-delete_all}{\code{zarr_group$delete_all()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="delete_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-delete_attributes'><code>zarr::zarr_node$delete_attributes()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="print_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-print_attributes'><code>zarr::zarr_node$print_attributes()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="save"><a href='../../zarr/html/zarr_node.html#method-zarr_node-save'><code>zarr::zarr_node$save()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="set_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-set_attribute'><code>zarr::zarr_node$set_attribute()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="delete_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-delete_attributes'><code>zarr_node$delete_attributes()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="print_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-print_attributes'><code>zarr_node$print_attributes()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="save"><a href='../../zarr/html/zarr_node.html#method-zarr_node-save'><code>zarr_node$save()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="set_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-set_attribute'><code>zarr_node$set_attribute()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_group-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_group-new}{}}}
-\subsection{Method \code{new()}}{
-Open a group in a Zarr hierarchy. The group must already
+\if{html}{\out{<a id="method-zarr_group-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_group-initialize}{}}}
+\subsection{\code{zarr_group$new()}}{
+  Open a group in a Zarr hierarchy. The group must already
 exist in the store.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$new(name, metadata, parent, store)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the group. For a root group, this is the empty
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$new(name, metadata, parent, store)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{The name of the group. For a root group, this is the empty
 string \code{""}.}
-
-\item{\code{metadata}}{List with the metadata of the group.}
-
-\item{\code{parent}}{The parent \code{zarr_group} instance of this new group, can be
+      \item{\code{metadata}}{List with the metadata of the group.}
+      \item{\code{parent}}{The parent \code{zarr_group} instance of this new group, can be
 missing or \code{NULL} for the root group.}
+      \item{\code{store}}{The \link{zarr_store} instance to persist data in.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{zarr_group}.
+  }
+}
 
-\item{\code{store}}{The \link{zarr_store} instance to persist data in.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of \code{zarr_group}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-print"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-print}{}}}
-\subsection{Method \code{print()}}{
-Print a summary of the group to the console.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$print()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_group$print()}}{
+  Print a summary of the group to the console.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_group-hierarchy_nodes"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_group-hierarchy_nodes}{}}}
+\subsection{\code{zarr_group$hierarchy_nodes()}}{
+  Collects the hierarchy of the group and its subgroups and
+arrays in a character vector. Usually called from the Zarr object or
+a group to display the full group hierarchy.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$hierarchy_nodes(idx = 1L, total = 1L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{idx, total}}{Arguments to control indentation. Should both be 1 (the
+default) when called interactively. The values will be updated during
+recursion when there are groups below the current group.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-hierarchy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-hierarchy}{}}}
-\subsection{Method \code{hierarchy()}}{
-Prints the hierarchy of the group and its subgroups and
-arrays to the console. Usually called from the Zarr object or its root
-group to display the full group hierarchy.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$hierarchy(idx = 1L, total = 1L)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_group$hierarchy()}}{
+  Print the Zarr hierarchy to the console from the current
+group.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$hierarchy()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{idx, total}}{Arguments to control indentation. Should both be 1 (the
-default) when called interactively. The values will be updated during
-recursion when there are groups below the current group.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-build_hierarchy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-build_hierarchy}{}}}
-\subsection{Method \code{build_hierarchy()}}{
-Return the hierarchy contained in the store as a tree of
+\subsection{\code{zarr_group$build_hierarchy()}}{
+  Return the hierarchy contained in the store as a tree of
 group and array nodes. This method only has to be called after opening
 an existing Zarr store - this is done automatically by user-facing
 code. After that, users can access the \code{children} property of this
 class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$build_hierarchy()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$build_hierarchy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    This \link{zarr_group} instance with all of its children linked.
+  }
 }
 
-\subsection{Returns}{
-This \link{zarr_group} instance with all of its children linked.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-get_node"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-get_node}{}}}
-\subsection{Method \code{get_node()}}{
-Retrieve the group or array represented by the node located
+\subsection{\code{zarr_group$get_node()}}{
+  Retrieve the group or array represented by the node located
 at the path relative from the current group.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$get_node(path)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{The path to the node to retrieve. The path is relative to the
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$get_node(path)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{The path to the node to retrieve. The path is relative to the
 group, it must not start with a slash "/". The path may start with any
 number of double dots ".." separated by slashes "/" to denote groups
 higher up in the hierarchy.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The \link{zarr_group} or \link{zarr_array} instance located at \code{path}, or
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The \link{zarr_group} or \link{zarr_array} instance located at \code{path}, or
 \code{NULL} if the \code{path} was not found.
+  }
 }
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-count_arrays"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-count_arrays}{}}}
-\subsection{Method \code{count_arrays()}}{
-Count the number of arrays in this group, optionally
+\subsection{\code{zarr_group$count_arrays()}}{
+  Count the number of arrays in this group, optionally
 including arrays in sub-groups.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$count_arrays(recursive = TRUE)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$count_arrays(recursive = TRUE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{recursive}}{Logical flag that indicates if arrays in sub-groups
+should be included in the count. Default is \code{TRUE}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{recursive}}{Logical flag that indicates if arrays in sub-groups
-should be included in the count. Default is \code{TRUE}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-add_group"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-add_group}{}}}
-\subsection{Method \code{add_group()}}{
-Add a group to the Zarr hierarchy under the current group.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$add_group(name)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_group$add_group()}}{
+  Add a group to the Zarr hierarchy under the current group.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$add_group(name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{The name of the new group.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The newly created \code{zarr_group} instance, or \code{NULL} if the group
+could not be created.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the new group.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The newly created \code{zarr_group} instance, or \code{NULL} if the group
-could not be created.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-add_array"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-add_array}{}}}
-\subsection{Method \code{add_array()}}{
-Add an array to the Zarr hierarchy in the current group.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$add_array(name, metadata)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the new array.}
-
-\item{\code{metadata}}{A \code{list} with the metadata for the new array, or an
+\subsection{\code{zarr_group$add_array()}}{
+  Add an array to the Zarr hierarchy in the current group.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$add_array(name, metadata)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{The name of the new array.}
+      \item{\code{metadata}}{A \code{list} with the metadata for the new array, or an
 instance of class \link{array_builder} whose data make a valid array
 definition.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The newly created \code{zarr_array} instance, or \code{NULL} if the array
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The newly created \code{zarr_array} instance, or \code{NULL} if the array
 could not be created.
+  }
 }
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-delete}{}}}
-\subsection{Method \code{delete()}}{
-Delete a group or an array contained by this group. When
+\subsection{\code{zarr_group$delete()}}{
+  Delete a group or an array contained by this group. When
 deleting a group it cannot contain other groups or arrays. \strong{Warning:}
 this operation is irreversible for many stores!
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$delete(name)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the group or array to delete. This will also
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$delete(name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{The name of the group or array to delete. This will also
 accept a path to a group or array but the group or array must be a node
 directly under this group.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_group-delete_all"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-delete_all}{}}}
-\subsection{Method \code{delete_all()}}{
-Delete all the groups and arrays contained by this group,
+\subsection{\code{zarr_group$delete_all()}}{
+  Delete all the groups and arrays contained by this group,
 including any sub-groups and arrays. Any specific metadata attached to
 this group is deleted as well - only a basic metadata document is
 maintained. \strong{Warning:} this operation is irreversible for many
 stores!
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_group$delete_all()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$delete_all()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
 
-\subsection{Returns}{
-Self, invisibly.
-}
-}
 }

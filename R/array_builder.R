@@ -64,15 +64,10 @@ array_builder <- R6::R6Class('array_builder',
         meta <- append(meta, private$.data_type$metadata_fragment())
 
       meta <- append(meta, private$.chunk_shape$metadata_fragment())
-      if (!inherits(private$.chunk_shape, 'chunk_grid_sharded') && length(private$.codecs))
-        meta <- append(meta, setNames(list(lapply(private$.codecs,
-                                                  function(cdc) cdc$metadata_fragment())), 'codecs'))
-
-      # meta <- append(meta, private$.chunk_shape$metadata_fragment())
-      # if (length(private$.codecs)) {
-      #   codecs <- lapply(private$.codecs, function(cdc) cdc$metadata_fragment())
-      #   meta <- append(meta, setNames(list(codecs), 'codecs'))
-      # }
+      if (!inherits(private$.chunk_shape, 'chunk_grid_sharded') && length(private$.codecs)) {
+        codecs <- lapply(private$.codecs, function(cdc) cdc$metadata_fragment())
+        meta <- append(meta, setNames(list(unname(codecs)), 'codecs'))
+      }
       meta
     },
 

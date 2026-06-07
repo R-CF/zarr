@@ -91,7 +91,7 @@ as_zarr <- function(x, name = NULL, location = NULL) {
     d <- dim(x) %||% length(x)
     ab$shape <- d
     ab$chunk_shape <- pmin.int(d, Zarr.options$chunk_length)
-    ab$add_codec('blosc', list(level = 6L))
+    ab$add_codec('blosc', list(clevel = 6L))
 
     if (inherits(location, 'zarr_group')) {
       if (missing(name) || is.null(name))
@@ -155,6 +155,6 @@ define_array <- function(data_type, shape) {
   ab <- array_builder$new()
   ab$data_type <- data_type
   ab$shape <- as.integer(shape)
-  ab$add_codec('blosc', list(level = 6L))
+  ab$add_codec('blosc', list(clevel = 6L))
   ab
 }

@@ -54,7 +54,7 @@ zarr <- R6::R6Class("zarr",
     #' @description Print the Zarr hierarchy to the console.
     hierarchy = function() {
       cat('<Zarr hierarchy>', private$.store$root, '\n')
-      hier <- private$.root$hierarchy(1L, 1L)
+      hier <- private$.root$hierarchy_nodes(1L, 1L)
       cat(hier, sep = '')
     },
 

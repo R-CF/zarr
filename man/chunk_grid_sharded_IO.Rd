@@ -15,18 +15,19 @@ number of store requests — particularly important for HTTP stores.
 \keyword{internal}
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-chunk_grid_sharded_IO-new}{\code{chunk_grid_sharded_IO$new()}}
-\item \href{#method-chunk_grid_sharded_IO-read}{\code{chunk_grid_sharded_IO$read()}}
-}
+  \itemize{
+    \item \href{#method-chunk_grid_sharded_IO-initialize}{\code{chunk_grid_sharded_IO$new()}}
+    \item \href{#method-chunk_grid_sharded_IO-read}{\code{chunk_grid_sharded_IO$read()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-chunk_grid_sharded_IO-new"></a>}}
-\if{latex}{\out{\hypertarget{method-chunk_grid_sharded_IO-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new IO handler for a single shard.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_sharded_IO$new(
+\if{html}{\out{<a id="method-chunk_grid_sharded_IO-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-chunk_grid_sharded_IO-initialize}{}}}
+\subsection{\code{chunk_grid_sharded_IO$new()}}{
+  Create a new IO handler for a single shard.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_sharded_IO$new(
   key,
   shard_shape,
   inner_shape,
@@ -35,55 +36,50 @@ Create a new IO handler for a single shard.
   index_loc,
   dtype,
   store
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Store key for this shard file.}
+      \item{\code{shard_shape}}{Integer vector, the shape of this shard.}
+      \item{\code{inner_shape}}{Integer vector, the shape of each inner chunk.}
+      \item{\code{inner_codecs}}{List of \link{zarr_codec} instances for inner chunks.}
+      \item{\code{index_codecs}}{List of \link{zarr_codec} instances for the index.}
+      \item{\code{index_loc}}{Character, \code{"end"} or \code{"start"}.}
+      \item{\code{dtype}}{A \link{zarr_data_type} instance.}
+      \item{\code{store}}{A \link{zarr_store} instance.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{Store key for this shard file.}
-
-\item{\code{shard_shape}}{Integer vector, the shape of this shard.}
-
-\item{\code{inner_shape}}{Integer vector, the shape of each inner chunk.}
-
-\item{\code{inner_codecs}}{List of \link{zarr_codec} instances for inner chunks.}
-
-\item{\code{index_codecs}}{List of \link{zarr_codec} instances for the index.}
-
-\item{\code{index_loc}}{Character, \code{"end"} or \code{"start"}.}
-
-\item{\code{dtype}}{A \link{zarr_data_type} instance.}
-
-\item{\code{store}}{A \link{zarr_store} instance.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_sharded_IO-read"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_sharded_IO-read}{}}}
-\subsection{Method \code{read()}}{
-Read a region from this shard.
+\subsection{\code{chunk_grid_sharded_IO$read()}}{
+  Read a region from this shard.
 
 Inner chunks needed for this read are fetched in a single coalesced
 byte-range request. Previously decoded inner chunks are served from
 cache without any store access.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_sharded_IO$read(offset, length)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_sharded_IO$read(offset, length)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{offset}}{Integer vector of 0-based offsets into the shard.}
+      \item{\code{length}}{Integer vector of lengths along each dimension.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An array of decoded data.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{offset}}{Integer vector of 0-based offsets into the shard.}
-
-\item{\code{length}}{Integer vector of lengths along each dimension.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An array of decoded data.
-}
-}
 }

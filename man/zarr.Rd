@@ -4,9 +4,6 @@
 \name{zarr}
 \alias{zarr}
 \title{Zarr object}
-\value{
-A \code{zarr} object.
-}
 \description{
 This class implements a Zarr object. A Zarr object is a set of
 objects that make up an instance of a Zarr data set, irrespective of where
@@ -18,221 +15,238 @@ class for managing Zarr arrays is \link{zarr_array}. The hierarchy is made up of
 \link{zarr_group} instances. Each \code{zarr_array} is located in a \code{zarr_group}.
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{version}}{(read-only) The version of the Zarr object.}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{version}}{(read-only) The version of the Zarr object.}
 
-\item{\code{root}}{(read-only) The root node of the Zarr object, usually a
+    \item{\code{root}}{(read-only) The root node of the Zarr object, usually a
 \link{zarr_group} instance but it could also be a \link{zarr_array} instance.}
 
-\item{\code{store}}{(read-only) The store of the Zarr object.}
+    \item{\code{store}}{(read-only) The store of the Zarr object.}
 
-\item{\code{domain}}{(read-only) The \code{zarr_domain} instance managing the data
+    \item{\code{domain}}{(read-only) The \code{zarr_domain} instance managing the data
 in this \code{zarr} object.}
 
-\item{\code{groups}}{(read-only) Retrieve the paths to the groups of the Zarr
+    \item{\code{groups}}{(read-only) Retrieve the paths to the groups of the Zarr
 object, starting from the root group, as a character vector.}
 
-\item{\code{arrays}}{(read-only) Retrieve the paths to the arrays of the Zarr
+    \item{\code{arrays}}{(read-only) Retrieve the paths to the arrays of the Zarr
 object, starting from the root group, as a character vector.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr-new}{\code{zarr$new()}}
-\item \href{#method-zarr-print}{\code{zarr$print()}}
-\item \href{#method-zarr-hierarchy}{\code{zarr$hierarchy()}}
-\item \href{#method-zarr-get_node}{\code{zarr$get_node()}}
-\item \href{#method-zarr-add_group}{\code{zarr$add_group()}}
-\item \href{#method-zarr-add_array}{\code{zarr$add_array()}}
-\item \href{#method-zarr-delete_group}{\code{zarr$delete_group()}}
-\item \href{#method-zarr-delete_array}{\code{zarr$delete_array()}}
-\item \href{#method-zarr-clone}{\code{zarr$clone()}}
-}
+  \itemize{
+    \item \href{#method-zarr-initialize}{\code{zarr$new()}}
+    \item \href{#method-zarr-print}{\code{zarr$print()}}
+    \item \href{#method-zarr-hierarchy}{\code{zarr$hierarchy()}}
+    \item \href{#method-zarr-get_node}{\code{zarr$get_node()}}
+    \item \href{#method-zarr-add_group}{\code{zarr$add_group()}}
+    \item \href{#method-zarr-add_array}{\code{zarr$add_array()}}
+    \item \href{#method-zarr-delete_group}{\code{zarr$delete_group()}}
+    \item \href{#method-zarr-delete_array}{\code{zarr$delete_array()}}
+    \item \href{#method-zarr-clone}{\code{zarr$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new Zarr instance. The Zarr instance manages the
+\if{html}{\out{<a id="method-zarr-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr-initialize}{}}}
+\subsection{\code{zarr$new()}}{
+  Create a new Zarr instance. The Zarr instance manages the
 groups and arrays in the Zarr store that it refers to. This instance
 provides access to all objects in the Zarr store.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$new(store)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$new(store)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{store}}{An instance of a \link{zarr_store} descendant class where the
+Zarr objects are located.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A \code{zarr} object.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{store}}{An instance of a \link{zarr_store} descendant class where the
-Zarr objects are located.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-print"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-print}{}}}
-\subsection{Method \code{print()}}{
-Print a summary of the Zarr object to the console.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$print()}\if{html}{\out{</div>}}
+\subsection{\code{zarr$print()}}{
+  Print a summary of the Zarr object to the console.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-hierarchy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-hierarchy}{}}}
-\subsection{Method \code{hierarchy()}}{
-Print the Zarr hierarchy to the console.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$hierarchy()}\if{html}{\out{</div>}}
+\subsection{\code{zarr$hierarchy()}}{
+  Print the Zarr hierarchy to the console.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$hierarchy()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-get_node"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-get_node}{}}}
-\subsection{Method \code{get_node()}}{
-Retrieve the group or array represented by the node located
+\subsection{\code{zarr$get_node()}}{
+  Retrieve the group or array represented by the node located
 at the path.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$get_node(path)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$get_node(path)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{The path to the node to retrieve. Must start with a
+forward-slash "/".}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The \link{zarr_group} or \link{zarr_array} instance located at \code{path}, or
+\code{NULL} if the \code{path} was not found.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{The path to the node to retrieve. Must start with a
-forward-slash "/".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The \link{zarr_group} or \link{zarr_array} instance located at \code{path}, or
-\code{NULL} if the \code{path} was not found.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-add_group"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-add_group}{}}}
-\subsection{Method \code{add_group()}}{
-Add a group below a given path.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$add_group(path, name)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{The path to the parent group of the new group, a single
+\subsection{\code{zarr$add_group()}}{
+  Add a group below a given path.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$add_group(path, name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{The path to the parent group of the new group, a single
 character string.}
-
-\item{\code{name}}{The name for the new group, a single character string.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The newly created \link{zarr_group}, or \code{NULL} if the group could not
+      \item{\code{name}}{The name for the new group, a single character string.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The newly created \link{zarr_group}, or \code{NULL} if the group could not
 be created.
+  }
 }
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-add_array"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-add_array}{}}}
-\subsection{Method \code{add_array()}}{
-Add an array in a group with a given path.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$add_array(path, name, metadata)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{The path to the group of the new array, a single character
+\subsection{\code{zarr$add_array()}}{
+  Add an array in a group with a given path.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$add_array(path, name, metadata)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{The path to the group of the new array, a single character
 string.}
-
-\item{\code{name}}{The name for the new array, a single character string.}
-
-\item{\code{metadata}}{A \code{list} with the metadata for the new array, or a valid
+      \item{\code{name}}{The name for the new array, a single character string.}
+      \item{\code{metadata}}{A \code{list} with the metadata for the new array, or a valid
 \link{array_builder} instance.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The newly created \link{zarr_array}, or \code{NULL} if the array could not
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The newly created \link{zarr_array}, or \code{NULL} if the array could not
 be created.
+  }
 }
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-delete_group"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-delete_group}{}}}
-\subsection{Method \code{delete_group()}}{
-Delete a group from the Zarr object. This will also delete
+\subsection{\code{zarr$delete_group()}}{
+  Delete a group from the Zarr object. This will also delete
 the group from the Zarr store. The root group cannot be deleted but it
 can be specified through \code{path = "/"} in which case the root group
 loses any specific group metadata (with only the basic parameters
 remaining), as well as any arrays and sub-groups if \code{recursive = TRUE}.
 \strong{Warning:} this operation is irreversible for many stores!
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$delete_group(path, recursive = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{The path to the group.}
-
-\item{\code{recursive}}{Logical, default \code{FALSE}. If \code{FALSE}, the operation will
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$delete_group(path, recursive = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{The path to the group.}
+      \item{\code{recursive}}{Logical, default \code{FALSE}. If \code{FALSE}, the operation will
 fail if the group has any arrays or sub-groups. If \code{TRUE}, the group
 and all Zarr objects contained by it will be deleted.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisible.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisible.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-delete_array"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-delete_array}{}}}
-\subsection{Method \code{delete_array()}}{
-Delete an array from the Zarr object. If the array is the
+\subsection{\code{zarr$delete_array()}}{
+  Delete an array from the Zarr object. If the array is the
 root of the Zarr object, it will be converted into a regular Zarr
 object with a root group. \strong{Warning:} this operation is irreversible
 for many stores!
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$delete_array(path)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$delete_array(path)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{The path to the array.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisible.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{The path to the array.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisible.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{zarr$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

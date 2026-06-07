@@ -10,128 +10,134 @@ string, and decodes a raw byte string to a R object, possibly inverting the
 endianness of the data in the operation.
 }
 \section{Super classes}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_bytes}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr_codec}} -> \code{zarr_codec_bytes}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{endian}}{Set or retrieve the endianness of the storage of the data
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{endian}}{Set or retrieve the endianness of the storage of the data
 with this codec. A string with value of "big" or "little".}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_codec_bytes-new}{\code{zarr_codec_bytes$new()}}
-\item \href{#method-zarr_codec_bytes-copy}{\code{zarr_codec_bytes$copy()}}
-\item \href{#method-zarr_codec_bytes-metadata_fragment}{\code{zarr_codec_bytes$metadata_fragment()}}
-\item \href{#method-zarr_codec_bytes-encode}{\code{zarr_codec_bytes$encode()}}
-\item \href{#method-zarr_codec_bytes-decode}{\code{zarr_codec_bytes$decode()}}
+  \itemize{
+    \item \href{#method-zarr_codec_bytes-initialize}{\code{zarr_codec_bytes$new()}}
+    \item \href{#method-zarr_codec_bytes-copy}{\code{zarr_codec_bytes$copy()}}
+    \item \href{#method-zarr_codec_bytes-metadata_fragment}{\code{zarr_codec_bytes$metadata_fragment()}}
+    \item \href{#method-zarr_codec_bytes-encode}{\code{zarr_codec_bytes$encode()}}
+    \item \href{#method-zarr_codec_bytes-decode}{\code{zarr_codec_bytes$decode()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr_codec$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_bytes-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_bytes-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new "bytes" codec object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$new(data_type, chunk_shape, configuration = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data_type}}{The \link{zarr_data_type} instance of the Zarr array that
+\if{html}{\out{<a id="method-zarr_codec_bytes-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_bytes-initialize}{}}}
+\subsection{\code{zarr_codec_bytes$new()}}{
+  Create a new "bytes" codec object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_bytes$new(data_type, chunk_shape, configuration = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data_type}}{The \link{zarr_data_type} instance of the Zarr array that
 this codec is used for.}
-
-\item{\code{chunk_shape}}{The shape of a chunk of data of the array, an integer
+      \item{\code{chunk_shape}}{The shape of a chunk of data of the array, an integer
 vector.}
-
-\item{\code{configuration}}{Optional. A list with the configuration parameters
+      \item{\code{configuration}}{Optional. A list with the configuration parameters
 for this codec. The element \code{endian} specifies the byte ordering of the
 data type of the Zarr array. A string with value "big" or "little". If
 not given, the default endianness of the platform is used.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_bytes-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_bytes-copy}{}}}
-\subsection{Method \code{copy()}}{
-Create a new, independent copy of this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$copy()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_bytes$copy()}}{
+  Create a new, independent copy of this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_bytes$copy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{zarr_codec_bytes}.
+  }
 }
 
-\subsection{Returns}{
-An instance of \code{zarr_codec_bytes}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_bytes-metadata_fragment"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_bytes-metadata_fragment}{}}}
-\subsection{Method \code{metadata_fragment()}}{
-Return the metadata fragment that describes this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$metadata_fragment()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_bytes$metadata_fragment()}}{
+  Return the metadata fragment that describes this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_bytes$metadata_fragment()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with the metadata of this codec.
+  }
 }
 
-\subsection{Returns}{
-A list with the metadata of this codec.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_bytes-encode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_bytes-encode}{}}}
-\subsection{Method \code{encode()}}{
-This method writes an R object to a raw vector in the data
+\subsection{\code{zarr_codec_bytes$encode()}}{
+  This method writes an R object to a raw vector in the data
 type of the Zarr array.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$encode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_bytes$encode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to be encoded.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A raw vector with the encoded data object.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to be encoded.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A raw vector with the encoded data object.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_bytes-decode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_bytes-decode}{}}}
-\subsection{Method \code{decode()}}{
-This method takes a raw vector and converts it to an R
+\subsection{\code{zarr_codec_bytes$decode()}}{
+  This method takes a raw vector and converts it to an R
 object of an appropriate type.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_bytes$decode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_bytes$decode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to be decoded.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An R object with the shape of a chunk from the array.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to be decoded.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An R object with the shape of a chunk from the array.
-}
-}
 }

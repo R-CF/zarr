@@ -24,106 +24,111 @@ type. As a consequence, this codec can only decode data - new data is not
 written in this format.
 }
 \section{Super classes}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_ucs4}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr_codec}} -> \code{zarr_codec_ucs4}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{endian}}{(read-only) Retrieve the endianness of the storage of the
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{endian}}{(read-only) Retrieve the endianness of the storage of the
 data with this codec. A string with value of "big" or "little".}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_codec_ucs4-new}{\code{zarr_codec_ucs4$new()}}
-\item \href{#method-zarr_codec_ucs4-copy}{\code{zarr_codec_ucs4$copy()}}
-\item \href{#method-zarr_codec_ucs4-metadata_fragment}{\code{zarr_codec_ucs4$metadata_fragment()}}
-\item \href{#method-zarr_codec_ucs4-decode}{\code{zarr_codec_ucs4$decode()}}
+  \itemize{
+    \item \href{#method-zarr_codec_ucs4-initialize}{\code{zarr_codec_ucs4$new()}}
+    \item \href{#method-zarr_codec_ucs4-copy}{\code{zarr_codec_ucs4$copy()}}
+    \item \href{#method-zarr_codec_ucs4-metadata_fragment}{\code{zarr_codec_ucs4$metadata_fragment()}}
+    \item \href{#method-zarr_codec_ucs4-decode}{\code{zarr_codec_ucs4$decode()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="encode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-encode'><code>zarr::zarr_codec$encode()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="encode"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-encode'><code>zarr_codec$encode()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr_codec$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_ucs4-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_ucs4-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new UCS-4 codec object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_ucs4$new(chunk_shape, configuration)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{chunk_shape}}{The shape of a chunk of data of the array, an integer
+\if{html}{\out{<a id="method-zarr_codec_ucs4-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_ucs4-initialize}{}}}
+\subsection{\code{zarr_codec_ucs4$new()}}{
+  Create a new UCS-4 codec object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_ucs4$new(chunk_shape, configuration)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{chunk_shape}}{The shape of a chunk of data of the array, an integer
 vector.}
-
-\item{\code{configuration}}{A list with the configuration parameters for this
+      \item{\code{configuration}}{A list with the configuration parameters for this
 codec. This is a list created in this package, it does not exist in the
 Zarr store as the Numpy UCS-4 method is not a real codec. The element
 \code{endian} specifies the byte ordering of the data type of the Zarr
 array. A string with value "big" or "little". The element \code{width} given
 the fixed padded string width.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_ucs4-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_ucs4-copy}{}}}
-\subsection{Method \code{copy()}}{
-Create a new, independent copy of this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_ucs4$copy()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_ucs4$copy()}}{
+  Create a new, independent copy of this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_ucs4$copy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{zarr_codec_ucs4}.
+  }
 }
 
-\subsection{Returns}{
-An instance of \code{zarr_codec_ucs4}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_ucs4-metadata_fragment"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_ucs4-metadata_fragment}{}}}
-\subsection{Method \code{metadata_fragment()}}{
-Return the metadata fragment that describes this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_ucs4$metadata_fragment()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_ucs4$metadata_fragment()}}{
+  Return the metadata fragment that describes this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_ucs4$metadata_fragment()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with the metadata of this codec, just the name.
+  }
 }
 
-\subsection{Returns}{
-A list with the metadata of this codec, just the name.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_ucs4-decode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_ucs4-decode}{}}}
-\subsection{Method \code{decode()}}{
-This method takes a raw UCS-4 vector and converts it to an R
+\subsection{\code{zarr_codec_ucs4$decode()}}{
+  This method takes a raw UCS-4 vector and converts it to an R
 character object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_ucs4$decode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_ucs4$decode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to be decoded.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An R character object with the shape of a chunk from the array.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to be decoded.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An R character object with the shape of a chunk from the array.
-}
-}
 }

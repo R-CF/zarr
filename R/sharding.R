@@ -65,8 +65,8 @@ chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
             name = 'sharding_indexed',
             configuration = list(
               chunk_shape    = private$.inner_shape,
-              codecs         = lapply(private$.inner_codecs, function(cdc) cdc$metadata_fragment()),
-              index_codecs   = lapply(private$.index_codecs, function(cdc) cdc$metadata_fragment()),
+              codecs         = unname(lapply(private$.inner_codecs, function(cdc) cdc$metadata_fragment())),
+              index_codecs   = unname(lapply(private$.index_codecs, function(cdc) cdc$metadata_fragment())),
               index_location = private$.index_loc
             )
           )

@@ -12,11 +12,12 @@ zarr_array <- R6::R6Class('zarr_array',
     # The data type of the array, a zarr_data_type instance
     .data_type = NULL,
 
-    # The shape of the array in R terms, may be different from the shape in the metadata
-    #.shape = NULL,
-
     # An instance of `chunk_grid_regular` to manage data chunking and I/O.
     .chunking = NULL,
+
+    # The glyph used for depicting an array when printing. Descendant classes
+    # may override this to more easily identify different classes of arrays.
+    .glyph = '\u2317',
 
     # Returns a list with pre, sep and scalar elements that describe the
     # chunk key encoding of the array.
@@ -63,7 +64,7 @@ zarr_array <- R6::R6Class('zarr_array',
 
     #' @description Print a summary of the array to the console.
     print = function() {
-      cat('<Zarr array>', private$.name, '\n')
+      cat('<Zarr array>', private$.glyph, private$.name, '\n')
       cat('Path      :', self$path, '\n')
       if (nzchar(private$.domain))
         cat('Domain    :', private$.domain, '\n')
@@ -75,16 +76,16 @@ zarr_array <- R6::R6Class('zarr_array',
       invisible(self)
     },
 
-    #' @description Prints the hierarchy of the groups and arrays to the
-    #'   console. Usually called from the Zarr object or its root group to
-    #'   display the full group hierarchy.
+    #' @description Prints the hierarchy of this array to a character string.
+    #'   Usually called from the Zarr object or a group to display the full
+    #'   group hierarchy.
     #' @param idx,total Arguments to control indentation.
-    hierarchy = function(idx, total) {
+    hierarchy_nodes = function(idx, total) {
       if (!nzchar(private$.name))
-        '\u2317 (root array)\n'
+        paste(private$.glyph, '(root array)\n')
       else {
         knot <- if (idx == total) '\u2514 ' else '\u251C '
-        paste0(knot, '\u2317 ', private$.name, '\n')
+        paste0(knot, private$.glyph, ' ', private$.name, '\n')
       }
     },
 

@@ -10,137 +10,148 @@ one or more transformations, such as compression. Decoding of stored data is
 the inverse process, whereby the codecs are applied in reverse order.
 }
 \section{Super class}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{zarr_codec}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{zarr_codec}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{mode}}{(read-only) Retrieve the operating mode of the encoding
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{mode}}{(read-only) Retrieve the operating mode of the encoding
 operation of the codec in form of a string "array -> array", "array ->
 bytes" or "bytes -> bytes".}
 
-\item{\code{from}}{(read-only) Character string that indicates the source data
+    \item{\code{from}}{(read-only) Character string that indicates the source data
 type of this codec, either "array" or "bytes".}
 
-\item{\code{to}}{(read-only) Character string that indicates the output data
+    \item{\code{to}}{(read-only) Character string that indicates the output data
 type of this codec, either "array" or "bytes".}
 
-\item{\code{configuration}}{(read-only) A list with the configuration parameters
+    \item{\code{configuration}}{(read-only) A list with the configuration parameters
 of the codec, exactly like they are defined in Zarr. This field is
 read-only but each codec class has fields to set individual parameters.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_codec-new}{\code{zarr_codec$new()}}
-\item \href{#method-zarr_codec-copy}{\code{zarr_codec$copy()}}
-\item \href{#method-zarr_codec-print}{\code{zarr_codec$print()}}
-\item \href{#method-zarr_codec-metadata_fragment}{\code{zarr_codec$metadata_fragment()}}
-\item \href{#method-zarr_codec-encode}{\code{zarr_codec$encode()}}
-\item \href{#method-zarr_codec-decode}{\code{zarr_codec$decode()}}
-}
+  \itemize{
+    \item \href{#method-zarr_codec-initialize}{\code{zarr_codec$new()}}
+    \item \href{#method-zarr_codec-copy}{\code{zarr_codec$copy()}}
+    \item \href{#method-zarr_codec-print}{\code{zarr_codec$print()}}
+    \item \href{#method-zarr_codec-metadata_fragment}{\code{zarr_codec$metadata_fragment()}}
+    \item \href{#method-zarr_codec-encode}{\code{zarr_codec$encode()}}
+    \item \href{#method-zarr_codec-decode}{\code{zarr_codec$decode()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new codec object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$new(name, configuration)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the codec, a single character string.}
-
-\item{\code{configuration}}{A list with the configuration parameters for this
+\if{html}{\out{<a id="method-zarr_codec-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec-initialize}{}}}
+\subsection{\code{zarr_codec$new()}}{
+  Create a new codec object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec$new(name, configuration)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{The name of the codec, a single character string.}
+      \item{\code{configuration}}{A list with the configuration parameters for this
 codec.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec-copy}{}}}
-\subsection{Method \code{copy()}}{
-Create a new, independent copy of this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$copy()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec$copy()}}{
+  Create a new, independent copy of this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec$copy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    This method always throws an error.
+  }
 }
 
-\subsection{Returns}{
-This method always throws an error.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec-print"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec-print}{}}}
-\subsection{Method \code{print()}}{
-Print a summary of the codec to the console.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$print()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec$print()}}{
+  Print a summary of the codec to the console.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec-metadata_fragment"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec-metadata_fragment}{}}}
-\subsection{Method \code{metadata_fragment()}}{
-Return the metadata fragment that describes this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$metadata_fragment()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec$metadata_fragment()}}{
+  Return the metadata fragment that describes this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec$metadata_fragment()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with the metadata of this codec.
+  }
 }
 
-\subsection{Returns}{
-A list with the metadata of this codec.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec-encode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec-encode}{}}}
-\subsection{Method \code{encode()}}{
-This method encodes a data object but since this is the base
+\subsection{\code{zarr_codec$encode()}}{
+  This method encodes a data object but since this is the base
 codec class the "encoding" is a no-op.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$encode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec$encode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to be encoded.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The encoded data object, unaltered.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to be encoded.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The encoded data object, unaltered.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec-decode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec-decode}{}}}
-\subsection{Method \code{decode()}}{
-This method decodes a data object but since this is the base
+\subsection{\code{zarr_codec$decode()}}{
+  This method decodes a data object but since this is the base
 codec class the "decoding" is a no-op.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec$decode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec$decode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to be decoded.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The decoded data object, unaltered.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to be decoded.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The decoded data object, unaltered.
-}
-}
 }

@@ -25,66 +25,64 @@ There is no point instantiating this class directly, other than in the
 }
 \keyword{internal}
 \section{Super class}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{chunking}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{chunking}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{chunk_shape}}{(read-only) The dimensions of each chunk in the chunk
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{chunk_shape}}{(read-only) The dimensions of each chunk in the chunk
 grid of the associated array.}
 
-\item{\code{chunk_encoding}}{Set or retrieve the chunk key encoding to be used
+    \item{\code{chunk_encoding}}{Set or retrieve the chunk key encoding to be used
 for creating store keys for chunks.}
 
-\item{\code{data_type}}{The data type of the array using the chunking scheme.
+    \item{\code{data_type}}{The data type of the array using the chunking scheme.
 This is set by the array when starting to use chunking for file I/O.}
 
-\item{\code{store}}{The store of the array using the chunking scheme.
+    \item{\code{store}}{The store of the array using the chunking scheme.
 This is set by the array when starting to use chunking for file I/O.}
 
-\item{\code{array_prefix}}{The prefix of the array using the chunking scheme.
+    \item{\code{array_prefix}}{The prefix of the array using the chunking scheme.
 This is set by the array when starting to use chunking for file I/O.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-chunking-new}{\code{chunking$new()}}
+  \itemize{
+    \item \href{#method-chunking-initialize}{\code{chunking$new()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_extension" data-id="metadata_fragment"><a href='../../zarr/html/zarr_extension.html#method-zarr_extension-metadata_fragment'><code>zarr::zarr_extension$metadata_fragment()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_extension" data-id="metadata_fragment"><a href='../../zarr/html/zarr_extension.html#method-zarr_extension-metadata_fragment'><code>zarr_extension$metadata_fragment()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-chunking-new"></a>}}
-\if{latex}{\out{\hypertarget{method-chunking-new}{}}}
-\subsection{Method \code{new()}}{
-Initialize a new chunking scheme for an array. This should
+\if{html}{\out{<a id="method-chunking-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-chunking-initialize}{}}}
+\subsection{\code{chunking$new()}}{
+  Initialize a new chunking scheme for an array. This should
 only be called by descendant classes.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunking$new(class_name, array_shape, chunk_shape)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{class_name}}{Character string given the name of the chunking scheme.}
-
-\item{\code{array_shape}}{Integer vector of the array dimensions. This may be
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunking$new(class_name, array_shape, chunk_shape)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{class_name}}{Character string given the name of the chunking scheme.}
+      \item{\code{array_shape}}{Integer vector of the array dimensions. This may be
 \code{NA} for a scalar array.}
-
-\item{\code{chunk_shape}}{Integer vector of the dimensions of each chunk (or
+      \item{\code{chunk_shape}}{Integer vector of the dimensions of each chunk (or
 shard). Ignored for a scalar array.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{chunking}.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of \code{chunking}.
-}
-}
+
 }

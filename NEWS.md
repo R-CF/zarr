@@ -1,5 +1,7 @@
 # zarr (development version)
 
+- Hierarchy can now also be printed from any group. Arrays from domain packages may use alternative glyphs.
+
 # zarr 0.4.0
 
 - Reading of sharded Zarr stores is now supported.

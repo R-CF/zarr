@@ -43,174 +43,184 @@ document. Optional arguments may be set directly on the Zarr array after it
 has been created.
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{format}}{The Zarr format to build the metadata for. The value must
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{format}}{The Zarr format to build the metadata for. The value must
 be 3. After changing the format, many fields will have been reset to a
 default value.}
 
-\item{\code{portable}}{Logical flag to indicate if the array is specified for
+    \item{\code{portable}}{Logical flag to indicate if the array is specified for
 maximum portability across environments (e.g. Python, Java, C++).
 Default is \code{FALSE}. Setting the portability to \code{TRUE} implies that R
 data will be permuted before writing the array to the store. A value of
 \code{FALSE} is therefore more efficient.}
 
-\item{\code{data_type}}{The data type of the Zarr array. After changing the
+    \item{\code{data_type}}{The data type of the Zarr array. After changing the
 format, many fields will have been reset to a default value.}
 
-\item{\code{fill_value}}{The value in the array of uninitialized data elements.
+    \item{\code{fill_value}}{The value in the array of uninitialized data elements.
 The \code{fill_value} has to agree with the \code{data_type} of the array.}
 
-\item{\code{shape}}{The shape of the Zarr array, an integer vector of lengths
+    \item{\code{shape}}{The shape of the Zarr array, an integer vector of lengths
 along the dimensions of the array. Setting the shape will reset the
 chunking settings to their default values.}
 
-\item{\code{chunk_shape}}{The shape of each individual chunk in which to store
+    \item{\code{chunk_shape}}{The shape of each individual chunk in which to store
 the Zarr array. When setting, pass in an integer vector of lengths of
 the same size as the shape of the array. The \code{shape} of the array must
 be set before setting this. When reading, returns an instance of class
 \link{chunk_grid_regular}.}
 
-\item{\code{codec_info}}{(read-only) Retrieve a \code{data.frame} of registered codec
+    \item{\code{codec_info}}{(read-only) Retrieve a \code{data.frame} of registered codec
 modes and names for this array.}
 
-\item{\code{codecs}}{(read-only) A list with validated and instantiated codecs
+    \item{\code{codecs}}{(read-only) A list with validated and instantiated codecs
 for processing data associated with this array.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-array_builder-new}{\code{array_builder$new()}}
-\item \href{#method-array_builder-print}{\code{array_builder$print()}}
-\item \href{#method-array_builder-metadata}{\code{array_builder$metadata()}}
-\item \href{#method-array_builder-add_codec}{\code{array_builder$add_codec()}}
-\item \href{#method-array_builder-remove_codec}{\code{array_builder$remove_codec()}}
-\item \href{#method-array_builder-is_valid}{\code{array_builder$is_valid()}}
-}
+  \itemize{
+    \item \href{#method-array_builder-initialize}{\code{array_builder$new()}}
+    \item \href{#method-array_builder-print}{\code{array_builder$print()}}
+    \item \href{#method-array_builder-metadata}{\code{array_builder$metadata()}}
+    \item \href{#method-array_builder-add_codec}{\code{array_builder$add_codec()}}
+    \item \href{#method-array_builder-remove_codec}{\code{array_builder$remove_codec()}}
+    \item \href{#method-array_builder-is_valid}{\code{array_builder$is_valid()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-array_builder-new"></a>}}
-\if{latex}{\out{\hypertarget{method-array_builder-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new instance of the \code{array_builder} class.
+\if{html}{\out{<a id="method-array_builder-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-array_builder-initialize}{}}}
+\subsection{\code{array_builder$new()}}{
+  Create a new instance of the \code{array_builder} class.
 Optionally, a metadata document may be passed in as an argument to
 inspect the definition of an existing Zarr array, or to use as a
 template for a new metadata document.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{array_builder$new(metadata = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{metadata}}{Optional. A JSON metadata document or list of metadata
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{array_builder$new(metadata = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{metadata}}{Optional. A JSON metadata document or list of metadata
 from an existing Zarr array. This document will not be modified through
 any operation in this class.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-array_builder-print"></a>}}
 \if{latex}{\out{\hypertarget{method-array_builder-print}{}}}
-\subsection{Method \code{print()}}{
-Print the array metadata to the console.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{array_builder$print()}\if{html}{\out{</div>}}
+\subsection{\code{array_builder$print()}}{
+  Print the array metadata to the console.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{array_builder$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-array_builder-metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-array_builder-metadata}{}}}
-\subsection{Method \code{metadata()}}{
-Retrieve the metadata document to create a Zarr array.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{array_builder$metadata(format = "list")}\if{html}{\out{</div>}}
+\subsection{\code{array_builder$metadata()}}{
+  Retrieve the metadata document to create a Zarr array.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{array_builder$metadata(format = "list")}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{format}}{Either "list" or "JSON".}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The metadata document in the requested format.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{format}}{Either "list" or "JSON".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The metadata document in the requested format.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-array_builder-add_codec"></a>}}
 \if{latex}{\out{\hypertarget{method-array_builder-add_codec}{}}}
-\subsection{Method \code{add_codec()}}{
-Adds a codec at the end of the currently registered codecs.
+\subsection{\code{array_builder$add_codec()}}{
+  Adds a codec at the end of the currently registered codecs.
 Optionally, the \code{.position} argument may be used to indicate a specific
 position of the codec in the list. Codecs can only be added if their
 mode agrees with the mode of existing codecs - if this codec does not
 agree with the existing codecs, a warning will be issued and the new
 codec will not be registered.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{array_builder$add_codec(codec, configuration, .position = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{codec}}{The name of the codec. This must be a registered codec with
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{array_builder$add_codec(codec, configuration, .position = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{codec}}{The name of the codec. This must be a registered codec with
 an implementation that is available from this package.}
-
-\item{\code{configuration}}{List with configuration parameters of the \code{codec}.
+      \item{\code{configuration}}{List with configuration parameters of the \code{codec}.
 May be \code{NULL} or \code{list()} for codecs that do not have configuration
 parameters.}
-
-\item{\code{.position}}{Optional, the 1-based position where to insert the codec
+      \item{\code{.position}}{Optional, the 1-based position where to insert the codec
 in the list. If the number is larger than the list, the codec will be
 appended at the end of the list of codecs.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-array_builder-remove_codec"></a>}}
 \if{latex}{\out{\hypertarget{method-array_builder-remove_codec}{}}}
-\subsection{Method \code{remove_codec()}}{
-Remove a codec from the list of codecs for the array. A
+\subsection{\code{array_builder$remove_codec()}}{
+  Remove a codec from the list of codecs for the array. A
 codec cannot be removed if the remaining codecs do not form a valid
 chain due to mode conflicts.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{array_builder$remove_codec(codec)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{array_builder$remove_codec(codec)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{codec}}{The name of the codec to remove, a single character string.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{codec}}{The name of the codec to remove, a single character string.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-array_builder-is_valid"></a>}}
 \if{latex}{\out{\hypertarget{method-array_builder-is_valid}{}}}
-\subsection{Method \code{is_valid()}}{
-This method indicates if the current specification results
+\subsection{\code{array_builder$is_valid()}}{
+  This method indicates if the current specification results
 in a valid metadata document to create a Zarr array.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{array_builder$is_valid()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{array_builder$is_valid()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{TRUE} if a valid metadata document can be generated, \code{FALSE}
+otherwise.
+  }
 }
 
-\subsection{Returns}{
-\code{TRUE} if a valid metadata document can be generated, \code{FALSE}
-otherwise.
-}
-}
 }

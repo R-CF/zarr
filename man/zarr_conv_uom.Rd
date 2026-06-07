@@ -20,69 +20,71 @@ implemented here:
 }\if{html}{\out{</div>}}
 }
 \section{Super class}{
-\code{\link[zarr:zarr_convention]{zarr::zarr_convention}} -> \code{zarr_conv_uom}
+\code{\link[zarr:zarr_convention]{zarr_convention}} -> \code{zarr_conv_uom}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{version}}{The "version" attribute under "ucum", a character string
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{version}}{The "version" attribute under "ucum", a character string
 indicating the UCUM vesion that is being used.}
 
-\item{\code{unit}}{The "unit" attribute under "ucum", a character string giving
+    \item{\code{unit}}{The "unit" attribute under "ucum", a character string giving
 the unit-of-measure in UCUM notation.}
 
-\item{\code{description}}{The "description" attribute, a character string giving
+    \item{\code{description}}{The "description" attribute, a character string giving
 a free-text description of the unit-of-measure.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_conv_uom-new}{\code{zarr_conv_uom$new()}}
-\item \href{#method-zarr_conv_uom-write}{\code{zarr_conv_uom$write()}}
+  \itemize{
+    \item \href{#method-zarr_conv_uom-initialize}{\code{zarr_conv_uom$new()}}
+    \item \href{#method-zarr_conv_uom-write}{\code{zarr_conv_uom$write()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_convention" data-id="register"><a href='../../zarr/html/zarr_convention.html#method-zarr_convention-register'><code>zarr::zarr_convention$register()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_convention" data-id="register"><a href='../../zarr/html/zarr_convention.html#method-zarr_convention-register'><code>zarr_convention$register()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_conv_uom-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_conv_uom-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new instance of a "uom" convention agent.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_conv_uom$new()}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-zarr_conv_uom-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_conv_uom-initialize}{}}}
+\subsection{\code{zarr_conv_uom$new()}}{
+  Create a new instance of a "uom" convention agent.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_conv_uom$new()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A new instance of a "uom" convention agent.
+  }
 }
 
-\subsection{Returns}{
-A new instance of a "uom" convention agent.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_conv_uom-write"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_conv_uom-write}{}}}
-\subsection{Method \code{write()}}{
-Write the data of this instance in the attributes of a Zarr
+\subsection{\code{zarr_conv_uom$write()}}{
+  Write the data of this instance in the attributes of a Zarr
 object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_conv_uom$write(attributes)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_conv_uom$write(attributes)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{attributes}}{A \code{list} with Zarr attributes for a group or array. The
+properties will be written to \code{attributes}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The updated attributes.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{attributes}}{A \code{list} with Zarr attributes for a group or array. The
-properties will be written to \code{attributes}.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The updated attributes.
-}
-}
 }

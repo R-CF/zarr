@@ -13,101 +13,103 @@ store.
 \keyword{internal}
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-chunk_grid_regular_IO-new}{\code{chunk_grid_regular_IO$new()}}
-\item \href{#method-chunk_grid_regular_IO-read}{\code{chunk_grid_regular_IO$read()}}
-\item \href{#method-chunk_grid_regular_IO-write}{\code{chunk_grid_regular_IO$write()}}
-\item \href{#method-chunk_grid_regular_IO-flush}{\code{chunk_grid_regular_IO$flush()}}
-}
+  \itemize{
+    \item \href{#method-chunk_grid_regular_IO-initialize}{\code{chunk_grid_regular_IO$new()}}
+    \item \href{#method-chunk_grid_regular_IO-read}{\code{chunk_grid_regular_IO$read()}}
+    \item \href{#method-chunk_grid_regular_IO-write}{\code{chunk_grid_regular_IO$write()}}
+    \item \href{#method-chunk_grid_regular_IO-flush}{\code{chunk_grid_regular_IO$flush()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-chunk_grid_regular_IO-new"></a>}}
-\if{latex}{\out{\hypertarget{method-chunk_grid_regular_IO-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new instance of this class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular_IO$new(key, chunk_shape, dtype, store, codecs)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{The key of the chunk in the store.}
-
-\item{\code{chunk_shape}}{Integer vector with the shape of the chunk.}
-
-\item{\code{dtype}}{The \link{zarr_data_type} of the array.}
-
-\item{\code{store}}{The \link{zarr_store} instance that is the store of this array.}
-
-\item{\code{codecs}}{List of \link{zarr_codec} instances to use. The list will be
+\if{html}{\out{<a id="method-chunk_grid_regular_IO-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-chunk_grid_regular_IO-initialize}{}}}
+\subsection{\code{chunk_grid_regular_IO$new()}}{
+  Create a new instance of this class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular_IO$new(key, chunk_shape, dtype, store, codecs)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{The key of the chunk in the store.}
+      \item{\code{chunk_shape}}{Integer vector with the shape of the chunk.}
+      \item{\code{dtype}}{The \link{zarr_data_type} of the array.}
+      \item{\code{store}}{The \link{zarr_store} instance that is the store of this array.}
+      \item{\code{codecs}}{List of \link{zarr_codec} instances to use. The list will be
 copied such that this chunk reader/writer can be run asynchronously.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_regular_IO-read"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular_IO-read}{}}}
-\subsection{Method \code{read()}}{
-Read some data from the chunk.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular_IO$read(offset, length)}\if{html}{\out{</div>}}
+\subsection{\code{chunk_grid_regular_IO$read()}}{
+  Read some data from the chunk.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular_IO$read(offset, length)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{offset, length}}{The integer offsets and length that determine where
+from the chunk to read the data.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The requested data, as an R object with dimensions set when it is
+a matrix or array.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{offset, length}}{The integer offsets and length that determine where
-from the chunk to read the data.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The requested data, as an R object with dimensions set when it is
-a matrix or array.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_regular_IO-write"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular_IO-write}{}}}
-\subsection{Method \code{write()}}{
-Write some data to the chunk.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular_IO$write(data, offset, flush = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to write to the chunk.}
-
-\item{\code{offset}}{The integer offsets that determine where in the chunk to
+\subsection{\code{chunk_grid_regular_IO$write()}}{
+  Write some data to the chunk.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular_IO$write(data, offset, flush = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to write to the chunk.}
+      \item{\code{offset}}{The integer offsets that determine where in the chunk to
 write the data. Ignored if argument \code{data} has a full chunk of data.}
-
-\item{\code{flush}}{If \code{TRUE}, the chunk will be written to file iimediately
+      \item{\code{flush}}{If \code{TRUE}, the chunk will be written to file iimediately
 after writing the new data to it. If \code{FALSE}, data will be written to
 the chunk but not persisted to the store - this is more efficient when
 writing multiple slabs of data to a chunk.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_regular_IO-flush"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular_IO-flush}{}}}
-\subsection{Method \code{flush()}}{
-If the chunk has changed applied to it, persist the chunk to
+\subsection{\code{chunk_grid_regular_IO$flush()}}{
+  If the chunk has changed applied to it, persist the chunk to
 the store.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular_IO$flush()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular_IO$flush()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
 
-\subsection{Returns}{
-Self, invisibly.
-}
-}
 }

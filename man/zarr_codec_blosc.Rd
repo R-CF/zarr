@@ -10,127 +10,132 @@ reduce the size of a raw vector prior to storing, and decompressing when
 reading.
 }
 \section{Super classes}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_blosc}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr_codec}} -> \code{zarr_codec_blosc}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{cname}}{Set or retrieve the name of the compression algorithm. Must
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{cname}}{Set or retrieve the name of the compression algorithm. Must
 be one of "blosclz", "lz4", "lz4hc", "zstd" or "zlib".}
 
-\item{\code{clevel}}{Set or retrieve the compression level. Must
+    \item{\code{clevel}}{Set or retrieve the compression level. Must
 be an integer between 0 (no compression) and 9 (maximum compression).}
 
-\item{\code{shuffle}}{Set or retrieve the data shuffling of the compression
+    \item{\code{shuffle}}{Set or retrieve the data shuffling of the compression
 algorithm. Must be one of "shuffle", "noshuffle" or "bitshuffle".}
 
-\item{\code{typesize}}{Set or retrieve the size in bytes of the data type being
+    \item{\code{typesize}}{Set or retrieve the size in bytes of the data type being
 compressed. It is highly recommended to leave this at the automatically
 determined value.}
 
-\item{\code{blocksize}}{Set or retrieve the size in bytes of the blocks being
+    \item{\code{blocksize}}{Set or retrieve the size in bytes of the blocks being
 compressed. It is highly recommended to leave this at a value of 0 such
 that the blosc library will automatically determine the optimal value.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_codec_blosc-new}{\code{zarr_codec_blosc$new()}}
-\item \href{#method-zarr_codec_blosc-copy}{\code{zarr_codec_blosc$copy()}}
-\item \href{#method-zarr_codec_blosc-encode}{\code{zarr_codec_blosc$encode()}}
-\item \href{#method-zarr_codec_blosc-decode}{\code{zarr_codec_blosc$decode()}}
+  \itemize{
+    \item \href{#method-zarr_codec_blosc-initialize}{\code{zarr_codec_blosc$new()}}
+    \item \href{#method-zarr_codec_blosc-copy}{\code{zarr_codec_blosc$copy()}}
+    \item \href{#method-zarr_codec_blosc-encode}{\code{zarr_codec_blosc$encode()}}
+    \item \href{#method-zarr_codec_blosc-decode}{\code{zarr_codec_blosc$decode()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr_codec$metadata_fragment()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr_codec$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_blosc-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_blosc-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new "blosc" codec object. The typesize argument is
+\if{html}{\out{<a id="method-zarr_codec_blosc-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_blosc-initialize}{}}}
+\subsection{\code{zarr_codec_blosc$new()}}{
+  Create a new "blosc" codec object. The typesize argument is
 taken from the data type of the array passed in through the \code{data_type}
 argument and the shuffle argument is chosen based on the \code{data_type}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_blosc$new(data_type, configuration = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data_type}}{The \link{zarr_data_type} instance of the Zarr array that
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_blosc$new(data_type, configuration = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data_type}}{The \link{zarr_data_type} instance of the Zarr array that
 this codec is used for.}
-
-\item{\code{configuration}}{Optional. A list with the configuration parameters
+      \item{\code{configuration}}{Optional. A list with the configuration parameters
 for this codec. If not given, the default compression of "zstd" with
 level 1 will be used.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_blosc-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_blosc-copy}{}}}
-\subsection{Method \code{copy()}}{
-Create a new, independent copy of this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_blosc$copy()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_blosc$copy()}}{
+  Create a new, independent copy of this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_blosc$copy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{zarr_codec_blosc}.
+  }
 }
 
-\subsection{Returns}{
-An instance of \code{zarr_codec_blosc}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_blosc-encode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_blosc-encode}{}}}
-\subsection{Method \code{encode()}}{
-This method compresses a data object using the "blosc"
+\subsection{\code{zarr_codec_blosc$encode()}}{
+  This method compresses a data object using the "blosc"
 compression library.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_blosc$encode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_blosc$encode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The raw vector to be compressed.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A raw vector with compressed data.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The raw vector to be compressed.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A raw vector with compressed data.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_blosc-decode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_blosc-decode}{}}}
-\subsection{Method \code{decode()}}{
-This method decompresses a data object using the "blosc"
+\subsection{\code{zarr_codec_blosc$decode()}}{
+  This method decompresses a data object using the "blosc"
 compression library.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_blosc$decode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_blosc$decode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The raw vector to be decoded.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A raw vector with the decoded data.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The raw vector to be decoded.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A raw vector with the decoded data.
-}
-}
 }

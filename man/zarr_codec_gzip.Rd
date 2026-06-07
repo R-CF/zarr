@@ -9,106 +9,112 @@ The Zarr "gzip" codec compresses a raw vector prior to storing,
 and uncompresses the raw vector when reading.
 }
 \section{Super classes}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_gzip}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr_codec}} -> \code{zarr_codec_gzip}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{level}}{The compression level of the gzip codec, an integer value
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{level}}{The compression level of the gzip codec, an integer value
 between 0L (no compression) and 9 (maximum compression).}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_codec_gzip-new}{\code{zarr_codec_gzip$new()}}
-\item \href{#method-zarr_codec_gzip-copy}{\code{zarr_codec_gzip$copy()}}
-\item \href{#method-zarr_codec_gzip-encode}{\code{zarr_codec_gzip$encode()}}
-\item \href{#method-zarr_codec_gzip-decode}{\code{zarr_codec_gzip$decode()}}
+  \itemize{
+    \item \href{#method-zarr_codec_gzip-initialize}{\code{zarr_codec_gzip$new()}}
+    \item \href{#method-zarr_codec_gzip-copy}{\code{zarr_codec_gzip$copy()}}
+    \item \href{#method-zarr_codec_gzip-encode}{\code{zarr_codec_gzip$encode()}}
+    \item \href{#method-zarr_codec_gzip-decode}{\code{zarr_codec_gzip$decode()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr_codec$metadata_fragment()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr_codec$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_gzip-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_gzip-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new "gzip" codec object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_gzip$new(configuration = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{configuration}}{Optional. A list with the configuration parameters
+\if{html}{\out{<a id="method-zarr_codec_gzip-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_gzip-initialize}{}}}
+\subsection{\code{zarr_codec_gzip$new()}}{
+  Create a new "gzip" codec object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_gzip$new(configuration = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{configuration}}{Optional. A list with the configuration parameters
 for this codec. The element \code{level} specifies the compression level of
 this codec, ranging from 0 (no compression) to 9 (maximum compression).}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_gzip-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_gzip-copy}{}}}
-\subsection{Method \code{copy()}}{
-Create a new, independent copy of this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_gzip$copy()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_gzip$copy()}}{
+  Create a new, independent copy of this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_gzip$copy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{zarr_codec_gzip}.
+  }
 }
 
-\subsection{Returns}{
-An instance of \code{zarr_codec_gzip}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_gzip-encode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_gzip-encode}{}}}
-\subsection{Method \code{encode()}}{
-This method encodes a data object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_gzip$encode(data)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_gzip$encode()}}{
+  This method encodes a data object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_gzip$encode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to be encoded.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The encoded data object.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to be encoded.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The encoded data object.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_gzip-decode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_gzip-decode}{}}}
-\subsection{Method \code{decode()}}{
-This method decodes a data object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_gzip$decode(data)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_gzip$decode()}}{
+  This method decodes a data object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_gzip$decode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to be decoded.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The decoded data object.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to be decoded.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The decoded data object.
-}
-}
 }

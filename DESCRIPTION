@@ -7,7 +7,7 @@ Description: The 'Zarr' specification is widely used to build libraries for the 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+RoxygenNote: 8.0.0
 Imports: 
     Rcpp (>= 1.0.0),
     blosc,

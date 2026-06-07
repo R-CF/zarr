@@ -10,128 +10,136 @@ arrays. It manages reading from and writing to Zarr stores, using the
 codecs for data transformation.
 }
 \section{Super classes}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:chunking]{zarr::chunking}} -> \code{chunk_grid_regular}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:chunking]{chunking}} -> \code{chunk_grid_regular}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{codecs}}{The list of codecs used by the chunking scheme. These are
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{codecs}}{The list of codecs used by the chunking scheme. These are
 set by the array when starting to use chunking for file I/O. Upon
 reading, the list of registered codecs.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-chunk_grid_regular-new}{\code{chunk_grid_regular$new()}}
-\item \href{#method-chunk_grid_regular-print}{\code{chunk_grid_regular$print()}}
-\item \href{#method-chunk_grid_regular-metadata_fragment}{\code{chunk_grid_regular$metadata_fragment()}}
-\item \href{#method-chunk_grid_regular-read}{\code{chunk_grid_regular$read()}}
-\item \href{#method-chunk_grid_regular-write}{\code{chunk_grid_regular$write()}}
-}
+  \itemize{
+    \item \href{#method-chunk_grid_regular-initialize}{\code{chunk_grid_regular$new()}}
+    \item \href{#method-chunk_grid_regular-print}{\code{chunk_grid_regular$print()}}
+    \item \href{#method-chunk_grid_regular-metadata_fragment}{\code{chunk_grid_regular$metadata_fragment()}}
+    \item \href{#method-chunk_grid_regular-read}{\code{chunk_grid_regular$read()}}
+    \item \href{#method-chunk_grid_regular-write}{\code{chunk_grid_regular$write()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-chunk_grid_regular-new"></a>}}
-\if{latex}{\out{\hypertarget{method-chunk_grid_regular-new}{}}}
-\subsection{Method \code{new()}}{
-Initialize a new chunking scheme for an array.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular$new(array_shape, chunk_shape)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{array_shape}}{Integer vector of the array dimensions. This may be
+\if{html}{\out{<a id="method-chunk_grid_regular-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-chunk_grid_regular-initialize}{}}}
+\subsection{\code{chunk_grid_regular$new()}}{
+  Initialize a new chunking scheme for an array.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular$new(array_shape, chunk_shape)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{array_shape}}{Integer vector of the array dimensions. This may be
 \code{NA} for a scalar array.}
-
-\item{\code{chunk_shape}}{Integer vector of the dimensions of each chunk.
+      \item{\code{chunk_shape}}{Integer vector of the dimensions of each chunk.
 Ignored for a scalar array.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{chunk_grid_regular}.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of \code{chunk_grid_regular}.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_regular-print"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular-print}{}}}
-\subsection{Method \code{print()}}{
-Print a short description of this chunking scheme to the
+\subsection{\code{chunk_grid_regular$print()}}{
+  Print a short description of this chunking scheme to the
 console.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular$print()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular$print()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
 
-\subsection{Returns}{
-Self, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_regular-metadata_fragment"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular-metadata_fragment}{}}}
-\subsection{Method \code{metadata_fragment()}}{
-Return the metadata fragment that describes this chunking
+\subsection{\code{chunk_grid_regular$metadata_fragment()}}{
+  Return the metadata fragment that describes this chunking
 scheme.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular$metadata_fragment()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular$metadata_fragment()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with the metadata of this chunking scheme.
+  }
 }
 
-\subsection{Returns}{
-A list with the metadata of this chunking scheme.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_regular-read"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular-read}{}}}
-\subsection{Method \code{read()}}{
-Read data from the Zarr array into an R object. The read can
+\subsection{\code{chunk_grid_regular$read()}}{
+  Read data from the Zarr array into an R object. The read can
 span multiple chunks. Reads will be parallelised if
 \code{future::plan(multisession)} is set; by default the reading is
 sequential.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular$read(start, stop)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{start, stop}}{Integer vectors of the same length as the
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular$read(start, stop)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{start, stop}}{Integer vectors of the same length as the
 dimensionality of the Zarr array, indicating the starting and ending
 (inclusive) indices of the data along each axis. These are ignored if
 the Zarr array is a scalar.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A vector, matrix or array of data.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A vector, matrix or array of data.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_regular-write"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular-write}{}}}
-\subsection{Method \code{write()}}{
-Write data to the array. Writing data always uses a
+\subsection{\code{chunk_grid_regular$write()}}{
+  Write data to the array. Writing data always uses a
 sequential plan.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{chunk_grid_regular$write(data, start, stop)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{An R object with the same dimensionality as the Zarr array.}
-
-\item{\code{start, stop}}{Integer vectors of the same length as the
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular$write(data, start, stop)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{An R object with the same dimensionality as the Zarr array.}
+      \item{\code{start, stop}}{Integer vectors of the same length as the
 dimensionality of the Zarr array, indicating the starting and ending
 (inclusive) indices of the data along each axis.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly.
-}
-}
+
 }

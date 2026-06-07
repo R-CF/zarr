@@ -15,178 +15,186 @@ the Zarr abstract store interface, with some extensions from the Python
 https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html#abstract-store-interface
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{friendlyClassName}}{(read-only) Name of the class for printing.}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{friendlyClassName}}{(read-only) Name of the class for printing.}
 
-\item{\code{read_only}}{(read-only) Flag to indicate if the store is read-only.}
+    \item{\code{read_only}}{(read-only) Flag to indicate if the store is read-only.}
 
-\item{\code{supports_consolidated_metadata}}{Flag to indicate if the store can
+    \item{\code{supports_consolidated_metadata}}{Flag to indicate if the store can
 consolidate metadata.}
 
-\item{\code{supports_deletes}}{Flag to indicate if keys and arrays can be
+    \item{\code{supports_deletes}}{Flag to indicate if keys and arrays can be
 deleted.}
 
-\item{\code{supports_listing}}{Flag to indicate if the store can list its keys.}
+    \item{\code{supports_listing}}{Flag to indicate if the store can list its keys.}
 
-\item{\code{supports_partial_writes}}{Deprecated, always \code{FALSE}.}
+    \item{\code{supports_partial_writes}}{Deprecated, always \code{FALSE}.}
 
-\item{\code{supports_writes}}{Flag to indicate if the store can write data.}
+    \item{\code{supports_writes}}{Flag to indicate if the store can write data.}
 
-\item{\code{version}}{(read-only) The Zarr version of the store.}
+    \item{\code{version}}{(read-only) The Zarr version of the store.}
 
-\item{\code{separator}}{(read-only) The default separator between elements of
+    \item{\code{separator}}{(read-only) The default separator between elements of
 chunks of arrays in the store. Every store typically has a default
 which is used when creating arrays. The actual chunk separator being
 used is determined by looking at the "chunk_key_encoding" attribute of
 each array.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_store-new}{\code{zarr_store$new()}}
-\item \href{#method-zarr_store-clear}{\code{zarr_store$clear()}}
-\item \href{#method-zarr_store-erase}{\code{zarr_store$erase()}}
-\item \href{#method-zarr_store-erase_prefix}{\code{zarr_store$erase_prefix()}}
-\item \href{#method-zarr_store-exists}{\code{zarr_store$exists()}}
-\item \href{#method-zarr_store-get}{\code{zarr_store$get()}}
-\item \href{#method-zarr_store-getsize}{\code{zarr_store$getsize()}}
-\item \href{#method-zarr_store-getsize_prefix}{\code{zarr_store$getsize_prefix()}}
-\item \href{#method-zarr_store-is_empty}{\code{zarr_store$is_empty()}}
-\item \href{#method-zarr_store-list}{\code{zarr_store$list()}}
-\item \href{#method-zarr_store-list_dir}{\code{zarr_store$list_dir()}}
-\item \href{#method-zarr_store-list_prefix}{\code{zarr_store$list_prefix()}}
-\item \href{#method-zarr_store-set}{\code{zarr_store$set()}}
-\item \href{#method-zarr_store-set_if_not_exists}{\code{zarr_store$set_if_not_exists()}}
-\item \href{#method-zarr_store-get_metadata}{\code{zarr_store$get_metadata()}}
-\item \href{#method-zarr_store-set_metadata}{\code{zarr_store$set_metadata()}}
-\item \href{#method-zarr_store-create_group}{\code{zarr_store$create_group()}}
-\item \href{#method-zarr_store-create_array}{\code{zarr_store$create_array()}}
-}
+  \itemize{
+    \item \href{#method-zarr_store-initialize}{\code{zarr_store$new()}}
+    \item \href{#method-zarr_store-clear}{\code{zarr_store$clear()}}
+    \item \href{#method-zarr_store-erase}{\code{zarr_store$erase()}}
+    \item \href{#method-zarr_store-erase_prefix}{\code{zarr_store$erase_prefix()}}
+    \item \href{#method-zarr_store-exists}{\code{zarr_store$exists()}}
+    \item \href{#method-zarr_store-get}{\code{zarr_store$get()}}
+    \item \href{#method-zarr_store-getsize}{\code{zarr_store$getsize()}}
+    \item \href{#method-zarr_store-getsize_prefix}{\code{zarr_store$getsize_prefix()}}
+    \item \href{#method-zarr_store-is_empty}{\code{zarr_store$is_empty()}}
+    \item \href{#method-zarr_store-list}{\code{zarr_store$list()}}
+    \item \href{#method-zarr_store-list_dir}{\code{zarr_store$list_dir()}}
+    \item \href{#method-zarr_store-list_prefix}{\code{zarr_store$list_prefix()}}
+    \item \href{#method-zarr_store-set}{\code{zarr_store$set()}}
+    \item \href{#method-zarr_store-set_if_not_exists}{\code{zarr_store$set_if_not_exists()}}
+    \item \href{#method-zarr_store-get_metadata}{\code{zarr_store$get_metadata()}}
+    \item \href{#method-zarr_store-set_metadata}{\code{zarr_store$set_metadata()}}
+    \item \href{#method-zarr_store-create_group}{\code{zarr_store$create_group()}}
+    \item \href{#method-zarr_store-create_array}{\code{zarr_store$create_array()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_store-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_store-new}{}}}
-\subsection{Method \code{new()}}{
-Create an instance of this class. Since this class is
+\if{html}{\out{<a id="method-zarr_store-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_store-initialize}{}}}
+\subsection{\code{zarr_store$new()}}{
+  Create an instance of this class. Since this class is
 "abstract", it should not be instantiated directly - it is intended to
 be called by descendant classes, exclusively.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$new(read_only = FALSE, version = 3L)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{read_only}}{Flag to indicate if the store is read-only. Default
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$new(read_only = FALSE, version = 3L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{read_only}}{Flag to indicate if the store is read-only. Default
 \code{FALSE}.}
+      \item{\code{version}}{The version of the Zarr store. By default this is 3.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
+}
 
-\item{\code{version}}{The version of the Zarr store. By default this is 3.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-clear"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-clear}{}}}
-\subsection{Method \code{clear()}}{
-Clear the store. Remove all keys and values from the store.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$clear()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_store$clear()}}{
+  Clear the store. Remove all keys and values from the store.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$clear()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
 
-\subsection{Returns}{
-Self, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-erase"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-erase}{}}}
-\subsection{Method \code{erase()}}{
-Remove a key from the store. This method is part of the
+\subsection{\code{zarr_store$erase()}}{
+  Remove a key from the store. This method is part of the
 abstract store interface in ZEP0001.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$erase(key)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$erase(key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Character string. The key to remove from the store.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{Character string. The key to remove from the store.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-erase_prefix"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-erase_prefix}{}}}
-\subsection{Method \code{erase_prefix()}}{
-Remove all keys and prefixes in the store that begin with a
+\subsection{\code{zarr_store$erase_prefix()}}{
+  Remove all keys and prefixes in the store that begin with a
 given prefix. This method is part of the abstract store interface in
 ZEP0001.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$erase_prefix(prefix)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$erase_prefix(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{Character string. The prefix to groups or arrays to remove
+from the store, including in child groups.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{Character string. The prefix to groups or arrays to remove
-from the store, including in child groups.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-exists"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-exists}{}}}
-\subsection{Method \code{exists()}}{
-Check if a key exists in the store.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$exists(key)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_store$exists()}}{
+  Check if a key exists in the store.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$exists(key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Character string. The key that the store will be searched for.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{TRUE} if argument \code{key} is found, \code{FALSE} otherwise.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{Character string. The key that the store will be searched for.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{TRUE} if argument \code{key} is found, \code{FALSE} otherwise.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-get"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-get}{}}}
-\subsection{Method \code{get()}}{
-Retrieve the value associated with a given key. This method
+\subsection{\code{zarr_store$get()}}{
+  Retrieve the value associated with a given key. This method
 is part of the abstract store interface in ZEP0001.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$get(key, prototype, byte_range)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{Character string. The key for which to get data.}
-
-\item{\code{prototype}}{Ignored. The only buffer type that is supported maps
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$get(key, prototype, byte_range)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Character string. The key for which to get data.}
+      \item{\code{prototype}}{Ignored. The only buffer type that is supported maps
 directly to an R raw vector.}
-
-\item{\code{byte_range}}{If \code{NULL}, all data associated with the key is
+      \item{\code{byte_range}}{If \code{NULL}, all data associated with the key is
 retrieved. If a single positive integer, all bytes starting from a
 given byte offset to the end of the object are returned. If a single
 negative integer, the final bytes are returned. If an integer vector of
@@ -194,271 +202,291 @@ length 2, request a specific range of bytes where the end is exclusive.
 If the range ends after the end of the object, the entire remainder of
 the object will be returned. If the given range is zero-length or
 starts after the end of the object, an error will be returned.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An raw vector of data, or \code{NULL} if no data was found.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An raw vector of data, or \code{NULL} if no data was found.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-getsize"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-getsize}{}}}
-\subsection{Method \code{getsize()}}{
-Return the size, in bytes, of a value in a Store.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$getsize(key)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_store$getsize()}}{
+  Return the size, in bytes, of a value in a Store.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$getsize(key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Character string. The key whose length will be returned.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The size, in bytes, of the object.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{Character string. The key whose length will be returned.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The size, in bytes, of the object.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-getsize_prefix"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-getsize_prefix}{}}}
-\subsection{Method \code{getsize_prefix()}}{
-Return the size, in bytes, of all objects found under the
+\subsection{\code{zarr_store$getsize_prefix()}}{
+  Return the size, in bytes, of all objects found under the
 group indicated by the prefix.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$getsize_prefix(prefix)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$getsize_prefix(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{Character string. The prefix to groups to scan.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The size, in bytes, of all the objects under a group, as a
+single integer value.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{Character string. The prefix to groups to scan.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The size, in bytes, of all the objects under a group, as a
-single integer value.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-is_empty"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-is_empty}{}}}
-\subsection{Method \code{is_empty()}}{
-Is the group empty?
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$is_empty(prefix)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_store$is_empty()}}{
+  Is the group empty?
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$is_empty(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{Character string. The prefix to the group to scan.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{TRUE} is the group indicated by argument \code{prefix} has no
+sub-groups or arrays, \code{FALSE} otherwise.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{Character string. The prefix to the group to scan.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{TRUE} is the group indicated by argument \code{prefix} has no
-sub-groups or arrays, \code{FALSE} otherwise.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-list"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-list}{}}}
-\subsection{Method \code{list()}}{
-Retrieve all keys in the store. This method is part of the
+\subsection{\code{zarr_store$list()}}{
+  Retrieve all keys in the store. This method is part of the
 abstract store interface in ZEP0001.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$list()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$list()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character vector with all keys found in the store, both for
+groups and arrays.
+  }
 }
 
-\subsection{Returns}{
-A character vector with all keys found in the store, both for
-groups and arrays.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-list_dir"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-list_dir}{}}}
-\subsection{Method \code{list_dir()}}{
-Retrieve all keys and prefixes with a given prefix and which
+\subsection{\code{zarr_store$list_dir()}}{
+  Retrieve all keys and prefixes with a given prefix and which
 do not contain the character "/" after the given prefix. This method is
 part of the abstract store interface in ZEP0001.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$list_dir(prefix)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$list_dir(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{Character string. The prefix to groups to list.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with all keys found in the store immediately below the
+\code{prefix}, both for groups and arrays.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{Character string. The prefix to groups to list.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A list with all keys found in the store immediately below the
-\code{prefix}, both for groups and arrays.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-list_prefix"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-list_prefix}{}}}
-\subsection{Method \code{list_prefix()}}{
-Retrieve all keys and prefixes with a given prefix. This
+\subsection{\code{zarr_store$list_prefix()}}{
+  Retrieve all keys and prefixes with a given prefix. This
 method is part of the abstract store interface in ZEP0001.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$list_prefix(prefix)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$list_prefix(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{Character string. The prefix to groups to list.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character vector with all fully-qualified keys found in the
+store, both for groups and arrays.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{Character string. The prefix to groups to list.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A character vector with all fully-qualified keys found in the
-store, both for groups and arrays.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-set"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-set}{}}}
-\subsection{Method \code{set()}}{
-Store a (key, value) pair.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$set(key, value)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_store$set()}}{
+  Store a (key, value) pair.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$set(key, value)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{The key whose value to set.}
+      \item{\code{value}}{The value to set, typically a chunk of data.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{The key whose value to set.}
-
-\item{\code{value}}{The value to set, typically a chunk of data.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-set_if_not_exists"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-set_if_not_exists}{}}}
-\subsection{Method \code{set_if_not_exists()}}{
-Store a key to argument \code{value} if the key is not already
+\subsection{\code{zarr_store$set_if_not_exists()}}{
+  Store a key to argument \code{value} if the key is not already
 present. This method is part of the abstract store interface in
 ZEP0001.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$set_if_not_exists(key, value)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$set_if_not_exists(key, value)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{The key whose value to set.}
+      \item{\code{value}}{The value to set, typically an R array.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{The key whose value to set.}
-
-\item{\code{value}}{The value to set, typically an R array.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-get_metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-get_metadata}{}}}
-\subsection{Method \code{get_metadata()}}{
-Retrieve the metadata document of the node at the location
+\subsection{\code{zarr_store$get_metadata()}}{
+  Retrieve the metadata document of the node at the location
 indicated by the \code{prefix} argument.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$get_metadata(prefix)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$get_metadata(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{The prefix of the node whose metadata document to retrieve.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{The prefix of the node whose metadata document to retrieve.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-set_metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-set_metadata}{}}}
-\subsection{Method \code{set_metadata()}}{
-Set the metadata document of the node at the location
+\subsection{\code{zarr_store$set_metadata()}}{
+  Set the metadata document of the node at the location
 indicated by the \code{prefix} argument. This is a no-op for stores that
 have no writing capability. Other stores must override this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$set_metadata(prefix, metadata)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{The prefix of the node whose metadata document to set.}
-
-\item{\code{metadata}}{The metadata to persist, either a \code{list} or an instance
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$set_metadata(prefix, metadata)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{The prefix of the node whose metadata document to set.}
+      \item{\code{metadata}}{The metadata to persist, either a \code{list} or an instance
 of \link{array_builder}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisible.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisible.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-create_group"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-create_group}{}}}
-\subsection{Method \code{create_group()}}{
-Create a new group in the store under the specified path to
+\subsection{\code{zarr_store$create_group()}}{
+  Create a new group in the store under the specified path to
 the \code{parent} argument. The \code{parent} path must point to a Zarr group.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$create_group(parent, name)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{parent}}{The path to the parent group of the new group.}
-
-\item{\code{name}}{The name of the new group.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A list with the metadata of the group, or an error if the group
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$create_group(parent, name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{parent}}{The path to the parent group of the new group.}
+      \item{\code{name}}{The name of the new group.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with the metadata of the group, or an error if the group
 could not be created.
+  }
 }
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_store-create_array"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_store-create_array}{}}}
-\subsection{Method \code{create_array()}}{
-Create a new array in the store under the specified path to
+\subsection{\code{zarr_store$create_array()}}{
+  Create a new array in the store under the specified path to
 the \code{parent} argument. The \code{parent} path must point to a Zarr group.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_store$create_array(parent, name)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{parent}}{The path to the parent group of the new array.}
-
-\item{\code{name}}{The name of the new array.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A list with the metadata of the array, or an error if the array
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$create_array(parent, name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{parent}}{The path to the parent group of the new array.}
+      \item{\code{name}}{The name of the new array.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with the metadata of the array, or an error if the array
 could not be created.
+  }
 }
-}
+
 }

@@ -10,154 +10,158 @@ node in the hierarchy of a Zarr data set. The array contains the data for
 an object.
 }
 \section{Super class}{
-\code{\link[zarr:zarr_node]{zarr::zarr_node}} -> \code{zarr_array}
+\code{\link[zarr:zarr_node]{zarr_node}} -> \code{zarr_array}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{data_type}}{(read-only) Retrieve the data type of the array.}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{data_type}}{(read-only) Retrieve the data type of the array.}
 
-\item{\code{shape}}{(read-only) Retrieve the shape of the array, an integer
+    \item{\code{shape}}{(read-only) Retrieve the shape of the array, an integer
 vector.}
 
-\item{\code{chunking}}{(read-only) The chunking engine for this array.}
+    \item{\code{chunking}}{(read-only) The chunking engine for this array.}
 
-\item{\code{chunk_separator}}{(read-only) Retrieve the separator to be used for
+    \item{\code{chunk_separator}}{(read-only) Retrieve the separator to be used for
 creating store keys for chunks.}
 
-\item{\code{codecs}}{The list of codecs that this array uses for encoding data
+    \item{\code{codecs}}{The list of codecs that this array uses for encoding data
 (and decoding in inverse order).}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_array-new}{\code{zarr_array$new()}}
-\item \href{#method-zarr_array-print}{\code{zarr_array$print()}}
-\item \href{#method-zarr_array-hierarchy}{\code{zarr_array$hierarchy()}}
-\item \href{#method-zarr_array-read}{\code{zarr_array$read()}}
-\item \href{#method-zarr_array-write}{\code{zarr_array$write()}}
+  \itemize{
+    \item \href{#method-zarr_array-initialize}{\code{zarr_array$new()}}
+    \item \href{#method-zarr_array-print}{\code{zarr_array$print()}}
+    \item \href{#method-zarr_array-hierarchy_nodes}{\code{zarr_array$hierarchy_nodes()}}
+    \item \href{#method-zarr_array-read}{\code{zarr_array$read()}}
+    \item \href{#method-zarr_array-write}{\code{zarr_array$write()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="delete_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-delete_attributes'><code>zarr::zarr_node$delete_attributes()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="print_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-print_attributes'><code>zarr::zarr_node$print_attributes()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="save"><a href='../../zarr/html/zarr_node.html#method-zarr_node-save'><code>zarr::zarr_node$save()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="set_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-set_attribute'><code>zarr::zarr_node$set_attribute()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="delete_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-delete_attributes'><code>zarr_node$delete_attributes()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="print_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-print_attributes'><code>zarr_node$print_attributes()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="save"><a href='../../zarr/html/zarr_node.html#method-zarr_node-save'><code>zarr_node$save()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="set_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-set_attribute'><code>zarr_node$set_attribute()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_array-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_array-new}{}}}
-\subsection{Method \code{new()}}{
-Initialize a new array in a Zarr hierarchy. The array must
+\if{html}{\out{<a id="method-zarr_array-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-initialize}{}}}
+\subsection{\code{zarr_array$new()}}{
+  Initialize a new array in a Zarr hierarchy. The array must
 already exist in the store
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_array$new(name, metadata, parent, store)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the array.}
-
-\item{\code{metadata}}{List with the metadata of the array.}
-
-\item{\code{parent}}{The parent \code{zarr_group} instance of this new array, can be
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$new(name, metadata, parent, store)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{The name of the array.}
+      \item{\code{metadata}}{List with the metadata of the array.}
+      \item{\code{parent}}{The parent \code{zarr_group} instance of this new array, can be
 missing or \code{NULL} if the Zarr object should have just this array.}
+      \item{\code{store}}{The \link{zarr_store} instance to persist data in.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{zarr_array}.
+  }
+}
 
-\item{\code{store}}{The \link{zarr_store} instance to persist data in.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of \code{zarr_array}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_array-print"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_array-print}{}}}
-\subsection{Method \code{print()}}{
-Print a summary of the array to the console.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_array$print()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_array$print()}}{
+  Print a summary of the array to the console.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_array-hierarchy"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_array-hierarchy}{}}}
-\subsection{Method \code{hierarchy()}}{
-Prints the hierarchy of the groups and arrays to the
-console. Usually called from the Zarr object or its root group to
-display the full group hierarchy.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_array$hierarchy(idx, total)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-zarr_array-hierarchy_nodes"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-hierarchy_nodes}{}}}
+\subsection{\code{zarr_array$hierarchy_nodes()}}{
+  Prints the hierarchy of this array to a character string.
+Usually called from the Zarr object or a group to display the full
+group hierarchy.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$hierarchy_nodes(idx, total)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{idx, total}}{Arguments to control indentation.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{idx, total}}{Arguments to control indentation.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_array-read"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_array-read}{}}}
-\subsection{Method \code{read()}}{
-Read some or all of the array data for the array. For all
+\subsection{\code{zarr_array$read()}}{
+  Read some or all of the array data for the array. For all
 types other than logical, any data elements with the \code{fill_value} of
 the Zarr data type are set to \code{NA}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_array$read(selection)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{selection}}{A list as long as the array has dimensions where each
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$read(selection)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{selection}}{A list as long as the array has dimensions where each
 element is a range of indices along the dimension to write. If missing
 or \code{NULL}, the entire array will be read.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A vector, matrix or array of data.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A vector, matrix or array of data.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_array-write"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_array-write}{}}}
-\subsection{Method \code{write()}}{
-Write data for the array. The data will be chunked, encoded
+\subsection{\code{zarr_array$write()}}{
+  Write data for the array. The data will be chunked, encoded
 and persisted in the store that the array is using. Prior to writing,
 any \code{NA} values are assigned the \code{fill_value} of the \code{data_type} of the
 Zarr array. Note that the logical type cannot encode \code{NA} in Zarr and
 any \code{NA} values are set to \code{FALSE}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_array$write(data, selection)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{An R vector, matrix or array with the data to write. The data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$write(data, selection)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{An R vector, matrix or array with the data to write. The data
 in the R object has to agree with the data type of the array.}
-
-\item{\code{selection}}{A list as long as the array has dimensions where each
+      \item{\code{selection}}{A list as long as the array has dimensions where each
 element is a range of indices along the dimension to write. If missing,
 the entire \code{data} object will be written.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly.
-}
-}
+
 }

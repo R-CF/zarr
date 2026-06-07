@@ -23,57 +23,55 @@ arguments are valid, in particular keys and prefixes.
 https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 }
 \section{Super class}{
-\code{\link[zarr:zarr_store]{zarr::zarr_store}} -> \code{zarr_localstore}
+\code{\link[zarr:zarr_store]{zarr_store}} -> \code{zarr_localstore}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{friendlyClassName}}{(read-only) Name of the class for printing.}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{friendlyClassName}}{(read-only) Name of the class for printing.}
 
-\item{\code{root}}{(read-only) The root directory of the file system store.}
+    \item{\code{root}}{(read-only) The root directory of the file system store.}
 
-\item{\code{uri}}{(read-only) The URI of the store location.}
+    \item{\code{uri}}{(read-only) The URI of the store location.}
 
-\item{\code{separator}}{(read-only) The default chunk separator of the local
+    \item{\code{separator}}{(read-only) The default chunk separator of the local
 file store, usually a dot '.'.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_localstore-new}{\code{zarr_localstore$new()}}
-\item \href{#method-zarr_localstore-exists}{\code{zarr_localstore$exists()}}
-\item \href{#method-zarr_localstore-clear}{\code{zarr_localstore$clear()}}
-\item \href{#method-zarr_localstore-erase}{\code{zarr_localstore$erase()}}
-\item \href{#method-zarr_localstore-erase_prefix}{\code{zarr_localstore$erase_prefix()}}
-\item \href{#method-zarr_localstore-list_dir}{\code{zarr_localstore$list_dir()}}
-\item \href{#method-zarr_localstore-list_prefix}{\code{zarr_localstore$list_prefix()}}
-\item \href{#method-zarr_localstore-set}{\code{zarr_localstore$set()}}
-\item \href{#method-zarr_localstore-set_if_not_exists}{\code{zarr_localstore$set_if_not_exists()}}
-\item \href{#method-zarr_localstore-get}{\code{zarr_localstore$get()}}
-\item \href{#method-zarr_localstore-get_metadata}{\code{zarr_localstore$get_metadata()}}
-\item \href{#method-zarr_localstore-set_metadata}{\code{zarr_localstore$set_metadata()}}
-\item \href{#method-zarr_localstore-is_group}{\code{zarr_localstore$is_group()}}
-\item \href{#method-zarr_localstore-create_group}{\code{zarr_localstore$create_group()}}
-\item \href{#method-zarr_localstore-create_array}{\code{zarr_localstore$create_array()}}
+  \itemize{
+    \item \href{#method-zarr_localstore-initialize}{\code{zarr_localstore$new()}}
+    \item \href{#method-zarr_localstore-exists}{\code{zarr_localstore$exists()}}
+    \item \href{#method-zarr_localstore-clear}{\code{zarr_localstore$clear()}}
+    \item \href{#method-zarr_localstore-erase}{\code{zarr_localstore$erase()}}
+    \item \href{#method-zarr_localstore-erase_prefix}{\code{zarr_localstore$erase_prefix()}}
+    \item \href{#method-zarr_localstore-list_dir}{\code{zarr_localstore$list_dir()}}
+    \item \href{#method-zarr_localstore-list_prefix}{\code{zarr_localstore$list_prefix()}}
+    \item \href{#method-zarr_localstore-set}{\code{zarr_localstore$set()}}
+    \item \href{#method-zarr_localstore-set_if_not_exists}{\code{zarr_localstore$set_if_not_exists()}}
+    \item \href{#method-zarr_localstore-get}{\code{zarr_localstore$get()}}
+    \item \href{#method-zarr_localstore-get_metadata}{\code{zarr_localstore$get_metadata()}}
+    \item \href{#method-zarr_localstore-set_metadata}{\code{zarr_localstore$set_metadata()}}
+    \item \href{#method-zarr_localstore-is_group}{\code{zarr_localstore$is_group()}}
+    \item \href{#method-zarr_localstore-create_group}{\code{zarr_localstore$create_group()}}
+    \item \href{#method-zarr_localstore-create_array}{\code{zarr_localstore$create_array()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize'><code>zarr::zarr_store$getsize()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize_prefix'><code>zarr::zarr_store$getsize_prefix()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href='../../zarr/html/zarr_store.html#method-zarr_store-is_empty'><code>zarr::zarr_store$is_empty()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href='../../zarr/html/zarr_store.html#method-zarr_store-list'><code>zarr::zarr_store$list()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize'><code>zarr_store$getsize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize_prefix'><code>zarr_store$getsize_prefix()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href='../../zarr/html/zarr_store.html#method-zarr_store-is_empty'><code>zarr_store$is_empty()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href='../../zarr/html/zarr_store.html#method-zarr_store-list'><code>zarr_store$list()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_localstore-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_localstore-new}{}}}
-\subsection{Method \code{new()}}{
-Create an instance of this class.
+\if{html}{\out{<a id="method-zarr_localstore-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_localstore-initialize}{}}}
+\subsection{\code{zarr_localstore$new()}}{
+  Create an instance of this class.
 
 If the root location does not exist, it will be created. The location
 on the file system must be writable by the process creating the store.
@@ -86,231 +84,245 @@ If the root location does exist on the file system it must be a valid
 Zarr store, as determined by the presence of a "zarr.json" file. It is
 an error to try to open a Zarr store on an existing location where this
 metadata file is not present.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$new(root, read_only = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{root}}{The path to the local store to be created or opened. The path
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$new(root, read_only = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{root}}{The path to the local store to be created or opened. The path
 may use UTF-8 code points. Following the Zarr specification, it is
 recommended that the root path has an extension of ".zarr" to easily
 identify the location as a Zarr store. When creating a file store, the
 root directory cannot already exist.}
-
-\item{\code{read_only}}{Flag to indicate if the store is opened read-only.
+      \item{\code{read_only}}{Flag to indicate if the store is opened read-only.
 Default \code{FALSE}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-exists"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-exists}{}}}
-\subsection{Method \code{exists()}}{
-Check if a key exists in the store. The key can point to a
+\subsection{\code{zarr_localstore$exists()}}{
+  Check if a key exists in the store. The key can point to a
 group, an array, or a chunk.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$exists(key)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$exists(key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Character string. The key that the store will be searched for.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{TRUE} if argument \code{key} is found, \code{FALSE} otherwise.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{Character string. The key that the store will be searched for.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{TRUE} if argument \code{key} is found, \code{FALSE} otherwise.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-clear"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-clear}{}}}
-\subsection{Method \code{clear()}}{
-Clear the store. Remove all keys and values from the store.
+\subsection{\code{zarr_localstore$clear()}}{
+  Clear the store. Remove all keys and values from the store.
 Invoking this method deletes affected files on the file system and this
 action can not be undone. The only file that will remain is "zarr.json"
 or ".zgroup" (version 2) in the root of this store.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$clear()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$clear()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{TRUE} if the operation proceeded, \code{FALSE} otherwise.
+  }
 }
 
-\subsection{Returns}{
-\code{TRUE} if the operation proceeded, \code{FALSE} otherwise.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-erase"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-erase}{}}}
-\subsection{Method \code{erase()}}{
-Remove a key from the store. The key must point to an array
+\subsection{\code{zarr_localstore$erase()}}{
+  Remove a key from the store. The key must point to an array
 chunk or an empty group. The location of the key and all of its values
 are removed.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$erase(key)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$erase(key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Character string. The key to remove from the store.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{TRUE} if the operation proceeded, \code{FALSE} otherwise.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{Character string. The key to remove from the store.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{TRUE} if the operation proceeded, \code{FALSE} otherwise.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-erase_prefix"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-erase_prefix}{}}}
-\subsection{Method \code{erase_prefix()}}{
-Remove all keys in the store that begin with a given prefix.
+\subsection{\code{zarr_localstore$erase_prefix()}}{
+  Remove all keys in the store that begin with a given prefix.
 The last location in the prefix is preserved while all keys below are
 removed from the store. Any metadata extensions added to the group
 pointed to by the prefix will be deleted as well - only a basic
 group-identifying metadata file will remain.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$erase_prefix(prefix)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$erase_prefix(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{Character string. The prefix to groups or arrays to remove
+from the store, including in child groups.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{TRUE} if the operation proceeded, \code{FALSE} otherwise.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{Character string. The prefix to groups or arrays to remove
-from the store, including in child groups.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{TRUE} if the operation proceeded, \code{FALSE} otherwise.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-list_dir"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-list_dir}{}}}
-\subsection{Method \code{list_dir()}}{
-Retrieve all keys and prefixes with a given prefix and which
+\subsection{\code{zarr_localstore$list_dir()}}{
+  Retrieve all keys and prefixes with a given prefix and which
 do not contain the character "/" after the given prefix. In other
 words, this retrieves all the nodes in the store below the node
 indicated by the prefix.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$list_dir(prefix)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$list_dir(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{Character string. The prefix whose nodes to list.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character array with all keys found in the store immediately
+below the \code{prefix}, both for groups and arrays.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{Character string. The prefix whose nodes to list.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A character array with all keys found in the store immediately
-below the \code{prefix}, both for groups and arrays.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-list_prefix"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-list_prefix}{}}}
-\subsection{Method \code{list_prefix()}}{
-Retrieve all keys and prefixes with a given prefix.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$list_prefix(prefix)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_localstore$list_prefix()}}{
+  Retrieve all keys and prefixes with a given prefix.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$list_prefix(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{Character string. The prefix whose nodes to list.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character vector with all paths found in the store below the
+\code{prefix} location, both for groups and arrays.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{Character string. The prefix whose nodes to list.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A character vector with all paths found in the store below the
-\code{prefix} location, both for groups and arrays.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-set"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-set}{}}}
-\subsection{Method \code{set()}}{
-Store a \verb{(key, value)} pair. The key points to a specific
+\subsection{\code{zarr_localstore$set()}}{
+  Store a \verb{(key, value)} pair. The key points to a specific
 file (shard or chunk of an array) in a store, rather than a group or an
 array. The key must be relative to the root of the store (so not start
 with a "/") and may be composite. It must include the name of the file.
 An example would be "group/subgroup/array/c0.0.0". The group hierarchy
 and the array must have been created before. If the \code{value} exists, it
 will be overwritten.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$set(key, value)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$set(key, value)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{The key whose value to set.}
+      \item{\code{value}}{The value to set, a complete chunk of data, a \code{raw} vector.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly, or an error.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{The key whose value to set.}
-
-\item{\code{value}}{The value to set, a complete chunk of data, a \code{raw} vector.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly, or an error.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-set_if_not_exists"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-set_if_not_exists}{}}}
-\subsection{Method \code{set_if_not_exists()}}{
-Store a \verb{(key, value)} pair. The key points to a specific
+\subsection{\code{zarr_localstore$set_if_not_exists()}}{
+  Store a \verb{(key, value)} pair. The key points to a specific
 file (shard or chunk of an array) in a store, rather than a group or an
 array. The key must be relative to the root of the store (so not start
 with a "/") and may be composite. It must include the name of the file.
 An example would be "group/subgroup/array/c0.0.0". The group hierarchy
 and the array must have been created before. If the \code{key} exists,
 nothing will be written.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$set_if_not_exists(key, value)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$set_if_not_exists(key, value)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{The key whose value to set.}
+      \item{\code{value}}{The value to set, a complete chunk of data.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly, or an error.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{The key whose value to set.}
-
-\item{\code{value}}{The value to set, a complete chunk of data.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisibly, or an error.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-get"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-get}{}}}
-\subsection{Method \code{get()}}{
-Retrieve the value associated with a given key.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$get(key, prototype = NULL, byte_range = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{Character string. The key for which to get data.}
-
-\item{\code{prototype}}{Ignored. The only buffer type that is supported maps
+\subsection{\code{zarr_localstore$get()}}{
+  Retrieve the value associated with a given key.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$get(key, prototype = NULL, byte_range = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Character string. The key for which to get data.}
+      \item{\code{prototype}}{Ignored. The only buffer type that is supported maps
 directly to an R raw vector.}
-
-\item{\code{byte_range}}{If \code{NULL}, all data associated with the key is
+      \item{\code{byte_range}}{If \code{NULL}, all data associated with the key is
 retrieved. If a single positive integer, all bytes starting from a
 given byte offset to the end of the object are returned. If a single
 negative integer, the final bytes are returned. If an integer vector of
@@ -318,139 +330,146 @@ length 2, request a specific range of bytes where the end is exclusive.
 If the range ends after the end of the object, the entire remainder of
 the object will be returned. If the given range is zero-length or
 starts after the end of the object, an error will be returned.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An raw vector of data, or \code{NULL} if no data was found.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An raw vector of data, or \code{NULL} if no data was found.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-get_metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-get_metadata}{}}}
-\subsection{Method \code{get_metadata()}}{
-Retrieve the metadata document of the node at the location
+\subsection{\code{zarr_localstore$get_metadata()}}{
+  Retrieve the metadata document of the node at the location
 indicated by the \code{prefix} argument. The metadata will always be
 presented to the caller in the Zarr v.3 format.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$get_metadata(prefix)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$get_metadata(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{The prefix of the node whose metadata document to retrieve.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with the metadata, or \code{NULL} if the prefix is not pointing
+to a Zarr group or array.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{The prefix of the node whose metadata document to retrieve.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A list with the metadata, or \code{NULL} if the prefix is not pointing
-to a Zarr group or array.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-set_metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-set_metadata}{}}}
-\subsection{Method \code{set_metadata()}}{
-Set the metadata document of the node at the location
+\subsection{\code{zarr_localstore$set_metadata()}}{
+  Set the metadata document of the node at the location
 indicated by the \code{prefix} argument. The formatting of the metadata
 should always use the Zarr v.3 format, it will be converted internally
 if the store is Zarr v.2.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$set_metadata(prefix, metadata)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prefix}}{The prefix of the node whose metadata document to set.}
-
-\item{\code{metadata}}{The metadata to persist, either a \code{list} or an instance
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$set_metadata(prefix, metadata)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{The prefix of the node whose metadata document to set.}
+      \item{\code{metadata}}{The metadata to persist, either a \code{list} or an instance
 of \link{array_builder}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisible
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Self, invisible
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-is_group"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-is_group}{}}}
-\subsection{Method \code{is_group()}}{
-Test if \code{path} is pointing to a Zarr group.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$is_group(path)}\if{html}{\out{</div>}}
+\subsection{\code{zarr_localstore$is_group()}}{
+  Test if \code{path} is pointing to a Zarr group.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$is_group(path)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{The path to test.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{TRUE} if the \code{path} points to a Zarr group, \code{FALSE} otherwise.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{The path to test.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{TRUE} if the \code{path} points to a Zarr group, \code{FALSE} otherwise.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-create_group"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-create_group}{}}}
-\subsection{Method \code{create_group()}}{
-Create a new group in the store under the specified path.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$create_group(path, name)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{The path to the parent group of the new group. Ignored when
+\subsection{\code{zarr_localstore$create_group()}}{
+  Create a new group in the store under the specified path.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$create_group(path, name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path}}{The path to the parent group of the new group. Ignored when
 creating a root group.}
-
-\item{\code{name}}{The name of the new group. This may be an empty string \code{""}
+      \item{\code{name}}{The name of the new group. This may be an empty string \code{""}
 to create a root group. It is an error to supply an empty string if a
 root group or array already exists.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A list with the metadata of the group, or an error if the group
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with the metadata of the group, or an error if the group
 could not be created.
+  }
 }
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_localstore-create_array"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_localstore-create_array}{}}}
-\subsection{Method \code{create_array()}}{
-Create a new array in the store under the specified path to
+\subsection{\code{zarr_localstore$create_array()}}{
+  Create a new array in the store under the specified path to
 the \code{parent} argument.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_localstore$create_array(parent, name, metadata)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{parent}}{The path to the parent group of the new array. Ignored when
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$create_array(parent, name, metadata)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{parent}}{The path to the parent group of the new array. Ignored when
 creating a root array.}
-
-\item{\code{name}}{The name of the new array. This may be an empty string \code{""}
+      \item{\code{name}}{The name of the new array. This may be an empty string \code{""}
 to create a root array. It is an error to supply an empty string if a
 root group or array already exists.}
-
-\item{\code{metadata}}{A \code{list} with the metadata for the array. The list has to
+      \item{\code{metadata}}{A \code{list} with the metadata for the array. The list has to
 be valid for array construction. Use the \link{array_builder} class to
 create and or test for validity. An element "chunk_key_encoding" will
 be added to the metadata if not already present or with a value other
 than a dot "." or a slash "/".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A list with the metadata of the array, or an error if the array
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list with the metadata of the array, or an error if the array
 could not be created.
+  }
 }
-}
+
 }

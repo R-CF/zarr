@@ -21,96 +21,100 @@ convention is implemented here:
 }\if{html}{\out{</div>}}
 }
 \section{Super class}{
-\code{\link[zarr:zarr_convention]{zarr::zarr_convention}} -> \code{zarr_conv_ref}
+\code{\link[zarr:zarr_convention]{zarr_convention}} -> \code{zarr_conv_ref}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{uri}}{The "uri" field, a character string of an external Zarr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{uri}}{The "uri" field, a character string of an external Zarr
 store. The URI must follow RFC 3986 and preferably points to a locatable
 resource like a file on a file system or a store on a web site that is
 accessible to the same process that opened up the Zarr store having this
 reference.}
 
-\item{\code{node}}{The "node" field, a character string giving the path to
+    \item{\code{node}}{The "node" field, a character string giving the path to
 a group or array in the current Zarr store or in the  store pointed at by the "uri"
 field.}
 
-\item{\code{attribute}}{The "attribute" field, a character string with a JSON
+    \item{\code{attribute}}{The "attribute" field, a character string with a JSON
 pointer to a referenced attribute in the metadata of the referenced
 \code{node}.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_conv_ref-new}{\code{zarr_conv_ref$new()}}
-\item \href{#method-zarr_conv_ref-write}{\code{zarr_conv_ref$write()}}
-\item \href{#method-zarr_conv_ref-parse_json_pointer}{\code{zarr_conv_ref$parse_json_pointer()}}
+  \itemize{
+    \item \href{#method-zarr_conv_ref-initialize}{\code{zarr_conv_ref$new()}}
+    \item \href{#method-zarr_conv_ref-write}{\code{zarr_conv_ref$write()}}
+    \item \href{#method-zarr_conv_ref-parse_json_pointer}{\code{zarr_conv_ref$parse_json_pointer()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_convention" data-id="register"><a href='../../zarr/html/zarr_convention.html#method-zarr_convention-register'><code>zarr::zarr_convention$register()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_convention" data-id="register"><a href='../../zarr/html/zarr_convention.html#method-zarr_convention-register'><code>zarr_convention$register()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_conv_ref-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_conv_ref-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new instance of a "ref" convention agent.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_conv_ref$new()}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-zarr_conv_ref-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_conv_ref-initialize}{}}}
+\subsection{\code{zarr_conv_ref$new()}}{
+  Create a new instance of a "ref" convention agent.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_conv_ref$new()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A new instance of a "ref" convention agent.
+  }
 }
 
-\subsection{Returns}{
-A new instance of a "ref" convention agent.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_conv_ref-write"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_conv_ref-write}{}}}
-\subsection{Method \code{write()}}{
-Write the data of this instance in the attributes of a Zarr
+\subsection{\code{zarr_conv_ref$write()}}{
+  Write the data of this instance in the attributes of a Zarr
 object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_conv_ref$write(attributes)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_conv_ref$write(attributes)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{attributes}}{A \code{list} with Zarr attributes for a group or array. The
+properties will be written to \code{attributes}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The updated attributes.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{attributes}}{A \code{list} with Zarr attributes for a group or array. The
-properties will be written to \code{attributes}.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The updated attributes.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_conv_ref-parse_json_pointer"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_conv_ref-parse_json_pointer}{}}}
-\subsection{Method \code{parse_json_pointer()}}{
-Validate and parse a JSON Pointer (RFC 6901) into its
+\subsection{\code{zarr_conv_ref$parse_json_pointer()}}{
+  Validate and parse a JSON Pointer (RFC 6901) into its
 reference tokens.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_conv_ref$parse_json_pointer(ptr)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_conv_ref$parse_json_pointer(ptr)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{ptr}}{The character string from the "attribute" field to parse.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Character vector of raw tokens, or throws an error.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{ptr}}{The character string from the "attribute" field to parse.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Character vector of raw tokens, or throws an error.
-}
-}
 }

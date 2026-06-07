@@ -29,115 +29,120 @@ order, which can be achieved by not including this codec in the array
 definition.
 }
 \section{Super classes}{
-\code{\link[zarr:zarr_extension]{zarr::zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr::zarr_codec}} -> \code{zarr_codec_transpose}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:zarr_codec]{zarr_codec}} -> \code{zarr_codec_transpose}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{order}}{Set or retrieve the 0-based ordering of the dimensions of
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{order}}{Set or retrieve the 0-based ordering of the dimensions of
 the array when storing}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-zarr_codec_transpose-new}{\code{zarr_codec_transpose$new()}}
-\item \href{#method-zarr_codec_transpose-copy}{\code{zarr_codec_transpose$copy()}}
-\item \href{#method-zarr_codec_transpose-encode}{\code{zarr_codec_transpose$encode()}}
-\item \href{#method-zarr_codec_transpose-decode}{\code{zarr_codec_transpose$decode()}}
+  \itemize{
+    \item \href{#method-zarr_codec_transpose-initialize}{\code{zarr_codec_transpose$new()}}
+    \item \href{#method-zarr_codec_transpose-copy}{\code{zarr_codec_transpose$copy()}}
+    \item \href{#method-zarr_codec_transpose-encode}{\code{zarr_codec_transpose$encode()}}
+    \item \href{#method-zarr_codec_transpose-decode}{\code{zarr_codec_transpose$decode()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr::zarr_codec$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-metadata_fragment'><code>zarr_codec$metadata_fragment()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href='../../zarr/html/zarr_codec.html#method-zarr_codec-print'><code>zarr_codec$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_codec_transpose-new"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_codec_transpose-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new "transpose" codec object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$new(shape_length, configuration = list())}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{shape_length}}{The length of the shape of the array that this codec
+\if{html}{\out{<a id="method-zarr_codec_transpose-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_codec_transpose-initialize}{}}}
+\subsection{\code{zarr_codec_transpose$new()}}{
+  Create a new "transpose" codec object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_transpose$new(shape_length, configuration = list())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{shape_length}}{The length of the shape of the array that this codec
 operates on.}
-
-\item{\code{configuration}}{Optional. A list with the configuration parameters
+      \item{\code{configuration}}{Optional. A list with the configuration parameters
 for this codec. The element \code{order} specifies the ordering of the
 dimensions of the shape relative to the Zarr canonical arrangement. An
 integer vector with a length equal to argument
 \code{shape_length}. The ordering must be 0-based. If not given, the default R
 ordering is used.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of this class.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of this class.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_transpose-copy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_transpose-copy}{}}}
-\subsection{Method \code{copy()}}{
-Create a new, independent copy of this codec.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$copy()}\if{html}{\out{</div>}}
+\subsection{\code{zarr_codec_transpose$copy()}}{
+  Create a new, independent copy of this codec.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_transpose$copy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An instance of \code{zarr_codec_transpose}.
+  }
 }
 
-\subsection{Returns}{
-An instance of \code{zarr_codec_transpose}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_transpose-encode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_transpose-encode}{}}}
-\subsection{Method \code{encode()}}{
-This method permutes a data object to match the desired
+\subsection{\code{zarr_codec_transpose$encode()}}{
+  This method permutes a data object to match the desired
 dimension ordering.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$encode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_transpose$encode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to be permuted, an R matrix or array.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The permuted data object, a matrix or array in Zarr store
+dimension order.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to be permuted, an R matrix or array.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The permuted data object, a matrix or array in Zarr store
-dimension order.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_codec_transpose-decode"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_codec_transpose-decode}{}}}
-\subsection{Method \code{decode()}}{
-This method permutes a data object from a Zarr store to an
+\subsection{\code{zarr_codec_transpose$decode()}}{
+  This method permutes a data object from a Zarr store to an
 R matrix or array.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{zarr_codec_transpose$decode(data)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_codec_transpose$decode(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{The data to be permuted, from a Zarr store.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The permuted data object, an R matrix or array.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{The data to be permuted, from a Zarr store.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The permuted data object, an R matrix or array.
-}
-}
 }
