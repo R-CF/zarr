@@ -55,7 +55,7 @@ the inverse process, whereby the codecs are applied in reverse order.</p>
 
     <div class="section level2">
     <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
-    <p><code><a href="zarr_extension.html">zarr::zarr_extension</a></code> -&gt; <code>zarr_codec</code></p>
+    <p><code><a href="zarr_extension.html">zarr_extension</a></code> -&gt; <code>zarr_codec</code></p>
     </div>
     <div class="section level2">
     <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
@@ -65,17 +65,17 @@ operation of the codec in form of a string "array -&gt; array", "array -&gt;
 bytes" or "bytes -&gt; bytes".</p></dd>
 
 
-<dt><code>from</code></dt>
+    <dt><code>from</code></dt>
 <dd><p>(read-only) Character string that indicates the source data
 type of this codec, either "array" or "bytes".</p></dd>
 
 
-<dt><code>to</code></dt>
+    <dt><code>to</code></dt>
 <dd><p>(read-only) Character string that indicates the output data
 type of this codec, either "array" or "bytes".</p></dd>
 
 
-<dt><code>configuration</code></dt>
+    <dt><code>configuration</code></dt>
 <dd><p>(read-only) A list with the configuration parameters
 of the codec, exactly like they are defined in Zarr. This field is
 read-only but each codec class has fields to set individual parameters.</p></dd>
@@ -88,113 +88,108 @@ read-only but each codec class has fields to set individual parameters.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-zarr_codec-new"><code>zarr_codec$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-zarr_codec-initialize"><code>zarr_codec$new()</code></a></p></li>
 <li><p><a href="#method-zarr_codec-copy"><code>zarr_codec$copy()</code></a></p></li>
 <li><p><a href="#method-zarr_codec-print"><code>zarr_codec$print()</code></a></p></li>
 <li><p><a href="#method-zarr_codec-metadata_fragment"><code>zarr_codec$metadata_fragment()</code></a></p></li>
 <li><p><a href="#method-zarr_codec-encode"><code>zarr_codec$encode()</code></a></p></li>
 <li><p><a href="#method-zarr_codec-decode"><code>zarr_codec$decode()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-zarr_codec-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-zarr_codec-initialize"></a><div class="section">
+<h3 id="zarr-codec-new-"><code>zarr_codec$new()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-new-"></a></h3>
 <p>Create a new codec object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_codec.html">zarr_codec</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">name</span>, <span class="va">configuration</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the codec, a single character string.</p></dd>
 
-
-<dt><code>configuration</code></dt>
+      <dt><code>configuration</code></dt>
 <dd><p>A list with the configuration parameters for this
 codec.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>An instance of this class.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_codec-copy"></a><div class="section">
-<h3 id="method-copy-">Method <code>copy()</code><a class="anchor" aria-label="anchor" href="#method-copy-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_codec-copy"></a><div class="section">
+<h3 id="zarr-codec-copy-"><code>zarr_codec$copy()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-copy-"></a></h3>
 <p>Create a new, independent copy of this codec.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_codec</span><span class="op">$</span><span class="fu">copy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>This method always throws an error.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_codec-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_codec-print"></a><div class="section">
+<h3 id="zarr-codec-print-"><code>zarr_codec$print()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-print-"></a></h3>
 <p>Print a summary of the codec to the console.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_codec</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-zarr_codec-metadata_fragment"></a><div class="section">
-<h3 id="method-metadata-fragment-">Method <code>metadata_fragment()</code><a class="anchor" aria-label="anchor" href="#method-metadata-fragment-"></a></h3>
+<p></p><hr><a id="method-zarr_codec-metadata_fragment"></a><div class="section">
+<h3 id="zarr-codec-metadata-fragment-"><code>zarr_codec$metadata_fragment()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-metadata-fragment-"></a></h3>
 <p>Return the metadata fragment that describes this codec.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_codec</span><span class="op">$</span><span class="fu">metadata_fragment</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>A list with the metadata of this codec.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_codec-encode"></a><div class="section">
-<h3 id="method-encode-">Method <code>encode()</code><a class="anchor" aria-label="anchor" href="#method-encode-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_codec-encode"></a><div class="section">
+<h3 id="zarr-codec-encode-"><code>zarr_codec$encode()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-encode-"></a></h3>
 <p>This method encodes a data object but since this is the base
 codec class the "encoding" is a no-op.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_codec</span><span class="op">$</span><span class="fu">encode</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
 <dd><p>The data to be encoded.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>The encoded data object, unaltered.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_codec-decode"></a><div class="section">
-<h3 id="method-decode-">Method <code>decode()</code><a class="anchor" aria-label="anchor" href="#method-decode-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_codec-decode"></a><div class="section">
+<h3 id="zarr-codec-decode-"><code>zarr_codec$decode()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-decode-"></a></h3>
 <p>This method decodes a data object but since this is the base
 codec class the "decoding" is a no-op.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_codec</span><span class="op">$</span><span class="fu">decode</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
 <dd><p>The data to be decoded.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>The decoded data object, unaltered.</p>
 </div>
 
 </div>
+
 
     </div>
 

@@ -42,7 +42,7 @@ package with similar conventions and/or domain(s).
 
 ### Public methods
 
-- [`zarr_convention$new()`](#method-zarr_convention-new)
+- [`zarr_convention$new()`](#method-zarr_convention-initialize)
 
 - [`zarr_convention$register()`](#method-zarr_convention-register)
 
@@ -50,7 +50,7 @@ package with similar conventions and/or domain(s).
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_convention$new()`
 
 Create a new instance of a Zarr convention agent. This is a "virtual"
 ancestor class that should not be instantiated directly - instead use
@@ -80,7 +80,7 @@ A new instance of a Zarr convention agent.
 
 ------------------------------------------------------------------------
 
-### Method `register()`
+### `zarr_convention$register()`
 
 Register the use of a convention in the attributes of a Zarr object.
 
@@ -105,7 +105,7 @@ The updated attributes.
 
 ------------------------------------------------------------------------
 
-### Method [`write()`](https://rdrr.io/r/base/write.html)
+### `zarr_convention$write()`
 
 Write the data of a convention instance in the attributes of a Zarr
 object. This method does not do any actual writing. Descendant classes

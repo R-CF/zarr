@@ -15,8 +15,8 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 ## Super class
 
-[`zarr::zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md)
--\> `zarr_memorystore`
+[`zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md) -\>
+`zarr_memorystore`
 
 ## Active bindings
 
@@ -36,7 +36,7 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 ### Public methods
 
-- [`zarr_memorystore$new()`](#method-zarr_memorystore-new)
+- [`zarr_memorystore$new()`](#method-zarr_memorystore-initialize)
 
 - [`zarr_memorystore$exists()`](#method-zarr_memorystore-exists)
 
@@ -64,15 +64,15 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 Inherited methods
 
-- [`zarr::zarr_store$getsize()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize)
-- [`zarr::zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
-- [`zarr::zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
-- [`zarr::zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
-- [`zarr::zarr_store$set_metadata()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-set_metadata)
+- [`zarr_store$getsize()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize)
+- [`zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
+- [`zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
+- [`zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
+- [`zarr_store$set_metadata()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-set_metadata)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_memorystore$new()`
 
 Create an instance of this class.
 
@@ -86,7 +86,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method [`exists()`](https://rdrr.io/r/base/exists.html)
+### `zarr_memorystore$exists()`
 
 Check if a key exists in the store. The key can point to a group, an
 array (having a metadata list as its value) or a chunk.
@@ -107,7 +107,7 @@ array (having a metadata list as its value) or a chunk.
 
 ------------------------------------------------------------------------
 
-### Method `clear()`
+### `zarr_memorystore$clear()`
 
 Clear the store. Remove all keys and values from the store. Invoking
 this method deletes all data and this action can not be undone.
@@ -122,7 +122,7 @@ this method deletes all data and this action can not be undone.
 
 ------------------------------------------------------------------------
 
-### Method `erase()`
+### `zarr_memorystore$erase()`
 
 Remove a key from the store. The key must point to an array or a chunk.
 If the key points to an array, the key and all of subordinated keys are
@@ -145,7 +145,7 @@ if argument `key` does not point to an existing key.
 
 ------------------------------------------------------------------------
 
-### Method `erase_prefix()`
+### `zarr_memorystore$erase_prefix()`
 
 Remove all keys in the store that begin with a given prefix.
 
@@ -167,7 +167,7 @@ if argument `prefix` does not point to any existing keys.
 
 ------------------------------------------------------------------------
 
-### Method `list_dir()`
+### `zarr_memorystore$list_dir()`
 
 Retrieve all keys with a given prefix and which do not contain the
 character "/" after the given prefix. In other words, this retrieves all
@@ -190,7 +190,7 @@ A character array with all keys found in the store immediately below the
 
 ------------------------------------------------------------------------
 
-### Method `list_prefix()`
+### `zarr_memorystore$list_prefix()`
 
 Retrieve all keys and prefixes with a given prefix.
 
@@ -211,7 +211,7 @@ location.
 
 ------------------------------------------------------------------------
 
-### Method `set()`
+### `zarr_memorystore$set()`
 
 Store a `(key, value)` pair. If the `value` exists, it will be
 overwritten.
@@ -236,7 +236,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `set_if_not_exists()`
+### `zarr_memorystore$set_if_not_exists()`
 
 Store a `(key, value)` pair. If the `key` exists, nothing will be
 written.
@@ -261,7 +261,7 @@ Self, invisibly, or an error.
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `zarr_memorystore$get()`
 
 Retrieve the value associated with a given key.
 
@@ -297,7 +297,7 @@ An raw vector of data, or `NULL` if no data was found.
 
 ------------------------------------------------------------------------
 
-### Method `get_metadata()`
+### `zarr_memorystore$get_metadata()`
 
 Retrieve the metadata document at the location indicated by the `prefix`
 argument.
@@ -319,7 +319,7 @@ Zarr array.
 
 ------------------------------------------------------------------------
 
-### Method `create_group()`
+### `zarr_memorystore$create_group()`
 
 Create a new group in the store under the specified path.
 
@@ -347,7 +347,7 @@ not be created.
 
 ------------------------------------------------------------------------
 
-### Method `create_array()`
+### `zarr_memorystore$create_array()`
 
 Create a new array in the store under key constructed from the specified
 path to the `parent` argument and the `name`. The key may not already

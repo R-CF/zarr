@@ -8,16 +8,15 @@ don't match a warning is generated.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
 -\> `zarr_codec_crc32c`
 
 ## Methods
 
 ### Public methods
 
-- [`zarr_codec_crc32c$new()`](#method-zarr_codec_crc32c-new)
+- [`zarr_codec_crc32c$new()`](#method-zarr_codec_crc32c-initialize)
 
 - [`zarr_codec_crc32c$copy()`](#method-zarr_codec_crc32c-copy)
 
@@ -27,12 +26,12 @@ don't match a warning is generated.
 
 Inherited methods
 
-- [`zarr::zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
-- [`zarr::zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
+- [`zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
+- [`zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_codec_crc32c$new()`
 
 Create a new "crc32c" codec object.
 
@@ -40,20 +39,13 @@ Create a new "crc32c" codec object.
 
     zarr_codec_crc32c$new()
 
-#### Arguments
-
-- `configuration`:
-
-  Optional. A list with the configuration parameters for this codec but
-  since this codec doesn't have any the argument is always ignored.
-
 #### Returns
 
 An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `copy()`
+### `zarr_codec_crc32c$copy()`
 
 Create a new, independent copy of this codec.
 
@@ -67,7 +59,7 @@ An instance of `zarr_codec_crc32c`.
 
 ------------------------------------------------------------------------
 
-### Method `encode()`
+### `zarr_codec_crc32c$encode()`
 
 This method computes the CRC32C checksum of a data object and appends it
 to the data object.
@@ -88,7 +80,7 @@ The input `data` raw vector with the 32-bit checksum appended to it.
 
 ------------------------------------------------------------------------
 
-### Method `decode()`
+### `zarr_codec_crc32c$decode()`
 
 This method extracts the CRC32C checksum from the trailing 32-bits of a
 data object. It then computes the CRC32C checksum from the data object

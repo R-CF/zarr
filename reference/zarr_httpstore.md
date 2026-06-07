@@ -18,8 +18,8 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 ## Super class
 
-[`zarr::zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md)
--\> `zarr_httpstore`
+[`zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md) -\>
+`zarr_httpstore`
 
 ## Active bindings
 
@@ -44,7 +44,7 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 ### Public methods
 
-- [`zarr_httpstore$new()`](#method-zarr_httpstore-new)
+- [`zarr_httpstore$new()`](#method-zarr_httpstore-initialize)
 
 - [`zarr_httpstore$exists()`](#method-zarr_httpstore-exists)
 
@@ -76,14 +76,14 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 Inherited methods
 
-- [`zarr::zarr_store$getsize()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize)
-- [`zarr::zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
-- [`zarr::zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
-- [`zarr::zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
+- [`zarr_store$getsize()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize)
+- [`zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
+- [`zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
+- [`zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_httpstore$new()`
 
 Create an instance of this class.
 
@@ -110,7 +110,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method [`exists()`](https://rdrr.io/r/base/exists.html)
+### `zarr_httpstore$exists()`
 
 Check if a key exists in the store. The key can point to a group, an
 array, or a metadata file. This check is only relevant for HTTP stores
@@ -133,7 +133,7 @@ will be at the root.
 
 ------------------------------------------------------------------------
 
-### Method `clear()`
+### `zarr_httpstore$clear()`
 
 Clearing the store is not supported.
 
@@ -147,7 +147,7 @@ Clearing the store is not supported.
 
 ------------------------------------------------------------------------
 
-### Method `erase()`
+### `zarr_httpstore$erase()`
 
 Removing a key from the store is not supported.
 
@@ -167,7 +167,7 @@ Removing a key from the store is not supported.
 
 ------------------------------------------------------------------------
 
-### Method `erase_prefix()`
+### `zarr_httpstore$erase_prefix()`
 
 Removing keys from the store is not supported.
 
@@ -187,7 +187,7 @@ Removing keys from the store is not supported.
 
 ------------------------------------------------------------------------
 
-### Method `list_dir()`
+### `zarr_httpstore$list_dir()`
 
 Retrieve all keys and prefixes with a given prefix and which do not
 contain the character "/" after the given prefix. In other words, this
@@ -211,7 +211,7 @@ A character array with all keys found in the store immediately below the
 
 ------------------------------------------------------------------------
 
-### Method `list_prefix()`
+### `zarr_httpstore$list_prefix()`
 
 Retrieve all keys and prefixes with a given prefix.
 
@@ -232,7 +232,7 @@ location, both for groups and arrays.
 
 ------------------------------------------------------------------------
 
-### Method `set()`
+### `zarr_httpstore$set()`
 
 Storing a `(key, value)` pair is not supported.
 
@@ -256,7 +256,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `set_if_not_exists()`
+### `zarr_httpstore$set_if_not_exists()`
 
 Storing a `(key, value)` pair is not supported.
 
@@ -280,7 +280,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `zarr_httpstore$get()`
 
 Retrieve the value associated with a given key.
 
@@ -316,7 +316,7 @@ A raw vector with the data pointed at by the key.
 
 ------------------------------------------------------------------------
 
-### Method `get_metadata()`
+### `zarr_httpstore$get_metadata()`
 
 Retrieve the metadata document of the node at the location indicated by
 the `prefix` argument. The metadata will always be presented to the
@@ -339,7 +339,7 @@ Zarr group or array.
 
 ------------------------------------------------------------------------
 
-### Method `set_metadata()`
+### `zarr_httpstore$set_metadata()`
 
 Setting metadata is not supported.
 
@@ -363,7 +363,7 @@ Self, invisible
 
 ------------------------------------------------------------------------
 
-### Method `is_group()`
+### `zarr_httpstore$is_group()`
 
 Test if `path` is pointing to a Zarr group.
 
@@ -383,7 +383,7 @@ Test if `path` is pointing to a Zarr group.
 
 ------------------------------------------------------------------------
 
-### Method `create_group()`
+### `zarr_httpstore$create_group()`
 
 Creating a new group in the store is not supported.
 
@@ -403,7 +403,7 @@ An error indicating that the group could not be created.
 
 ------------------------------------------------------------------------
 
-### Method `create_array()`
+### `zarr_httpstore$create_array()`
 
 Creating a new array in the store is not supported.
 

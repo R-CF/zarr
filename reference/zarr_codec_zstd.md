@@ -4,9 +4,8 @@ This class provides the codec for "zstd" compression.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
 -\> `zarr_codec_zstd`
 
 ## Active bindings
@@ -20,7 +19,7 @@ This class provides the codec for "zstd" compression.
 
 ### Public methods
 
-- [`zarr_codec_zstd$new()`](#method-zarr_codec_zstd-new)
+- [`zarr_codec_zstd$new()`](#method-zarr_codec_zstd-initialize)
 
 - [`zarr_codec_zstd$copy()`](#method-zarr_codec_zstd-copy)
 
@@ -30,12 +29,12 @@ This class provides the codec for "zstd" compression.
 
 Inherited methods
 
-- [`zarr::zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
-- [`zarr::zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
+- [`zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
+- [`zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_codec_zstd$new()`
 
 Create a new "zstd" codec object.
 
@@ -57,7 +56,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `copy()`
+### `zarr_codec_zstd$copy()`
 
 Create a new, independent copy of this codec.
 
@@ -71,7 +70,7 @@ An instance of `zarr_codec_zstd`.
 
 ------------------------------------------------------------------------
 
-### Method `encode()`
+### `zarr_codec_zstd$encode()`
 
 This method encodes a raw data object.
 
@@ -91,7 +90,7 @@ The encoded raw data object.
 
 ------------------------------------------------------------------------
 
-### Method `decode()`
+### `zarr_codec_zstd$decode()`
 
 This method decodes a raw data object.
 

@@ -91,7 +91,7 @@ array after it has been created.
 
 ### Public methods
 
-- [`array_builder$new()`](#method-array_builder-new)
+- [`array_builder$new()`](#method-array_builder-initialize)
 
 - [`array_builder$print()`](#method-array_builder-print)
 
@@ -105,7 +105,7 @@ array after it has been created.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `array_builder$new()`
 
 Create a new instance of the `array_builder` class. Optionally, a
 metadata document may be passed in as an argument to inspect the
@@ -130,7 +130,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `array_builder$print()`
 
 Print the array metadata to the console.
 
@@ -140,7 +140,7 @@ Print the array metadata to the console.
 
 ------------------------------------------------------------------------
 
-### Method `metadata()`
+### `array_builder$metadata()`
 
 Retrieve the metadata document to create a Zarr array.
 
@@ -160,7 +160,7 @@ The metadata document in the requested format.
 
 ------------------------------------------------------------------------
 
-### Method `add_codec()`
+### `array_builder$add_codec()`
 
 Adds a codec at the end of the currently registered codecs. Optionally,
 the `.position` argument may be used to indicate a specific position of
@@ -198,7 +198,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `remove_codec()`
+### `array_builder$remove_codec()`
 
 Remove a codec from the list of codecs for the array. A codec cannot be
 removed if the remaining codecs do not form a valid chain due to mode
@@ -216,7 +216,7 @@ conflicts.
 
 ------------------------------------------------------------------------
 
-### Method `is_valid()`
+### `array_builder$is_valid()`
 
 This method indicates if the current specification results in a valid
 metadata document to create a Zarr array.

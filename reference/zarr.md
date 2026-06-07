@@ -12,10 +12,6 @@ hierarchy is made up of
 [zarr_group](https://r-cf.github.io/zarr/reference/zarr_group.md)
 instances. Each `zarr_array` is located in a `zarr_group`.
 
-## Value
-
-A `zarr` object.
-
 ## Active bindings
 
 - `version`:
@@ -53,7 +49,7 @@ A `zarr` object.
 
 ### Public methods
 
-- [`zarr$new()`](#method-zarr-new)
+- [`zarr$new()`](#method-zarr-initialize)
 
 - [`zarr$print()`](#method-zarr-print)
 
@@ -73,7 +69,7 @@ A `zarr` object.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr$new()`
 
 Create a new Zarr instance. The Zarr instance manages the groups and
 arrays in the Zarr store that it refers to. This instance provides
@@ -91,9 +87,13 @@ access to all objects in the Zarr store.
   [zarr_store](https://r-cf.github.io/zarr/reference/zarr_store.md)
   descendant class where the Zarr objects are located.
 
+#### Returns
+
+A `zarr` object.
+
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `zarr$print()`
 
 Print a summary of the Zarr object to the console.
 
@@ -103,7 +103,7 @@ Print a summary of the Zarr object to the console.
 
 ------------------------------------------------------------------------
 
-### Method `hierarchy()`
+### `zarr$hierarchy()`
 
 Print the Zarr hierarchy to the console.
 
@@ -113,7 +113,7 @@ Print the Zarr hierarchy to the console.
 
 ------------------------------------------------------------------------
 
-### Method `get_node()`
+### `zarr$get_node()`
 
 Retrieve the group or array represented by the node located at the path.
 
@@ -135,7 +135,7 @@ instance located at `path`, or `NULL` if the `path` was not found.
 
 ------------------------------------------------------------------------
 
-### Method `add_group()`
+### `zarr$add_group()`
 
 Add a group below a given path.
 
@@ -162,7 +162,7 @@ The newly created
 
 ------------------------------------------------------------------------
 
-### Method `add_array()`
+### `zarr$add_array()`
 
 Add an array in a group with a given path.
 
@@ -194,7 +194,7 @@ The newly created
 
 ------------------------------------------------------------------------
 
-### Method `delete_group()`
+### `zarr$delete_group()`
 
 Delete a group from the Zarr object. This will also delete the group
 from the Zarr store. The root group cannot be deleted but it can be
@@ -225,7 +225,7 @@ Self, invisible.
 
 ------------------------------------------------------------------------
 
-### Method `delete_array()`
+### `zarr$delete_array()`
 
 Delete an array from the Zarr object. If the array is the root of the
 Zarr object, it will be converted into a regular Zarr object with a root
@@ -247,7 +247,7 @@ Self, invisible.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `zarr$clone()`
 
 The objects of this class are cloneable with this method.
 

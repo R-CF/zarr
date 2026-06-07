@@ -6,7 +6,7 @@ the inverse process, whereby the codecs are applied in reverse order.
 
 ## Super class
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
 -\> `zarr_codec`
 
 ## Active bindings
@@ -37,7 +37,7 @@ the inverse process, whereby the codecs are applied in reverse order.
 
 ### Public methods
 
-- [`zarr_codec$new()`](#method-zarr_codec-new)
+- [`zarr_codec$new()`](#method-zarr_codec-initialize)
 
 - [`zarr_codec$copy()`](#method-zarr_codec-copy)
 
@@ -51,7 +51,7 @@ the inverse process, whereby the codecs are applied in reverse order.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_codec$new()`
 
 Create a new codec object.
 
@@ -75,7 +75,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `copy()`
+### `zarr_codec$copy()`
 
 Create a new, independent copy of this codec.
 
@@ -89,7 +89,7 @@ This method always throws an error.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `zarr_codec$print()`
 
 Print a summary of the codec to the console.
 
@@ -99,7 +99,7 @@ Print a summary of the codec to the console.
 
 ------------------------------------------------------------------------
 
-### Method `metadata_fragment()`
+### `zarr_codec$metadata_fragment()`
 
 Return the metadata fragment that describes this codec.
 
@@ -113,7 +113,7 @@ A list with the metadata of this codec.
 
 ------------------------------------------------------------------------
 
-### Method `encode()`
+### `zarr_codec$encode()`
 
 This method encodes a data object but since this is the base codec class
 the "encoding" is a no-op.
@@ -134,7 +134,7 @@ The encoded data object, unaltered.
 
 ------------------------------------------------------------------------
 
-### Method `decode()`
+### `zarr_codec$decode()`
 
 This method decodes a data object but since this is the base codec class
 the "decoding" is a no-op.

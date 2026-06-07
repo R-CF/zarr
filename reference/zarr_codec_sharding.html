@@ -58,28 +58,25 @@ sharding, writing is not supported.</p>
 
     <div class="section level2">
     <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
-    <p><code><a href="zarr_extension.html">zarr::zarr_extension</a></code> -&gt; <code><a href="zarr_codec.html">zarr::zarr_codec</a></code> -&gt; <code>zarr_codec_sharding</code></p>
+    <p><code><a href="zarr_extension.html">zarr_extension</a></code> -&gt; <code><a href="zarr_codec.html">zarr_codec</a></code> -&gt; <code>zarr_codec_sharding</code></p>
     </div>
     <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-zarr_codec_sharding-new"><code>zarr_codec_sharding$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-zarr_codec_sharding-initialize"><code>zarr_codec_sharding$new()</code></a></p></li>
 <li><p><a href="#method-zarr_codec_sharding-copy"><code>zarr_codec_sharding$copy()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="decode"><a href="zarr_codec.html#method-decode"><code>zarr::zarr_codec$decode()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="encode"><a href="zarr_codec.html#method-encode"><code>zarr::zarr_codec$encode()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href="zarr_codec.html#method-metadata_fragment"><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href="zarr_codec.html#method-print"><code>zarr::zarr_codec$print()</code></a></span></li>
-</ul></details></p><hr><a id="method-zarr_codec_sharding-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="decode"><a href="zarr_codec.html#method-decode"><code>zarr_codec$decode()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="encode"><a href="zarr_codec.html#method-encode"><code>zarr_codec$encode()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href="zarr_codec.html#method-metadata_fragment"><code>zarr_codec$metadata_fragment()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href="zarr_codec.html#method-print"><code>zarr_codec$print()</code></a></span></li>
+</ul></details></p><hr><a id="method-zarr_codec_sharding-initialize"></a><div class="section">
+<h3 id="zarr-codec-sharding-new-"><code>zarr_codec_sharding$new()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-sharding-new-"></a></h3>
 <p>Create a new "crc32c" codec object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_codec_sharding.html">zarr_codec_sharding</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">configuration</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>configuration</code></dt>
 <dd><p>Optional. A list with the configuration parameters
@@ -88,25 +85,25 @@ always ignored.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>An instance of this class.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_codec_sharding-copy"></a><div class="section">
-<h3 id="method-copy-">Method <code>copy()</code><a class="anchor" aria-label="anchor" href="#method-copy-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_codec_sharding-copy"></a><div class="section">
+<h3 id="zarr-codec-sharding-copy-"><code>zarr_codec_sharding$copy()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-sharding-copy-"></a></h3>
 <p>Create a new, independent copy of this codec.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_codec_sharding</span><span class="op">$</span><span class="fu">copy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>An instance of <code>zarr_codec_sharding</code>.</p>
 </div>
 
 </div>
+
 
     </div>
 

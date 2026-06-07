@@ -66,35 +66,31 @@ class for managing Zarr arrays is <a href="zarr_array.html">zarr_array</a>. The 
 
 
     <div class="section level2">
-    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>zarr</code> object.</p>
-    </div>
-    <div class="section level2">
     <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
     <p></p><div class="r6-active-bindings"><dl><dt><code>version</code></dt>
 <dd><p>(read-only) The version of the Zarr object.</p></dd>
 
 
-<dt><code>root</code></dt>
+    <dt><code>root</code></dt>
 <dd><p>(read-only) The root node of the Zarr object, usually a
 <a href="zarr_group.html">zarr_group</a> instance but it could also be a <a href="zarr_array.html">zarr_array</a> instance.</p></dd>
 
 
-<dt><code>store</code></dt>
+    <dt><code>store</code></dt>
 <dd><p>(read-only) The store of the Zarr object.</p></dd>
 
 
-<dt><code>domain</code></dt>
+    <dt><code>domain</code></dt>
 <dd><p>(read-only) The <code>zarr_domain</code> instance managing the data
 in this <code>zarr</code> object.</p></dd>
 
 
-<dt><code>groups</code></dt>
+    <dt><code>groups</code></dt>
 <dd><p>(read-only) Retrieve the paths to the groups of the Zarr
 object, starting from the root group, as a character vector.</p></dd>
 
 
-<dt><code>arrays</code></dt>
+    <dt><code>arrays</code></dt>
 <dd><p>(read-only) Retrieve the paths to the arrays of the Zarr
 object, starting from the root group, as a character vector.</p></dd>
 
@@ -106,8 +102,7 @@ object, starting from the root group, as a character vector.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-zarr-new"><code>zarr$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-zarr-initialize"><code>zarr$new()</code></a></p></li>
 <li><p><a href="#method-zarr-print"><code>zarr$print()</code></a></p></li>
 <li><p><a href="#method-zarr-hierarchy"><code>zarr$hierarchy()</code></a></p></li>
 <li><p><a href="#method-zarr-get_node"><code>zarr$get_node()</code></a></p></li>
@@ -116,16 +111,14 @@ object, starting from the root group, as a character vector.</p></dd>
 <li><p><a href="#method-zarr-delete_group"><code>zarr$delete_group()</code></a></p></li>
 <li><p><a href="#method-zarr-delete_array"><code>zarr$delete_array()</code></a></p></li>
 <li><p><a href="#method-zarr-clone"><code>zarr$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-zarr-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-zarr-initialize"></a><div class="section">
+<h3 id="zarr-new-"><code>zarr$new()</code><a class="anchor" aria-label="anchor" href="#zarr-new-"></a></h3>
 <p>Create a new Zarr instance. The Zarr instance manages the
 groups and arrays in the Zarr store that it refers to. This instance
 provides access to all objects in the Zarr store.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr.html">zarr</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">store</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>store</code></dt>
 <dd><p>An instance of a <a href="zarr_store.html">zarr_store</a> descendant class where the
@@ -133,33 +126,38 @@ Zarr objects are located.</p></dd>
 
 
 </dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>A <code>zarr</code> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr-print"></a><div class="section">
+<h3 id="zarr-print-"><code>zarr$print()</code><a class="anchor" aria-label="anchor" href="#zarr-print-"></a></h3>
 <p>Print a summary of the Zarr object to the console.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-zarr-hierarchy"></a><div class="section">
-<h3 id="method-hierarchy-">Method <code>hierarchy()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-"></a></h3>
+<p></p><hr><a id="method-zarr-hierarchy"></a><div class="section">
+<h3 id="zarr-hierarchy-"><code>zarr$hierarchy()</code><a class="anchor" aria-label="anchor" href="#zarr-hierarchy-"></a></h3>
 <p>Print the Zarr hierarchy to the console.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-zarr-get_node"></a><div class="section">
-<h3 id="method-get-node-">Method <code>get_node()</code><a class="anchor" aria-label="anchor" href="#method-get-node-"></a></h3>
+<p></p><hr><a id="method-zarr-get_node"></a><div class="section">
+<h3 id="zarr-get-node-"><code>zarr$get_node()</code><a class="anchor" aria-label="anchor" href="#zarr-get-node-"></a></h3>
 <p>Retrieve the group or array represented by the node located
 at the path.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr</span><span class="op">$</span><span class="fu">get_node</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to the node to retrieve. Must start with a
@@ -167,72 +165,68 @@ forward-slash "/".</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+</div><p></p><div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>The <a href="zarr_group.html">zarr_group</a> or <a href="zarr_array.html">zarr_array</a> instance located at <code>path</code>, or
 <code>NULL</code> if the <code>path</code> was not found.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr-add_group"></a><div class="section">
-<h3 id="method-add-group-">Method <code>add_group()</code><a class="anchor" aria-label="anchor" href="#method-add-group-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr-add_group"></a><div class="section">
+<h3 id="zarr-add-group-"><code>zarr$add_group()</code><a class="anchor" aria-label="anchor" href="#zarr-add-group-"></a></h3>
 <p>Add a group below a given path.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span><span class="va">path</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to the parent group of the new group, a single
 character string.</p></dd>
 
-
-<dt><code>name</code></dt>
+      <dt><code>name</code></dt>
 <dd><p>The name for the new group, a single character string.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+</div><p></p><div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>The newly created <a href="zarr_group.html">zarr_group</a>, or <code>NULL</code> if the group could not
 be created.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr-add_array"></a><div class="section">
-<h3 id="method-add-array-">Method <code>add_array()</code><a class="anchor" aria-label="anchor" href="#method-add-array-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr-add_array"></a><div class="section">
+<h3 id="zarr-add-array-"><code>zarr$add_array()</code><a class="anchor" aria-label="anchor" href="#zarr-add-array-"></a></h3>
 <p>Add an array in a group with a given path.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr</span><span class="op">$</span><span class="fu">add_array</span><span class="op">(</span><span class="va">path</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to the group of the new array, a single character
 string.</p></dd>
 
-
-<dt><code>name</code></dt>
+      <dt><code>name</code></dt>
 <dd><p>The name for the new array, a single character string.</p></dd>
 
-
-<dt><code>metadata</code></dt>
+      <dt><code>metadata</code></dt>
 <dd><p>A <code>list</code> with the metadata for the new array, or a valid
 <a href="array_builder.html">array_builder</a> instance.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+</div><p></p><div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>The newly created <a href="zarr_array.html">zarr_array</a>, or <code>NULL</code> if the array could not
 be created.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr-delete_group"></a><div class="section">
-<h3 id="method-delete-group-">Method <code>delete_group()</code><a class="anchor" aria-label="anchor" href="#method-delete-group-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr-delete_group"></a><div class="section">
+<h3 id="zarr-delete-group-"><code>zarr$delete_group()</code><a class="anchor" aria-label="anchor" href="#zarr-delete-group-"></a></h3>
 <p>Delete a group from the Zarr object. This will also delete
 the group from the Zarr store. The root group cannot be deleted but it
 can be specified through <code>path = "/"</code> in which case the root group
@@ -241,58 +235,53 @@ remaining), as well as any arrays and sub-groups if <code>recursive = TRUE</code
 <strong>Warning:</strong> this operation is irreversible for many stores!</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr</span><span class="op">$</span><span class="fu">delete_group</span><span class="op">(</span><span class="va">path</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to the group.</p></dd>
 
-
-<dt><code>recursive</code></dt>
+      <dt><code>recursive</code></dt>
 <dd><p>Logical, default <code>FALSE</code>. If <code>FALSE</code>, the operation will
 fail if the group has any arrays or sub-groups. If <code>TRUE</code>, the group
 and all Zarr objects contained by it will be deleted.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+</div><p></p><div class="section">
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>Self, invisible.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr-delete_array"></a><div class="section">
-<h3 id="method-delete-array-">Method <code>delete_array()</code><a class="anchor" aria-label="anchor" href="#method-delete-array-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr-delete_array"></a><div class="section">
+<h3 id="zarr-delete-array-"><code>zarr$delete_array()</code><a class="anchor" aria-label="anchor" href="#zarr-delete-array-"></a></h3>
 <p>Delete an array from the Zarr object. If the array is the
 root of the Zarr object, it will be converted into a regular Zarr
 object with a root group. <strong>Warning:</strong> this operation is irreversible
 for many stores!</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr</span><span class="op">$</span><span class="fu">delete_array</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to the array.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+</div><p></p><div class="section">
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>Self, invisible.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr-clone"></a><div class="section">
+<h3 id="zarr-clone-"><code>zarr$clone()</code><a class="anchor" aria-label="anchor" href="#zarr-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -302,6 +291,7 @@ for many stores!</p><div class="section">
 </div>
 
 </div>
+
 
     </div>
 

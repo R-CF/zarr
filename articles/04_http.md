@@ -45,7 +45,7 @@ standards for attribute contents.
 
 z <- open_zarr("https://raw.githubusercontent.com/R-CF/zarr/main/inst/extdata/africa.zarr/tas")
 z[["/"]]
-#> <Zarr array>  
+#> <Zarr array> ⌗  
 #> Path      : / 
 #> Data type : float32 
 #> Shape     : 160 260 12 
@@ -214,7 +214,7 @@ jsonlite::prettify(jsonlite::toJSON(z$root$attributes[["multiscales"]], auto_unb
 # Open the array at path "3"
 z3 <- open_zarr("https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr/3")
 z3[["/"]]
-#> <Zarr array>  
+#> <Zarr array> ⌗  
 #> Path      : / 
 #> Data type : uint16 
 #> Shape     : 532 2 988 256 271 

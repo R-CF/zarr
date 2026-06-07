@@ -14,7 +14,7 @@ attribute. In particular, the following convention is implemented here:
 
 ## Super class
 
-[`zarr::zarr_convention`](https://r-cf.github.io/zarr/reference/zarr_convention.md)
+[`zarr_convention`](https://r-cf.github.io/zarr/reference/zarr_convention.md)
 -\> `zarr_conv_uom`
 
 ## Active bindings
@@ -38,17 +38,17 @@ attribute. In particular, the following convention is implemented here:
 
 ### Public methods
 
-- [`zarr_conv_uom$new()`](#method-zarr_conv_uom-new)
+- [`zarr_conv_uom$new()`](#method-zarr_conv_uom-initialize)
 
 - [`zarr_conv_uom$write()`](#method-zarr_conv_uom-write)
 
 Inherited methods
 
-- [`zarr::zarr_convention$register()`](https://r-cf.github.io/zarr/reference/zarr_convention.html#method-register)
+- [`zarr_convention$register()`](https://r-cf.github.io/zarr/reference/zarr_convention.html#method-register)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_conv_uom$new()`
 
 Create a new instance of a "uom" convention agent.
 
@@ -62,7 +62,7 @@ A new instance of a "uom" convention agent.
 
 ------------------------------------------------------------------------
 
-### Method [`write()`](https://rdrr.io/r/base/write.html)
+### `zarr_conv_uom$write()`
 
 Write the data of this instance in the attributes of a Zarr object.
 

@@ -9,8 +9,8 @@ specifically the attribute `"node_type": "group"`.
 
 ## Super class
 
-[`zarr::zarr_node`](https://r-cf.github.io/zarr/reference/zarr_node.md)
--\> `zarr_group`
+[`zarr_node`](https://r-cf.github.io/zarr/reference/zarr_node.md) -\>
+`zarr_group`
 
 ## Active bindings
 
@@ -34,9 +34,11 @@ specifically the attribute `"node_type": "group"`.
 
 ### Public methods
 
-- [`zarr_group$new()`](#method-zarr_group-new)
+- [`zarr_group$new()`](#method-zarr_group-initialize)
 
 - [`zarr_group$print()`](#method-zarr_group-print)
+
+- [`zarr_group$hierarchy_nodes()`](#method-zarr_group-hierarchy_nodes)
 
 - [`zarr_group$hierarchy()`](#method-zarr_group-hierarchy)
 
@@ -56,14 +58,14 @@ specifically the attribute `"node_type": "group"`.
 
 Inherited methods
 
-- [`zarr::zarr_node$delete_attributes()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-delete_attributes)
-- [`zarr::zarr_node$print_attributes()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-print_attributes)
-- [`zarr::zarr_node$save()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-save)
-- [`zarr::zarr_node$set_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-set_attribute)
+- [`zarr_node$delete_attributes()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-delete_attributes)
+- [`zarr_node$print_attributes()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-print_attributes)
+- [`zarr_node$save()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-save)
+- [`zarr_node$set_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-set_attribute)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_group$new()`
 
 Open a group in a Zarr hierarchy. The group must already exist in the
 store.
@@ -99,7 +101,7 @@ An instance of `zarr_group`.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `zarr_group$print()`
 
 Print a summary of the group to the console.
 
@@ -109,15 +111,15 @@ Print a summary of the group to the console.
 
 ------------------------------------------------------------------------
 
-### Method `hierarchy()`
+### `zarr_group$hierarchy_nodes()`
 
-Prints the hierarchy of the group and its subgroups and arrays to the
-console. Usually called from the Zarr object or its root group to
+Collects the hierarchy of the group and its subgroups and arrays in a
+character vector. Usually called from the Zarr object or a group to
 display the full group hierarchy.
 
 #### Usage
 
-    zarr_group$hierarchy(idx = 1L, total = 1L)
+    zarr_group$hierarchy_nodes(idx = 1L, total = 1L)
 
 #### Arguments
 
@@ -129,7 +131,17 @@ display the full group hierarchy.
 
 ------------------------------------------------------------------------
 
-### Method `build_hierarchy()`
+### `zarr_group$hierarchy()`
+
+Print the Zarr hierarchy to the console from the current group.
+
+#### Usage
+
+    zarr_group$hierarchy()
+
+------------------------------------------------------------------------
+
+### `zarr_group$build_hierarchy()`
 
 Return the hierarchy contained in the store as a tree of group and array
 nodes. This method only has to be called after opening an existing Zarr
@@ -146,7 +158,7 @@ This zarr_group instance with all of its children linked.
 
 ------------------------------------------------------------------------
 
-### Method `get_node()`
+### `zarr_group$get_node()`
 
 Retrieve the group or array represented by the node located at the path
 relative from the current group.
@@ -172,7 +184,7 @@ instance located at `path`, or `NULL` if the `path` was not found.
 
 ------------------------------------------------------------------------
 
-### Method `count_arrays()`
+### `zarr_group$count_arrays()`
 
 Count the number of arrays in this group, optionally including arrays in
 sub-groups.
@@ -190,7 +202,7 @@ sub-groups.
 
 ------------------------------------------------------------------------
 
-### Method `add_group()`
+### `zarr_group$add_group()`
 
 Add a group to the Zarr hierarchy under the current group.
 
@@ -211,7 +223,7 @@ not be created.
 
 ------------------------------------------------------------------------
 
-### Method `add_array()`
+### `zarr_group$add_array()`
 
 Add an array to the Zarr hierarchy in the current group.
 
@@ -238,7 +250,7 @@ not be created.
 
 ------------------------------------------------------------------------
 
-### Method `delete()`
+### `zarr_group$delete()`
 
 Delete a group or an array contained by this group. When deleting a
 group it cannot contain other groups or arrays. **Warning:** this
@@ -262,7 +274,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `delete_all()`
+### `zarr_group$delete_all()`
 
 Delete all the groups and arrays contained by this group, including any
 sub-groups and arrays. Any specific metadata attached to this group is

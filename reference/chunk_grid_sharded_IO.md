@@ -11,13 +11,13 @@ number of store requests — particularly important for HTTP stores.
 
 ### Public methods
 
-- [`chunk_grid_sharded_IO$new()`](#method-chunk_grid_sharded_IO-new)
+- [`chunk_grid_sharded_IO$new()`](#method-chunk_grid_sharded_IO-initialize)
 
 - [`chunk_grid_sharded_IO$read()`](#method-chunk_grid_sharded_IO-read)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `chunk_grid_sharded_IO$new()`
 
 Create a new IO handler for a single shard.
 
@@ -77,7 +77,7 @@ Create a new IO handler for a single shard.
 
 ------------------------------------------------------------------------
 
-### Method `read()`
+### `chunk_grid_sharded_IO$read()`
 
 Read a region from this shard.
 

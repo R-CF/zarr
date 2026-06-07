@@ -56,11 +56,11 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/Rtmpo5aATs/file1ccb3511b131.zarr 
+#> Location  : /tmp/RtmpUpK1QT/file1dd9794d8160.zarr 
 #> Arrays    : 1 
-#> Total size: 2.91 KB
+#> Total size: 2.81 KB
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/Rtmpo5aATs/file1ccb3511b131.zarr 
+#> <Zarr hierarchy> /tmp/RtmpUpK1QT/file1dd9794d8160.zarr 
 #> ☰ / (root group)
 #> └ ⌗ top_array
 ```
@@ -85,7 +85,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/Rtmpo5aATs/file1ccb3511b131.zarr 
+#> <Zarr hierarchy> /tmp/RtmpUpK1QT/file1dd9794d8160.zarr 
 #> ☰ / (root group)
 #> ├ ⌗ top_array
 #> ├ ⌗ a_vector
@@ -113,9 +113,9 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/Rtmpo5aATs/file1ccb3511b131.zarr 
+#> Location  : /tmp/RtmpUpK1QT/file1dd9794d8160.zarr 
 #> Arrays    : 3 
-#> Total size: 7.7 KB
+#> Total size: 6.94 KB
 unlink(fn)
 ```
 
@@ -161,31 +161,30 @@ arr_def
 #>       "chunk_shape": [100, 100, 5]
 #>     }
 #>   },
-#>   "codecs": {
-#>     "transpose": {
+#>   "codecs": [
+#>     {
 #>       "name": "transpose",
 #>       "configuration": {
 #>         "order": [2, 1, 0]
 #>       }
 #>     },
-#>     "bytes": {
+#>     {
 #>       "name": "bytes",
 #>       "configuration": {
 #>         "endian": "little"
 #>       }
 #>     },
-#>     "blosc": {
+#>     {
 #>       "name": "blosc",
 #>       "configuration": {
-#>         "level": 6,
+#>         "clevel": 6,
 #>         "cname": "zstd",
-#>         "clevel": 1,
 #>         "shuffle": "shuffle",
 #>         "typesize": 2,
 #>         "blocksize": 0
 #>       }
 #>     }
-#>   }
+#>   ]
 #> }
 ```
 
@@ -331,26 +330,26 @@ arr_def
 #>       "chunk_shape": [120, 31, 5]
 #>     }
 #>   },
-#>   "codecs": {
-#>     "transpose": {
+#>   "codecs": [
+#>     {
 #>       "name": "transpose",
 #>       "configuration": {
 #>         "order": [2, 1, 0]
 #>       }
 #>     },
-#>     "bytes": {
+#>     {
 #>       "name": "bytes",
 #>       "configuration": {
 #>         "endian": "little"
 #>       }
 #>     },
-#>     "gzip": {
+#>     {
 #>       "name": "gzip",
 #>       "configuration": {
 #>         "level": 5
 #>       }
 #>     }
-#>   }
+#>   ]
 #> }
 ```
 
@@ -366,7 +365,7 @@ z <- create_zarr()
 
 # Create a first array in the root group
 z$add_array("/", "first_array", arr_def)
-#> <Zarr array> first_array 
+#> <Zarr array> ⌗ first_array 
 #> Path      : /first_array 
 #> Data type : int16 
 #> Shape     : 240 310 5 
@@ -374,7 +373,7 @@ z$add_array("/", "first_array", arr_def)
 
 # Re-use the array definition
 z$add_array("/", "another_array", arr_def)
-#> <Zarr array> another_array 
+#> <Zarr array> ⌗ another_array 
 #> Path      : /another_array 
 #> Data type : int16 
 #> Shape     : 240 310 5 
@@ -406,7 +405,7 @@ z <- as_zarr(x, location = fn)
 # Get the array using list-like access on the Zarr object
 arr <- z[["/"]]
 arr
-#> <Zarr array>  
+#> <Zarr array> ⌗  
 #> Path      : / 
 #> Data type : int32 
 #> Shape     : 5 20 4 

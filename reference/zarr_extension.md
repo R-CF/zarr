@@ -22,13 +22,13 @@ extension points.
 
 ### Public methods
 
-- [`zarr_extension$new()`](#method-zarr_extension-new)
+- [`zarr_extension$new()`](#method-zarr_extension-initialize)
 
 - [`zarr_extension$metadata_fragment()`](#method-zarr_extension-metadata_fragment)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_extension$new()`
 
 Create a new extension object.
 
@@ -48,7 +48,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `metadata_fragment()`
+### `zarr_extension$metadata_fragment()`
 
 Return the metadata fragment that describes this extension point object.
 This includes the metadata of any nested extension objects.

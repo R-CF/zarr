@@ -9,7 +9,7 @@ the store.
 
 ### Public methods
 
-- [`chunk_grid_regular_IO$new()`](#method-chunk_grid_regular_IO-new)
+- [`chunk_grid_regular_IO$new()`](#method-chunk_grid_regular_IO-initialize)
 
 - [`chunk_grid_regular_IO$read()`](#method-chunk_grid_regular_IO-read)
 
@@ -19,7 +19,7 @@ the store.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `chunk_grid_regular_IO$new()`
 
 Create a new instance of this class.
 
@@ -57,7 +57,7 @@ Create a new instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `read()`
+### `chunk_grid_regular_IO$read()`
 
 Read some data from the chunk.
 
@@ -79,7 +79,7 @@ matrix or array.
 
 ------------------------------------------------------------------------
 
-### Method [`write()`](https://rdrr.io/r/base/write.html)
+### `chunk_grid_regular_IO$write()`
 
 Write some data to the chunk.
 
@@ -111,7 +111,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method [`flush()`](https://rdrr.io/r/base/connections.html)
+### `chunk_grid_regular_IO$flush()`
 
 If the chunk has changed applied to it, persist the chunk to the store.
 

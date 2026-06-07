@@ -39,13 +39,13 @@ instance of this class is initialized automatically.
 
 ### Public methods
 
-- [`zarr_domain$new()`](#method-zarr_domain-new)
+- [`zarr_domain$new()`](#method-zarr_domain-initialize)
 
 - [`zarr_domain$build()`](#method-zarr_domain-build)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_domain$new()`
 
 Create a new instance of a Zarr domain. This method should not be called
 directly (as in `zarr_domain$new()`); instead, descendant classes will
@@ -69,7 +69,7 @@ A new instance of a domain class.
 
 ------------------------------------------------------------------------
 
-### Method `build()`
+### `zarr_domain$build()`
 
 This method will be called when the domain is requested to asses the
 Zarr node for domain properties. This method must be implemented by

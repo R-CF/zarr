@@ -6,10 +6,9 @@ transformation.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::chunking`](https://r-cf.github.io/zarr/reference/chunking.md)
--\> `chunk_grid_regular`
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`chunking`](https://r-cf.github.io/zarr/reference/chunking.md) -\>
+`chunk_grid_regular`
 
 ## Active bindings
 
@@ -23,7 +22,7 @@ transformation.
 
 ### Public methods
 
-- [`chunk_grid_regular$new()`](#method-chunk_grid_regular-new)
+- [`chunk_grid_regular$new()`](#method-chunk_grid_regular-initialize)
 
 - [`chunk_grid_regular$print()`](#method-chunk_grid_regular-print)
 
@@ -35,7 +34,7 @@ transformation.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `chunk_grid_regular$new()`
 
 Initialize a new chunking scheme for an array.
 
@@ -61,7 +60,7 @@ An instance of `chunk_grid_regular`.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `chunk_grid_regular$print()`
 
 Print a short description of this chunking scheme to the console.
 
@@ -75,7 +74,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `metadata_fragment()`
+### `chunk_grid_regular$metadata_fragment()`
 
 Return the metadata fragment that describes this chunking scheme.
 
@@ -89,7 +88,7 @@ A list with the metadata of this chunking scheme.
 
 ------------------------------------------------------------------------
 
-### Method `read()`
+### `chunk_grid_regular$read()`
 
 Read data from the Zarr array into an R object. The read can span
 multiple chunks. Reads will be parallelised if
@@ -114,7 +113,7 @@ A vector, matrix or array of data.
 
 ------------------------------------------------------------------------
 
-### Method [`write()`](https://rdrr.io/r/base/write.html)
+### `chunk_grid_regular$write()`
 
 Write data to the array. Writing data always uses a sequential plan.
 

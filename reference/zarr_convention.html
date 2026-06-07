@@ -87,19 +87,19 @@ with similar conventions and/or domain(s).</p>
 trailing semi-colon ":".</p></dd>
 
 
-<dt><code>schema</code></dt>
+    <dt><code>schema</code></dt>
 <dd><p>(read-only) The URL to the schema of the convention.</p></dd>
 
 
-<dt><code>uuid</code></dt>
+    <dt><code>uuid</code></dt>
 <dd><p>(read-only) The UUID of the convention, in string format.</p></dd>
 
 
-<dt><code>spec</code></dt>
+    <dt><code>spec</code></dt>
 <dd><p>The URL to the specification of the convention.</p></dd>
 
 
-<dt><code>description</code></dt>
+    <dt><code>description</code></dt>
 <dd><p>A short description of the convention.</p></dd>
 
 
@@ -110,76 +110,68 @@ trailing semi-colon ":".</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-zarr_convention-new"><code>zarr_convention$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-zarr_convention-initialize"><code>zarr_convention$new()</code></a></p></li>
 <li><p><a href="#method-zarr_convention-register"><code>zarr_convention$register()</code></a></p></li>
 <li><p><a href="#method-zarr_convention-write"><code>zarr_convention$write()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-zarr_convention-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-zarr_convention-initialize"></a><div class="section">
+<h3 id="zarr-convention-new-"><code>zarr_convention$new()</code><a class="anchor" aria-label="anchor" href="#zarr-convention-new-"></a></h3>
 <p>Create a new instance of a Zarr convention agent. This is
 a "virtual" ancestor class that should not be instantiated directly -
 instead use one of the descendant classes.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_convention.html">zarr_convention</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">name</span>, <span class="va">schema</span>, <span class="va">uuid</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>String value with the name of the convention.</p></dd>
 
-
-<dt><code>schema</code></dt>
+      <dt><code>schema</code></dt>
 <dd><p>String value with the URL to the schema of the convention.</p></dd>
 
-
-<dt><code>uuid</code></dt>
+      <dt><code>uuid</code></dt>
 <dd><p>String value with the UUID of the convention.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>A new instance of a Zarr convention agent.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_convention-register"></a><div class="section">
-<h3 id="method-register-">Method <code>register()</code><a class="anchor" aria-label="anchor" href="#method-register-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_convention-register"></a><div class="section">
+<h3 id="zarr-convention-register-"><code>zarr_convention$register()</code><a class="anchor" aria-label="anchor" href="#zarr-convention-register-"></a></h3>
 <p>Register the use of a convention in the attributes of a Zarr
 object.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_convention</span><span class="op">$</span><span class="fu">register</span><span class="op">(</span><span class="va">attributes</span>, brief <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>attributes</code></dt>
 <dd><p>A <code>list</code> with Zarr attributes for a group or array.</p></dd>
 
-
-<dt><code>brief</code></dt>
+      <dt><code>brief</code></dt>
 <dd><p>Logical flag to indicate if the registration should only
 include the name and the schema URL or all details (default).</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>The updated attributes.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_convention-write"></a><div class="section">
-<h3 id="method-write-">Method <code><a href="https://rdrr.io/r/base/write.html" class="external-link">write()</a></code><a class="anchor" aria-label="anchor" href="#method-write-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_convention-write"></a><div class="section">
+<h3 id="zarr-convention-write-"><code>zarr_convention$write()</code><a class="anchor" aria-label="anchor" href="#zarr-convention-write-"></a></h3>
 <p>Write the data of a convention instance in the attributes of
 a Zarr object. This method does not do any actual writing. Descendant
 classes should implement their specific solutions.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_convention</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">attributes</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>attributes</code></dt>
 <dd><p>A <code>list</code> with Zarr attributes for a group or array. The
@@ -187,13 +179,13 @@ properties will be written at the root level of <code>attributes</code>.</p></dd
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>The updated attributes.</p>
 </div>
 
 </div>
+
 
     </div>
 

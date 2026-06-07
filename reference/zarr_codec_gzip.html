@@ -52,7 +52,7 @@ and uncompresses the raw vector when reading.</p>
 
     <div class="section level2">
     <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
-    <p><code><a href="zarr_extension.html">zarr::zarr_extension</a></code> -&gt; <code><a href="zarr_codec.html">zarr::zarr_codec</a></code> -&gt; <code>zarr_codec_gzip</code></p>
+    <p><code><a href="zarr_extension.html">zarr_extension</a></code> -&gt; <code><a href="zarr_codec.html">zarr_codec</a></code> -&gt; <code>zarr_codec_gzip</code></p>
     </div>
     <div class="section level2">
     <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
@@ -68,21 +68,18 @@ between 0L (no compression) and 9 (maximum compression).</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-zarr_codec_gzip-new"><code>zarr_codec_gzip$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-zarr_codec_gzip-initialize"><code>zarr_codec_gzip$new()</code></a></p></li>
 <li><p><a href="#method-zarr_codec_gzip-copy"><code>zarr_codec_gzip$copy()</code></a></p></li>
 <li><p><a href="#method-zarr_codec_gzip-encode"><code>zarr_codec_gzip$encode()</code></a></p></li>
 <li><p><a href="#method-zarr_codec_gzip-decode"><code>zarr_codec_gzip$decode()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href="zarr_codec.html#method-metadata_fragment"><code>zarr::zarr_codec$metadata_fragment()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href="zarr_codec.html#method-print"><code>zarr::zarr_codec$print()</code></a></span></li>
-</ul></details></p><hr><a id="method-zarr_codec_gzip-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="metadata_fragment"><a href="zarr_codec.html#method-metadata_fragment"><code>zarr_codec$metadata_fragment()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_codec" data-id="print"><a href="zarr_codec.html#method-print"><code>zarr_codec$print()</code></a></span></li>
+</ul></details></p><hr><a id="method-zarr_codec_gzip-initialize"></a><div class="section">
+<h3 id="zarr-codec-gzip-new-"><code>zarr_codec_gzip$new()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-gzip-new-"></a></h3>
 <p>Create a new "gzip" codec object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_codec_gzip.html">zarr_codec_gzip</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>configuration <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>configuration</code></dt>
 <dd><p>Optional. A list with the configuration parameters
@@ -91,65 +88,63 @@ this codec, ranging from 0 (no compression) to 9 (maximum compression).</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>An instance of this class.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_codec_gzip-copy"></a><div class="section">
-<h3 id="method-copy-">Method <code>copy()</code><a class="anchor" aria-label="anchor" href="#method-copy-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_codec_gzip-copy"></a><div class="section">
+<h3 id="zarr-codec-gzip-copy-"><code>zarr_codec_gzip$copy()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-gzip-copy-"></a></h3>
 <p>Create a new, independent copy of this codec.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_codec_gzip</span><span class="op">$</span><span class="fu">copy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>An instance of <code>zarr_codec_gzip</code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_codec_gzip-encode"></a><div class="section">
-<h3 id="method-encode-">Method <code>encode()</code><a class="anchor" aria-label="anchor" href="#method-encode-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_codec_gzip-encode"></a><div class="section">
+<h3 id="zarr-codec-gzip-encode-"><code>zarr_codec_gzip$encode()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-gzip-encode-"></a></h3>
 <p>This method encodes a data object.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_codec_gzip</span><span class="op">$</span><span class="fu">encode</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
 <dd><p>The data to be encoded.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>The encoded data object.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_codec_gzip-decode"></a><div class="section">
-<h3 id="method-decode-">Method <code>decode()</code><a class="anchor" aria-label="anchor" href="#method-decode-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_codec_gzip-decode"></a><div class="section">
+<h3 id="zarr-codec-gzip-decode-"><code>zarr_codec_gzip$decode()</code><a class="anchor" aria-label="anchor" href="#zarr-codec-gzip-decode-"></a></h3>
 <p>This method decodes a data object.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_codec_gzip</span><span class="op">$</span><span class="fu">decode</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
 <dd><p>The data to be decoded.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>The decoded data object.</p>
 </div>
 
 </div>
+
 
     </div>
 

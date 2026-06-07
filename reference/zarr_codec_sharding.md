@@ -7,29 +7,28 @@ using sharding, writing is not supported.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
 -\> `zarr_codec_sharding`
 
 ## Methods
 
 ### Public methods
 
-- [`zarr_codec_sharding$new()`](#method-zarr_codec_sharding-new)
+- [`zarr_codec_sharding$new()`](#method-zarr_codec_sharding-initialize)
 
 - [`zarr_codec_sharding$copy()`](#method-zarr_codec_sharding-copy)
 
 Inherited methods
 
-- [`zarr::zarr_codec$decode()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-decode)
-- [`zarr::zarr_codec$encode()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-encode)
-- [`zarr::zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
-- [`zarr::zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
+- [`zarr_codec$decode()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-decode)
+- [`zarr_codec$encode()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-encode)
+- [`zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
+- [`zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_codec_sharding$new()`
 
 Create a new "crc32c" codec object.
 
@@ -50,7 +49,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `copy()`
+### `zarr_codec_sharding$copy()`
 
 Create a new, independent copy of this codec.
 

@@ -67,11 +67,10 @@ number of store requests — particularly important for HTTP stores.</p>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-chunk_grid_sharded_IO-new"><code>chunk_grid_sharded_IO$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-chunk_grid_sharded_IO-initialize"><code>chunk_grid_sharded_IO$new()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_sharded_IO-read"><code>chunk_grid_sharded_IO$read()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-chunk_grid_sharded_IO-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-chunk_grid_sharded_IO-initialize"></a><div class="section">
+<h3 id="chunk-grid-sharded-io-new-"><code>chunk_grid_sharded_IO$new()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-sharded-io-new-"></a></h3>
 <p>Create a new IO handler for a single shard.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/chunk_grid_sharded_IO.html">chunk_grid_sharded_IO</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
@@ -84,73 +83,63 @@ number of store requests — particularly important for HTTP stores.</p>
 <span>  <span class="va">dtype</span>,</span>
 <span>  <span class="va">store</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Store key for this shard file.</p></dd>
 
-
-<dt><code>shard_shape</code></dt>
+      <dt><code>shard_shape</code></dt>
 <dd><p>Integer vector, the shape of this shard.</p></dd>
 
-
-<dt><code>inner_shape</code></dt>
+      <dt><code>inner_shape</code></dt>
 <dd><p>Integer vector, the shape of each inner chunk.</p></dd>
 
-
-<dt><code>inner_codecs</code></dt>
+      <dt><code>inner_codecs</code></dt>
 <dd><p>List of <a href="zarr_codec.html">zarr_codec</a> instances for inner chunks.</p></dd>
 
-
-<dt><code>index_codecs</code></dt>
+      <dt><code>index_codecs</code></dt>
 <dd><p>List of <a href="zarr_codec.html">zarr_codec</a> instances for the index.</p></dd>
 
-
-<dt><code>index_loc</code></dt>
+      <dt><code>index_loc</code></dt>
 <dd><p>Character, <code>"end"</code> or <code>"start"</code>.</p></dd>
 
-
-<dt><code>dtype</code></dt>
+      <dt><code>dtype</code></dt>
 <dd><p>A <a href="zarr_data_type.html">zarr_data_type</a> instance.</p></dd>
 
-
-<dt><code>store</code></dt>
+      <dt><code>store</code></dt>
 <dd><p>A <a href="zarr_store.html">zarr_store</a> instance.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-chunk_grid_sharded_IO-read"></a><div class="section">
-<h3 id="method-read-">Method <code>read()</code><a class="anchor" aria-label="anchor" href="#method-read-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-chunk_grid_sharded_IO-read"></a><div class="section">
+<h3 id="chunk-grid-sharded-io-read-"><code>chunk_grid_sharded_IO$read()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-sharded-io-read-"></a></h3>
 <p>Read a region from this shard.</p>
 <p>Inner chunks needed for this read are fetched in a single coalesced
 byte-range request. Previously decoded inner chunks are served from
 cache without any store access.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_sharded_IO</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="va">offset</span>, <span class="va">length</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>offset</code></dt>
 <dd><p>Integer vector of 0-based offsets into the shard.</p></dd>
 
-
-<dt><code>length</code></dt>
+      <dt><code>length</code></dt>
 <dd><p>Integer vector of lengths along each dimension.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>An array of decoded data.</p>
 </div>
 
 </div>
+
 
     </div>
 

@@ -57,7 +57,7 @@ validity of node names.
 
 ### Public methods
 
-- [`zarr_node$new()`](#method-zarr_node-new)
+- [`zarr_node$new()`](#method-zarr_node-initialize)
 
 - [`zarr_node$print_attributes()`](#method-zarr_node-print_attributes)
 
@@ -69,7 +69,7 @@ validity of node names.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_node$new()`
 
 Initialize a new node in a Zarr hierarchy.
 
@@ -98,7 +98,7 @@ Initialize a new node in a Zarr hierarchy.
 
 ------------------------------------------------------------------------
 
-### Method `print_attributes()`
+### `zarr_node$print_attributes()`
 
 Print the metadata "attributes" to the console. Usually called by the
 [zarr_group](https://r-cf.github.io/zarr/reference/zarr_group.md) and
@@ -118,7 +118,7 @@ Print the metadata "attributes" to the console. Usually called by the
 
 ------------------------------------------------------------------------
 
-### Method `set_attribute()`
+### `zarr_node$set_attribute()`
 
 Add an attribute to the metadata of the object. If an attribute `name`
 already exists, it will be overwritten.
@@ -148,7 +148,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `delete_attributes()`
+### `zarr_node$delete_attributes()`
 
 Delete attributes. If an attribute in `name` is not present this method
 simply returns.
@@ -169,7 +169,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method [`save()`](https://rdrr.io/r/base/save.html)
+### `zarr_node$save()`
 
 Persist any edits to the group or array to the store.
 

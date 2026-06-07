@@ -16,7 +16,7 @@ convention is implemented here:
 
 ## Super class
 
-[`zarr::zarr_convention`](https://r-cf.github.io/zarr/reference/zarr_convention.md)
+[`zarr_convention`](https://r-cf.github.io/zarr/reference/zarr_convention.md)
 -\> `zarr_conv_ref`
 
 ## Active bindings
@@ -44,7 +44,7 @@ convention is implemented here:
 
 ### Public methods
 
-- [`zarr_conv_ref$new()`](#method-zarr_conv_ref-new)
+- [`zarr_conv_ref$new()`](#method-zarr_conv_ref-initialize)
 
 - [`zarr_conv_ref$write()`](#method-zarr_conv_ref-write)
 
@@ -52,11 +52,11 @@ convention is implemented here:
 
 Inherited methods
 
-- [`zarr::zarr_convention$register()`](https://r-cf.github.io/zarr/reference/zarr_convention.html#method-register)
+- [`zarr_convention$register()`](https://r-cf.github.io/zarr/reference/zarr_convention.html#method-register)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_conv_ref$new()`
 
 Create a new instance of a "ref" convention agent.
 
@@ -70,7 +70,7 @@ A new instance of a "ref" convention agent.
 
 ------------------------------------------------------------------------
 
-### Method [`write()`](https://rdrr.io/r/base/write.html)
+### `zarr_conv_ref$write()`
 
 Write the data of this instance in the attributes of a Zarr object.
 
@@ -91,7 +91,7 @@ The updated attributes.
 
 ------------------------------------------------------------------------
 
-### Method `parse_json_pointer()`
+### `zarr_conv_ref$parse_json_pointer()`
 
 Validate and parse a JSON Pointer (RFC 6901) into its reference tokens.
 

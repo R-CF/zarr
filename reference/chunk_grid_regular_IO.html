@@ -61,37 +61,30 @@ store.</p>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-chunk_grid_regular_IO-new"><code>chunk_grid_regular_IO$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-chunk_grid_regular_IO-initialize"><code>chunk_grid_regular_IO$new()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_regular_IO-read"><code>chunk_grid_regular_IO$read()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_regular_IO-write"><code>chunk_grid_regular_IO$write()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_regular_IO-flush"><code>chunk_grid_regular_IO$flush()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-chunk_grid_regular_IO-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-chunk_grid_regular_IO-initialize"></a><div class="section">
+<h3 id="chunk-grid-regular-io-new-"><code>chunk_grid_regular_IO$new()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-io-new-"></a></h3>
 <p>Create a new instance of this class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/chunk_grid_regular_IO.html">chunk_grid_regular_IO</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">key</span>, <span class="va">chunk_shape</span>, <span class="va">dtype</span>, <span class="va">store</span>, <span class="va">codecs</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>The key of the chunk in the store.</p></dd>
 
-
-<dt><code>chunk_shape</code></dt>
+      <dt><code>chunk_shape</code></dt>
 <dd><p>Integer vector with the shape of the chunk.</p></dd>
 
-
-<dt><code>dtype</code></dt>
+      <dt><code>dtype</code></dt>
 <dd><p>The <a href="zarr_data_type.html">zarr_data_type</a> of the array.</p></dd>
 
-
-<dt><code>store</code></dt>
+      <dt><code>store</code></dt>
 <dd><p>The <a href="zarr_store.html">zarr_store</a> instance that is the store of this array.</p></dd>
 
-
-<dt><code>codecs</code></dt>
+      <dt><code>codecs</code></dt>
 <dd><p>List of <a href="zarr_codec.html">zarr_codec</a> instances to use. The list will be
 copied such that this chunk reader/writer can be run asynchronously.</p></dd>
 
@@ -99,14 +92,14 @@ copied such that this chunk reader/writer can be run asynchronously.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-chunk_grid_regular_IO-read"></a><div class="section">
-<h3 id="method-read-">Method <code>read()</code><a class="anchor" aria-label="anchor" href="#method-read-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-chunk_grid_regular_IO-read"></a><div class="section">
+<h3 id="chunk-grid-regular-io-read-"><code>chunk_grid_regular_IO$read()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-io-read-"></a></h3>
 <p>Read some data from the chunk.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular_IO</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="va">offset</span>, <span class="va">length</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>offset, length</code></dt>
 <dd><p>The integer offsets and length that determine where
@@ -114,32 +107,29 @@ from the chunk to read the data.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>The requested data, as an R object with dimensions set when it is
 a matrix or array.</p>
 </div>
 
-</div><p></p><hr><a id="method-chunk_grid_regular_IO-write"></a><div class="section">
-<h3 id="method-write-">Method <code><a href="https://rdrr.io/r/base/write.html" class="external-link">write()</a></code><a class="anchor" aria-label="anchor" href="#method-write-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-chunk_grid_regular_IO-write"></a><div class="section">
+<h3 id="chunk-grid-regular-io-write-"><code>chunk_grid_regular_IO$write()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-io-write-"></a></h3>
 <p>Write some data to the chunk.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular_IO</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">data</span>, <span class="va">offset</span>, flush <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
 <dd><p>The data to write to the chunk.</p></dd>
 
-
-<dt><code>offset</code></dt>
+      <dt><code>offset</code></dt>
 <dd><p>The integer offsets that determine where in the chunk to
 write the data. Ignored if argument <code>data</code> has a full chunk of data.</p></dd>
 
-
-<dt><code>flush</code></dt>
+      <dt><code>flush</code></dt>
 <dd><p>If <code>TRUE</code>, the chunk will be written to file iimediately
 after writing the new data to it. If <code>FALSE</code>, data will be written to
 the chunk but not persisted to the store - this is more efficient when
@@ -147,26 +137,26 @@ writing multiple slabs of data to a chunk.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
-</div><p></p><hr><a id="method-chunk_grid_regular_IO-flush"></a><div class="section">
-<h3 id="method-flush-">Method <code><a href="https://rdrr.io/r/base/connections.html" class="external-link">flush()</a></code><a class="anchor" aria-label="anchor" href="#method-flush-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-chunk_grid_regular_IO-flush"></a><div class="section">
+<h3 id="chunk-grid-regular-io-flush-"><code>chunk_grid_regular_IO$flush()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-io-flush-"></a></h3>
 <p>If the chunk has changed applied to it, persist the chunk to
 the store.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular_IO</span><span class="op">$</span><span class="fu">flush</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
 </div>
+
 
     </div>
 

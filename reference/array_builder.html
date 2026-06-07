@@ -145,7 +145,7 @@ be 3. After changing the format, many fields will have been reset to a
 default value.</p></dd>
 
 
-<dt><code>portable</code></dt>
+    <dt><code>portable</code></dt>
 <dd><p>Logical flag to indicate if the array is specified for
 maximum portability across environments (e.g. Python, Java, C++).
 Default is <code>FALSE</code>. Setting the portability to <code>TRUE</code> implies that R
@@ -153,23 +153,23 @@ data will be permuted before writing the array to the store. A value of
 <code>FALSE</code> is therefore more efficient.</p></dd>
 
 
-<dt><code>data_type</code></dt>
+    <dt><code>data_type</code></dt>
 <dd><p>The data type of the Zarr array. After changing the
 format, many fields will have been reset to a default value.</p></dd>
 
 
-<dt><code>fill_value</code></dt>
+    <dt><code>fill_value</code></dt>
 <dd><p>The value in the array of uninitialized data elements.
 The <code>fill_value</code> has to agree with the <code>data_type</code> of the array.</p></dd>
 
 
-<dt><code>shape</code></dt>
+    <dt><code>shape</code></dt>
 <dd><p>The shape of the Zarr array, an integer vector of lengths
 along the dimensions of the array. Setting the shape will reset the
 chunking settings to their default values.</p></dd>
 
 
-<dt><code>chunk_shape</code></dt>
+    <dt><code>chunk_shape</code></dt>
 <dd><p>The shape of each individual chunk in which to store
 the Zarr array. When setting, pass in an integer vector of lengths of
 the same size as the shape of the array. The <code>shape</code> of the array must
@@ -177,12 +177,12 @@ be set before setting this. When reading, returns an instance of class
 <a href="chunk_grid_regular.html">chunk_grid_regular</a>.</p></dd>
 
 
-<dt><code>codec_info</code></dt>
+    <dt><code>codec_info</code></dt>
 <dd><p>(read-only) Retrieve a <code>data.frame</code> of registered codec
 modes and names for this array.</p></dd>
 
 
-<dt><code>codecs</code></dt>
+    <dt><code>codecs</code></dt>
 <dd><p>(read-only) A list with validated and instantiated codecs
 for processing data associated with this array.</p></dd>
 
@@ -194,24 +194,21 @@ for processing data associated with this array.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-array_builder-new"><code>array_builder$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-array_builder-initialize"><code>array_builder$new()</code></a></p></li>
 <li><p><a href="#method-array_builder-print"><code>array_builder$print()</code></a></p></li>
 <li><p><a href="#method-array_builder-metadata"><code>array_builder$metadata()</code></a></p></li>
 <li><p><a href="#method-array_builder-add_codec"><code>array_builder$add_codec()</code></a></p></li>
 <li><p><a href="#method-array_builder-remove_codec"><code>array_builder$remove_codec()</code></a></p></li>
 <li><p><a href="#method-array_builder-is_valid"><code>array_builder$is_valid()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-array_builder-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-array_builder-initialize"></a><div class="section">
+<h3 id="array-builder-new-"><code>array_builder$new()</code><a class="anchor" aria-label="anchor" href="#array-builder-new-"></a></h3>
 <p>Create a new instance of the <code>array_builder</code> class.
 Optionally, a metadata document may be passed in as an argument to
 inspect the definition of an existing Zarr array, or to use as a
 template for a new metadata document.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/array_builder.html">array_builder</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>metadata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>metadata</code></dt>
 <dd><p>Optional. A JSON metadata document or list of metadata
@@ -220,42 +217,43 @@ any operation in this class.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>An instance of this class.</p>
 </div>
 
-</div><p></p><hr><a id="method-array_builder-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-array_builder-print"></a><div class="section">
+<h3 id="array-builder-print-"><code>array_builder$print()</code><a class="anchor" aria-label="anchor" href="#array-builder-print-"></a></h3>
 <p>Print the array metadata to the console.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">array_builder</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-array_builder-metadata"></a><div class="section">
-<h3 id="method-metadata-">Method <code>metadata()</code><a class="anchor" aria-label="anchor" href="#method-metadata-"></a></h3>
+<p></p><hr><a id="method-array_builder-metadata"></a><div class="section">
+<h3 id="array-builder-metadata-"><code>array_builder$metadata()</code><a class="anchor" aria-label="anchor" href="#array-builder-metadata-"></a></h3>
 <p>Retrieve the metadata document to create a Zarr array.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">array_builder</span><span class="op">$</span><span class="fu">metadata</span><span class="op">(</span>format <span class="op">=</span> <span class="st">"list"</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>format</code></dt>
 <dd><p>Either "list" or "JSON".</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>The metadata document in the requested format.</p>
 </div>
 
-</div><p></p><hr><a id="method-array_builder-add_codec"></a><div class="section">
-<h3 id="method-add-codec-">Method <code>add_codec()</code><a class="anchor" aria-label="anchor" href="#method-add-codec-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-array_builder-add_codec"></a><div class="section">
+<h3 id="array-builder-add-codec-"><code>array_builder$add_codec()</code><a class="anchor" aria-label="anchor" href="#array-builder-add-codec-"></a></h3>
 <p>Adds a codec at the end of the currently registered codecs.
 Optionally, the <code>.position</code> argument may be used to indicate a specific
 position of the codec in the list. Codecs can only be added if their
@@ -264,44 +262,39 @@ agree with the existing codecs, a warning will be issued and the new
 codec will not be registered.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">array_builder</span><span class="op">$</span><span class="fu">add_codec</span><span class="op">(</span><span class="va">codec</span>, <span class="va">configuration</span>, .position <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>codec</code></dt>
 <dd><p>The name of the codec. This must be a registered codec with
 an implementation that is available from this package.</p></dd>
 
-
-<dt><code>configuration</code></dt>
+      <dt><code>configuration</code></dt>
 <dd><p>List with configuration parameters of the <code>codec</code>.
 May be <code>NULL</code> or <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> for codecs that do not have configuration
 parameters.</p></dd>
 
-
-<dt><code>.position</code></dt>
+      <dt><code>.position</code></dt>
 <dd><p>Optional, the 1-based position where to insert the codec
 in the list. If the number is larger than the list, the codec will be
 appended at the end of the list of codecs.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
-</div><p></p><hr><a id="method-array_builder-remove_codec"></a><div class="section">
-<h3 id="method-remove-codec-">Method <code>remove_codec()</code><a class="anchor" aria-label="anchor" href="#method-remove-codec-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-array_builder-remove_codec"></a><div class="section">
+<h3 id="array-builder-remove-codec-"><code>array_builder$remove_codec()</code><a class="anchor" aria-label="anchor" href="#array-builder-remove-codec-"></a></h3>
 <p>Remove a codec from the list of codecs for the array. A
 codec cannot be removed if the remaining codecs do not form a valid
 chain due to mode conflicts.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">array_builder</span><span class="op">$</span><span class="fu">remove_codec</span><span class="op">(</span><span class="va">codec</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>codec</code></dt>
 <dd><p>The name of the codec to remove, a single character string.</p></dd>
@@ -310,21 +303,22 @@ chain due to mode conflicts.</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-array_builder-is_valid"></a><div class="section">
-<h3 id="method-is-valid-">Method <code>is_valid()</code><a class="anchor" aria-label="anchor" href="#method-is-valid-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-array_builder-is_valid"></a><div class="section">
+<h3 id="array-builder-is-valid-"><code>array_builder$is_valid()</code><a class="anchor" aria-label="anchor" href="#array-builder-is-valid-"></a></h3>
 <p>This method indicates if the current specification results
 in a valid metadata document to create a Zarr array.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">array_builder</span><span class="op">$</span><span class="fu">is_valid</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p><code>TRUE</code> if a valid metadata document can be generated, <code>FALSE</code>
 otherwise.</p>
 </div>
 
 </div>
+
 
     </div>
 

@@ -25,9 +25,8 @@ the array definition.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
 -\> `zarr_codec_transpose`
 
 ## Active bindings
@@ -41,7 +40,7 @@ the array definition.
 
 ### Public methods
 
-- [`zarr_codec_transpose$new()`](#method-zarr_codec_transpose-new)
+- [`zarr_codec_transpose$new()`](#method-zarr_codec_transpose-initialize)
 
 - [`zarr_codec_transpose$copy()`](#method-zarr_codec_transpose-copy)
 
@@ -51,12 +50,12 @@ the array definition.
 
 Inherited methods
 
-- [`zarr::zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
-- [`zarr::zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
+- [`zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
+- [`zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_codec_transpose$new()`
 
 Create a new "transpose" codec object.
 
@@ -84,7 +83,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `copy()`
+### `zarr_codec_transpose$copy()`
 
 Create a new, independent copy of this codec.
 
@@ -98,7 +97,7 @@ An instance of `zarr_codec_transpose`.
 
 ------------------------------------------------------------------------
 
-### Method `encode()`
+### `zarr_codec_transpose$encode()`
 
 This method permutes a data object to match the desired dimension
 ordering.
@@ -120,7 +119,7 @@ order.
 
 ------------------------------------------------------------------------
 
-### Method `decode()`
+### `zarr_codec_transpose$decode()`
 
 This method permutes a data object from a Zarr store to an R matrix or
 array.

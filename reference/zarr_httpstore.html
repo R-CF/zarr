@@ -88,7 +88,7 @@ arguments are valid, in particular keys and prefixes.</p>
 
     <div class="section level2">
     <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
-    <p><code><a href="zarr_store.html">zarr::zarr_store</a></code> -&gt; <code>zarr_httpstore</code></p>
+    <p><code><a href="zarr_store.html">zarr_store</a></code> -&gt; <code>zarr_httpstore</code></p>
     </div>
     <div class="section level2">
     <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
@@ -96,15 +96,15 @@ arguments are valid, in particular keys and prefixes.</p>
 <dd><p>(read-only) Name of the class for printing.</p></dd>
 
 
-<dt><code>root</code></dt>
+    <dt><code>root</code></dt>
 <dd><p>(read-only) The root of the HTTP store, identical to its URL.</p></dd>
 
 
-<dt><code>uri</code></dt>
+    <dt><code>uri</code></dt>
 <dd><p>(read-only) The URI of the store location.</p></dd>
 
 
-<dt><code>separator</code></dt>
+    <dt><code>separator</code></dt>
 <dd><p>(read-only) The default chunk separator of the store,
 usually a slash '/'.</p></dd>
 
@@ -116,8 +116,7 @@ usually a slash '/'.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-zarr_httpstore-new"><code>zarr_httpstore$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-zarr_httpstore-initialize"><code>zarr_httpstore$new()</code></a></p></li>
 <li><p><a href="#method-zarr_httpstore-exists"><code>zarr_httpstore$exists()</code></a></p></li>
 <li><p><a href="#method-zarr_httpstore-clear"><code>zarr_httpstore$clear()</code></a></p></li>
 <li><p><a href="#method-zarr_httpstore-erase"><code>zarr_httpstore$erase()</code></a></p></li>
@@ -132,12 +131,12 @@ usually a slash '/'.</p></dd>
 <li><p><a href="#method-zarr_httpstore-is_group"><code>zarr_httpstore$is_group()</code></a></p></li>
 <li><p><a href="#method-zarr_httpstore-create_group"><code>zarr_httpstore$create_group()</code></a></p></li>
 <li><p><a href="#method-zarr_httpstore-create_array"><code>zarr_httpstore$create_array()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize"><a href="zarr_store.html#method-getsize"><code>zarr::zarr_store$getsize()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href="zarr_store.html#method-getsize_prefix"><code>zarr::zarr_store$getsize_prefix()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href="zarr_store.html#method-is_empty"><code>zarr::zarr_store$is_empty()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href="zarr_store.html#method-list"><code>zarr::zarr_store$list()</code></a></span></li>
-</ul></details></p><hr><a id="method-zarr_httpstore-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize"><a href="zarr_store.html#method-getsize"><code>zarr_store$getsize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href="zarr_store.html#method-getsize_prefix"><code>zarr_store$getsize_prefix()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href="zarr_store.html#method-is_empty"><code>zarr_store$is_empty()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href="zarr_store.html#method-list"><code>zarr_store$list()</code></a></span></li>
+</ul></details></p><hr><a id="method-zarr_httpstore-initialize"></a><div class="section">
+<h3 id="zarr-httpstore-new-"><code>zarr_httpstore$new()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-new-"></a></h3>
 <p>Create an instance of this class.</p>
 <p>HTTP stores are read-only. Currently two types of Zarr store can be
 accessed. A Zarr v.2 consolidated metadata file at the root of the
@@ -146,9 +145,7 @@ and arrays. Alternatively, a store with a group or a single array,
 either v.2 or v.3.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_httpstore.html">zarr_httpstore</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>url</code></dt>
 <dd><p>The path to the HTTP store to be opened. The URL may use UTF-8
@@ -156,199 +153,187 @@ code points.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>An instance of this class.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-exists"></a><div class="section">
-<h3 id="method-exists-">Method <code><a href="https://rdrr.io/r/base/exists.html" class="external-link">exists()</a></code><a class="anchor" aria-label="anchor" href="#method-exists-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-exists"></a><div class="section">
+<h3 id="zarr-httpstore-exists-"><code>zarr_httpstore$exists()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-exists-"></a></h3>
 <p>Check if a key exists in the store. The key can point to a
 group, an array, or a metadata file. This check is only relevant for
 HTTP stores with consolidated metadata. In other cases the single group
 or array will be at the root.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">exists</span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key that the store will be searched for.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p><code>TRUE</code> if argument <code>key</code> is found, <code>FALSE</code> otherwise.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-clear"></a><div class="section">
-<h3 id="method-clear-">Method <code>clear()</code><a class="anchor" aria-label="anchor" href="#method-clear-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-clear"></a><div class="section">
+<h3 id="zarr-httpstore-clear-"><code>zarr_httpstore$clear()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-clear-"></a></h3>
 <p>Clearing the store is not supported.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p><code>FALSE</code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-erase"></a><div class="section">
-<h3 id="method-erase-">Method <code>erase()</code><a class="anchor" aria-label="anchor" href="#method-erase-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-erase"></a><div class="section">
+<h3 id="zarr-httpstore-erase-"><code>zarr_httpstore$erase()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-erase-"></a></h3>
 <p>Removing a key from the store is not supported.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">erase</span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Ignored.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p><code>FALSE</code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-erase_prefix"></a><div class="section">
-<h3 id="method-erase-prefix-">Method <code>erase_prefix()</code><a class="anchor" aria-label="anchor" href="#method-erase-prefix-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-erase_prefix"></a><div class="section">
+<h3 id="zarr-httpstore-erase-prefix-"><code>zarr_httpstore$erase_prefix()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-erase-prefix-"></a></h3>
 <p>Removing keys from the store is not supported.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">erase_prefix</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Ignored.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code>FALSE</code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-list_dir"></a><div class="section">
-<h3 id="method-list-dir-">Method <code>list_dir()</code><a class="anchor" aria-label="anchor" href="#method-list-dir-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-list_dir"></a><div class="section">
+<h3 id="zarr-httpstore-list-dir-"><code>zarr_httpstore$list_dir()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-list-dir-"></a></h3>
 <p>Retrieve all keys and prefixes with a given prefix and which
 do not contain the character "/" after the given prefix. In other
 words, this retrieves all the nodes in the store below the node
 indicated by the prefix.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">list_dir</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Character string. The prefix whose nodes to list.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>A character array with all keys found in the store immediately
 below the <code>prefix</code>, both for groups and arrays.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-list_prefix"></a><div class="section">
-<h3 id="method-list-prefix-">Method <code>list_prefix()</code><a class="anchor" aria-label="anchor" href="#method-list-prefix-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-list_prefix"></a><div class="section">
+<h3 id="zarr-httpstore-list-prefix-"><code>zarr_httpstore$list_prefix()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-list-prefix-"></a></h3>
 <p>Retrieve all keys and prefixes with a given prefix.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">list_prefix</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Character string. The prefix whose nodes to list.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>A character vector with all paths found in the store below the
 <code>prefix</code> location, both for groups and arrays.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-set"></a><div class="section">
-<h3 id="method-set-">Method <code>set()</code><a class="anchor" aria-label="anchor" href="#method-set-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-set"></a><div class="section">
+<h3 id="zarr-httpstore-set-"><code>zarr_httpstore$set()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-set-"></a></h3>
 <p>Storing a <code>(key, value)</code> pair is not supported.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Ignored.</p></dd>
 
-
-<dt><code>value</code></dt>
+      <dt><code>value</code></dt>
 <dd><p>Ignored.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-set_if_not_exists"></a><div class="section">
-<h3 id="method-set-if-not-exists-">Method <code>set_if_not_exists()</code><a class="anchor" aria-label="anchor" href="#method-set-if-not-exists-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-set_if_not_exists"></a><div class="section">
+<h3 id="zarr-httpstore-set-if-not-exists-"><code>zarr_httpstore$set_if_not_exists()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-set-if-not-exists-"></a></h3>
 <p>Storing a <code>(key, value)</code> pair is not supported.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">set_if_not_exists</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Ignored.</p></dd>
 
-
-<dt><code>value</code></dt>
+      <dt><code>value</code></dt>
 <dd><p>Ignored.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-get"></a><div class="section">
-<h3 id="method-get-">Method <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code><a class="anchor" aria-label="anchor" href="#method-get-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-get"></a><div class="section">
+<h3 id="zarr-httpstore-get-"><code>zarr_httpstore$get()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-get-"></a></h3>
 <p>Retrieve the value associated with a given key.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">key</span>, prototype <span class="op">=</span> <span class="cn">NULL</span>, byte_range <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key for which to get data.</p></dd>
 
-
-<dt><code>prototype</code></dt>
+      <dt><code>prototype</code></dt>
 <dd><p>Ignored. The only buffer type that is supported maps
 directly to an R raw vector.</p></dd>
 
-
-<dt><code>byte_range</code></dt>
+      <dt><code>byte_range</code></dt>
 <dd><p>If <code>NULL</code>, all data associated with the key is
 retrieved. If a single positive integer, all bytes starting from a
 given byte offset to the end of the object are returned. If a single
@@ -360,121 +345,115 @@ starts after the end of the object, an error will be returned.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>A raw vector with the data pointed at by the key.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-get_metadata"></a><div class="section">
-<h3 id="method-get-metadata-">Method <code>get_metadata()</code><a class="anchor" aria-label="anchor" href="#method-get-metadata-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-get_metadata"></a><div class="section">
+<h3 id="zarr-httpstore-get-metadata-"><code>zarr_httpstore$get_metadata()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-get-metadata-"></a></h3>
 <p>Retrieve the metadata document of the node at the location
 indicated by the <code>prefix</code> argument. The metadata will always be
 presented to the caller in the Zarr v.3 format. Attributes, if present,
 will be added.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to retrieve.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>A list with the metadata, or <code>NULL</code> if the prefix is not pointing
 to a Zarr group or array.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-set_metadata"></a><div class="section">
-<h3 id="method-set-metadata-">Method <code>set_metadata()</code><a class="anchor" aria-label="anchor" href="#method-set-metadata-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-set_metadata"></a><div class="section">
+<h3 id="zarr-httpstore-set-metadata-"><code>zarr_httpstore$set_metadata()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-set-metadata-"></a></h3>
 <p>Setting metadata is not supported.</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span><span class="va">prefix</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Ignored.</p></dd>
 
-
-<dt><code>metadata</code></dt>
+      <dt><code>metadata</code></dt>
 <dd><p>Ignored.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p>Self, invisible</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-is_group"></a><div class="section">
-<h3 id="method-is-group-">Method <code>is_group()</code><a class="anchor" aria-label="anchor" href="#method-is-group-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-is_group"></a><div class="section">
+<h3 id="zarr-httpstore-is-group-"><code>zarr_httpstore$is_group()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-is-group-"></a></h3>
 <p>Test if <code>path</code> is pointing to a Zarr group.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">is_group</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to test.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p><code>TRUE</code> if the <code>path</code> points to a Zarr group, <code>FALSE</code> otherwise.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-create_group"></a><div class="section">
-<h3 id="method-create-group-">Method <code>create_group()</code><a class="anchor" aria-label="anchor" href="#method-create-group-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-create_group"></a><div class="section">
+<h3 id="zarr-httpstore-create-group-"><code>zarr_httpstore$create_group()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-create-group-"></a></h3>
 <p>Creating a new group in the store is not supported.</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">create_group</span><span class="op">(</span><span class="va">path</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path, name</code></dt>
 <dd><p>Ignored.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>An error indicating that the group could not be created.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_httpstore-create_array"></a><div class="section">
-<h3 id="method-create-array-">Method <code>create_array()</code><a class="anchor" aria-label="anchor" href="#method-create-array-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_httpstore-create_array"></a><div class="section">
+<h3 id="zarr-httpstore-create-array-"><code>zarr_httpstore$create_array()</code><a class="anchor" aria-label="anchor" href="#zarr-httpstore-create-array-"></a></h3>
 <p>Creating a new array in the store is not supported.</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">create_array</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent, name, metadata</code></dt>
 <dd><p>Ignored.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>An error indicating that the array could not be created.</p>
 </div>
 
 </div>
+
 
     </div>
 

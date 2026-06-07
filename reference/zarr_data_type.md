@@ -5,7 +5,7 @@ also manages the 'fill_value' attribute associated with the data type.
 
 ## Super class
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
 -\> `zarr_data_type`
 
 ## Active bindings
@@ -37,7 +37,7 @@ also manages the 'fill_value' attribute associated with the data type.
 
 ### Public methods
 
-- [`zarr_data_type$new()`](#method-zarr_data_type-new)
+- [`zarr_data_type$new()`](#method-zarr_data_type-initialize)
 
 - [`zarr_data_type$print()`](#method-zarr_data_type-print)
 
@@ -45,7 +45,7 @@ also manages the 'fill_value' attribute associated with the data type.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_data_type$new()`
 
 Create a new data type object.
 
@@ -69,7 +69,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `zarr_data_type$print()`
 
 Print a summary of the data type to the console.
 
@@ -79,7 +79,7 @@ Print a summary of the data type to the console.
 
 ------------------------------------------------------------------------
 
-### Method `metadata_fragment()`
+### `zarr_data_type$metadata_fragment()`
 
 Return the metadata fragment for this data type and its fill value.
 

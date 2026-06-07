@@ -6,9 +6,8 @@ endianness of the data in the operation.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
 -\> `zarr_codec_bytes`
 
 ## Active bindings
@@ -22,7 +21,7 @@ endianness of the data in the operation.
 
 ### Public methods
 
-- [`zarr_codec_bytes$new()`](#method-zarr_codec_bytes-new)
+- [`zarr_codec_bytes$new()`](#method-zarr_codec_bytes-initialize)
 
 - [`zarr_codec_bytes$copy()`](#method-zarr_codec_bytes-copy)
 
@@ -34,11 +33,11 @@ endianness of the data in the operation.
 
 Inherited methods
 
-- [`zarr::zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
+- [`zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_codec_bytes$new()`
 
 Create a new "bytes" codec object.
 
@@ -71,7 +70,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `copy()`
+### `zarr_codec_bytes$copy()`
 
 Create a new, independent copy of this codec.
 
@@ -85,7 +84,7 @@ An instance of `zarr_codec_bytes`.
 
 ------------------------------------------------------------------------
 
-### Method `metadata_fragment()`
+### `zarr_codec_bytes$metadata_fragment()`
 
 Return the metadata fragment that describes this codec.
 
@@ -99,7 +98,7 @@ A list with the metadata of this codec.
 
 ------------------------------------------------------------------------
 
-### Method `encode()`
+### `zarr_codec_bytes$encode()`
 
 This method writes an R object to a raw vector in the data type of the
 Zarr array.
@@ -120,7 +119,7 @@ A raw vector with the encoded data object.
 
 ------------------------------------------------------------------------
 
-### Method `decode()`
+### `zarr_codec_bytes$decode()`
 
 This method takes a raw vector and converts it to an R object of an
 appropriate type.

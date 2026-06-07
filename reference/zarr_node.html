@@ -83,32 +83,32 @@ names.</p>
 <dd><p>(read-only) The name of the node.</p></dd>
 
 
-<dt><code>parent</code></dt>
+    <dt><code>parent</code></dt>
 <dd><p>(read-only) The parent of the node. For a root node this
 returns <code>NULL</code>, otherwise this <code>zarr_group</code> or <code>zarr_array</code> instance.</p></dd>
 
 
-<dt><code>store</code></dt>
+    <dt><code>store</code></dt>
 <dd><p>(read-only) The store of the node.</p></dd>
 
 
-<dt><code>path</code></dt>
+    <dt><code>path</code></dt>
 <dd><p>(read-only) The path of this node, relative to the root node
 of the hierarchy.</p></dd>
 
 
-<dt><code>prefix</code></dt>
+    <dt><code>prefix</code></dt>
 <dd><p>(read-only) The prefix of this node, relative to the root
 node of the hierarchy.</p></dd>
 
 
-<dt><code>metadata</code></dt>
+    <dt><code>metadata</code></dt>
 <dd><p>The metadata document of this node, a <code>list</code>. CAUTION:
 Setting a list that is not properly describing this object will render
 the object invalid.</p></dd>
 
 
-<dt><code>attributes</code></dt>
+    <dt><code>attributes</code></dt>
 <dd><p>(read-only) Retrieve the list of attributes of this
 object. Attributes can be added or modified with the <code>set_attribute()</code>
 method or removed with the <code>delete_attributes()</code> method.</p></dd>
@@ -121,35 +121,29 @@ method or removed with the <code>delete_attributes()</code> method.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-zarr_node-new"><code>zarr_node$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-zarr_node-initialize"><code>zarr_node$new()</code></a></p></li>
 <li><p><a href="#method-zarr_node-print_attributes"><code>zarr_node$print_attributes()</code></a></p></li>
 <li><p><a href="#method-zarr_node-set_attribute"><code>zarr_node$set_attribute()</code></a></p></li>
 <li><p><a href="#method-zarr_node-delete_attributes"><code>zarr_node$delete_attributes()</code></a></p></li>
 <li><p><a href="#method-zarr_node-save"><code>zarr_node$save()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-zarr_node-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-zarr_node-initialize"></a><div class="section">
+<h3 id="zarr-node-new-"><code>zarr_node$new()</code><a class="anchor" aria-label="anchor" href="#zarr-node-new-"></a></h3>
 <p>Initialize a new node in a Zarr hierarchy.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_node.html">zarr_node</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">name</span>, <span class="va">metadata</span>, <span class="va">parent</span>, <span class="va">store</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the node.</p></dd>
 
-
-<dt><code>metadata</code></dt>
+      <dt><code>metadata</code></dt>
 <dd><p>List with the metadata of the node.</p></dd>
 
-
-<dt><code>parent</code></dt>
+      <dt><code>parent</code></dt>
 <dd><p>The parent node of this new node. Must be omitted when
 initializing a root node.</p></dd>
 
-
-<dt><code>store</code></dt>
+      <dt><code>store</code></dt>
 <dd><p>The store to persist data in. Ignored if a <code>parent</code> is
 specified.</p></dd>
 
@@ -157,15 +151,15 @@ specified.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-zarr_node-print_attributes"></a><div class="section">
-<h3 id="method-print-attributes-">Method <code>print_attributes()</code><a class="anchor" aria-label="anchor" href="#method-print-attributes-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_node-print_attributes"></a><div class="section">
+<h3 id="zarr-node-print-attributes-"><code>zarr_node$print_attributes()</code><a class="anchor" aria-label="anchor" href="#zarr-node-print-attributes-"></a></h3>
 <p>Print the metadata "attributes" to the console. Usually
 called by the <a href="zarr_group.html">zarr_group</a> and <a href="zarr_array.html">zarr_array</a> <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">print_attributes</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Arguments passed to embedded functions. Of particular interest
@@ -175,23 +169,22 @@ is <code>width = .</code> to specify the maximum width of the columns.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-zarr_node-set_attribute"></a><div class="section">
-<h3 id="method-set-attribute-">Method <code>set_attribute()</code><a class="anchor" aria-label="anchor" href="#method-set-attribute-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_node-set_attribute"></a><div class="section">
+<h3 id="zarr-node-set-attribute-"><code>zarr_node$set_attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-set-attribute-"></a></h3>
 <p>Add an attribute to the metadata of the object. If an
 attribute <code>name</code> already exists, it will be overwritten.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the attribute. The name must begin with a letter
 and be composed of letters, digits, and underscores, with a maximum
 length of 255 characters.</p></dd>
 
-
-<dt><code>value</code></dt>
+      <dt><code>value</code></dt>
 <dd><p>The value of the attribute. This can be of any supported
 type, including a vector or list of values. In general, an attribute
 should be a character value, a numeric value, a logical value, or a
@@ -199,42 +192,42 @@ short vector or list of any of these.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_node-delete_attributes"></a><div class="section">
-<h3 id="method-delete-attributes-">Method <code>delete_attributes()</code><a class="anchor" aria-label="anchor" href="#method-delete-attributes-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_node-delete_attributes"></a><div class="section">
+<h3 id="zarr-node-delete-attributes-"><code>zarr_node$delete_attributes()</code><a class="anchor" aria-label="anchor" href="#zarr-node-delete-attributes-"></a></h3>
 <p>Delete attributes. If an attribute in <code>name</code> is not present
 this method simply returns.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">delete_attributes</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>Vector of names of the attributes to delete.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
-</div><p></p><hr><a id="method-zarr_node-save"></a><div class="section">
-<h3 id="method-save-">Method <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code><a class="anchor" aria-label="anchor" href="#method-save-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-zarr_node-save"></a><div class="section">
+<h3 id="zarr-node-save-"><code>zarr_node$save()</code><a class="anchor" aria-label="anchor" href="#zarr-node-save-"></a></h3>
 <p>Persist any edits to the group or array to the store.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
-
 </div>
+
 
     </div>
 

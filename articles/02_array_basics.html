@@ -121,11 +121,11 @@ alternative to “.Rdata” files.</p>
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/Rtmpo5aATs/file1ccb3511b131.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/RtmpUpK1QT/file1dd9794d8160.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 1 </span></span>
-<span><span class="co">#&gt; Total size: 2.91 KB</span></span>
+<span><span class="co">#&gt; Total size: 2.81 KB</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpo5aATs/file1ccb3511b131.zarr </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/RtmpUpK1QT/file1dd9794d8160.zarr </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
 <span><span class="co">#&gt; └ ⌗ top_array</span></span></code></pre></div>
 <p>If you have multiple R objects that you want to store in the Zarr
@@ -146,7 +146,7 @@ where you want to store the R object.</p>
 <span><span class="va">grp</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, name <span class="op">=</span> <span class="st">"サブグループ"</span><span class="op">)</span>  <span class="co"># = subgroup</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">w</span>, name <span class="op">=</span> <span class="st">"空の行列"</span>, location <span class="op">=</span> <span class="va">grp</span><span class="op">)</span>  <span class="co"># = empty matrix</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/Rtmpo5aATs/file1ccb3511b131.zarr </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; /tmp/RtmpUpK1QT/file1dd9794d8160.zarr </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
 <span><span class="co">#&gt; ├ ⌗ top_array</span></span>
 <span><span class="co">#&gt; ├ ⌗ a_vector</span></span>
@@ -171,9 +171,9 @@ chunk in files like <code>0</code>, <code>1</code>, <code>2</code>,
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/Rtmpo5aATs/file1ccb3511b131.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/RtmpUpK1QT/file1dd9794d8160.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 3 </span></span>
-<span><span class="co">#&gt; Total size: 7.7 KB</span></span>
+<span><span class="co">#&gt; Total size: 6.94 KB</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></code></pre></div>
 <p>A couple of things to note:</p>
 <ul>
@@ -219,31 +219,30 @@ metadata document that you need when creating the Zarr array.</p>
 <span><span class="co">#&gt;       "chunk_shape": [100, 100, 5]</span></span>
 <span><span class="co">#&gt;     }</span></span>
 <span><span class="co">#&gt;   },</span></span>
-<span><span class="co">#&gt;   "codecs": {</span></span>
-<span><span class="co">#&gt;     "transpose": {</span></span>
+<span><span class="co">#&gt;   "codecs": [</span></span>
+<span><span class="co">#&gt;     {</span></span>
 <span><span class="co">#&gt;       "name": "transpose",</span></span>
 <span><span class="co">#&gt;       "configuration": {</span></span>
 <span><span class="co">#&gt;         "order": [2, 1, 0]</span></span>
 <span><span class="co">#&gt;       }</span></span>
 <span><span class="co">#&gt;     },</span></span>
-<span><span class="co">#&gt;     "bytes": {</span></span>
+<span><span class="co">#&gt;     {</span></span>
 <span><span class="co">#&gt;       "name": "bytes",</span></span>
 <span><span class="co">#&gt;       "configuration": {</span></span>
 <span><span class="co">#&gt;         "endian": "little"</span></span>
 <span><span class="co">#&gt;       }</span></span>
 <span><span class="co">#&gt;     },</span></span>
-<span><span class="co">#&gt;     "blosc": {</span></span>
+<span><span class="co">#&gt;     {</span></span>
 <span><span class="co">#&gt;       "name": "blosc",</span></span>
 <span><span class="co">#&gt;       "configuration": {</span></span>
-<span><span class="co">#&gt;         "level": 6,</span></span>
+<span><span class="co">#&gt;         "clevel": 6,</span></span>
 <span><span class="co">#&gt;         "cname": "zstd",</span></span>
-<span><span class="co">#&gt;         "clevel": 1,</span></span>
 <span><span class="co">#&gt;         "shuffle": "shuffle",</span></span>
 <span><span class="co">#&gt;         "typesize": 2,</span></span>
 <span><span class="co">#&gt;         "blocksize": 0</span></span>
 <span><span class="co">#&gt;       }</span></span>
 <span><span class="co">#&gt;     }</span></span>
-<span><span class="co">#&gt;   }</span></span>
+<span><span class="co">#&gt;   ]</span></span>
 <span><span class="co">#&gt; }</span></span></code></pre></div>
 <p>Ok, that is a lot of things all at once. Let’s walk through this
 line-by-line</p>
@@ -369,26 +368,26 @@ example, let’s remove the <code>blosc</code> codec and insert the
 <span><span class="co">#&gt;       "chunk_shape": [120, 31, 5]</span></span>
 <span><span class="co">#&gt;     }</span></span>
 <span><span class="co">#&gt;   },</span></span>
-<span><span class="co">#&gt;   "codecs": {</span></span>
-<span><span class="co">#&gt;     "transpose": {</span></span>
+<span><span class="co">#&gt;   "codecs": [</span></span>
+<span><span class="co">#&gt;     {</span></span>
 <span><span class="co">#&gt;       "name": "transpose",</span></span>
 <span><span class="co">#&gt;       "configuration": {</span></span>
 <span><span class="co">#&gt;         "order": [2, 1, 0]</span></span>
 <span><span class="co">#&gt;       }</span></span>
 <span><span class="co">#&gt;     },</span></span>
-<span><span class="co">#&gt;     "bytes": {</span></span>
+<span><span class="co">#&gt;     {</span></span>
 <span><span class="co">#&gt;       "name": "bytes",</span></span>
 <span><span class="co">#&gt;       "configuration": {</span></span>
 <span><span class="co">#&gt;         "endian": "little"</span></span>
 <span><span class="co">#&gt;       }</span></span>
 <span><span class="co">#&gt;     },</span></span>
-<span><span class="co">#&gt;     "gzip": {</span></span>
+<span><span class="co">#&gt;     {</span></span>
 <span><span class="co">#&gt;       "name": "gzip",</span></span>
 <span><span class="co">#&gt;       "configuration": {</span></span>
 <span><span class="co">#&gt;         "level": 5</span></span>
 <span><span class="co">#&gt;       }</span></span>
 <span><span class="co">#&gt;     }</span></span>
-<span><span class="co">#&gt;   }</span></span>
+<span><span class="co">#&gt;   ]</span></span>
 <span><span class="co">#&gt; }</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -402,7 +401,7 @@ create as many Zarr arrays with it as you need.</p>
 <span></span>
 <span><span class="co"># Create a first array in the root group</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">add_array</span><span class="op">(</span><span class="st">"/"</span>, <span class="st">"first_array"</span>, <span class="va">arr_def</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr array&gt; first_array </span></span>
+<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗ first_array </span></span>
 <span><span class="co">#&gt; Path      : /first_array </span></span>
 <span><span class="co">#&gt; Data type : int16 </span></span>
 <span><span class="co">#&gt; Shape     : 240 310 5 </span></span>
@@ -410,7 +409,7 @@ create as many Zarr arrays with it as you need.</p>
 <span></span>
 <span><span class="co"># Re-use the array definition</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">add_array</span><span class="op">(</span><span class="st">"/"</span>, <span class="st">"another_array"</span>, <span class="va">arr_def</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr array&gt; another_array </span></span>
+<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗ another_array </span></span>
 <span><span class="co">#&gt; Path      : /another_array </span></span>
 <span><span class="co">#&gt; Data type : int16 </span></span>
 <span><span class="co">#&gt; Shape     : 240 310 5 </span></span>
@@ -441,7 +440,7 @@ that.</p>
 <span><span class="co"># Get the array using list-like access on the Zarr object</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">arr</span></span>
-<span><span class="co">#&gt; &lt;Zarr array&gt;  </span></span>
+<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗  </span></span>
 <span><span class="co">#&gt; Path      : / </span></span>
 <span><span class="co">#&gt; Data type : int32 </span></span>
 <span><span class="co">#&gt; Shape     : 5 20 4 </span></span>

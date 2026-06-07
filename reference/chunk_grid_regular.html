@@ -55,7 +55,7 @@ codecs for data transformation.</p>
 
     <div class="section level2">
     <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
-    <p><code><a href="zarr_extension.html">zarr::zarr_extension</a></code> -&gt; <code><a href="chunking.html">zarr::chunking</a></code> -&gt; <code>chunk_grid_regular</code></p>
+    <p><code><a href="zarr_extension.html">zarr_extension</a></code> -&gt; <code><a href="chunking.html">chunking</a></code> -&gt; <code>chunk_grid_regular</code></p>
     </div>
     <div class="section level2">
     <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
@@ -72,75 +72,70 @@ reading, the list of registered codecs.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-chunk_grid_regular-new"><code>chunk_grid_regular$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-chunk_grid_regular-initialize"><code>chunk_grid_regular$new()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_regular-print"><code>chunk_grid_regular$print()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_regular-metadata_fragment"><code>chunk_grid_regular$metadata_fragment()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_regular-read"><code>chunk_grid_regular$read()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_regular-write"><code>chunk_grid_regular$write()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-chunk_grid_regular-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-chunk_grid_regular-initialize"></a><div class="section">
+<h3 id="chunk-grid-regular-new-"><code>chunk_grid_regular$new()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-new-"></a></h3>
 <p>Initialize a new chunking scheme for an array.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/chunk_grid_regular.html">chunk_grid_regular</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">array_shape</span>, <span class="va">chunk_shape</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>array_shape</code></dt>
 <dd><p>Integer vector of the array dimensions. This may be
 <code>NA</code> for a scalar array.</p></dd>
 
-
-<dt><code>chunk_shape</code></dt>
+      <dt><code>chunk_shape</code></dt>
 <dd><p>Integer vector of the dimensions of each chunk.
 Ignored for a scalar array.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>An instance of <code>chunk_grid_regular</code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-chunk_grid_regular-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-chunk_grid_regular-print"></a><div class="section">
+<h3 id="chunk-grid-regular-print-"><code>chunk_grid_regular$print()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-print-"></a></h3>
 <p>Print a short description of this chunking scheme to the
 console.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
-</div><p></p><hr><a id="method-chunk_grid_regular-metadata_fragment"></a><div class="section">
-<h3 id="method-metadata-fragment-">Method <code>metadata_fragment()</code><a class="anchor" aria-label="anchor" href="#method-metadata-fragment-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-chunk_grid_regular-metadata_fragment"></a><div class="section">
+<h3 id="chunk-grid-regular-metadata-fragment-"><code>chunk_grid_regular$metadata_fragment()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-metadata-fragment-"></a></h3>
 <p>Return the metadata fragment that describes this chunking
 scheme.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular</span><span class="op">$</span><span class="fu">metadata_fragment</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>A list with the metadata of this chunking scheme.</p>
 </div>
 
-</div><p></p><hr><a id="method-chunk_grid_regular-read"></a><div class="section">
-<h3 id="method-read-">Method <code>read()</code><a class="anchor" aria-label="anchor" href="#method-read-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-chunk_grid_regular-read"></a><div class="section">
+<h3 id="chunk-grid-regular-read-"><code>chunk_grid_regular$read()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-read-"></a></h3>
 <p>Read data from the Zarr array into an R object. The read can
 span multiple chunks. Reads will be parallelised if
 <code>future::plan(multisession)</code> is set; by default the reading is
 sequential.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="va">start</span>, <span class="va">stop</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>start, stop</code></dt>
 <dd><p>Integer vectors of the same length as the
@@ -150,40 +145,38 @@ the Zarr array is a scalar.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>A vector, matrix or array of data.</p>
 </div>
 
-</div><p></p><hr><a id="method-chunk_grid_regular-write"></a><div class="section">
-<h3 id="method-write-">Method <code><a href="https://rdrr.io/r/base/write.html" class="external-link">write()</a></code><a class="anchor" aria-label="anchor" href="#method-write-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-chunk_grid_regular-write"></a><div class="section">
+<h3 id="chunk-grid-regular-write-"><code>chunk_grid_regular$write()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-write-"></a></h3>
 <p>Write data to the array. Writing data always uses a
 sequential plan.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">data</span>, <span class="va">start</span>, <span class="va">stop</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
 <dd><p>An R object with the same dimensionality as the Zarr array.</p></dd>
 
-
-<dt><code>start, stop</code></dt>
+      <dt><code>start, stop</code></dt>
 <dd><p>Integer vectors of the same length as the
 dimensionality of the Zarr array, indicating the starting and ending
 (inclusive) indices of the data along each axis.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
 </div>
+
 
     </div>
 

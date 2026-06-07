@@ -23,16 +23,15 @@ application ecosystem.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
 -\> `zarr_codec_vlenutf8`
 
 ## Methods
 
 ### Public methods
 
-- [`zarr_codec_vlenutf8$new()`](#method-zarr_codec_vlenutf8-new)
+- [`zarr_codec_vlenutf8$new()`](#method-zarr_codec_vlenutf8-initialize)
 
 - [`zarr_codec_vlenutf8$copy()`](#method-zarr_codec_vlenutf8-copy)
 
@@ -44,11 +43,11 @@ application ecosystem.
 
 Inherited methods
 
-- [`zarr::zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
+- [`zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_codec_vlenutf8$new()`
 
 Create a new "vlen-utf8" codec object.
 
@@ -62,7 +61,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `copy()`
+### `zarr_codec_vlenutf8$copy()`
 
 Create a new, independent copy of this codec.
 
@@ -76,7 +75,7 @@ An instance of `zarr_codec_vlenutf8`.
 
 ------------------------------------------------------------------------
 
-### Method `metadata_fragment()`
+### `zarr_codec_vlenutf8$metadata_fragment()`
 
 Return the metadata fragment that describes this codec.
 
@@ -90,7 +89,7 @@ A list with the metadata of this codec, just the name.
 
 ------------------------------------------------------------------------
 
-### Method `encode()`
+### `zarr_codec_vlenutf8$encode()`
 
 This method writes an R character object to a raw vector. Prior to
 writing, any `NA` values are converted to an empty string.
@@ -111,7 +110,7 @@ A raw vector with the encoded data object.
 
 ------------------------------------------------------------------------
 
-### Method `decode()`
+### `zarr_codec_vlenutf8$decode()`
 
 This method takes a raw vector and converts it to an R character object.
 

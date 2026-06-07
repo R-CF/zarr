@@ -37,7 +37,7 @@ z <- create_zarr() # Creates a Zarr object in memory
 arr <- z$add_array("/", "my_array", def)
 arr$write(x)
 arr
-#> <Zarr array> my_array 
+#> <Zarr array> ⌗ my_array 
 #> Path      : /my_array 
 #> Data type : int32 
 #> Shape     : 3 8 5 

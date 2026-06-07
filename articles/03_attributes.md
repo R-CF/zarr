@@ -54,7 +54,7 @@ arr$set_attribute("title", "Bar for foo")
 arr$set_attribute("valid_range", c(0, 1))
 arr$set_attribute("actual_range", range(x))
 arr 
-#> <Zarr array> bar 
+#> <Zarr array> ⌗ bar 
 #> Path      : /bar 
 #> Data type : float64 
 #> Shape     : 100 200 
@@ -78,7 +78,7 @@ attributes this allows you to update an existing attribute value too.
 
 arr$set_attribute("title", paste(arr$attributes[["title"]], "and baz too"))
 arr
-#> <Zarr array> bar 
+#> <Zarr array> ⌗ bar 
 #> Path      : /bar 
 #> Data type : float64 
 #> Shape     : 100 200 
@@ -98,7 +98,7 @@ delete.
 
 arr$delete_attributes(c("valid_range", "actual_range"))
 arr
-#> <Zarr array> bar 
+#> <Zarr array> ⌗ bar 
 #> Path      : /bar 
 #> Data type : float64 
 #> Shape     : 100 200 

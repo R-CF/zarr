@@ -20,8 +20,8 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 
 ## Super class
 
-[`zarr::zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md)
--\> `zarr_localstore`
+[`zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md) -\>
+`zarr_localstore`
 
 ## Active bindings
 
@@ -46,7 +46,7 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 
 ### Public methods
 
-- [`zarr_localstore$new()`](#method-zarr_localstore-new)
+- [`zarr_localstore$new()`](#method-zarr_localstore-initialize)
 
 - [`zarr_localstore$exists()`](#method-zarr_localstore-exists)
 
@@ -78,14 +78,14 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 
 Inherited methods
 
-- [`zarr::zarr_store$getsize()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize)
-- [`zarr::zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
-- [`zarr::zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
-- [`zarr::zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
+- [`zarr_store$getsize()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize)
+- [`zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
+- [`zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
+- [`zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_localstore$new()`
 
 Create an instance of this class.
 
@@ -125,7 +125,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method [`exists()`](https://rdrr.io/r/base/exists.html)
+### `zarr_localstore$exists()`
 
 Check if a key exists in the store. The key can point to a group, an
 array, or a chunk.
@@ -146,7 +146,7 @@ array, or a chunk.
 
 ------------------------------------------------------------------------
 
-### Method `clear()`
+### `zarr_localstore$clear()`
 
 Clear the store. Remove all keys and values from the store. Invoking
 this method deletes affected files on the file system and this action
@@ -163,7 +163,7 @@ can not be undone. The only file that will remain is "zarr.json" or
 
 ------------------------------------------------------------------------
 
-### Method `erase()`
+### `zarr_localstore$erase()`
 
 Remove a key from the store. The key must point to an array chunk or an
 empty group. The location of the key and all of its values are removed.
@@ -184,7 +184,7 @@ empty group. The location of the key and all of its values are removed.
 
 ------------------------------------------------------------------------
 
-### Method `erase_prefix()`
+### `zarr_localstore$erase_prefix()`
 
 Remove all keys in the store that begin with a given prefix. The last
 location in the prefix is preserved while all keys below are removed
@@ -209,7 +209,7 @@ metadata file will remain.
 
 ------------------------------------------------------------------------
 
-### Method `list_dir()`
+### `zarr_localstore$list_dir()`
 
 Retrieve all keys and prefixes with a given prefix and which do not
 contain the character "/" after the given prefix. In other words, this
@@ -233,7 +233,7 @@ A character array with all keys found in the store immediately below the
 
 ------------------------------------------------------------------------
 
-### Method `list_prefix()`
+### `zarr_localstore$list_prefix()`
 
 Retrieve all keys and prefixes with a given prefix.
 
@@ -254,7 +254,7 @@ location, both for groups and arrays.
 
 ------------------------------------------------------------------------
 
-### Method `set()`
+### `zarr_localstore$set()`
 
 Store a `(key, value)` pair. The key points to a specific file (shard or
 chunk of an array) in a store, rather than a group or an array. The key
@@ -283,7 +283,7 @@ Self, invisibly, or an error.
 
 ------------------------------------------------------------------------
 
-### Method `set_if_not_exists()`
+### `zarr_localstore$set_if_not_exists()`
 
 Store a `(key, value)` pair. The key points to a specific file (shard or
 chunk of an array) in a store, rather than a group or an array. The key
@@ -312,7 +312,7 @@ Self, invisibly, or an error.
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `zarr_localstore$get()`
 
 Retrieve the value associated with a given key.
 
@@ -348,7 +348,7 @@ An raw vector of data, or `NULL` if no data was found.
 
 ------------------------------------------------------------------------
 
-### Method `get_metadata()`
+### `zarr_localstore$get_metadata()`
 
 Retrieve the metadata document of the node at the location indicated by
 the `prefix` argument. The metadata will always be presented to the
@@ -371,7 +371,7 @@ Zarr group or array.
 
 ------------------------------------------------------------------------
 
-### Method `set_metadata()`
+### `zarr_localstore$set_metadata()`
 
 Set the metadata document of the node at the location indicated by the
 `prefix` argument. The formatting of the metadata should always use the
@@ -399,7 +399,7 @@ Self, invisible
 
 ------------------------------------------------------------------------
 
-### Method `is_group()`
+### `zarr_localstore$is_group()`
 
 Test if `path` is pointing to a Zarr group.
 
@@ -419,7 +419,7 @@ Test if `path` is pointing to a Zarr group.
 
 ------------------------------------------------------------------------
 
-### Method `create_group()`
+### `zarr_localstore$create_group()`
 
 Create a new group in the store under the specified path.
 
@@ -447,7 +447,7 @@ not be created.
 
 ------------------------------------------------------------------------
 
-### Method `create_array()`
+### `zarr_localstore$create_array()`
 
 Create a new array in the store under the specified path to the `parent`
 argument.

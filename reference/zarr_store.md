@@ -55,7 +55,7 @@ https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html#abstract-store-in
 
 ### Public methods
 
-- [`zarr_store$new()`](#method-zarr_store-new)
+- [`zarr_store$new()`](#method-zarr_store-initialize)
 
 - [`zarr_store$clear()`](#method-zarr_store-clear)
 
@@ -93,7 +93,7 @@ https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html#abstract-store-in
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_store$new()`
 
 Create an instance of this class. Since this class is "abstract", it
 should not be instantiated directly - it is intended to be called by
@@ -119,7 +119,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `clear()`
+### `zarr_store$clear()`
 
 Clear the store. Remove all keys and values from the store.
 
@@ -133,7 +133,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `erase()`
+### `zarr_store$erase()`
 
 Remove a key from the store. This method is part of the abstract store
 interface in ZEP0001.
@@ -154,7 +154,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `erase_prefix()`
+### `zarr_store$erase_prefix()`
 
 Remove all keys and prefixes in the store that begin with a given
 prefix. This method is part of the abstract store interface in ZEP0001.
@@ -176,7 +176,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method [`exists()`](https://rdrr.io/r/base/exists.html)
+### `zarr_store$exists()`
 
 Check if a key exists in the store.
 
@@ -196,7 +196,7 @@ Check if a key exists in the store.
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `zarr_store$get()`
 
 Retrieve the value associated with a given key. This method is part of
 the abstract store interface in ZEP0001.
@@ -233,7 +233,7 @@ An raw vector of data, or `NULL` if no data was found.
 
 ------------------------------------------------------------------------
 
-### Method `getsize()`
+### `zarr_store$getsize()`
 
 Return the size, in bytes, of a value in a Store.
 
@@ -253,7 +253,7 @@ The size, in bytes, of the object.
 
 ------------------------------------------------------------------------
 
-### Method `getsize_prefix()`
+### `zarr_store$getsize_prefix()`
 
 Return the size, in bytes, of all objects found under the group
 indicated by the prefix.
@@ -275,7 +275,7 @@ integer value.
 
 ------------------------------------------------------------------------
 
-### Method `is_empty()`
+### `zarr_store$is_empty()`
 
 Is the group empty?
 
@@ -296,7 +296,7 @@ arrays, `FALSE` otherwise.
 
 ------------------------------------------------------------------------
 
-### Method [`list()`](https://rdrr.io/r/base/list.html)
+### `zarr_store$list()`
 
 Retrieve all keys in the store. This method is part of the abstract
 store interface in ZEP0001.
@@ -312,7 +312,7 @@ arrays.
 
 ------------------------------------------------------------------------
 
-### Method `list_dir()`
+### `zarr_store$list_dir()`
 
 Retrieve all keys and prefixes with a given prefix and which do not
 contain the character "/" after the given prefix. This method is part of
@@ -335,7 +335,7 @@ both for groups and arrays.
 
 ------------------------------------------------------------------------
 
-### Method `list_prefix()`
+### `zarr_store$list_prefix()`
 
 Retrieve all keys and prefixes with a given prefix. This method is part
 of the abstract store interface in ZEP0001.
@@ -357,7 +357,7 @@ both for groups and arrays.
 
 ------------------------------------------------------------------------
 
-### Method `set()`
+### `zarr_store$set()`
 
 Store a (key, value) pair.
 
@@ -381,7 +381,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `set_if_not_exists()`
+### `zarr_store$set_if_not_exists()`
 
 Store a key to argument `value` if the key is not already present. This
 method is part of the abstract store interface in ZEP0001.
@@ -406,7 +406,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `get_metadata()`
+### `zarr_store$get_metadata()`
 
 Retrieve the metadata document of the node at the location indicated by
 the `prefix` argument.
@@ -423,7 +423,7 @@ the `prefix` argument.
 
 ------------------------------------------------------------------------
 
-### Method `set_metadata()`
+### `zarr_store$set_metadata()`
 
 Set the metadata document of the node at the location indicated by the
 `prefix` argument. This is a no-op for stores that have no writing
@@ -450,7 +450,7 @@ Self, invisible.
 
 ------------------------------------------------------------------------
 
-### Method `create_group()`
+### `zarr_store$create_group()`
 
 Create a new group in the store under the specified path to the `parent`
 argument. The `parent` path must point to a Zarr group.
@@ -476,7 +476,7 @@ not be created.
 
 ------------------------------------------------------------------------
 
-### Method `create_array()`
+### `zarr_store$create_array()`
 
 Create a new array in the store under the specified path to the `parent`
 argument. The `parent` path must point to a Zarr group.

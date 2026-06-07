@@ -21,7 +21,7 @@ There is no point instantiating this class directly, other than in the
 
 ## Super class
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
 -\> `chunking`
 
 ## Active bindings
@@ -55,15 +55,15 @@ There is no point instantiating this class directly, other than in the
 
 ### Public methods
 
-- [`chunking$new()`](#method-chunking-new)
+- [`chunking$new()`](#method-chunking-initialize)
 
 Inherited methods
 
-- [`zarr::zarr_extension$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_extension.html#method-metadata_fragment)
+- [`zarr_extension$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_extension.html#method-metadata_fragment)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `chunking$new()`
 
 Initialize a new chunking scheme for an array. This should only be
 called by descendant classes.

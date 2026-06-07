@@ -8,10 +8,9 @@ either and totally useless anyway.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::chunking`](https://r-cf.github.io/zarr/reference/chunking.md)
--\> `chunk_grid_sharded`
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`chunking`](https://r-cf.github.io/zarr/reference/chunking.md) -\>
+`chunk_grid_sharded`
 
 ## Active bindings
 
@@ -32,7 +31,7 @@ either and totally useless anyway.
 
 ### Public methods
 
-- [`chunk_grid_sharded$new()`](#method-chunk_grid_sharded-new)
+- [`chunk_grid_sharded$new()`](#method-chunk_grid_sharded-initialize)
 
 - [`chunk_grid_sharded$print()`](#method-chunk_grid_sharded-print)
 
@@ -42,7 +41,7 @@ either and totally useless anyway.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `chunk_grid_sharded$new()`
 
 Initialize a new sharded chunking scheme for an array.
 
@@ -89,7 +88,7 @@ An instance of `chunk_grid_sharded`.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `chunk_grid_sharded$print()`
 
 Print a short description of this sharded chunking scheme to the
 console.
@@ -104,7 +103,7 @@ Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method `metadata_fragment()`
+### `chunk_grid_sharded$metadata_fragment()`
 
 Return the metadata fragment that describes this chunking scheme.
 
@@ -118,7 +117,7 @@ A list with the metadata of this chunking scheme.
 
 ------------------------------------------------------------------------
 
-### Method `read()`
+### `chunk_grid_sharded$read()`
 
 Read data from the Zarr array into an R object.
 

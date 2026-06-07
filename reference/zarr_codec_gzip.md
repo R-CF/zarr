@@ -5,9 +5,8 @@ uncompresses the raw vector when reading.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
 -\> `zarr_codec_gzip`
 
 ## Active bindings
@@ -21,7 +20,7 @@ uncompresses the raw vector when reading.
 
 ### Public methods
 
-- [`zarr_codec_gzip$new()`](#method-zarr_codec_gzip-new)
+- [`zarr_codec_gzip$new()`](#method-zarr_codec_gzip-initialize)
 
 - [`zarr_codec_gzip$copy()`](#method-zarr_codec_gzip-copy)
 
@@ -31,12 +30,12 @@ uncompresses the raw vector when reading.
 
 Inherited methods
 
-- [`zarr::zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
-- [`zarr::zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
+- [`zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
+- [`zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_codec_gzip$new()`
 
 Create a new "gzip" codec object.
 
@@ -58,7 +57,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `copy()`
+### `zarr_codec_gzip$copy()`
 
 Create a new, independent copy of this codec.
 
@@ -72,7 +71,7 @@ An instance of `zarr_codec_gzip`.
 
 ------------------------------------------------------------------------
 
-### Method `encode()`
+### `zarr_codec_gzip$encode()`
 
 This method encodes a data object.
 
@@ -92,7 +91,7 @@ The encoded data object.
 
 ------------------------------------------------------------------------
 
-### Method `decode()`
+### `zarr_codec_gzip$decode()`
 
 This method decodes a data object.
 

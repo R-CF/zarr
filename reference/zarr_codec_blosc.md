@@ -6,9 +6,8 @@ reading.
 
 ## Super classes
 
-[`zarr::zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
--\>
-[`zarr::zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
+[`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
+-\> [`zarr_codec`](https://r-cf.github.io/zarr/reference/zarr_codec.md)
 -\> `zarr_codec_blosc`
 
 ## Active bindings
@@ -44,7 +43,7 @@ reading.
 
 ### Public methods
 
-- [`zarr_codec_blosc$new()`](#method-zarr_codec_blosc-new)
+- [`zarr_codec_blosc$new()`](#method-zarr_codec_blosc-initialize)
 
 - [`zarr_codec_blosc$copy()`](#method-zarr_codec_blosc-copy)
 
@@ -54,12 +53,12 @@ reading.
 
 Inherited methods
 
-- [`zarr::zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
-- [`zarr::zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
+- [`zarr_codec$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-metadata_fragment)
+- [`zarr_codec$print()`](https://r-cf.github.io/zarr/reference/zarr_codec.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `zarr_codec_blosc$new()`
 
 Create a new "blosc" codec object. The typesize argument is taken from
 the data type of the array passed in through the `data_type` argument
@@ -89,7 +88,7 @@ An instance of this class.
 
 ------------------------------------------------------------------------
 
-### Method `copy()`
+### `zarr_codec_blosc$copy()`
 
 Create a new, independent copy of this codec.
 
@@ -103,7 +102,7 @@ An instance of `zarr_codec_blosc`.
 
 ------------------------------------------------------------------------
 
-### Method `encode()`
+### `zarr_codec_blosc$encode()`
 
 This method compresses a data object using the "blosc" compression
 library.
@@ -124,7 +123,7 @@ A raw vector with compressed data.
 
 ------------------------------------------------------------------------
 
-### Method `decode()`
+### `zarr_codec_blosc$decode()`
 
 This method decompresses a data object using the "blosc" compression
 library.
