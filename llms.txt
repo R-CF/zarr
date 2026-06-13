@@ -45,9 +45,9 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpGMlxZv/file17bde71b7481f.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpYbzp1e/file259d105e2b98.zarr 
 #> Arrays    : 1 
-#> Total size: 1.12 KB
+#> Total size: 1.08 KB
 ```
 
 The total size that is printed to the console when inspecting a Zarr
@@ -68,7 +68,7 @@ the full path starting with a slash `"/"` for the root:
 # Get the array using list-like access on the Zarr object
 arr <- z[["/my_array"]]
 arr
-#> <Zarr array> my_array 
+#> <Zarr array> ⌗ my_array 
 #> Path      : /my_array 
 #> Data type : int32 
 #> Shape     : 5 20 4 

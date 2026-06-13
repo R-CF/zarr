@@ -61,11 +61,13 @@ validity of node names.
 
 - [`zarr_node$print_attributes()`](#method-zarr_node-print_attributes)
 
+- [`zarr_node$attribute()`](#method-zarr_node-attribute)
+
 - [`zarr_node$set_attribute()`](#method-zarr_node-set_attribute)
 
 - [`zarr_node$append_array_attribute()`](#method-zarr_node-append_array_attribute)
 
-- [`zarr_node$delete_attributes()`](#method-zarr_node-delete_attributes)
+- [`zarr_node$delete_attribute()`](#method-zarr_node-delete_attribute)
 
 - [`zarr_node$save()`](#method-zarr_node-save)
 
@@ -120,6 +122,29 @@ Print the metadata "attributes" to the console. Usually called by the
 
 ------------------------------------------------------------------------
 
+### `zarr_node$attribute()`
+
+Retrieve a specific attribute by path.
+
+#### Usage
+
+    zarr_node$attribute(name)
+
+#### Arguments
+
+- `name`:
+
+  The name (path) of the attribute to retrieve, using `/` as separator
+  for nested attributes. Numeric path segments index into array
+  attributes (1-based), e.g. `"zarr_conventions/2/name"` retrieves the
+  `name` field of the second convention object.
+
+#### Returns
+
+The attribute value, or `NULL` if not found.
+
+------------------------------------------------------------------------
+
 ### `zarr_node$set_attribute()`
 
 Add an attribute to the metadata of the object. If an attribute `name`
@@ -160,7 +185,7 @@ attribute `name` already exists, it will be overwritten.
 
 #### Usage
 
-    zarr_node$append_array_attribute(name, value)
+    zarr_node$append_array_attribute(name, value, after = NULL)
 
 #### Arguments
 
@@ -180,26 +205,40 @@ attribute `name` already exists, it will be overwritten.
   be a character value, a numeric value, a logical value, or a short
   vector or list of any of these.
 
+- `after`:
+
+  A subscript, after which `value` is to be appended. The default is
+  `NULL`, meaning that `value` will be placed after the existing values.
+  Specifying `after = 0L` will place `value` before the existing values.
+
 #### Returns
 
 Self, invisibly.
 
 ------------------------------------------------------------------------
 
-### `zarr_node$delete_attributes()`
+### `zarr_node$delete_attribute()`
 
-Delete attributes. If an attribute in `name` is not present this method
-simply returns.
+Delete an attribute or array element. If the attribute is not present,
+this method simply returns.
 
 #### Usage
 
-    zarr_node$delete_attributes(name)
+    zarr_node$delete_attribute(name)
 
 #### Arguments
 
 - `name`:
 
-  Vector of names of the attributes to delete.
+  Character. The name (path) of the attribute to delete, using `/` as
+  separator for nested attributes, e.g. `"first/second/my_att"`. The
+  `name` is relative to the `attributes` entry in the metadata of the
+  node. To target an element of a JSON array attribute, append the
+  1-based index as the path segment, e.g. `"first/second/my_arr/2"` to
+  delete the second element in the array, or
+  `"first/second/my_arr/2/description"` to delete only the `description`
+  field inside it. This nesting can be arbitrarily deep, including over
+  multiple JSON arrays.
 
 #### Returns
 

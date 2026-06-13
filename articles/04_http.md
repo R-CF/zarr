@@ -85,9 +85,88 @@ the data.
 #> _creator   :
 #>   name   : omero-zarr
 #>   version: 0.3.0
-#> multiscales: [t, time, c, channel, z, space, micrometer, y, space, micrometer, x, space, micrometer, 1, 1, 1, 1, 1, scale, 0, 1, 1, 1, 2, 2, scale, 1, 1, 1, 1, 4, 4, scale, 2, 1, 1, 1, 8, 8, scale, 3, 1, 1, 1, 16, 16, scale, 4, loci.common.image.SimpleImageScaler, Bio-Formats 6.9.1, 0.4]
+#> multiscales:
+#>   [1]
+#>     axes    :
+#>       [1]
+#>         name: t
+#>         type: time
+#>       [2]
+#>         name: c
+#>         type: channel
+#>       [3]
+#>         name: z
+#>         type: space
+#>         unit: micrometer
+#>       [4]
+#>         name: y
+#>         type: space
+#>         unit: micrometer
+#>       [5]
+#>         name: x
+#>         type: space
+#>         unit: micrometer
+#>     datasets:
+#>       [1]
+#>         coordinateTransformations:
+#>           [1]
+#>             scale: [1, 1, 1, 1, 1]
+#>             type : scale
+#>         path                     : 0
+#>       [2]
+#>         coordinateTransformations:
+#>           [1]
+#>             scale: [1, 1, 1, 2, 2]
+#>             type : scale
+#>         path                     : 1
+#>       [3]
+#>         coordinateTransformations:
+#>           [1]
+#>             scale: [1, 1, 1, 4, 4]
+#>             type : scale
+#>         path                     : 2
+#>       [4]
+#>         coordinateTransformations:
+#>           [1]
+#>             scale: [1, 1, 1, 8, 8]
+#>             type : scale
+#>         path                     : 3
+#>       [5]
+#>         coordinateTransformations:
+#>           [1]
+#>             scale: [1, 1, 1, 16, 16]
+#>             type : scale
+#>         path                     : 4
+#>     metadata:
+#>       method : loci.common.image.SimpleImageScaler
+#>       version: Bio-Formats 6.9.1
+#>     version : 0.4
 #> omero      :
-#>   channels: [TRUE, 1, 00FF00, linear, FALSE, H2B-eGFP, 1093, 65535, 0, 0, TRUE, 1, FF0000, linear, FALSE, myr-tdTomato, 439, 65535, 0, 0]
+#>   channels:
+#>     [1]
+#>       active     : TRUE
+#>       coefficient: 1
+#>       color      : 00FF00
+#>       family     : linear
+#>       inverted   : FALSE
+#>       label      : H2B-eGFP
+#>       window     :
+#>         end  : 1093
+#>         max  : 65535
+#>         min  : 0
+#>         start: 0
+#>     [2]
+#>       active     : TRUE
+#>       coefficient: 1
+#>       color      : FF0000
+#>       family     : linear
+#>       inverted   : FALSE
+#>       label      : myr-tdTomato
+#>       window     :
+#>         end  : 439
+#>         max  : 65535
+#>         min  : 0
+#>         start: 0
 #>   id      : 1
 #>   rdefs   :
 #>     defaultT: 265

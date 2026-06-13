@@ -123,9 +123,10 @@ method or removed with the <code>delete_attributes()</code> method.</p></dd>
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 <p></p><ul><li><p><a href="#method-zarr_node-initialize"><code>zarr_node$new()</code></a></p></li>
 <li><p><a href="#method-zarr_node-print_attributes"><code>zarr_node$print_attributes()</code></a></p></li>
+<li><p><a href="#method-zarr_node-attribute"><code>zarr_node$attribute()</code></a></p></li>
 <li><p><a href="#method-zarr_node-set_attribute"><code>zarr_node$set_attribute()</code></a></p></li>
 <li><p><a href="#method-zarr_node-append_array_attribute"><code>zarr_node$append_array_attribute()</code></a></p></li>
-<li><p><a href="#method-zarr_node-delete_attributes"><code>zarr_node$delete_attributes()</code></a></p></li>
+<li><p><a href="#method-zarr_node-delete_attribute"><code>zarr_node$delete_attribute()</code></a></p></li>
 <li><p><a href="#method-zarr_node-save"><code>zarr_node$save()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-zarr_node-initialize"></a><div class="section">
 <h3 id="zarr-node-new-"><code>zarr_node$new()</code><a class="anchor" aria-label="anchor" href="#zarr-node-new-"></a></h3>
@@ -172,43 +173,34 @@ is <code>width = .</code> to specify the maximum width of the columns.</p></dd>
 
 </div>
 
-<p></p><hr><a id="method-zarr_node-set_attribute"></a><div class="section">
-<h3 id="zarr-node-set-attribute-"><code>zarr_node$set_attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-set-attribute-"></a></h3>
-<p>Add an attribute to the metadata of the object. If an
-attribute <code>name</code> already exists, it will be overwritten.</p><div class="section">
+<p></p><hr><a id="method-zarr_node-attribute"></a><div class="section">
+<h3 id="zarr-node-attribute-"><code>zarr_node$attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-attribute-"></a></h3>
+<p>Retrieve a specific attribute by path.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">attribute</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
-<dd><p>The name of the attribute. The name may be a compound path,
-relative to the "attributes" entry in the metadata, using a slash "/"
-as path separator. Each of the elements in the path (between slashes)
-must begin with a letter and be composed of letters, digits, and
-underscores and can be at most 255 characters long. Missing path
-elements will be created.</p></dd>
-
-      <dt><code>value</code></dt>
-<dd><p>The value of the attribute. This can be of any supported
-type, including a vector or list of values. In general, an attribute
-should be a character value, a numeric value, a logical value, or a
-short vector or list of any of these.</p></dd>
+<dd><p>The name (path) of the attribute to retrieve, using <code>/</code> as
+separator for nested attributes. Numeric path segments index into array
+attributes (1-based), e.g. <code>"zarr_conventions/2/name"</code> retrieves the
+<code>name</code> field of the second convention object.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
-<p>Self, invisibly.</p>
+<p>The attribute value, or <code>NULL</code> if not found.</p>
 </div>
 
 </div>
 
-<p></p><hr><a id="method-zarr_node-append_array_attribute"></a><div class="section">
-<h3 id="zarr-node-append-array-attribute-"><code>zarr_node$append_array_attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-append-array-attribute-"></a></h3>
-<p>Append an attribute to an array in the metadata of the
-object. If an attribute <code>name</code> already exists, it will be overwritten.</p><div class="section">
+<p></p><hr><a id="method-zarr_node-set_attribute"></a><div class="section">
+<h3 id="zarr-node-set-attribute-"><code>zarr_node$set_attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-set-attribute-"></a></h3>
+<p>Add an attribute to the metadata of the object. If an
+attribute <code>name</code> already exists, it will be overwritten.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">append_array_attribute</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
@@ -234,16 +226,33 @@ short vector or list of any of these.</p></dd>
 
 </div>
 
-<p></p><hr><a id="method-zarr_node-delete_attributes"></a><div class="section">
-<h3 id="zarr-node-delete-attributes-"><code>zarr_node$delete_attributes()</code><a class="anchor" aria-label="anchor" href="#zarr-node-delete-attributes-"></a></h3>
-<p>Delete attributes. If an attribute in <code>name</code> is not present
-this method simply returns.</p><div class="section">
+<p></p><hr><a id="method-zarr_node-append_array_attribute"></a><div class="section">
+<h3 id="zarr-node-append-array-attribute-"><code>zarr_node$append_array_attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-append-array-attribute-"></a></h3>
+<p>Append an attribute to an array in the metadata of the
+object. If an attribute <code>name</code> already exists, it will be overwritten.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">delete_attributes</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">append_array_attribute</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span>, after <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
-<dd><p>Vector of names of the attributes to delete.</p></dd>
+<dd><p>The name of the attribute. The name may be a compound path,
+relative to the "attributes" entry in the metadata, using a slash "/"
+as path separator. Each of the elements in the path (between slashes)
+must begin with a letter and be composed of letters, digits, and
+underscores and can be at most 255 characters long. Missing path
+elements will be created.</p></dd>
+
+      <dt><code>value</code></dt>
+<dd><p>The value of the attribute. This can be of any supported
+type, including a vector or list of values. In general, an attribute
+should be a character value, a numeric value, a logical value, or a
+short vector or list of any of these.</p></dd>
+
+      <dt><code>after</code></dt>
+<dd><p>A subscript, after which <code>value</code> is to be appended. The
+default is <code>NULL</code>, meaning that <code>value</code> will be placed after the
+existing values. Specifying <code>after = 0L</code> will place <code>value</code> before the
+existing values.</p></dd>
 
 
 </dl><p></p></div>
@@ -254,10 +263,38 @@ this method simply returns.</p><div class="section">
 
 </div>
 
+<p></p><hr><a id="method-zarr_node-delete_attribute"></a><div class="section">
+<h3 id="zarr-node-delete-attribute-"><code>zarr_node$delete_attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-delete-attribute-"></a></h3>
+<p>Delete an attribute or array element. If the attribute is
+not present, this method simply returns.</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">delete_attribute</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>name</code></dt>
+<dd><p>Character. The name (path) of the attribute to delete, using
+<code>/</code> as separator for nested attributes, e.g. <code>"first/second/my_att"</code>.
+The <code>name</code> is relative to the <code>attributes</code> entry in the metadata of the
+node. To target an element of a JSON array attribute, append the
+1-based index as the path segment, e.g. <code>"first/second/my_arr/2"</code> to
+delete the second element in the array, or
+<code>"first/second/my_arr/2/description"</code> to delete only the <code>description</code>
+field inside it. This nesting can be arbitrarily deep, including over
+multiple JSON arrays.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>Self, invisibly.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_node-save"></a><div class="section">
 <h3 id="zarr-node-save-"><code>zarr_node$save()</code><a class="anchor" aria-label="anchor" href="#zarr-node-save-"></a></h3>
 <p>Persist any edits to the group or array to the store.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
