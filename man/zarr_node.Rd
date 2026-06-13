@@ -50,6 +50,7 @@ method or removed with the \code{delete_attributes()} method.}
     \item \href{#method-zarr_node-initialize}{\code{zarr_node$new()}}
     \item \href{#method-zarr_node-print_attributes}{\code{zarr_node$print_attributes()}}
     \item \href{#method-zarr_node-set_attribute}{\code{zarr_node$set_attribute()}}
+    \item \href{#method-zarr_node-append_array_attribute}{\code{zarr_node$append_array_attribute()}}
     \item \href{#method-zarr_node-delete_attributes}{\code{zarr_node$delete_attributes()}}
     \item \href{#method-zarr_node-save}{\code{zarr_node$save()}}
   }
@@ -113,9 +114,44 @@ attribute \code{name} already exists, it will be overwritten.
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{name}}{The name of the attribute. The name must begin with a letter
-and be composed of letters, digits, and underscores, with a maximum
-length of 255 characters.}
+      \item{\code{name}}{The name of the attribute. The name may be a compound path,
+relative to the "attributes" entry in the metadata, using a slash "/"
+as path separator. Each of the elements in the path (between slashes)
+must begin with a letter and be composed of letters, digits, and
+underscores and can be at most 255 characters long. Missing path
+elements will be created.}
+      \item{\code{value}}{The value of the attribute. This can be of any supported
+type, including a vector or list of values. In general, an attribute
+should be a character value, a numeric value, a logical value, or a
+short vector or list of any of these.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_node-append_array_attribute"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_node-append_array_attribute}{}}}
+\subsection{\code{zarr_node$append_array_attribute()}}{
+  Append an attribute to an array in the metadata of the
+object. If an attribute \code{name} already exists, it will be overwritten.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_node$append_array_attribute(name, value)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{The name of the attribute. The name may be a compound path,
+relative to the "attributes" entry in the metadata, using a slash "/"
+as path separator. Each of the elements in the path (between slashes)
+must begin with a letter and be composed of letters, digits, and
+underscores and can be at most 255 characters long. Missing path
+elements will be created.}
       \item{\code{value}}{The value of the attribute. This can be of any supported
 type, including a vector or list of values. In general, an attribute
 should be a character value, a numeric value, a logical value, or a

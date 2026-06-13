@@ -80,7 +80,21 @@ zarr_node <- R6::R6Class('zarr_node',
     # for printing or other presentation purposes.
     display_attributes = function() {
       private$.metadata[['attributes']]
+    },
+
+    # Set a value at a nested path within a list, creating missing nodes
+    set_nested_attribute = function(lst, path, value) {
+      if (length(path) == 1L) {
+        lst[[path]] <- value
+        return(lst)
+      }
+      key <- path[[1L]]
+      child <- lst[[key]]
+      if (!is.list(child)) child <- list()   # create or overwrite non-list node
+      lst[[key]] <- private$set_nested_attribute(child, path[-1L], value)
+      lst
     }
+
   ),
   public = list(
     #' @description Initialize a new node in a Zarr hierarchy.
@@ -121,22 +135,74 @@ zarr_node <- R6::R6Class('zarr_node',
 
     #' @description Add an attribute to the metadata of the object. If an
     #'   attribute `name` already exists, it will be overwritten.
-    #' @param name The name of the attribute. The name must begin with a letter
-    #'   and be composed of letters, digits, and underscores, with a maximum
-    #'   length of 255 characters.
+    #' @param name The name of the attribute. The name may be a compound path,
+    #'   relative to the "attributes" entry in the metadata, using a slash "/"
+    #'   as path separator. Each of the elements in the path (between slashes)
+    #'   must begin with a letter and be composed of letters, digits, and
+    #'   underscores and can be at most 255 characters long. Missing path
+    #'   elements will be created.
     #' @param value The value of the attribute. This can be of any supported
     #'   type, including a vector or list of values. In general, an attribute
     #'   should be a character value, a numeric value, a logical value, or a
     #'   short vector or list of any of these.
     #' @return Self, invisibly.
     set_attribute = function(name, value) {
+      path <- strsplit(name, "/", fixed = TRUE)[[1L]]
       atts <- private$.metadata[['attributes']]
-      if (is.null(atts)) {
-        atts <- setNames(list(value), name)
-      } else {
-        atts[name] <- list(value)
+      if (is.null(atts)) atts <- list()
+      private$.metadata[["attributes"]] <- private$set_nested_attribute(atts, path, value)
+      private$.meta_dirty <- TRUE
+      invisible(self)
+    },
+
+    #' @description Append an attribute to an array in the metadata of the
+    #'   object. If an attribute `name` already exists, it will be overwritten.
+    #' @param name The name of the attribute. The name may be a compound path,
+    #'   relative to the "attributes" entry in the metadata, using a slash "/"
+    #'   as path separator. Each of the elements in the path (between slashes)
+    #'   must begin with a letter and be composed of letters, digits, and
+    #'   underscores and can be at most 255 characters long. Missing path
+    #'   elements will be created.
+    #' @param value The value of the attribute. This can be of any supported
+    #'   type, including a vector or list of values. In general, an attribute
+    #'   should be a character value, a numeric value, a logical value, or a
+    #'   short vector or list of any of these.
+    #' @return Self, invisibly.
+    append_array_attribute = function(name, value) {
+      # Walk a nested list and return the value at path, or NULL if absent
+      .get_nested <- function(lst, path) {
+        for (key in path) {
+          if (!is.list(lst) || is.null(lst[[key]])) return(NULL)
+          lst <- lst[[key]]
+        }
+        lst
       }
-      private$.metadata[['attributes']] <- atts
+
+      # Heuristic: a named list is a JSON object {}; unnamed is a JSON array []
+      .is_named_list <- function(x) {
+        is.list(x) && !is.null(names(x)) && any(nzchar(names(x)))
+      }
+
+      path <- strsplit(name, "/", fixed = TRUE)[[1L]]
+      path[nzchar(path)]
+
+      atts <- private$.metadata[["attributes"]]
+      if (is.null(atts)) atts <- list()
+
+      # Read the current value at that path
+      current <- .get_nested(atts, path)
+
+      if (is.null(current)) {
+        # Nothing there yet — wrap value in a length-1 list
+        new_val <- list(value)
+      } else if (is.list(current) && !.is_named_list(current)) {
+        # Existing array — append to it
+        new_val <- c(current, list(value))
+      } else {
+        stop("Attribute '", name, "' exists but is not an array; use set_attribute() to overwrite it", call. = FALSE)
+      }
+
+      private$.metadata[["attributes"]] <- private$set_nested_attribute(atts, path, new_val)
       private$.meta_dirty <- TRUE
       invisible(self)
     },
