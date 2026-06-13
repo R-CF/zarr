@@ -42,16 +42,29 @@ zarr_node <- R6::R6Class('zarr_node',
     # Print one level of attributes to the console. Calls itself recursively to
     # print nested attributes.
     print_attribute_levels = function(atts, indent = 0L) {
-      pad  <- strrep("  ", indent)
+      pad   <- strrep("  ", indent)
       width <- max(nchar(names(atts)))
 
       for (nm in names(atts)) {
         val <- atts[[nm]]
 
-        if (is.list(val) && !is.null(names(val))) {
+        if (is.list(val) && !is.null(names(val)) && any(nzchar(names(val)))) {
+          # Named list: JSON object, recurse
           cat(pad, formatC(nm, width = width, flag = "-"), ":\n", sep = "")
           private$print_attribute_levels(val, indent + 1L)
+        } else if (is.list(val) && any(vapply(val, is.list, logical(1L)))) {
+          # Unnamed list containing lists: JSON array of objects, recurse each element
+          cat(pad, formatC(nm, width = width, flag = "-"), ":\n", sep = "")
+          for (i in seq_along(val)) {
+            cat(pad, "  [", i, "]\n", sep = "")
+            elem <- val[[i]]
+            if (is.list(elem) && !is.null(names(elem)) && any(nzchar(names(elem))))
+              private$print_attribute_levels(elem, indent + 2L)
+            else
+              cat(pad, "    ", elem, "\n", sep = "")
+          }
         } else if (is.list(val)) {
+          # Unnamed list of scalars: flat JSON array
           cat(pad, formatC(nm, width = width, flag = "-"), ": [",
               paste(unlist(val), collapse = ", "), "]\n", sep = "")
         } else if (length(val) > 1L) {
@@ -84,17 +97,38 @@ zarr_node <- R6::R6Class('zarr_node',
 
     # Set a value at a nested path within a list, creating missing nodes
     set_nested_attribute = function(lst, path, value) {
-      if (length(path) == 1L) {
-        lst[[path]] <- value
-        return(lst)
-      }
       key <- path[[1L]]
-      child <- lst[[key]]
-      if (!is.list(child)) child <- list()   # create or overwrite non-list node
-      lst[[key]] <- private$set_nested_attribute(child, path[-1L], value)
-      lst
-    }
+      idx <- suppressWarnings(as.integer(key))
+      is_index <- !is.na(idx) && !private$is_named_list(lst)
 
+      if (is_index) {
+        if (idx < 1L || idx > length(lst) + 1L)
+          stop("Index ", idx, " is out of range for array of length ",
+               length(lst), call. = FALSE)
+        if (length(path) == 1L) {
+          lst[[idx]] <- value
+        } else {
+          child <- if (idx <= length(lst) && is.list(lst[[idx]])) lst[[idx]] else list()
+          lst[[idx]] <- private$set_nested_attribute(child, path[-1L], value)
+        }
+      } else {
+        if (length(path) == 1L) {
+          lst[[key]] <- value
+        } else {
+          existing <- lst[[key]]
+          child <- if (is.list(existing)) existing
+          else if (is.atomic(existing) && length(existing) > 1L) as.list(existing)
+          else list()
+          lst[[key]] <- private$set_nested_attribute(child, path[-1L], value)
+        }
+      }
+      lst
+    },
+
+    # Heuristic: a named list is a JSON object {}; unnamed is a JSON array []
+    is_named_list = function(x) {
+      is.list(x) && !is.null(names(x)) && any(nzchar(names(x)))
+    }
   ),
   public = list(
     #' @description Initialize a new node in a Zarr hierarchy.
@@ -133,6 +167,37 @@ zarr_node <- R6::R6Class('zarr_node',
       }
     },
 
+    #' @description Retrieve a specific attribute by path.
+    #' @param name The name (path) of the attribute to retrieve, using `/` as
+    #'   separator for nested attributes. Numeric path segments index into array
+    #'   attributes (1-based), e.g. `"zarr_conventions/2/name"` retrieves the
+    #'   `name` field of the second convention object.
+    #' @return The attribute value, or `NULL` if not found.
+    attribute = function(name) {
+      path <- strsplit(name, "/", fixed = TRUE)[[1L]]
+      path <- path[nzchar(path)]
+      if (!length(path)) return(NULL)
+
+      lst <- private$.metadata[["attributes"]]
+      if (is.null(lst)) return(NULL)
+
+      for (key in path) {
+        idx <- suppressWarnings(as.integer(key))
+        is_index <- !is.na(idx) && !private$is_named_list(lst)
+
+        if (is_index) {
+          if (!is.list(lst) && !is.atomic(lst)) return(NULL)
+          if (idx < 1L || idx > length(lst)) return(NULL)
+          lst <- lst[[idx]]
+        } else {
+          if (!is.list(lst)) return(NULL)
+          if (is.null(lst[[key]])) return(NULL)
+          lst <- lst[[key]]
+        }
+      }
+      lst
+    },
+
     #' @description Add an attribute to the metadata of the object. If an
     #'   attribute `name` already exists, it will be overwritten.
     #' @param name The name of the attribute. The name may be a compound path,
@@ -148,9 +213,14 @@ zarr_node <- R6::R6Class('zarr_node',
     #' @return Self, invisibly.
     set_attribute = function(name, value) {
       path <- strsplit(name, "/", fixed = TRUE)[[1L]]
-      atts <- private$.metadata[['attributes']]
+      path <- path[nzchar(path)]
+      if (!length(path)) stop("'name' must contain at least one non-empty segment", call. = FALSE)
+
+      atts <- private$.metadata[["attributes"]]
       if (is.null(atts)) atts <- list()
-      private$.metadata[["attributes"]] <- private$set_nested_attribute(atts, path, value)
+
+      result <- private$set_nested_attribute(atts, path, value)
+      private$.metadata[["attributes"]] <- result
       private$.meta_dirty <- TRUE
       invisible(self)
     },
@@ -167,9 +237,12 @@ zarr_node <- R6::R6Class('zarr_node',
     #'   type, including a vector or list of values. In general, an attribute
     #'   should be a character value, a numeric value, a logical value, or a
     #'   short vector or list of any of these.
+    #' @param after A subscript, after which `value` is to be appended. The
+    #'   default is `NULL`, meaning that `value` will be placed after the
+    #'   existing values. Specifying `after = 0L` will place `value` before the
+    #'   existing values.
     #' @return Self, invisibly.
-    append_array_attribute = function(name, value) {
-      # Walk a nested list and return the value at path, or NULL if absent
+    append_array_attribute = function(name, value, after = NULL) {
       .get_nested <- function(lst, path) {
         for (key in path) {
           if (!is.list(lst) || is.null(lst[[key]])) return(NULL)
@@ -178,48 +251,88 @@ zarr_node <- R6::R6Class('zarr_node',
         lst
       }
 
-      # Heuristic: a named list is a JSON object {}; unnamed is a JSON array []
-      .is_named_list <- function(x) {
-        is.list(x) && !is.null(names(x)) && any(nzchar(names(x)))
-      }
-
       path <- strsplit(name, "/", fixed = TRUE)[[1L]]
-      path[nzchar(path)]
+      path <- path[nzchar(path)]   # fix the discarded assignment
 
       atts <- private$.metadata[["attributes"]]
       if (is.null(atts)) atts <- list()
 
-      # Read the current value at that path
       current <- .get_nested(atts, path)
-
-      if (is.null(current)) {
-        # Nothing there yet — wrap value in a length-1 list
+      if (is.null(current))
         new_val <- list(value)
-      } else if (is.list(current) && !.is_named_list(current)) {
-        # Existing array — append to it
-        new_val <- c(current, list(value))
-      } else {
+      else if (is.list(current) && !private$is_named_list(current)) {
+        idx <- if (is.null(after)) length(current) else after
+        new_val <- unname(append(current, list(value), after = idx))
+      } else
         stop("Attribute '", name, "' exists but is not an array; use set_attribute() to overwrite it", call. = FALSE)
-      }
 
       private$.metadata[["attributes"]] <- private$set_nested_attribute(atts, path, new_val)
       private$.meta_dirty <- TRUE
       invisible(self)
     },
 
-    #' @description Delete attributes. If an attribute in `name` is not present
-    #' this method simply returns.
-    #' @param name Vector of names of the attributes to delete.
+    #' @description Delete an attribute or array element. If the attribute is
+    #'   not present, this method simply returns.
+    #' @param name Character. The name (path) of the attribute to delete, using
+    #'   `/` as separator for nested attributes, e.g. `"first/second/my_att"`.
+    #'   The `name` is relative to the `attributes` entry in the metadata of the
+    #'   node. To target an element of a JSON array attribute, append the
+    #'   1-based index as the path segment, e.g. `"first/second/my_arr/2"` to
+    #'   delete the second element in the array, or
+    #'   `"first/second/my_arr/2/description"` to delete only the `description`
+    #'   field inside it. This nesting can be arbitrarily deep, including over
+    #'   multiple JSON arrays.
     #' @return Self, invisibly.
-    delete_attributes = function(name) {
-      atts <- private$.metadata[['attributes']]
-      if (!is.null(atts)) {
-        atts[name] <- NULL
-        if (length(atts))
-          private$.metadata[['attributes']] <- atts
-        else
-          private$.metadata['attributes'] <- NULL
+    delete_attribute = function(name) {
+      .delete_nested <- function(lst, path) {
+        key <- path[[1L]]
+
+        # Numeric segment — index into an unnamed array
+        idx <- suppressWarnings(as.integer(key))
+        is_index <- !is.na(idx) && !private$is_named_list(lst)
+
+        if (is_index) {
+          if (idx < 1L || idx > length(lst))
+            return(lst)  # out of range — silently ignore
+          if (length(path) == 1L) {
+            # Delete the array element itself
+            lst[[idx]] <- NULL
+          } else {
+            # Recurse into the array element
+            child <- lst[[idx]]
+            if (!is.list(child)) return(lst)
+            lst[[idx]] <- .delete_nested(child, path[-1L])
+          }
+        } else {
+          if (!is.list(lst) || is.null(lst[[key]]))
+            return(lst)  # absent — silently ignore
+          if (length(path) == 1L) {
+            # Delete the named key
+            lst[[key]] <- NULL
+          } else {
+            # Recurse into the named child
+            child <- lst[[key]]
+            if (!is.list(child)) return(lst)
+            lst[[key]] <- .delete_nested(child, path[-1L])
+          }
+        }
+        lst
       }
+
+      path <- strsplit(name, "/", fixed = TRUE)[[1L]]
+      path <- path[nzchar(path)]
+      if (!length(path)) return(invisible(self))
+
+      atts <- private$.metadata[["attributes"]]
+      if (is.null(atts)) return(invisible(self))
+
+      atts <- .delete_nested(atts, path)
+
+      if (length(atts))
+        private$.metadata[["attributes"]] <- atts
+      else
+        private$.metadata["attributes"] <- NULL
+
       private$.meta_dirty <- TRUE
       invisible(self)
     },

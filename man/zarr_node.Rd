@@ -49,9 +49,10 @@ method or removed with the \code{delete_attributes()} method.}
   \itemize{
     \item \href{#method-zarr_node-initialize}{\code{zarr_node$new()}}
     \item \href{#method-zarr_node-print_attributes}{\code{zarr_node$print_attributes()}}
+    \item \href{#method-zarr_node-attribute}{\code{zarr_node$attribute()}}
     \item \href{#method-zarr_node-set_attribute}{\code{zarr_node$set_attribute()}}
     \item \href{#method-zarr_node-append_array_attribute}{\code{zarr_node$append_array_attribute()}}
-    \item \href{#method-zarr_node-delete_attributes}{\code{zarr_node$delete_attributes()}}
+    \item \href{#method-zarr_node-delete_attribute}{\code{zarr_node$delete_attribute()}}
     \item \href{#method-zarr_node-save}{\code{zarr_node$save()}}
   }
 }
@@ -101,6 +102,31 @@ is \code{width = .} to specify the maximum width of the columns.}
 }
 
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_node-attribute"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_node-attribute}{}}}
+\subsection{\code{zarr_node$attribute()}}{
+  Retrieve a specific attribute by path.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_node$attribute(name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{The name (path) of the attribute to retrieve, using \code{/} as
+separator for nested attributes. Numeric path segments index into array
+attributes (1-based), e.g. \code{"zarr_conventions/2/name"} retrieves the
+\code{name} field of the second convention object.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The attribute value, or \code{NULL} if not found.
+  }
+}
+
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_node-set_attribute"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_node-set_attribute}{}}}
 \subsection{\code{zarr_node$set_attribute()}}{
@@ -140,7 +166,7 @@ short vector or list of any of these.}
 object. If an attribute \code{name} already exists, it will be overwritten.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_node$append_array_attribute(name, value)}
+    \preformatted{zarr_node$append_array_attribute(name, value, after = NULL)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -156,6 +182,10 @@ elements will be created.}
 type, including a vector or list of values. In general, an attribute
 should be a character value, a numeric value, a logical value, or a
 short vector or list of any of these.}
+      \item{\code{after}}{A subscript, after which \code{value} is to be appended. The
+default is \code{NULL}, meaning that \code{value} will be placed after the
+existing values. Specifying \code{after = 0L} will place \code{value} before the
+existing values.}
     }
     \if{html}{\out{</div>}}
   }
@@ -165,20 +195,28 @@ short vector or list of any of these.}
 }
 
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_node-delete_attributes"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_node-delete_attributes}{}}}
-\subsection{\code{zarr_node$delete_attributes()}}{
-  Delete attributes. If an attribute in \code{name} is not present
-this method simply returns.
+\if{html}{\out{<a id="method-zarr_node-delete_attribute"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_node-delete_attribute}{}}}
+\subsection{\code{zarr_node$delete_attribute()}}{
+  Delete an attribute or array element. If the attribute is
+not present, this method simply returns.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_node$delete_attributes(name)}
+    \preformatted{zarr_node$delete_attribute(name)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{name}}{Vector of names of the attributes to delete.}
+      \item{\code{name}}{Character. The name (path) of the attribute to delete, using
+\code{/} as separator for nested attributes, e.g. \code{"first/second/my_att"}.
+The \code{name} is relative to the \code{attributes} entry in the metadata of the
+node. To target an element of a JSON array attribute, append the
+1-based index as the path segment, e.g. \code{"first/second/my_arr/2"} to
+delete the second element in the array, or
+\code{"first/second/my_arr/2/description"} to delete only the \code{description}
+field inside it. This nesting can be arbitrarily deep, including over
+multiple JSON arrays.}
     }
     \if{html}{\out{</div>}}
   }
