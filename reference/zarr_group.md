@@ -58,6 +58,7 @@ specifically the attribute `"node_type": "group"`.
 
 Inherited methods
 
+- [`zarr_node$append_array_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-append_array_attribute)
 - [`zarr_node$delete_attributes()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-delete_attributes)
 - [`zarr_node$print_attributes()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-print_attributes)
 - [`zarr_node$save()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-save)
