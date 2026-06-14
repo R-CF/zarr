@@ -1,5 +1,7 @@
 # Changelog
 
+## zarr (development version)
+
 ## zarr 0.4.1
 
 CRAN release: 2026-06-14
