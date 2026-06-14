@@ -4,6 +4,8 @@
 # we use the pre-built store and test reading only.
 
 test_that("sharding codec is detected and parsed from metadata", {
+  skip_if_not_installed("zlib")
+
   z <- open_zarr("testdata/sharded_test.zarr")
 
   # float2d
@@ -95,6 +97,8 @@ test_that("sharding codec is detected and parsed from metadata", {
 })
 
 test_that("sharding: absent inner chunks return fill value", {
+  skip_if_not_installed("zlib")
+
   arr <- open_zarr("testdata/sharded_test.zarr")[["/int3d"]]
 
   # The fill_value for int3d is -1
