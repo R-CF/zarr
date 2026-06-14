@@ -2,6 +2,8 @@
 
 ## zarr 0.4.1
 
+CRAN release: 2026-06-14
+
 - Hierarchy can now also be printed from any group. Zarr arrays from
   domain packages may use alternative glyphs.
 - New `attribute()` for `zarr_group` and `zarr_array` instances.
