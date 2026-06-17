@@ -120,8 +120,7 @@ as_zarr <- function(x, name = NULL, location = NULL) {
     }
 
     # Store the data from x
-    selection <- lapply(d, function(x) c(1L, x))
-    arr$write(x, selection)
+    arr$write(x)
 
     if (inherits(location, 'zarr_group'))
       arr

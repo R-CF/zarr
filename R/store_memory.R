@@ -76,10 +76,12 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     #'   below the `prefix`.
     list_dir = function(prefix) {
       keys <- names(private$.keys)
-      if (nzchar(prefix))
-        keys[startsWith(keys, prefix)]
-      else
-        keys[!(keys == "root")] # List any root arrays
+      if (nzchar(prefix)) {
+        matches <- keys[startsWith(keys, prefix)]
+        remaining <- substring(matches, nchar(prefix) + 1L)
+        remaining[!grepl("/", remaining)]
+      } else
+        keys[!(keys == "root" | grepl("/", keys))] # List any root arrays
     },
 
     #' @description Retrieve all keys and prefixes with a given prefix.
@@ -154,7 +156,7 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
       if (n < 1L)
         stop('Byte-range of request is invalid.', call. = FALSE) # nocov
 
-      return(value[start:(start + n - 1L)])
+      return(value[(start + 1L):(start + n)]) # return(value[start:(start + n - 1L)])
     },
 
     #' @description Retrieve the metadata document at the location indicated by

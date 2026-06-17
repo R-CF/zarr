@@ -1,9 +1,11 @@
 # zarr (development version)
 
+- Fix key listing in memory stores.
+
 # zarr 0.4.1
 
 - Hierarchy can now also be printed from any group. Zarr arrays from domain packages may use alternative glyphs.
-- New `attribute()` for `zarr_group` and `zarr_array` instances.
+- New `attribute()` method for `zarr_group` and `zarr_array` instances.
 - Attributes can be nested by specifying a compound path when adding. JSON array attributes can be appended. JSON arrays can be deleted over compound paths, including JSON arrays.
 - Attributes article updated.
 
