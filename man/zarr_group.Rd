@@ -39,6 +39,7 @@ hierarchy starting from the current group, as a character vector.}
     \item \href{#method-zarr_group-hierarchy}{\code{zarr_group$hierarchy()}}
     \item \href{#method-zarr_group-build_hierarchy}{\code{zarr_group$build_hierarchy()}}
     \item \href{#method-zarr_group-get_node}{\code{zarr_group$get_node()}}
+    \item \href{#method-zarr_group-set_node}{\code{zarr_group$set_node()}}
     \item \href{#method-zarr_group-count_arrays}{\code{zarr_group$count_arrays()}}
     \item \href{#method-zarr_group-add_group}{\code{zarr_group$add_group()}}
     \item \href{#method-zarr_group-add_array}{\code{zarr_group$add_array()}}
@@ -175,6 +176,33 @@ higher up in the hierarchy.}
   \subsection{Returns}{
     The \link{zarr_group} or \link{zarr_array} instance located at \code{path}, or
 \code{NULL} if the \code{path} was not found.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_group-set_node"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_group-set_node}{}}}
+\subsection{\code{zarr_group$set_node()}}{
+  Set a group or array in the current group. CAUTION: The node
+must have been persisted to the store for a reliable functioning. All
+that this method does is update the in-memory representation of the
+Zarr hierarchy.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$set_node(node)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{node}}{The group or array to insert in this group. CAUTION: If a
+node with an identical name already exists in this group it will be
+replaced by the object in this argument.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The \code{node} object.
   }
 }
 

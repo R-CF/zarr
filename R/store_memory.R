@@ -169,6 +169,21 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
       private$.keys[[key]]
     },
 
+    #' @description Set the metadata document of the node at the location
+    #'   indicated by the `prefix` argument. The formatting of the metadata
+    #'   should always use the Zarr v.3 format.
+    #' @param prefix The prefix of the node whose metadata document to set.
+    #' @param metadata The metadata to persist, either a `list` or an instance
+    #' of [array_builder].
+    #' @return Self, invisible
+    set_metadata = function(prefix, metadata) {
+      if (inherits(metadata, 'array_builder'))
+        metadata <- metadata$metadata()
+      key <- if (prefix == '/') 'root' else .prefix2key(prefix)
+      private$.keys[[key]] <- metadata
+      invisible(self)
+    },
+
     #' @description Create a new group in the store under the specified path.
     #' @param path The path to the parent group of the new group. Ignored when
     #'   creating a root group.

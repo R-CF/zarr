@@ -156,6 +156,20 @@ zarr_group <- R6::R6Class('zarr_group',
       }
     },
 
+    #' @description Set a group or array in the current group. CAUTION: The node
+    #'   must have been persisted to the store for a reliable functioning. All
+    #'   that this method does is update the in-memory representation of the
+    #'   Zarr hierarchy.
+    #' @param node The group or array to insert in this group. CAUTION: If a
+    #'   node with an identical name already exists in this group it will be
+    #'   replaced by the object in this argument.
+    #' @return The `node` object.
+    set_node = function(node) {
+      if (!inherits(node, 'zarr_node'))
+        stop('Bad argument to `set_node()`', call. = FALSE)
+      private$.children[[node$name]] <- node
+    },
+
     #' @description Count the number of arrays in this group, optionally
     #' including arrays in sub-groups.
     #' @param recursive Logical flag that indicates if arrays in sub-groups

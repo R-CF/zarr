@@ -47,6 +47,7 @@ always a dot '.'.}
     \item \href{#method-zarr_memorystore-set_if_not_exists}{\code{zarr_memorystore$set_if_not_exists()}}
     \item \href{#method-zarr_memorystore-get}{\code{zarr_memorystore$get()}}
     \item \href{#method-zarr_memorystore-get_metadata}{\code{zarr_memorystore$get_metadata()}}
+    \item \href{#method-zarr_memorystore-set_metadata}{\code{zarr_memorystore$set_metadata()}}
     \item \href{#method-zarr_memorystore-create_group}{\code{zarr_memorystore$create_group()}}
     \item \href{#method-zarr_memorystore-create_array}{\code{zarr_memorystore$create_array()}}
   }
@@ -57,7 +58,6 @@ always a dot '.'.}
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize_prefix'><code>zarr_store$getsize_prefix()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href='../../zarr/html/zarr_store.html#method-zarr_store-is_empty'><code>zarr_store$is_empty()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href='../../zarr/html/zarr_store.html#method-zarr_store-list'><code>zarr_store$list()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="set_metadata"><a href='../../zarr/html/zarr_store.html#method-zarr_store-set_metadata'><code>zarr_store$set_metadata()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}
@@ -315,6 +315,32 @@ the \code{prefix} argument.
   \subsection{Returns}{
     A list with the metadata, or \code{NULL} if the prefix is not pointing
 to a Zarr array.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_memorystore-set_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_memorystore-set_metadata}{}}}
+\subsection{\code{zarr_memorystore$set_metadata()}}{
+  Set the metadata document of the node at the location
+indicated by the \code{prefix} argument. The formatting of the metadata
+should always use the Zarr v.3 format.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_memorystore$set_metadata(prefix, metadata)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{The prefix of the node whose metadata document to set.}
+      \item{\code{metadata}}{The metadata to persist, either a \code{list} or an instance
+of \link{array_builder}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisible
   }
 }
 
