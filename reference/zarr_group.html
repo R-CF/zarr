@@ -94,6 +94,7 @@ hierarchy starting from the current group, as a character vector.</p></dd>
 <li><p><a href="#method-zarr_group-hierarchy"><code>zarr_group$hierarchy()</code></a></p></li>
 <li><p><a href="#method-zarr_group-build_hierarchy"><code>zarr_group$build_hierarchy()</code></a></p></li>
 <li><p><a href="#method-zarr_group-get_node"><code>zarr_group$get_node()</code></a></p></li>
+<li><p><a href="#method-zarr_group-set_node"><code>zarr_group$set_node()</code></a></p></li>
 <li><p><a href="#method-zarr_group-count_arrays"><code>zarr_group$count_arrays()</code></a></p></li>
 <li><p><a href="#method-zarr_group-add_group"><code>zarr_group$add_group()</code></a></p></li>
 <li><p><a href="#method-zarr_group-add_array"><code>zarr_group$add_array()</code></a></p></li>
@@ -215,14 +216,38 @@ higher up in the hierarchy.</p></dd>
 
 </div>
 
+<p></p><hr><a id="method-zarr_group-set_node"></a><div class="section">
+<h3 id="zarr-group-set-node-"><code>zarr_group$set_node()</code><a class="anchor" aria-label="anchor" href="#zarr-group-set-node-"></a></h3>
+<p>Set a group or array in the current group. CAUTION: The node
+must have been persisted to the store for a reliable functioning. All
+that this method does is update the in-memory representation of the
+Zarr hierarchy.</p><div class="section">
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">set_node</span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>node</code></dt>
+<dd><p>The group or array to insert in this group. CAUTION: If a
+node with an identical name already exists in this group it will be
+replaced by the object in this argument.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>The <code>node</code> object.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_group-count_arrays"></a><div class="section">
 <h3 id="zarr-group-count-arrays-"><code>zarr_group$count_arrays()</code><a class="anchor" aria-label="anchor" href="#zarr-group-count-arrays-"></a></h3>
 <p>Count the number of arrays in this group, optionally
 including arrays in sub-groups.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">count_arrays</span><span class="op">(</span>recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>recursive</code></dt>
 <dd><p>Logical flag that indicates if arrays in sub-groups
 should be included in the count. Default is <code>TRUE</code>.</p></dd>
@@ -236,17 +261,17 @@ should be included in the count. Default is <code>TRUE</code>.</p></dd>
 <p></p><hr><a id="method-zarr_group-add_group"></a><div class="section">
 <h3 id="zarr-group-add-group-"><code>zarr_group$add_group()</code><a class="anchor" aria-label="anchor" href="#zarr-group-add-group-"></a></h3>
 <p>Add a group to the Zarr hierarchy under the current group.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the new group.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>The newly created <code>zarr_group</code> instance, or <code>NULL</code> if the group
 could not be created.</p>
 </div>
@@ -256,10 +281,10 @@ could not be created.</p>
 <p></p><hr><a id="method-zarr_group-add_array"></a><div class="section">
 <h3 id="zarr-group-add-array-"><code>zarr_group$add_array()</code><a class="anchor" aria-label="anchor" href="#zarr-group-add-array-"></a></h3>
 <p>Add an array to the Zarr hierarchy in the current group.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">add_array</span><span class="op">(</span><span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the new array.</p></dd>
 
@@ -271,7 +296,7 @@ definition.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>The newly created <code>zarr_array</code> instance, or <code>NULL</code> if the array
 could not be created.</p>
 </div>
@@ -283,10 +308,10 @@ could not be created.</p>
 <p>Delete a group or an array contained by this group. When
 deleting a group it cannot contain other groups or arrays. <strong>Warning:</strong>
 this operation is irreversible for many stores!</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the group or array to delete. This will also
 accept a path to a group or array but the group or array must be a node
@@ -295,7 +320,7 @@ directly under this group.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -308,10 +333,10 @@ including any sub-groups and arrays. Any specific metadata attached to
 this group is deleted as well - only a basic metadata document is
 maintained. <strong>Warning:</strong> this operation is irreversible for many
 stores!</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">delete_all</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 

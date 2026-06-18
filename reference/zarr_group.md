@@ -46,6 +46,8 @@ specifically the attribute `"node_type": "group"`.
 
 - [`zarr_group$get_node()`](#method-zarr_group-get_node)
 
+- [`zarr_group$set_node()`](#method-zarr_group-set_node)
+
 - [`zarr_group$count_arrays()`](#method-zarr_group-count_arrays)
 
 - [`zarr_group$add_group()`](#method-zarr_group-add_group)
@@ -183,6 +185,31 @@ relative from the current group.
 The zarr_group or
 [zarr_array](https://r-cf.github.io/zarr/reference/zarr_array.md)
 instance located at `path`, or `NULL` if the `path` was not found.
+
+------------------------------------------------------------------------
+
+### `zarr_group$set_node()`
+
+Set a group or array in the current group. CAUTION: The node must have
+been persisted to the store for a reliable functioning. All that this
+method does is update the in-memory representation of the Zarr
+hierarchy.
+
+#### Usage
+
+    zarr_group$set_node(node)
+
+#### Arguments
+
+- `node`:
+
+  The group or array to insert in this group. CAUTION: If a node with an
+  identical name already exists in this group it will be replaced by the
+  object in this argument.
+
+#### Returns
+
+The `node` object.
 
 ------------------------------------------------------------------------
 

@@ -58,6 +58,8 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 - [`zarr_memorystore$get_metadata()`](#method-zarr_memorystore-get_metadata)
 
+- [`zarr_memorystore$set_metadata()`](#method-zarr_memorystore-set_metadata)
+
 - [`zarr_memorystore$create_group()`](#method-zarr_memorystore-create_group)
 
 - [`zarr_memorystore$create_array()`](#method-zarr_memorystore-create_array)
@@ -68,7 +70,6 @@ Inherited methods
 - [`zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
 - [`zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
 - [`zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
-- [`zarr_store$set_metadata()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-set_metadata)
 
 ------------------------------------------------------------------------
 
@@ -316,6 +317,33 @@ argument.
 
 A list with the metadata, or `NULL` if the prefix is not pointing to a
 Zarr array.
+
+------------------------------------------------------------------------
+
+### `zarr_memorystore$set_metadata()`
+
+Set the metadata document of the node at the location indicated by the
+`prefix` argument. The formatting of the metadata should always use the
+Zarr v.3 format.
+
+#### Usage
+
+    zarr_memorystore$set_metadata(prefix, metadata)
+
+#### Arguments
+
+- `prefix`:
+
+  The prefix of the node whose metadata document to set.
+
+- `metadata`:
+
+  The metadata to persist, either a `list` or an instance of
+  [array_builder](https://r-cf.github.io/zarr/reference/array_builder.md).
+
+#### Returns
+
+Self, invisible
 
 ------------------------------------------------------------------------
 

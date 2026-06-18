@@ -111,13 +111,13 @@ always a dot '.'.</p></dd>
 <li><p><a href="#method-zarr_memorystore-set_if_not_exists"><code>zarr_memorystore$set_if_not_exists()</code></a></p></li>
 <li><p><a href="#method-zarr_memorystore-get"><code>zarr_memorystore$get()</code></a></p></li>
 <li><p><a href="#method-zarr_memorystore-get_metadata"><code>zarr_memorystore$get_metadata()</code></a></p></li>
+<li><p><a href="#method-zarr_memorystore-set_metadata"><code>zarr_memorystore$set_metadata()</code></a></p></li>
 <li><p><a href="#method-zarr_memorystore-create_group"><code>zarr_memorystore$create_group()</code></a></p></li>
 <li><p><a href="#method-zarr_memorystore-create_array"><code>zarr_memorystore$create_array()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize"><a href="zarr_store.html#method-getsize"><code>zarr_store$getsize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href="zarr_store.html#method-getsize_prefix"><code>zarr_store$getsize_prefix()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href="zarr_store.html#method-is_empty"><code>zarr_store$is_empty()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href="zarr_store.html#method-list"><code>zarr_store$list()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="set_metadata"><a href="zarr_store.html#method-set_metadata"><code>zarr_store$set_metadata()</code></a></span></li>
 </ul></details></p><hr><a id="method-zarr_memorystore-initialize"></a><div class="section">
 <h3 id="zarr-memorystore-new-"><code>zarr_memorystore$new()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-new-"></a></h3>
 <p>Create an instance of this class.</p><div class="section">
@@ -351,13 +351,38 @@ to a Zarr array.</p>
 
 </div>
 
+<p></p><hr><a id="method-zarr_memorystore-set_metadata"></a><div class="section">
+<h3 id="zarr-memorystore-set-metadata-"><code>zarr_memorystore$set_metadata()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-set-metadata-"></a></h3>
+<p>Set the metadata document of the node at the location
+indicated by the <code>prefix</code> argument. The formatting of the metadata
+should always use the Zarr v.3 format.</p><div class="section">
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span><span class="va">prefix</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
+<dd><p>The prefix of the node whose metadata document to set.</p></dd>
+
+      <dt><code>metadata</code></dt>
+<dd><p>The metadata to persist, either a <code>list</code> or an instance
+of <a href="array_builder.html">array_builder</a>.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<p>Self, invisible</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_memorystore-create_group"></a><div class="section">
 <h3 id="zarr-memorystore-create-group-"><code>zarr_memorystore$create_group()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-create-group-"></a></h3>
 <p>Create a new group in the store under the specified path.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">create_group</span><span class="op">(</span><span class="va">path</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to the parent group of the new group. Ignored when
 creating a root group.</p></dd>
@@ -370,7 +395,7 @@ root group or array already exists.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p>A list with the metadata of the group, or an error if the group
 could not be created.</p>
 </div>
@@ -382,10 +407,10 @@ could not be created.</p>
 <p>Create a new array in the store under key constructed from
 the specified path to the <code>parent</code> argument and the <code>name</code>. The key may
 not already exist in the store.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">create_array</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>The path to the parent group of the new array. This is
 ignored if the <code>name</code> argument is the empty string.</p></dd>
@@ -403,7 +428,7 @@ separator.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>A list with the metadata of the array, or an error if the array
 could not be created.</p>
 </div>

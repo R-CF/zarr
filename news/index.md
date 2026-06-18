@@ -2,6 +2,8 @@
 
 ## zarr (development version)
 
+- Dynamically set a node in a Zarr hierarchy.
+- Set metadata on a node in a memory store.
 - Fix key listing in memory stores.
 
 ## zarr 0.4.1
