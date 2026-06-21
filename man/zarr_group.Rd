@@ -34,6 +34,7 @@ hierarchy starting from the current group, as a character vector.}
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-zarr_group-initialize}{\code{zarr_group$new()}}
+    \item \href{#method-zarr_group-post_open}{\code{zarr_group$post_open()}}
     \item \href{#method-zarr_group-print}{\code{zarr_group$print()}}
     \item \href{#method-zarr_group-hierarchy_nodes}{\code{zarr_group$hierarchy_nodes()}}
     \item \href{#method-zarr_group-hierarchy}{\code{zarr_group$hierarchy()}}
@@ -82,6 +83,23 @@ missing or \code{NULL} for the root group.}
   }
   \subsection{Returns}{
     An instance of \code{zarr_group}.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_group-post_open"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_group-post_open}{}}}
+\subsection{\code{zarr_group$post_open()}}{
+  This method is called automatically after a Zarr store is
+opened to allow for operations after the full hierarchy has been
+established. All contained children will be called similarly.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$post_open()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
   }
 }
 

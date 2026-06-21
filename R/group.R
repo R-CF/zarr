@@ -31,6 +31,21 @@ zarr_group <- R6::R6Class('zarr_group',
         stop('Invalid metadata for a group.', call. = FALSE) # nocov
     },
 
+    #' @description This method is called automatically after a Zarr store is
+    #'   opened to allow for operations after the full hierarchy has been
+    #'   established. All contained children will be called similarly.
+    #' @return Self, invisibly.
+    post_open = function() {
+      # This group first...
+      # No-op for a generic group
+      super$post_open()
+
+      # ... then its children
+      lapply(private$.children, function(child) child$post_open())
+
+      invisible(self)
+    },
+
     #' @description Print a summary of the group to the console.
     print = function() {
       name <- if (nzchar(self$name)) self$name else '[root]'

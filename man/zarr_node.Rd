@@ -23,8 +23,10 @@ names.
   \describe{
     \item{\code{name}}{(read-only) The name of the node.}
 
-    \item{\code{parent}}{(read-only) The parent of the node. For a root node this
-returns \code{NULL}, otherwise this \code{zarr_group} or \code{zarr_array} instance.}
+    \item{\code{parent}}{The parent of the node. For a root node this returns
+\code{NULL}, otherwise this \code{zarr_group} or \code{zarr_array} instance. CAUTION:
+Setting the parent of a node can invalidate the Zarr hierarchy -
+expert use only.}
 
     \item{\code{store}}{(read-only) The store of the node.}
 
@@ -48,6 +50,7 @@ method or removed with the \code{delete_attributes()} method.}
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-zarr_node-initialize}{\code{zarr_node$new()}}
+    \item \href{#method-zarr_node-post_open}{\code{zarr_node$post_open()}}
     \item \href{#method-zarr_node-print_attributes}{\code{zarr_node$print_attributes()}}
     \item \href{#method-zarr_node-attribute}{\code{zarr_node$attribute()}}
     \item \href{#method-zarr_node-set_attribute}{\code{zarr_node$set_attribute()}}
@@ -77,6 +80,24 @@ initializing a root node.}
 specified.}
     }
     \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_node-post_open"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_node-post_open}{}}}
+\subsection{\code{zarr_node$post_open()}}{
+  This method is called automatically after a Zarr store is
+opened to allow for operations after the full hierarchy has been
+established. This is a no-op here, descendant classes with specific
+requirements should implement this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_node$post_open()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
   }
 }
 

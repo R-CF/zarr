@@ -152,6 +152,15 @@ zarr_node <- R6::R6Class('zarr_node',
       private$.store <- if (is.null(private$.parent)) store else parent$store
     },
 
+    #' @description This method is called automatically after a Zarr store is
+    #'   opened to allow for operations after the full hierarchy has been
+    #'   established. This is a no-op here, descendant classes with specific
+    #'   requirements should implement this method.
+    #' @return Self, invisibly.
+    post_open = function() {
+      invisible(self)
+    },
+
     #' @description Print the metadata "attributes" to the console. Usually
     #' called by the [zarr_group] and [zarr_array] `print()` methods.
     #' @param ... Arguments passed to embedded functions. Of particular interest
@@ -352,11 +361,15 @@ zarr_node <- R6::R6Class('zarr_node',
         private$.name
     },
 
-    #' @field parent (read-only) The parent of the node. For a root node this
-    #' returns `NULL`, otherwise this `zarr_group` or `zarr_array` instance.
+    #' @field parent The parent of the node. For a root node this returns
+    #'   `NULL`, otherwise this `zarr_group` or `zarr_array` instance. CAUTION:
+    #'   Setting the parent of a node can invalidate the Zarr hierarchy -
+    #'   expert use only.
     parent = function(value) {
       if (missing(value))
         private$.parent
+      else if (is.null(value) || inherits(value, 'zarr_node'))
+        private$.parent <- value
     },
 
     #' @field store (read-only) The store of the node.

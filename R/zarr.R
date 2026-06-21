@@ -33,6 +33,9 @@ zarr <- R6::R6Class("zarr",
       private$.root <- .buildNode(name = '', metadata = metadata, parent = NULL, store = private$.store)
       if (inherits(private$.root, 'zarr_group'))
         private$.root$build_hierarchy()
+
+      # Post-open processing
+      private$.root$post_open()
     },
 
     #' @description Print a summary of the Zarr object to the console.
@@ -163,11 +166,18 @@ zarr <- R6::R6Class("zarr",
         private$.store$version
     },
 
-    #' @field root (read-only) The root node of the Zarr object, usually a
-    #' [zarr_group] instance but it could also be a [zarr_array] instance.
+    #' @field root The root node of the Zarr object, usually a [zarr_group]
+    #'   instance but it could also be a [zarr_array] instance. CAUTION: When
+    #'   setting the root node, the entire existing hierarchy is deleted. The
+    #'   hierarchy will likely be out of sync with the store after setting the
+    #'   root node.
     root = function(value) {
       if (missing(value))
         private$.root
+      else if (inherits(value, 'zarr_node'))
+        private$.root <- value
+      else
+        stop('Wrong object for setting as Zarr hierarchy root node', call. = FALSE)
     },
 
     #' @field store (read-only) The store of the Zarr object.

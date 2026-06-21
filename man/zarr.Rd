@@ -19,8 +19,11 @@ class for managing Zarr arrays is \link{zarr_array}. The hierarchy is made up of
   \describe{
     \item{\code{version}}{(read-only) The version of the Zarr object.}
 
-    \item{\code{root}}{(read-only) The root node of the Zarr object, usually a
-\link{zarr_group} instance but it could also be a \link{zarr_array} instance.}
+    \item{\code{root}}{The root node of the Zarr object, usually a \link{zarr_group}
+instance but it could also be a \link{zarr_array} instance. CAUTION: When
+setting the root node, the entire existing hierarchy is deleted. The
+hierarchy will likely be out of sync with the store after setting the
+root node.}
 
     \item{\code{store}}{(read-only) The store of the Zarr object.}
 

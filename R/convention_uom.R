@@ -16,19 +16,17 @@
 #' ```
 #' @docType class
 #' @export
-zarr_conv_uom <- R6::R6Class('zarr_conv_uom',
+zarr_convention_uom <- R6::R6Class('zarr_convention_uom',
   inherit = zarr_convention,
   cloneable = FALSE,
   private = list(
-    # Optional: Character string with the UCUM version that the UOM is taken
-    # from.
+    # Optional: Character string with the UCUM version that the UOM is taken from
     .ucum_version = '2.2',
 
-    # Optional: Character string with the UOM. If not given, the default is
-    # unity '1'
+    # Optional: Character string with the UOM. If not given, the default is unity '1'
     .ucum_unit = '1',
 
-    # Optional: Character string with free-text description of the UOM.
+    # Optional: Character string with free-text description of the UOM
     .description = character(0)
   ),
   public = list(
@@ -42,55 +40,50 @@ zarr_conv_uom <- R6::R6Class('zarr_conv_uom',
       private$.description <- 'Units of measurement for Zarr arrays'
     },
 
-    #' @description Write the data of this instance in the attributes of a Zarr
-    #'   object.
-    #' @param attributes A `list` with Zarr attributes for a group or array. The
-    #'   properties will be written to `attributes`.
-    #' @return The updated attributes.
-    write = function(attributes) {
-      attributes$ucum <- list()
-      if (nzchar(private$.ucum_version))
-        attributes$ucum$version <- private$.ucum_version
-      if (nzchar(private$.ucum_unit))
-        attributes$ucum$unit <- private$.ucum_unit
+    #' @description Set the attributes for this convention for use in a Zarr
+    #'   node.
+    #' @param unit Character string. The "unit" attribute under "ucum", giving
+    #'   the unit-of-measure in UCUM notation.
+    #' @param version Optional, character string. The "version" attribute under
+    #'   "ucum", indicating the UCUM version that is being used.
+    #' @param description Optional, a character string with the "description"
+    #'   attribute, giving a free-text description of the unit-of-measure.
+    set = function(unit, version, description) {
+      if (is.character(unit) && length(unit) == 1L && nzchar(unit))
+        private$.ucum_unit <- unit
+      else
+        stop('Attribute `unit` must be a character string', call. = FALSE)
+
+      if (is.character(version) && length(version) == 1L && nzchar(version))
+        private$.ucum_version <- version
+      else
+        stop('Attribute `version` must be a character string indicating the UCUM version', call. = FALSE)
+
+      if (!missing(description) && is.character(description) && length(description) == 1L && nzchar(description))
+        private$.description <- description
+      else
+        stop('Attribute `description` must be a character string', call. = FALSE)
+    },
+
+    #' @description Reset any attributes that may have been set to their default
+    #'   values. Only the properties of the convention itself will remain in
+    #'   place.
+    clear = function() {
+      private$.ucum_unit <- '1'
+      private$.ucum_version <- '2.2'
+      private$.description <- character(0)
+    },
+
+    #' @description Return the data of this instance for inclusion in the
+    #'   attributes of a Zarr object.
+    #' @return A `list` with Zarr attributes for a group or array.
+    as_list = function() {
+      ucum <- list(version = private$.ucum_version, unit = private$.ucum_unit)
       if (nzchar(private$.description))
-        attributes$description <- private$.description
-      attributes
+        list(ucum = ucum, description = private$.description)
+      else
+        list(ucum = ucum)
     }
-  ),
-  active = list(
-   #' @field version The "version" attribute under "ucum", a character string
-   #' indicating the UCUM vesion that is being used.
-   version = function(value) {
-     if (missing(value))
-       private$.ucum_version
-     else if (is.character(value) && length(value) == 1L)
-       private$.ucum_version <- value
-     else
-       stop('`version` attribute must be a character string indicating the UCUM version.', call. = FALSE)
-   },
-
-   #' @field unit The "unit" attribute under "ucum", a character string giving
-   #'   the unit-of-measure in UCUM notation.
-   unit = function(value) {
-     if (missing(value))
-       private$.ucum_unit
-     else if (is.character(value) && length(value) == 1L)
-       private$.ucum_unit <- value
-     else
-       stop('`unit` attribute must be a character string.', call. = FALSE)
-   },
-
-   #' @field description The "description" attribute, a character string giving
-   #'   a free-text description of the unit-of-measure.
-   description = function(value) {
-     if (missing(value))
-       private$.description
-     else if (is.character(value) && length(value) == 1L)
-       private$.description <- value
-     else
-       stop('`description` attribute must be a character string.', call. = FALSE)
-   }
   )
 )
 
