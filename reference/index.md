@@ -57,10 +57,10 @@
   : Zarr "zstd" codec
 - [`zarr_conv_ref`](https://r-cf.github.io/zarr/reference/zarr_conv_ref.md)
   : Convention "ref"
-- [`zarr_conv_uom`](https://r-cf.github.io/zarr/reference/zarr_conv_uom.md)
-  : Convention "uom"
 - [`zarr_convention`](https://r-cf.github.io/zarr/reference/zarr_convention.md)
   : Zarr convention
+- [`zarr_convention_uom`](https://r-cf.github.io/zarr/reference/zarr_convention_uom.md)
+  : Convention "uom"
 - [`zarr_conventions()`](https://r-cf.github.io/zarr/reference/zarr_conventions.md)
   : List the Zarr conventions supported by this release
 - [`zarr_data_type`](https://r-cf.github.io/zarr/reference/zarr_data_type.md)

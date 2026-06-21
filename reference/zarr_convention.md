@@ -1,18 +1,20 @@
 # Zarr convention
 
-This class implements a basic Zarr convention. A convention is a set of
-attributes specific to a certain domain of application. These attributes
-are included in Zarr group and array attributes and are interpreted by
-application code. Conventions may be grouped in domains and combined
-with other conventions.
+This class implements a basic Zarr convention attribute factory. A
+convention is a set of attributes specific to a certain domain of
+application. These attributes are included in Zarr group and array
+attributes and are interpreted by application code. Conventions may be
+grouped in domains and combined with other conventions.
 
 Application-specific conventions need to inherit from this base class
 and redefine relevant methods. Descendant conventions may have
-additional methods specific to the domain of the data.
+additional methods specific to the domain of the data. Descendants of
+this class take the elements that define it and then return them
+formatted for inclusion in the attributes of a Zarr node.
 
 It is not useful to directly instantiate this class, use a descendant
 convention instead. It is recommended that descendant classes use the
-"zarr_conv\_\*\*\*\*" naming pattern and that they are included in a R
+"zarr_convention\_\*" naming pattern and that they are included in a R
 package with similar conventions and/or domain(s).
 
 ## Active bindings
@@ -46,7 +48,11 @@ package with similar conventions and/or domain(s).
 
 - [`zarr_convention$register()`](#method-zarr_convention-register)
 
-- [`zarr_convention$write()`](#method-zarr_convention-write)
+- [`zarr_convention$set()`](#method-zarr_convention-set)
+
+- [`zarr_convention$as_list()`](#method-zarr_convention-as_list)
+
+- [`zarr_convention$clear()`](#method-zarr_convention-clear)
 
 ------------------------------------------------------------------------
 
@@ -105,23 +111,40 @@ The updated attributes.
 
 ------------------------------------------------------------------------
 
-### `zarr_convention$write()`
+### `zarr_convention$set()`
 
-Write the data of a convention instance in the attributes of a Zarr
-object. This method does not do any actual writing. Descendant classes
-should implement their specific solutions.
+Set the attributes for this convention for use in a Zarr node. This is a
+stub that descendant classes can implement, using a specific set of
+arguments. More complex conventions can use other arrangements to set
+the more complex attributes.
 
 #### Usage
 
-    zarr_convention$write(attributes)
+    zarr_convention$set()
 
-#### Arguments
+------------------------------------------------------------------------
 
-- `attributes`:
+### `zarr_convention$as_list()`
 
-  A `list` with Zarr attributes for a group or array. The properties
-  will be written at the root level of `attributes`.
+Format the elements of a convention instance in a list suitable for the
+attributes of a Zarr object. Descendant classes should implement their
+specific solutions.
+
+#### Usage
+
+    zarr_convention$as_list()
 
 #### Returns
 
-The updated attributes.
+The convention attributes in a list.
+
+------------------------------------------------------------------------
+
+### `zarr_convention$clear()`
+
+Clear any attributes that may have been set. Only the properties of the
+convention itself will remain in place.
+
+#### Usage
+
+    zarr_convention$clear()

@@ -19,36 +19,17 @@ convention is implemented here:
 [`zarr_convention`](https://r-cf.github.io/zarr/reference/zarr_convention.md)
 -\> `zarr_conv_ref`
 
-## Active bindings
-
-- `uri`:
-
-  The "uri" field, a character string of an external Zarr store. The URI
-  must follow RFC 3986 and preferably points to a locatable resource
-  like a file on a file system or a store on a web site that is
-  accessible to the same process that opened up the Zarr store having
-  this reference.
-
-- `node`:
-
-  The "node" field, a character string giving the path to a group or
-  array in the current Zarr store or in the store pointed at by the
-  "uri" field.
-
-- `attribute`:
-
-  The "attribute" field, a character string with a JSON pointer to a
-  referenced attribute in the metadata of the referenced `node`.
-
 ## Methods
 
 ### Public methods
 
 - [`zarr_conv_ref$new()`](#method-zarr_conv_ref-initialize)
 
-- [`zarr_conv_ref$write()`](#method-zarr_conv_ref-write)
+- [`zarr_conv_ref$set()`](#method-zarr_conv_ref-set)
 
-- [`zarr_conv_ref$parse_json_pointer()`](#method-zarr_conv_ref-parse_json_pointer)
+- [`zarr_conv_ref$clear()`](#method-zarr_conv_ref-clear)
+
+- [`zarr_conv_ref$as_list()`](#method-zarr_conv_ref-as_list)
 
 Inherited methods
 
@@ -70,41 +51,54 @@ A new instance of a "ref" convention agent.
 
 ------------------------------------------------------------------------
 
-### `zarr_conv_ref$write()`
+### `zarr_conv_ref$set()`
 
-Write the data of this instance in the attributes of a Zarr object.
+Set the attributes for this convention for use in a Zarr node.
 
 #### Usage
 
-    zarr_conv_ref$write(attributes)
+    zarr_conv_ref$set(node, uri, attribute)
 
 #### Arguments
 
-- `attributes`:
+- `node`:
 
-  A `list` with Zarr attributes for a group or array. The properties
-  will be written to `attributes`.
+  Character string. Path to the Zarr node containing the data of
+  interest. The path is relative to the referring node when argument
+  `uri` is missing, absolute from the root of the Zarr store otherwise.
 
-#### Returns
+- `uri`:
 
-The updated attributes.
+  Optional, character string. URI of an external Zarr store. Omit for
+  nodes that are in the same local store as the referring node.
+
+- `attribute`:
+
+  Optional, a character string with a JSON pointer to a referenced
+  attribute in the metadata of the referenced `node`.
 
 ------------------------------------------------------------------------
 
-### `zarr_conv_ref$parse_json_pointer()`
+### `zarr_conv_ref$clear()`
 
-Validate and parse a JSON Pointer (RFC 6901) into its reference tokens.
+Clear any attributes that may have been set. Only the properties of the
+convention itself will remain in place.
 
 #### Usage
 
-    zarr_conv_ref$parse_json_pointer(ptr)
+    zarr_conv_ref$clear()
 
-#### Arguments
+------------------------------------------------------------------------
 
-- `ptr`:
+### `zarr_conv_ref$as_list()`
 
-  The character string from the "attribute" field to parse.
+Return the data of this instance for inclusion in the attributes of a
+Zarr object.
+
+#### Usage
+
+    zarr_conv_ref$as_list()
 
 #### Returns
 
-Character vector of raw tokens, or throws an error.
+A `list` with Zarr attributes for a group or array.

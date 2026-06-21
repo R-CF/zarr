@@ -52,6 +52,7 @@ Inherited methods
 - [`zarr_node$append_array_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-append_array_attribute)
 - [`zarr_node$attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-attribute)
 - [`zarr_node$delete_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-delete_attribute)
+- [`zarr_node$post_open()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-post_open)
 - [`zarr_node$print_attributes()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-print_attributes)
 - [`zarr_node$save()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-save)
 - [`zarr_node$set_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-set_attribute)

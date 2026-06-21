@@ -89,6 +89,7 @@ hierarchy starting from the current group, as a character vector.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 <p></p><ul><li><p><a href="#method-zarr_group-initialize"><code>zarr_group$new()</code></a></p></li>
+<li><p><a href="#method-zarr_group-post_open"><code>zarr_group$post_open()</code></a></p></li>
 <li><p><a href="#method-zarr_group-print"><code>zarr_group$print()</code></a></p></li>
 <li><p><a href="#method-zarr_group-hierarchy_nodes"><code>zarr_group$hierarchy_nodes()</code></a></p></li>
 <li><p><a href="#method-zarr_group-hierarchy"><code>zarr_group$hierarchy()</code></a></p></li>
@@ -137,10 +138,24 @@ missing or <code>NULL</code> for the root group.</p></dd>
 
 </div>
 
+<p></p><hr><a id="method-zarr_group-post_open"></a><div class="section">
+<h3 id="zarr-group-post-open-"><code>zarr_group$post_open()</code><a class="anchor" aria-label="anchor" href="#zarr-group-post-open-"></a></h3>
+<p>This method is called automatically after a Zarr store is
+opened to allow for operations after the full hierarchy has been
+established. All contained children will be called similarly.</p><div class="section">
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">post_open</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>Self, invisibly.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_group-print"></a><div class="section">
 <h3 id="zarr-group-print-"><code>zarr_group$print()</code><a class="anchor" aria-label="anchor" href="#zarr-group-print-"></a></h3>
 <p>Print a summary of the group to the console.</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -151,7 +166,7 @@ missing or <code>NULL</code> for the root group.</p></dd>
 <p>Collects the hierarchy of the group and its subgroups and
 arrays in a character vector. Usually called from the Zarr object or
 a group to display the full group hierarchy.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">hierarchy_nodes</span><span class="op">(</span>idx <span class="op">=</span> <span class="fl">1L</span>, total <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
@@ -170,7 +185,7 @@ recursion when there are groups below the current group.</p></dd>
 <h3 id="zarr-group-hierarchy-"><code>zarr_group$hierarchy()</code><a class="anchor" aria-label="anchor" href="#zarr-group-hierarchy-"></a></h3>
 <p>Print the Zarr hierarchy to the console from the current
 group.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -183,10 +198,10 @@ group and array nodes. This method only has to be called after opening
 an existing Zarr store - this is done automatically by user-facing
 code. After that, users can access the <code>children</code> property of this
 class.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">build_hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>This zarr_group instance with all of its children linked.</p>
 </div>
 
@@ -196,7 +211,7 @@ class.</p><div class="section">
 <h3 id="zarr-group-get-node-"><code>zarr_group$get_node()</code><a class="anchor" aria-label="anchor" href="#zarr-group-get-node-"></a></h3>
 <p>Retrieve the group or array represented by the node located
 at the path relative from the current group.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">get_node</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
@@ -209,7 +224,7 @@ higher up in the hierarchy.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>The zarr_group or <a href="zarr_array.html">zarr_array</a> instance located at <code>path</code>, or
 <code>NULL</code> if the <code>path</code> was not found.</p>
 </div>
@@ -222,7 +237,7 @@ higher up in the hierarchy.</p></dd>
 must have been persisted to the store for a reliable functioning. All
 that this method does is update the in-memory representation of the
 Zarr hierarchy.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">set_node</span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
@@ -234,7 +249,7 @@ replaced by the object in this argument.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>The <code>node</code> object.</p>
 </div>
 
@@ -244,7 +259,7 @@ replaced by the object in this argument.</p></dd>
 <h3 id="zarr-group-count-arrays-"><code>zarr_group$count_arrays()</code><a class="anchor" aria-label="anchor" href="#zarr-group-count-arrays-"></a></h3>
 <p>Count the number of arrays in this group, optionally
 including arrays in sub-groups.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">count_arrays</span><span class="op">(</span>recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
@@ -261,7 +276,7 @@ should be included in the count. Default is <code>TRUE</code>.</p></dd>
 <p></p><hr><a id="method-zarr_group-add_group"></a><div class="section">
 <h3 id="zarr-group-add-group-"><code>zarr_group$add_group()</code><a class="anchor" aria-label="anchor" href="#zarr-group-add-group-"></a></h3>
 <p>Add a group to the Zarr hierarchy under the current group.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
@@ -271,7 +286,7 @@ should be included in the count. Default is <code>TRUE</code>.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>The newly created <code>zarr_group</code> instance, or <code>NULL</code> if the group
 could not be created.</p>
 </div>
@@ -281,7 +296,7 @@ could not be created.</p>
 <p></p><hr><a id="method-zarr_group-add_array"></a><div class="section">
 <h3 id="zarr-group-add-array-"><code>zarr_group$add_array()</code><a class="anchor" aria-label="anchor" href="#zarr-group-add-array-"></a></h3>
 <p>Add an array to the Zarr hierarchy in the current group.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">add_array</span><span class="op">(</span><span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
@@ -296,7 +311,7 @@ definition.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>The newly created <code>zarr_array</code> instance, or <code>NULL</code> if the array
 could not be created.</p>
 </div>
@@ -308,7 +323,7 @@ could not be created.</p>
 <p>Delete a group or an array contained by this group. When
 deleting a group it cannot contain other groups or arrays. <strong>Warning:</strong>
 this operation is irreversible for many stores!</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
@@ -320,7 +335,7 @@ directly under this group.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -333,10 +348,10 @@ including any sub-groups and arrays. Any specific metadata attached to
 this group is deleted as well - only a basic metadata document is
 maintained. <strong>Warning:</strong> this operation is irreversible for many
 stores!</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">delete_all</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 

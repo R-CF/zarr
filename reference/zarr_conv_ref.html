@@ -88,37 +88,14 @@ convention is implemented here:</p>
     <p><code><a href="zarr_convention.html">zarr_convention</a></code> -&gt; <code>zarr_conv_ref</code></p>
     </div>
     <div class="section level2">
-    <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
-    <p></p><div class="r6-active-bindings"><dl><dt><code>uri</code></dt>
-<dd><p>The "uri" field, a character string of an external Zarr
-store. The URI must follow RFC 3986 and preferably points to a locatable
-resource like a file on a file system or a store on a web site that is
-accessible to the same process that opened up the Zarr store having this
-reference.</p></dd>
-
-
-    <dt><code>node</code></dt>
-<dd><p>The "node" field, a character string giving the path to
-a group or array in the current Zarr store or in the  store pointed at by the "uri"
-field.</p></dd>
-
-
-    <dt><code>attribute</code></dt>
-<dd><p>The "attribute" field, a character string with a JSON
-pointer to a referenced attribute in the metadata of the referenced
-<code>node</code>.</p></dd>
-
-
-</dl><p></p></div>
-    </div>
-    <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 <p></p><ul><li><p><a href="#method-zarr_conv_ref-initialize"><code>zarr_conv_ref$new()</code></a></p></li>
-<li><p><a href="#method-zarr_conv_ref-write"><code>zarr_conv_ref$write()</code></a></p></li>
-<li><p><a href="#method-zarr_conv_ref-parse_json_pointer"><code>zarr_conv_ref$parse_json_pointer()</code></a></p></li>
+<li><p><a href="#method-zarr_conv_ref-set"><code>zarr_conv_ref$set()</code></a></p></li>
+<li><p><a href="#method-zarr_conv_ref-clear"><code>zarr_conv_ref$clear()</code></a></p></li>
+<li><p><a href="#method-zarr_conv_ref-as_list"><code>zarr_conv_ref$as_list()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_convention" data-id="register"><a href="zarr_convention.html#method-register"><code>zarr_convention$register()</code></a></span></li>
 </ul></details></p><hr><a id="method-zarr_conv_ref-initialize"></a><div class="section">
 <h3 id="zarr-conv-ref-new-"><code>zarr_conv_ref$new()</code><a class="anchor" aria-label="anchor" href="#zarr-conv-ref-new-"></a></h3>
@@ -132,43 +109,52 @@ pointer to a referenced attribute in the metadata of the referenced
 
 </div>
 
-<p></p><hr><a id="method-zarr_conv_ref-write"></a><div class="section">
-<h3 id="zarr-conv-ref-write-"><code>zarr_conv_ref$write()</code><a class="anchor" aria-label="anchor" href="#zarr-conv-ref-write-"></a></h3>
-<p>Write the data of this instance in the attributes of a Zarr
-object.</p><div class="section">
+<p></p><hr><a id="method-zarr_conv_ref-set"></a><div class="section">
+<h3 id="zarr-conv-ref-set-"><code>zarr_conv_ref$set()</code><a class="anchor" aria-label="anchor" href="#zarr-conv-ref-set-"></a></h3>
+<p>Set the attributes for this convention for use in a Zarr
+node.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_conv_ref</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">attributes</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_conv_ref</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">node</span>, <span class="va">uri</span>, <span class="va">attribute</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>attributes</code></dt>
-<dd><p>A <code>list</code> with Zarr attributes for a group or array. The
-properties will be written to <code>attributes</code>.</p></dd>
+<p></p><div class="arguments"><dl><dt><code>node</code></dt>
+<dd><p>Character string. Path to the Zarr node containing the data
+of interest. The path is relative to the referring node when argument
+<code>uri</code> is missing, absolute from the root of the Zarr store otherwise.</p></dd>
+
+      <dt><code>uri</code></dt>
+<dd><p>Optional, character string. URI of an external Zarr store.
+Omit for nodes that are in the same local store as the referring node.</p></dd>
+
+      <dt><code>attribute</code></dt>
+<dd><p>Optional, a character string with a JSON pointer to a
+referenced attribute in the metadata of the referenced <code>node</code>.</p></dd>
 
 
 </dl><p></p></div>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_conv_ref-clear"></a><div class="section">
+<h3 id="zarr-conv-ref-clear-"><code>zarr_conv_ref$clear()</code><a class="anchor" aria-label="anchor" href="#zarr-conv-ref-clear-"></a></h3>
+<p>Clear any attributes that may have been set. Only the
+properties of the convention itself will remain in place.</p><div class="section">
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_conv_ref</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_conv_ref-as_list"></a><div class="section">
+<h3 id="zarr-conv-ref-as-list-"><code>zarr_conv_ref$as_list()</code><a class="anchor" aria-label="anchor" href="#zarr-conv-ref-as-list-"></a></h3>
+<p>Return the data of this instance for inclusion in the
+attributes of a Zarr object.</p><div class="section">
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_conv_ref</span><span class="op">$</span><span class="fu">as_list</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
-<p>The updated attributes.</p>
-</div>
-
-</div>
-
-<p></p><hr><a id="method-zarr_conv_ref-parse_json_pointer"></a><div class="section">
-<h3 id="zarr-conv-ref-parse-json-pointer-"><code>zarr_conv_ref$parse_json_pointer()</code><a class="anchor" aria-label="anchor" href="#zarr-conv-ref-parse-json-pointer-"></a></h3>
-<p>Validate and parse a JSON Pointer (RFC 6901) into its
-reference tokens.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_conv_ref</span><span class="op">$</span><span class="fu">parse_json_pointer</span><span class="op">(</span><span class="va">ptr</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div><p></p><div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>ptr</code></dt>
-<dd><p>The character string from the "attribute" field to parse.</p></dd>
-
-
-</dl><p></p></div>
-</div><p></p><div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
-<p>Character vector of raw tokens, or throws an error.</p>
+<p>A <code>list</code> with Zarr attributes for a group or array.</p>
 </div>
 
 </div>

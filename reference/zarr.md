@@ -20,11 +20,13 @@ instances. Each `zarr_array` is located in a `zarr_group`.
 
 - `root`:
 
-  (read-only) The root node of the Zarr object, usually a
+  The root node of the Zarr object, usually a
   [zarr_group](https://r-cf.github.io/zarr/reference/zarr_group.md)
   instance but it could also be a
   [zarr_array](https://r-cf.github.io/zarr/reference/zarr_array.md)
-  instance.
+  instance. CAUTION: When setting the root node, the entire existing
+  hierarchy is deleted. The hierarchy will likely be out of sync with
+  the store after setting the root node.
 
 - `store`:
 

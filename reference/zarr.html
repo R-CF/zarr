@@ -72,8 +72,11 @@ class for managing Zarr arrays is <a href="zarr_array.html">zarr_array</a>. The 
 
 
     <dt><code>root</code></dt>
-<dd><p>(read-only) The root node of the Zarr object, usually a
-<a href="zarr_group.html">zarr_group</a> instance but it could also be a <a href="zarr_array.html">zarr_array</a> instance.</p></dd>
+<dd><p>The root node of the Zarr object, usually a <a href="zarr_group.html">zarr_group</a>
+instance but it could also be a <a href="zarr_array.html">zarr_array</a> instance. CAUTION: When
+setting the root node, the entire existing hierarchy is deleted. The
+hierarchy will likely be out of sync with the store after setting the
+root node.</p></dd>
 
 
     <dt><code>store</code></dt>

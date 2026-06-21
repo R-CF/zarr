@@ -24,8 +24,9 @@ validity of node names.
 
 - `parent`:
 
-  (read-only) The parent of the node. For a root node this returns
-  `NULL`, otherwise this `zarr_group` or `zarr_array` instance.
+  The parent of the node. For a root node this returns `NULL`, otherwise
+  this `zarr_group` or `zarr_array` instance. CAUTION: Setting the
+  parent of a node can invalidate the Zarr hierarchy - expert use only.
 
 - `store`:
 
@@ -58,6 +59,8 @@ validity of node names.
 ### Public methods
 
 - [`zarr_node$new()`](#method-zarr_node-initialize)
+
+- [`zarr_node$post_open()`](#method-zarr_node-post_open)
 
 - [`zarr_node$print_attributes()`](#method-zarr_node-print_attributes)
 
@@ -99,6 +102,23 @@ Initialize a new node in a Zarr hierarchy.
 - `store`:
 
   The store to persist data in. Ignored if a `parent` is specified.
+
+------------------------------------------------------------------------
+
+### `zarr_node$post_open()`
+
+This method is called automatically after a Zarr store is opened to
+allow for operations after the full hierarchy has been established. This
+is a no-op here, descendant classes with specific requirements should
+implement this method.
+
+#### Usage
+
+    zarr_node$post_open()
+
+#### Returns
+
+Self, invisibly.
 
 ------------------------------------------------------------------------
 

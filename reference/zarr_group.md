@@ -36,6 +36,8 @@ specifically the attribute `"node_type": "group"`.
 
 - [`zarr_group$new()`](#method-zarr_group-initialize)
 
+- [`zarr_group$post_open()`](#method-zarr_group-post_open)
+
 - [`zarr_group$print()`](#method-zarr_group-print)
 
 - [`zarr_group$hierarchy_nodes()`](#method-zarr_group-hierarchy_nodes)
@@ -102,6 +104,22 @@ store.
 #### Returns
 
 An instance of `zarr_group`.
+
+------------------------------------------------------------------------
+
+### `zarr_group$post_open()`
+
+This method is called automatically after a Zarr store is opened to
+allow for operations after the full hierarchy has been established. All
+contained children will be called similarly.
+
+#### Usage
+
+    zarr_group$post_open()
+
+#### Returns
+
+Self, invisibly.
 
 ------------------------------------------------------------------------
 
