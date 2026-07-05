@@ -46,7 +46,8 @@ reading, the list of registered codecs.}
     \describe{
       \item{\code{array_shape}}{Integer vector of the array dimensions. This may be
 \code{NA} for a scalar array.}
-      \item{\code{chunk_shape}}{Integer vector of the dimensions of each chunk.
+      \item{\code{chunk_shape}}{Optional. Integer vector of the dimensions of each
+chunk. If omitted, the optimal chunking is automatically determined.
 Ignored for a scalar array.}
     }
     \if{html}{\out{</div>}}

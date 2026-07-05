@@ -127,7 +127,7 @@ implement their specific solutions.
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    The convention attributes in a list.
+    The convention attributes in a \code{list}.
   }
 }
 

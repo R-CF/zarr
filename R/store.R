@@ -79,15 +79,13 @@ zarr_store <- R6::R6Class('zarr_store',
           ab$add_codec('ucs-4', configuration = list(endian = endian, width = dtype[4L]))
         }
 
-        # Transpose codec is already set for 'F' ordering. If 'C' ordering,
-        # delete the codec
+        # Transpose codec is already set for 'F' ordering. If 'C' ordering, delete the codec
         if (meta$order == 'C')
           ab$remove_codec('transpose')
 
         # Compression codec
-        if (!is.null(meta$compressor)) {
+        if (!is.null(meta$compressor))
           ab$add_codec(meta$compressor$id, configuration = meta$compressor)
-        }
 
         v3 <- c(ab$metadata(),
                 list(chunk_key_encoding = list(name = 'default',

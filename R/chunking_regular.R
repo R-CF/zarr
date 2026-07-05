@@ -28,10 +28,13 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #' @description Initialize a new chunking scheme for an array.
     #' @param array_shape Integer vector of the array dimensions. This may be
     #'   `NA` for a scalar array.
-    #' @param chunk_shape Integer vector of the dimensions of each chunk.
+    #' @param chunk_shape Optional. Integer vector of the dimensions of each
+    #'   chunk. If omitted, the optimal chunking is automatically determined.
     #'   Ignored for a scalar array.
     #' @return An instance of `chunk_grid_regular`.
     initialize = function(array_shape, chunk_shape) {
+      if (missing(chunk_shape))
+        chunk_shape <- .auto_chunk(array_shape)
       super$initialize('regular', array_shape, chunk_shape)
     },
 

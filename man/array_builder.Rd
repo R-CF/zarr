@@ -38,9 +38,9 @@ order by default, such as Python. A second default codec is "bytes" that
 records the endianness of the data. Other codecs may be added by the user,
 such as a compression codec.
 
-This class only handles the mandatory attributes in a Zarr array metadata
-document. Optional arguments may be set directly on the Zarr array after it
-has been created.
+This class only handles the mandatory metadata in a Zarr array document.
+Optional arguments may be set directly on the Zarr array after it has been
+created.
 }
 \section{Active bindings}{
   \if{html}{\out{<div class="r6-active-bindings">}}

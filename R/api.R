@@ -90,8 +90,9 @@ as_zarr <- function(x, name = NULL, location = NULL) {
                            stop('Unsupported data type:', storage.mode(x), call. = FALSE))
     d <- dim(x) %||% length(x)
     ab$shape <- d
-    ab$chunk_shape <- pmin.int(d, Zarr.options$chunk_length)
-    ab$add_codec('blosc', list(clevel = 6L))
+    ab$chunk_shape <- .auto_chunk(d)
+    if (prod(d) > Zarr.options$min_compress)
+      ab$add_codec('blosc', list(clevel = 6L))
 
     if (inherits(location, 'zarr_group')) {
       if (missing(name) || is.null(name))

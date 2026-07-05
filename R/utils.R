@@ -1,3 +1,29 @@
+#' Zarr package options
+#'
+#' Use this function to read or modify package options.
+#'
+#' @param key Character. A key whose value to retrieve or modify. If missing,
+#'   all options are returned.
+#' @param value Optional. The new value for the option.
+#' @return Nothing if argument `value` is provided. The value of argument `key`
+#'   if it is provided, or a `list` with all options otherwise.
+#' @export
+#' @examples
+#' zarr_options()
+zarr_options <- function(key, value) {
+  if (missing(key))
+    as.list(Zarr.options)
+  else if (missing(value))
+    Zarr.options[[key]]
+  else {
+    switch(key,
+           'chunk_length' = if (is.numeric(value)) Zarr.options$chunk_length <- as.integer(value[1L]),
+           'min_compress' = if (is.numeric(value)) Zarr.options$min_compress <- as.integer(value[1L]),
+           'eps'          = if (is.numeric(value)) Zarr.options$eps <- value[1L]
+    )
+  }
+}
+
 # Check the name of a node before setting it.
 # From the Zarr specification, the following constraints apply to node names:
 # * must not be the empty string (""), except for the root node
@@ -108,6 +134,15 @@
     'http'
   else
     'local'
+}
+
+#' Get optimal chunking for the dimension lengths in argument dims. This uses
+#' the Zarr.options$chunk_length setting or a user-defined maximum chunk length
+#' per dimension.
+#' @noRd
+.auto_chunk <- function(dims, max_chunk = Zarr.options$chunk_length) {
+  nchunks <- ceiling(dims / max_chunk)
+  as.integer(ceiling(dims / nchunks))
 }
 
 #' Register a Zarr domain for this session

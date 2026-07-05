@@ -72,7 +72,7 @@ zarr_convention <- R6::R6Class('zarr_convention',
     #' @description Format the elements of a convention instance in a list
     #'   suitable for the attributes of a Zarr object. Descendant classes should
     #'   implement their specific solutions.
-    #' @return The convention attributes in a list.
+    #' @return The convention attributes in a `list`.
     as_list = function() {
       list()
     },

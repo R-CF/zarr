@@ -17,22 +17,22 @@
 #' ```
 #' @docType class
 #' @export
-zarr_conv_ref <- R6::R6Class('zarr_conv_ref',
+zarr_convention_ref <- R6::R6Class('zarr_convention_ref',
   inherit = zarr_convention,
   cloneable = FALSE,
   private = list(
     # Optional: URI, preferably locatable, to an external Zarr store containing
     # the referenced object.
-    .uri = character(0),
+    .uri = NULL,
 
     # Mandatory: Path to a Zarr group or array in the current Zarr store
     # (relative path) or the store in the external `.uri` reference (absolute
     # path.
-    .node = character(0),
+    .node = NULL,
 
     # Optional: JSON pointer to a referenced attribute in the metadata of
     # `node`.
-    .attribute = character(0),
+    .attribute = NULL,
 
     # Validate and parse a JSON Pointer (RFC 6901) into its reference tokens.
     # @param ptr The character string from the "attribute" field to parse.
@@ -84,23 +84,27 @@ zarr_conv_ref <- R6::R6Class('zarr_conv_ref',
       else
         stop('Argument `node` must be a character string', call. = FALSE)
 
-      if (!missing(uri) && is.character(uri) && length(uri) == 1L && nzchar(uri)) # FIXME: Must test for URI formatting
-        private$.uri <- uri
-      else
-        stop('Argument `uri` must be a character string representing a URI', call. = FALSE)
+      if (!(missing(uri) || is.null(uri))) {
+        if (is.character(uri) && length(uri) == 1L && nzchar(uri)) # FIXME: Must test for URI formatting
+          private$.uri <- uri
+        else
+          stop('Argument `uri` must be a character string representing a URI', call. = FALSE)
+      }
 
-      if (!missing(attribute) && private$parse_json_pointer(attribute))
-        private$.attribute <- attribute
-      else
-        stop('`attribute` field must be a character string with a valid JSON pointer', call. = FALSE)
+      if (!(missing(attribute) || is.null(attribute))) {
+        if (private$parse_json_pointer(attribute))
+          private$.attribute <- attribute
+        else
+          stop('`attribute` field must be a character string with a valid JSON pointer', call. = FALSE)
+      }
     },
 
     #' @description Clear any attributes that may have been set. Only the
     #' properties of the convention itself will remain in place.
     clear = function() {
-      private$.node <- character(0)
-      private$.attribute <- character(0)
-      private$.uri <- character(0)
+      private$.node <- NULL
+      private$.attribute <- NULL
+      private$.uri <- NULL
     },
 
     #' @description Return the data of this instance for inclusion in the
@@ -108,11 +112,11 @@ zarr_conv_ref <- R6::R6Class('zarr_conv_ref',
     #' @return A `list` with Zarr attributes for a group or array.
     as_list = function() {
       if (!nzchar(private$.node))
-        stop('`node` field must be set.', call. = FALSE)
+        stop('`node` field must be set', call. = FALSE)
 
-      out <- if (nzchar(private$.uri)) list(uri = private$.uri) else list()
-      out$node <- c(out, list(node = private$.node))
-      if (nzchar(private$.attribute))
+      out <- if (!is.null(private$.uri) && nzchar(private$.uri)) list(uri = private$.uri) else list()
+      out <- c(out, list(node = private$.node))
+      if (!is.null(private$.attribute) && nzchar(private$.attribute))
         out$attribute <- c(out, list(attribute = private$.attribute))
       out
     }

@@ -57,7 +57,7 @@ chunking <- R6::R6Class('chunking',
         if (is.integer(chunk_shape) && all(chunk_shape > 0L) && length(array_shape) == length(chunk_shape))
           private$.chunk_shape <- chunk_shape
         else
-          stop('Chunk shape is not valid for `array_shape`.', call. = FALSE) # nocov
+          stop('Chunk shape is not valid for `array_shape`', call. = FALSE) # nocov
       }
       private$.chunk_map <- new.env(parent = emptyenv())
     }

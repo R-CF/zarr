@@ -33,9 +33,9 @@
 #'   records the endianness of the data. Other codecs may be added by the user,
 #'   such as a compression codec.
 #'
-#'   This class only handles the mandatory attributes in a Zarr array metadata
-#'   document. Optional arguments may be set directly on the Zarr array after it
-#'   has been created.
+#'   This class only handles the mandatory metadata in a Zarr array document.
+#'   Optional arguments may be set directly on the Zarr array after it has been
+#'   created.
 #' @docType class
 #' @export
 array_builder <- R6::R6Class('array_builder',
@@ -168,10 +168,10 @@ array_builder <- R6::R6Class('array_builder',
     #' @return Self, invisibly.
     add_codec = function(codec, configuration, .position = NULL) {
       if (is.null(private$.data_type))
-        stop('Codecs can only be added after the array data_type has been set.', call. = FALSE) # nocov
+        stop('Codecs can only be added after the array data_type has been set', call. = FALSE) # nocov
 
       if (!is.character(codec) || length(codec) != 1L)
-        stop('Codec name must be a single character string.', call. = FALSE) # nocov
+        stop('Codec name must be a single character string', call. = FALSE) # nocov
 
       cdc <- switch(codec,
         'transpose'        = zarr_codec_transpose$new(length(private$.shape), configuration),
@@ -211,15 +211,15 @@ array_builder <- R6::R6Class('array_builder',
         if (!len) {
           if (cdc$from == 'array')
             private$.codecs <- setNames(list(cdc), cdc$name)
-          else stop('Codec has incompatible mode to start chains of codecs.', call. = FALSE) #nocov
+          else stop('Codec has incompatible mode to start chains of codecs', call. = FALSE) #nocov
         } else if (cdc$from == private$.codecs[[len]]$to)
           private$.codecs <- c(private$.codecs, setNames(list(cdc), cdc$name))
-        else stop('Codec has incompatible mode to follow previous codec.', call. = FALSE) #nocov
+        else stop('Codec has incompatible mode to follow previous codec', call. = FALSE) #nocov
       } else if (.position == 1) {
         if (cdc$from == 'array' && private$.codecs[[1L]]$from == cdc$to)
           private$.codecs <- c(setNames(list(cdc), cdc$name), private$.codecs)
         else
-          stop('First codec must use an "array" mode for input and agree with the following codec.', call. = FALSE) # nocov
+          stop('First codec must use an "array" mode for input and agree with the following codec', call. = FALSE) # nocov
       } else if (cdc$from == private$.codecs[[len - 1L]]$to && cdc$to == private$.codecs[[len]]$from)
         private$.codecs <- append(private$.codecs, setNames(list(cdc), cdc$name), after = len - 1L)
       else
@@ -298,11 +298,9 @@ array_builder <- R6::R6Class('array_builder',
       else if (is.null(private$.data_type)) {
         private$.data_type <- zarr_data_type$new(value)
         private$update_codecs()
-      } else {
-        if (private$.data_type$data_type != value) {
-          private$.data_type$data_type <- value
-          private$update_codecs()
-        }
+      } else if (private$.data_type$data_type != value) {
+        private$.data_type$data_type <- value
+        private$update_codecs()
       }
     },
 
@@ -360,7 +358,7 @@ array_builder <- R6::R6Class('array_builder',
           private$.chunk_shape <- 1L
         } else if (is.numeric(value) && all((value <- as.integer(value)) > 0L)) {
           private$.shape <- value
-          private$.chunk_shape <- chunk_grid_regular$new(value, pmin.int(value, Zarr.options$chunk_length))
+          private$.chunk_shape <- chunk_grid_regular$new(value) # Automatic chunk shape
         } else
           stop('Shape must be an integer vector of lengths along each dimension of the Zarr array.', call. = FALSE) # nocov
         private$update_codecs()

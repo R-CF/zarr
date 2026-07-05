@@ -5,7 +5,8 @@ Zarr.options <- new.env(parent = emptyenv())
 
 .onLoad <- function(libname, pkgname) {
   # User-modifiable options
-  assign("chunk_length", 100L, envir = Zarr.options)
+  assign("chunk_length", 100L, envir = Zarr.options) # Maximum dimension chunk length for auto chunking
+  assign("min_compress", 100L, envir = Zarr.options) # Minimum array size before compression is set
   assign("eps", .Machine$double.eps^0.5, envir = Zarr.options)
   assign("parallel_threshold", 20, envir = Zarr.options)
 
