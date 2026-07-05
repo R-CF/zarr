@@ -47,8 +47,8 @@
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_codec_ucs4.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_codec_vlenutf8.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_codec_zstd.html</loc></url>
-<url><loc>https://r-cf.github.io/zarr/reference/zarr_conv_ref.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_convention.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_convention_ref.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_convention_uom.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_conventions.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_data_type.html</loc></url>
@@ -60,6 +60,7 @@
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_localstore.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_memorystore.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_node.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_options.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_register_domain.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_store.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_unregister_domain.html</loc></url>

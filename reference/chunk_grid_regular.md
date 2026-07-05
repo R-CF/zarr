@@ -51,7 +51,8 @@ Initialize a new chunking scheme for an array.
 
 - `chunk_shape`:
 
-  Integer vector of the dimensions of each chunk. Ignored for a scalar
+  Optional. Integer vector of the dimensions of each chunk. If omitted,
+  the optimal chunking is automatically determined. Ignored for a scalar
   array.
 
 #### Returns

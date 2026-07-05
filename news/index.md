@@ -7,6 +7,14 @@
 - Dynamically set a node in a Zarr hierarchy.
 - Set metadata on a node in a memory store.
 - Convention classes are now coded as attribute factories.
+- Zarr package options can now be retrieved and modified with the
+  [`zarr_options()`](https://r-cf.github.io/zarr/reference/zarr_options.md)
+  function.
+- Compute optimal chunking sizes from array shape when not set
+  explicitly.
+- In [`as_zarr()`](https://r-cf.github.io/zarr/reference/as_zarr.md),
+  small arrays are not compressed. This is controlled by the
+  `Zarr.options$min_compress` setting.
 - Fix key listing in memory stores.
 
 ## zarr 0.4.1

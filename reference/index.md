@@ -55,10 +55,10 @@
   : Zarr vlen-utf8 codec
 - [`zarr_codec_zstd`](https://r-cf.github.io/zarr/reference/zarr_codec_zstd.md)
   : Zarr "zstd" codec
-- [`zarr_conv_ref`](https://r-cf.github.io/zarr/reference/zarr_conv_ref.md)
-  : Convention "ref"
 - [`zarr_convention`](https://r-cf.github.io/zarr/reference/zarr_convention.md)
   : Zarr convention
+- [`zarr_convention_ref`](https://r-cf.github.io/zarr/reference/zarr_convention_ref.md)
+  : Convention "ref"
 - [`zarr_convention_uom`](https://r-cf.github.io/zarr/reference/zarr_convention_uom.md)
   : Convention "uom"
 - [`zarr_conventions()`](https://r-cf.github.io/zarr/reference/zarr_conventions.md)
@@ -81,6 +81,8 @@
   : In-memory Zarr Store
 - [`zarr_node`](https://r-cf.github.io/zarr/reference/zarr_node.md) :
   Zarr Hierarchy node
+- [`zarr_options()`](https://r-cf.github.io/zarr/reference/zarr_options.md)
+  : Zarr package options
 - [`zarr_register_domain()`](https://r-cf.github.io/zarr/reference/zarr_register_domain.md)
   : Register a Zarr domain for this session
 - [`zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md) :

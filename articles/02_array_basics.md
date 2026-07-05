@@ -56,11 +56,11 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpiTJ8KN/file1cd86eb73983.zarr 
+#> Location  : /tmp/RtmpwomD1I/file1dc9540e473b.zarr 
 #> Arrays    : 1 
 #> Total size: 2.81 KB
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpiTJ8KN/file1cd86eb73983.zarr 
+#> <Zarr hierarchy> /tmp/RtmpwomD1I/file1dc9540e473b.zarr 
 #> ☰ / (root group)
 #> └ ⌗ top_array
 ```
@@ -85,7 +85,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpiTJ8KN/file1cd86eb73983.zarr 
+#> <Zarr hierarchy> /tmp/RtmpwomD1I/file1dc9540e473b.zarr 
 #> ☰ / (root group)
 #> ├ ⌗ top_array
 #> ├ ⌗ a_vector
@@ -113,9 +113,9 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpiTJ8KN/file1cd86eb73983.zarr 
+#> Location  : /tmp/RtmpwomD1I/file1dc9540e473b.zarr 
 #> Arrays    : 3 
-#> Total size: 6.94 KB
+#> Total size: 6.74 KB
 unlink(fn)
 ```
 
@@ -158,7 +158,7 @@ arr_def
 #>   "chunk_grid": {
 #>     "name": "regular",
 #>     "configuration": {
-#>       "chunk_shape": [100, 100, 5]
+#>       "chunk_shape": [80, 78, 5]
 #>     }
 #>   },
 #>   "codecs": [

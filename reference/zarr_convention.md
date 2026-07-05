@@ -136,7 +136,7 @@ specific solutions.
 
 #### Returns
 
-The convention attributes in a list.
+The convention attributes in a `list`.
 
 ------------------------------------------------------------------------
 
