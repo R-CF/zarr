@@ -54,6 +54,7 @@ hierarchy starting from the current group, as a character vector.}
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-attribute'><code>zarr_node$attribute()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="delete_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-delete_attribute'><code>zarr_node$delete_attribute()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="print_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-print_attributes'><code>zarr_node$print_attributes()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="relative_path"><a href='../../zarr/html/zarr_node.html#method-zarr_node-relative_path'><code>zarr_node$relative_path()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="save"><a href='../../zarr/html/zarr_node.html#method-zarr_node-save'><code>zarr_node$save()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="set_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-set_attribute'><code>zarr_node$set_attribute()</code></a></span></li>
 </ul>
@@ -77,7 +78,8 @@ string \code{""}.}
       \item{\code{metadata}}{List with the metadata of the group.}
       \item{\code{parent}}{The parent \code{zarr_group} instance of this new group, can be
 missing or \code{NULL} for the root group.}
-      \item{\code{store}}{The \link{zarr_store} instance to persist data in.}
+      \item{\code{store}}{The \link{zarr_store} instance to persist data in. Ignored if
+\code{parent} is specified.}
     }
     \if{html}{\out{</div>}}
   }

@@ -23,7 +23,8 @@ zarr_group <- R6::R6Class('zarr_group',
     #' @param metadata List with the metadata of the group.
     #' @param parent The parent `zarr_group` instance of this new group, can be
     #'   missing or `NULL` for the root group.
-    #' @param store The [zarr_store] instance to persist data in.
+    #' @param store The [zarr_store] instance to persist data in. Ignored if
+    #'   `parent` is specified.
     #' @return An instance of `zarr_group`.
     initialize = function(name, metadata, parent, store) {
       super$initialize(name, metadata, parent, store)

@@ -136,7 +136,7 @@ zarr_node <- R6::R6Class('zarr_node',
     #' @param metadata List with the metadata of the node.
     #' @param parent The parent node of this new node. Must be omitted when
     #' initializing a root node.
-    #' @param store The store to persist data in. Ignored if a `parent` is
+    #' @param store The store to persist data in. Ignored if `parent` is
     #'   specified.
     initialize = function(name, metadata, parent, store) {
       if (missing(parent) || is.null(parent))
@@ -174,6 +174,35 @@ zarr_node <- R6::R6Class('zarr_node',
           cat('\nAttributes:\n')
         private$print_attribute_levels(atts)
       }
+    },
+
+    #' @description Retrieve the relative path from the current node to the
+    #'   indicated node or path. In the relative path parent nodes are indicated
+    #'   with `..`, child nodes start with the child node name down to the
+    #'   target node.
+    #' @param to Either a `zarr_node` instance or a character string giving the
+    #'   object to which the relative path reference is sought.
+    #' @return A character string with the relative path from this node. If the
+    #'   `to` argument is empty or points to this node '.' is returned. Note
+    #'   that the relative path has no leading slash (as regular Zarr paths do).
+    relative_path = function(to) {
+      if (inherits(to, 'zarr_node')) to <- to$path
+      to_parts <- strsplit(to, '/', fixed = TRUE)[[1L]][-1L]
+      if (!length(to_parts)) return('.')
+      if (any(to_parts %in% c('.', '..')))
+        stop('Invalid `to` path: segments must be valid names', call. = FALSE)
+
+      from_parts <- strsplit(self$path, '/', fixed = TRUE)[[1L]][-1L]
+
+      n <- min(length(from_parts), length(to_parts))
+      common <- 0L
+      while (common < n && from_parts[common + 1L] == to_parts[common + 1L]) {
+        common <- common + 1L
+      }
+
+      parts <- c(rep('..', length(from_parts) - common),
+                 to_parts[seq_len(length(to_parts) - common) + common])
+      if (!length(parts)) '.' else paste(parts, collapse = '/')
     },
 
     #' @description Retrieve a specific attribute by path.

@@ -52,6 +52,7 @@ method or removed with the \code{delete_attributes()} method.}
     \item \href{#method-zarr_node-initialize}{\code{zarr_node$new()}}
     \item \href{#method-zarr_node-post_open}{\code{zarr_node$post_open()}}
     \item \href{#method-zarr_node-print_attributes}{\code{zarr_node$print_attributes()}}
+    \item \href{#method-zarr_node-relative_path}{\code{zarr_node$relative_path()}}
     \item \href{#method-zarr_node-attribute}{\code{zarr_node$attribute()}}
     \item \href{#method-zarr_node-set_attribute}{\code{zarr_node$set_attribute()}}
     \item \href{#method-zarr_node-append_array_attribute}{\code{zarr_node$append_array_attribute()}}
@@ -76,7 +77,7 @@ method or removed with the \code{delete_attributes()} method.}
       \item{\code{metadata}}{List with the metadata of the node.}
       \item{\code{parent}}{The parent node of this new node. Must be omitted when
 initializing a root node.}
-      \item{\code{store}}{The store to persist data in. Ignored if a \code{parent} is
+      \item{\code{store}}{The store to persist data in. Ignored if \code{parent} is
 specified.}
     }
     \if{html}{\out{</div>}}
@@ -119,6 +120,34 @@ called by the \link{zarr_group} and \link{zarr_array} \code{print()} methods.
 is \code{width = .} to specify the maximum width of the columns.}
     }
     \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_node-relative_path"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_node-relative_path}{}}}
+\subsection{\code{zarr_node$relative_path()}}{
+  Retrieve the relative path from the current node to the
+indicated node or path. In the relative path parent nodes are indicated
+with \code{..}, child nodes start with the child node name down to the
+target node.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_node$relative_path(to)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{to}}{Either a \code{zarr_node} instance or a character string giving the
+object to which the relative path reference is sought.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character string with the relative path from this node. If the
+\code{to} argument is empty or points to this node '.' is returned. Note
+that the relative path has no leading slash (as regular Zarr paths do).
   }
 }
 

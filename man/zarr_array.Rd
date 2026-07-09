@@ -47,6 +47,7 @@ creating store keys for chunks.}
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="delete_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-delete_attribute'><code>zarr_node$delete_attribute()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="post_open"><a href='../../zarr/html/zarr_node.html#method-zarr_node-post_open'><code>zarr_node$post_open()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="print_attributes"><a href='../../zarr/html/zarr_node.html#method-zarr_node-print_attributes'><code>zarr_node$print_attributes()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="relative_path"><a href='../../zarr/html/zarr_node.html#method-zarr_node-relative_path'><code>zarr_node$relative_path()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="save"><a href='../../zarr/html/zarr_node.html#method-zarr_node-save'><code>zarr_node$save()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="set_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-set_attribute'><code>zarr_node$set_attribute()</code></a></span></li>
 </ul>
@@ -69,7 +70,8 @@ already exist in the store
       \item{\code{metadata}}{List with the metadata of the array.}
       \item{\code{parent}}{The parent \code{zarr_group} instance of this new array, can be
 missing or \code{NULL} if the Zarr object should have just this array.}
-      \item{\code{store}}{The \link{zarr_store} instance to persist data in.}
+      \item{\code{store}}{The \link{zarr_store} instance to persist data in. Ignored if
+\code{parent} is specified.}
     }
     \if{html}{\out{</div>}}
   }

@@ -1,7 +1,8 @@
 # zarr (development version)
 
-- `zarr_node::post_open()` method allows for processing that requires the Zarr hierarchy to be in place.
+- `zarr_node$post_open()` method allows for processing that requires the Zarr hierarchy to be in place.
 - Dynamically set a node in a Zarr hierarchy.
+- `zarr_node$relative_path()` method retrieves the relative path from the node to another node or a path string.
 - Set metadata on a node in a memory store.
 - Convention classes are now coded as attribute factories.
 - Zarr package options can now be retrieved and modified with the `zarr_options()` function.
