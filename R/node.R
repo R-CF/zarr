@@ -205,6 +205,58 @@ zarr_node <- R6::R6Class('zarr_node',
       if (!length(parts)) '.' else paste(parts, collapse = '/')
     },
 
+    #' @description Retrieve the absolute path from the indicated relative path
+    #'   from this node. In the relative path parent nodes are indicated with
+    #'   `..`, child nodes start with the child node name down to the target
+    #'   node.
+    #' @param dest A character string giving the relative path to be made
+    #'   absolute calculated from the current node.
+    #' @return A character string with the absolute Zarr path from this node.
+    absolute_path = function(dest) {
+      dest_parts <- strsplit(dest, '/', fixed = TRUE)[[1L]]
+      parts <- strsplit(self$path, '/', fixed = TRUE)[[1L]][-1L]
+
+      for (seg in dest_parts) {
+        if (seg == "..") {
+          parts <- parts[-length(parts)]
+        } else if (seg == ".") {
+          # no-op
+        } else {
+          parts <- c(parts, seg)
+        }
+      }
+
+      if (length(parts) == 0L) "/" else paste0("/", paste(parts, collapse = "/"))
+    },
+
+    #' @description Walk from the current node to a target node indicated by the
+    #'   vector of relative path references. A call to this method moves one
+    #'   step closer to the target node, followed by a call of this method on
+    #'   the next node with the `node_names` vector with its first element
+    #'   removed. The target is thus iteratively found by walking the Zarr
+    #'   hierarchy.
+    #' @param node_names A character vector of node names to walk. The first
+    #'   element in the vector is resolved: a ".." value moves up to the parent
+    #'   of the current node, all other values must resolve to a child of the
+    #'   current node. The `node_names` vector is easily constructed from a
+    #'   relative path to the target node using `strsplit(., "/", fixed = TRUE)[[1L]]`.
+    #' @return The `zarr_node` that is found when the `node_names` vector is
+    #'   fully walked. If the node is not found, an error will be raised.
+    walk_path = function(node_names) {
+      if (!length(node_names)) return(self)
+
+      if (node_names[1L] == '..') {
+        if (is.null(private$.parent))
+          stop('Target Zarr node specified beyond the root node', call. = FALSE)
+        private$.parent$walk_path(node_names[-1L])
+      } else {
+        # Node must be a zarr_group
+        if (!inherits(self, 'zarr_group') || !node_names[1L] %in% names(private$.children))
+          stop('Target Zarr node specifies non-existent child node', call. = FALSE)
+        self$children[[node_names[1L]]]$walk_path(node_names[-1L])
+      }
+    },
+
     #' @description Retrieve a specific attribute by path.
     #' @param name The name (path) of the attribute to retrieve, using `/` as
     #'   separator for nested attributes. Numeric path segments index into array

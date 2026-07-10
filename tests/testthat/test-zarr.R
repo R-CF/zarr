@@ -42,10 +42,11 @@ test_that("Basic functionality on stores", {
     expect_equal(z$arrays, c('/grp2/subgrp21/arr211', '/grp2/subgrp21/arr212'))
     expect_null(z$add_array('/grp2/subgrp21/arr211', 'bad', arr_def$metadata()))
 
-    # Navigation from group, relative paths
+    # Navigation from group, relative paths, walking paths
     expect_equal(DaLat$relative_path('/grp2/subgrp21/µs'), '..')
     expect_equal(DaLat$relative_path(arr211), '../../arr211')
     expect_equal(z[['/']]$relative_path('/'), '.')
+    expect_identical(DaLat$walk_path(strsplit(DaLat$relative_path(arr212), '/', fixed = T)[[1L]]), arr212)
     expect_error(DaLat$relative_path('../../../../..'))
     expect_equal(DaLat[['../東京']]$name, '東京')
     expect_equal(DaLat[['../../arr212']]$name, 'arr212')

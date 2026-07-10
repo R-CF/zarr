@@ -50,6 +50,7 @@ hierarchy starting from the current group, as a character vector.}
 }
 \if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="absolute_path"><a href='../../zarr/html/zarr_node.html#method-zarr_node-absolute_path'><code>zarr_node$absolute_path()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="append_array_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-append_array_attribute'><code>zarr_node$append_array_attribute()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-attribute'><code>zarr_node$attribute()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="delete_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-delete_attribute'><code>zarr_node$delete_attribute()</code></a></span></li>
@@ -57,6 +58,7 @@ hierarchy starting from the current group, as a character vector.}
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="relative_path"><a href='../../zarr/html/zarr_node.html#method-zarr_node-relative_path'><code>zarr_node$relative_path()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="save"><a href='../../zarr/html/zarr_node.html#method-zarr_node-save'><code>zarr_node$save()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="set_attribute"><a href='../../zarr/html/zarr_node.html#method-zarr_node-set_attribute'><code>zarr_node$set_attribute()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="walk_path"><a href='../../zarr/html/zarr_node.html#method-zarr_node-walk_path'><code>zarr_node$walk_path()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}

@@ -2,7 +2,7 @@
 
 - `zarr_node$post_open()` method allows for processing that requires the Zarr hierarchy to be in place.
 - Dynamically set a node in a Zarr hierarchy.
-- `zarr_node$relative_path()` method retrieves the relative path from the node to another node or a path string.
+- `zarr_node$relative_path()` method retrieves the relative path from the node to another node or a path string. `zarr_node$absolute_path()` turns a relative path into an absolute path starting from the current node. `walk_path()` traverses the Zarr hierarchy from the current node to a target node using relative node names, returning the requated node.
 - Set metadata on a node in a memory store.
 - Convention classes are now coded as attribute factories.
 - Zarr package options can now be retrieved and modified with the `zarr_options()` function.
