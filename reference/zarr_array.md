@@ -49,13 +49,16 @@ object.
 
 Inherited methods
 
+- [`zarr_node$absolute_path()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-absolute_path)
 - [`zarr_node$append_array_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-append_array_attribute)
 - [`zarr_node$attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-attribute)
 - [`zarr_node$delete_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-delete_attribute)
 - [`zarr_node$post_open()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-post_open)
 - [`zarr_node$print_attributes()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-print_attributes)
+- [`zarr_node$relative_path()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-relative_path)
 - [`zarr_node$save()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-save)
 - [`zarr_node$set_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-set_attribute)
+- [`zarr_node$walk_path()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-walk_path)
 
 ------------------------------------------------------------------------
 
@@ -86,7 +89,7 @@ in the store
 - `store`:
 
   The [zarr_store](https://r-cf.github.io/zarr/reference/zarr_store.md)
-  instance to persist data in.
+  instance to persist data in. Ignored if `parent` is specified.
 
 #### Returns
 

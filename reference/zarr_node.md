@@ -64,6 +64,12 @@ validity of node names.
 
 - [`zarr_node$print_attributes()`](#method-zarr_node-print_attributes)
 
+- [`zarr_node$relative_path()`](#method-zarr_node-relative_path)
+
+- [`zarr_node$absolute_path()`](#method-zarr_node-absolute_path)
+
+- [`zarr_node$walk_path()`](#method-zarr_node-walk_path)
+
 - [`zarr_node$attribute()`](#method-zarr_node-attribute)
 
 - [`zarr_node$set_attribute()`](#method-zarr_node-set_attribute)
@@ -101,7 +107,7 @@ Initialize a new node in a Zarr hierarchy.
 
 - `store`:
 
-  The store to persist data in. Ignored if a `parent` is specified.
+  The store to persist data in. Ignored if `parent` is specified.
 
 ------------------------------------------------------------------------
 
@@ -139,6 +145,83 @@ Print the metadata "attributes" to the console. Usually called by the
 
   Arguments passed to embedded functions. Of particular interest is
   `width = .` to specify the maximum width of the columns.
+
+------------------------------------------------------------------------
+
+### `zarr_node$relative_path()`
+
+Retrieve the relative path from the current node to the indicated node
+or path. In the relative path parent nodes are indicated with `..`,
+child nodes start with the child node name down to the target node.
+
+#### Usage
+
+    zarr_node$relative_path(to)
+
+#### Arguments
+
+- `to`:
+
+  Either a `zarr_node` instance or a character string giving the object
+  to which the relative path reference is sought.
+
+#### Returns
+
+A character string with the relative path from this node. If the `to`
+argument is empty or points to this node '.' is returned. Note that the
+relative path has no leading slash (as regular Zarr paths do).
+
+------------------------------------------------------------------------
+
+### `zarr_node$absolute_path()`
+
+Retrieve the absolute path from the indicated relative path from this
+node. In the relative path parent nodes are indicated with `..`, child
+nodes start with the child node name down to the target node.
+
+#### Usage
+
+    zarr_node$absolute_path(dest)
+
+#### Arguments
+
+- `dest`:
+
+  A character string giving the relative path to be made absolute
+  calculated from the current node.
+
+#### Returns
+
+A character string with the absolute Zarr path from this node.
+
+------------------------------------------------------------------------
+
+### `zarr_node$walk_path()`
+
+Walk from the current node to a target node indicated by the vector of
+relative path references. A call to this method moves one step closer to
+the target node, followed by a call of this method on the next node with
+the `node_names` vector with its first element removed. The target is
+thus iteratively found by walking the Zarr hierarchy.
+
+#### Usage
+
+    zarr_node$walk_path(node_names)
+
+#### Arguments
+
+- `node_names`:
+
+  A character vector of node names to walk. The first element in the
+  vector is resolved: a ".." value moves up to the parent of the current
+  node, all other values must resolve to a child of the current node.
+  The `node_names` vector is easily constructed from a relative path to
+  the target node using `strsplit(., "/", fixed = TRUE)[[1L]]`.
+
+#### Returns
+
+The `zarr_node` that is found when the `node_names` vector is fully
+walked. If the node is not found, an error will be raised.
 
 ------------------------------------------------------------------------
 

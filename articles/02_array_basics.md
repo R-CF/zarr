@@ -56,11 +56,11 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpwomD1I/file1dc9540e473b.zarr 
+#> Location  : /tmp/RtmpJsLMJR/file1d0d47fb8ebf.zarr 
 #> Arrays    : 1 
 #> Total size: 2.81 KB
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpwomD1I/file1dc9540e473b.zarr 
+#> <Zarr hierarchy> /tmp/RtmpJsLMJR/file1d0d47fb8ebf.zarr 
 #> ☰ / (root group)
 #> └ ⌗ top_array
 ```
@@ -85,7 +85,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpwomD1I/file1dc9540e473b.zarr 
+#> <Zarr hierarchy> /tmp/RtmpJsLMJR/file1d0d47fb8ebf.zarr 
 #> ☰ / (root group)
 #> ├ ⌗ top_array
 #> ├ ⌗ a_vector
@@ -113,7 +113,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpwomD1I/file1dc9540e473b.zarr 
+#> Location  : /tmp/RtmpJsLMJR/file1d0d47fb8ebf.zarr 
 #> Arrays    : 3 
 #> Total size: 6.74 KB
 unlink(fn)

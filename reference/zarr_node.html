@@ -126,6 +126,9 @@ method or removed with the <code>delete_attributes()</code> method.</p></dd>
 <p></p><ul><li><p><a href="#method-zarr_node-initialize"><code>zarr_node$new()</code></a></p></li>
 <li><p><a href="#method-zarr_node-post_open"><code>zarr_node$post_open()</code></a></p></li>
 <li><p><a href="#method-zarr_node-print_attributes"><code>zarr_node$print_attributes()</code></a></p></li>
+<li><p><a href="#method-zarr_node-relative_path"><code>zarr_node$relative_path()</code></a></p></li>
+<li><p><a href="#method-zarr_node-absolute_path"><code>zarr_node$absolute_path()</code></a></p></li>
+<li><p><a href="#method-zarr_node-walk_path"><code>zarr_node$walk_path()</code></a></p></li>
 <li><p><a href="#method-zarr_node-attribute"><code>zarr_node$attribute()</code></a></p></li>
 <li><p><a href="#method-zarr_node-set_attribute"><code>zarr_node$set_attribute()</code></a></p></li>
 <li><p><a href="#method-zarr_node-append_array_attribute"><code>zarr_node$append_array_attribute()</code></a></p></li>
@@ -149,7 +152,7 @@ method or removed with the <code>delete_attributes()</code> method.</p></dd>
 initializing a root node.</p></dd>
 
       <dt><code>store</code></dt>
-<dd><p>The store to persist data in. Ignored if a <code>parent</code> is
+<dd><p>The store to persist data in. Ignored if <code>parent</code> is
 specified.</p></dd>
 
 
@@ -191,13 +194,90 @@ is <code>width = .</code> to specify the maximum width of the columns.</p></dd>
 
 </div>
 
+<p></p><hr><a id="method-zarr_node-relative_path"></a><div class="section">
+<h3 id="zarr-node-relative-path-"><code>zarr_node$relative_path()</code><a class="anchor" aria-label="anchor" href="#zarr-node-relative-path-"></a></h3>
+<p>Retrieve the relative path from the current node to the
+indicated node or path. In the relative path parent nodes are indicated
+with <code>..</code>, child nodes start with the child node name down to the
+target node.</p><div class="section">
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">relative_path</span><span class="op">(</span><span class="va">to</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>to</code></dt>
+<dd><p>Either a <code>zarr_node</code> instance or a character string giving the
+object to which the relative path reference is sought.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>A character string with the relative path from this node. If the
+<code>to</code> argument is empty or points to this node '.' is returned. Note
+that the relative path has no leading slash (as regular Zarr paths do).</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_node-absolute_path"></a><div class="section">
+<h3 id="zarr-node-absolute-path-"><code>zarr_node$absolute_path()</code><a class="anchor" aria-label="anchor" href="#zarr-node-absolute-path-"></a></h3>
+<p>Retrieve the absolute path from the indicated relative path
+from this node. In the relative path parent nodes are indicated with
+<code>..</code>, child nodes start with the child node name down to the target
+node.</p><div class="section">
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">absolute_path</span><span class="op">(</span><span class="va">dest</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>dest</code></dt>
+<dd><p>A character string giving the relative path to be made
+absolute calculated from the current node.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p>A character string with the absolute Zarr path from this node.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_node-walk_path"></a><div class="section">
+<h3 id="zarr-node-walk-path-"><code>zarr_node$walk_path()</code><a class="anchor" aria-label="anchor" href="#zarr-node-walk-path-"></a></h3>
+<p>Walk from the current node to a target node indicated by the
+vector of relative path references. A call to this method moves one
+step closer to the target node, followed by a call of this method on
+the next node with the <code>node_names</code> vector with its first element
+removed. The target is thus iteratively found by walking the Zarr
+hierarchy.</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">walk_path</span><span class="op">(</span><span class="va">node_names</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>node_names</code></dt>
+<dd><p>A character vector of node names to walk. The first
+element in the vector is resolved: a ".." value moves up to the parent
+of the current node, all other values must resolve to a child of the
+current node. The <code>node_names</code> vector is easily constructed from a
+relative path to the target node using <code>strsplit(., "/", fixed = TRUE)[[1L]]</code>.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>The <code>zarr_node</code> that is found when the <code>node_names</code> vector is
+fully walked. If the node is not found, an error will be raised.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_node-attribute"></a><div class="section">
 <h3 id="zarr-node-attribute-"><code>zarr_node$attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-attribute-"></a></h3>
 <p>Retrieve a specific attribute by path.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">attribute</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name (path) of the attribute to retrieve, using <code>/</code> as
 separator for nested attributes. Numeric path segments index into array
@@ -207,7 +287,7 @@ attributes (1-based), e.g. <code>"zarr_conventions/2/name"</code> retrieves the
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>The attribute value, or <code>NULL</code> if not found.</p>
 </div>
 
@@ -217,10 +297,10 @@ attributes (1-based), e.g. <code>"zarr_conventions/2/name"</code> retrieves the
 <h3 id="zarr-node-set-attribute-"><code>zarr_node$set_attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-set-attribute-"></a></h3>
 <p>Add an attribute to the metadata of the object. If an
 attribute <code>name</code> already exists, it will be overwritten.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the attribute. The name may be a compound path,
 relative to the "attributes" entry in the metadata, using a slash "/"
@@ -238,7 +318,7 @@ short vector or list of any of these.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -248,10 +328,10 @@ short vector or list of any of these.</p></dd>
 <h3 id="zarr-node-append-array-attribute-"><code>zarr_node$append_array_attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-append-array-attribute-"></a></h3>
 <p>Append an attribute to an array in the metadata of the
 object. If an attribute <code>name</code> already exists, it will be overwritten.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">append_array_attribute</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span>, after <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the attribute. The name may be a compound path,
 relative to the "attributes" entry in the metadata, using a slash "/"
@@ -275,7 +355,7 @@ existing values.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -285,10 +365,10 @@ existing values.</p></dd>
 <h3 id="zarr-node-delete-attribute-"><code>zarr_node$delete_attribute()</code><a class="anchor" aria-label="anchor" href="#zarr-node-delete-attribute-"></a></h3>
 <p>Delete an attribute or array element. If the attribute is
 not present, this method simply returns.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">delete_attribute</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>Character. The name (path) of the attribute to delete, using
 <code>/</code> as separator for nested attributes, e.g. <code>"first/second/my_att"</code>.
@@ -303,7 +383,7 @@ multiple JSON arrays.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -312,7 +392,7 @@ multiple JSON arrays.</p></dd>
 <p></p><hr><a id="method-zarr_node-save"></a><div class="section">
 <h3 id="zarr-node-save-"><code>zarr_node$save()</code><a class="anchor" aria-label="anchor" href="#zarr-node-save-"></a></h3>
 <p>Persist any edits to the group or array to the store.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -330,7 +410,7 @@ multiple JSON arrays.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
