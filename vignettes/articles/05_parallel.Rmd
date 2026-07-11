@@ -97,7 +97,7 @@ system.time(r2 <- arr[])
 To avoid this, `zarr` only uses parallel fetching when the number of chunks or shards to fetch exceeds a threshold. The default threshold is:
 
 ```{r threshold_default, eval = FALSE}
-Zarr.options$parallel_threshold
+zarr_options()$parallel_threshold
 #> [1] 20
 ```
 
@@ -110,13 +110,13 @@ You can adjust this to suit your data and environment. The right value depends o
 To set a lower threshold for a sharded store where each shard is large:
 
 ```{r threshold_set, eval = FALSE}
-Zarr.options$parallel_threshold <- 2L
+zarr_options(key = "parallel_threshold", value = 2L)
 ```
 
 To effectively disable parallel fetching regardless of the active plan (while keeping `future` loaded for other purposes), set a very high value:
 
 ```{r threshold_disable, eval = FALSE}
-Zarr.options$parallel_threshold <- .Machine$integer.max
+zarr_options(key = "parallel_threshold", value = .Machine$integer.max)
 ```
 
 # What is parallelised

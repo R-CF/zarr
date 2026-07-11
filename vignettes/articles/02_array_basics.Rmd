@@ -112,11 +112,11 @@ Every Zarr array has a `fill_value` for parts of the array that have not yet bee
 "chunk_grid": {
     "name": "regular",
     "configuration": {
-      "chunk_shape": [100, 100, 5]
+      "chunk_shape": [80, 78, 5]
     }
   }
 ```  
-A Zarr array is stored in "chunked" format, where the array is cut up into chunks along each dimension. The default setting is to have chunks with a length of 100 along each dimension (or smaller if the Zarr array is smaller, as is the case here). This results in chunks with a maximum size of 8MB for numeric data, 4MB for integer data and 1MB for logical data, before compression, for a 3D Zarr array with shape `[100, 100, 100]`. You may set this to a set of values that better aligns with your array size and your retrieval pattern.
+A Zarr array is stored in "chunked" format, where the array is cut up into chunks along each dimension. The default setting is to have chunks that are an even part of the shape length in each dimension, with a length of at most 100 along each dimension (or smaller if the Zarr array is smaller, as is the case here). This results in chunks with a maximum size of 8MB for numeric data, 4MB for integer data and 1MB for logical data, before compression, for a 3D Zarr array with shape `[100, 100, 100]`. You may set this to a set of values that better aligns with your array size and your retrieval pattern.
 
 ```
 "codecs"

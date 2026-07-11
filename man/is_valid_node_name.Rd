@@ -3,28 +3,28 @@
 \docType{methods}
 \name{is_valid_node_name}
 \alias{is_valid_node_name}
-\title{Check if the name of a node is valid in Zarr. From the Zarr specification,
-the following constraints apply to node names:
-\itemize{
-\item must not be the empty string (""), except for the root node
-\item must not be a string composed only of period characters, e.g. "." or ".."
-\item must not start with the reserved prefix "__".
-}}
+\title{Check if the name of a node is valid in Zarr}
 \usage{
 is_valid_node_name(name)
 }
 \arguments{
-\item{name}{Character vector of node names to check.}
+\item{name}{Character string with a node name to check.}
 }
 \value{
-Logical vector of the same length as argument \code{name} with \code{TRUE} for
-each valid node name, \code{FALSE} otherwise.
+\code{TRUE} if the node name is valid, \code{FALSE} otherwise.
 }
 \description{
-Only punctuation characters in the set \verb{-, _, .} are allowed. As an
-extension to the Zarr specification, characters and numbers can be any UTF-8
-code point. When portability is an issue, restrict characters and numbers to
-the set \code{A-Za-z0-9}.
+From the Zarr specification, the following constraints apply to node names:
+\itemize{
+\item must not be the empty string (""), except for the root node
+\item must not be a string composed only of period characters, e.g. "." or ".."
+\item must not start with the reserved prefix "__".
+}
+
+Only punctuation characters in the set \verb{-, _, .} are allowed. As an extension
+to the Zarr specification, characters and numbers can be any UTF-8 code
+point. When portability is an issue, restrict characters and numbers to the
+set \code{A-Za-z0-9}.
 }
 \examples{
 is_valid_node_name("simple_name")

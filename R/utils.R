@@ -24,19 +24,21 @@ zarr_options <- function(key, value) {
   }
 }
 
-#' Check if the name of a node is valid in Zarr. From the Zarr specification,
-#' the following constraints apply to node names:
+#' Check if the name of a node is valid in Zarr
+#'
+#' @description
+#' From the Zarr specification, the following constraints apply to node names:
+#'
 #' * must not be the empty string (""), except for the root node
 #' * must not be a string composed only of period characters, e.g. "." or ".."
 #' * must not start with the reserved prefix "__".
 #'
-#' Only punctuation characters in the set `-, _, .` are allowed. As an
-#' extension to the Zarr specification, characters and numbers can be any UTF-8
-#' code point. When portability is an issue, restrict characters and numbers to
-#' the set `A-Za-z0-9`.
-#' @param name Character vector of node names to check.
-#' @return Logical vector of the same length as argument `name` with `TRUE` for
-#'   each valid node name, `FALSE` otherwise.
+#' Only punctuation characters in the set `-, _, .` are allowed. As an extension
+#' to the Zarr specification, characters and numbers can be any UTF-8 code
+#' point. When portability is an issue, restrict characters and numbers to the
+#' set `A-Za-z0-9`.
+#' @param name Character string with a node name to check.
+#' @return `TRUE` if the node name is valid, `FALSE` otherwise.
 #' @docType methods
 #' @export
 #' @examples

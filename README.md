@@ -58,7 +58,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpYbzp1e/file259d105e2b98.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//Rtmpw60cNc/filea54a4feeb422.zarr 
 #> Arrays    : 1 
 #> Total size: 1.08 KB
 ```
