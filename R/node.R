@@ -36,7 +36,7 @@ zarr_node <- R6::R6Class('zarr_node',
 
     # Check the proposed name of the node before setting it.
     check_name = function(name) {
-      is.character(name) && length(name) == 1L && .is_valid_node_name(name)
+      is.character(name) && length(name) == 1L && is_valid_node_name(name)
     },
 
     # Print one level of attributes to the console. Calls itself recursively to

@@ -131,7 +131,7 @@ the Zarr data type are set to \code{NA}.
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{selection}}{A list as long as the array has dimensions where each
-element is a range of indices along the dimension to write. If missing
+element is a range of indices along the dimension to read. If missing
 or \code{NULL}, the entire array will be read.}
     }
     \if{html}{\out{</div>}}

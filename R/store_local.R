@@ -16,6 +16,7 @@
 #' @references
 #'   https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 #' @docType class
+#' @export
 zarr_localstore <- R6::R6Class('zarr_localstore',
   inherit = zarr_store,
   cloneable = FALSE,

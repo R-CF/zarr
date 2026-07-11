@@ -26,8 +26,7 @@ a relative path to the desired group or array.
 }
 \examples{
 z <- create_zarr()
-z$add_group("/", "tst")
+tst <- z$add_group("/", "tst")
 z$add_group("/tst", "subtst")
-tst <- z[["/tst"]]
 tst[["subtst"]]
 }

@@ -344,9 +344,8 @@ str.zarr_group <- function(object, ...) {
 #' @docType methods
 #' @examples
 #' z <- create_zarr()
-#' z$add_group("/", "tst")
+#' tst <- z$add_group("/", "tst")
 #' z$add_group("/tst", "subtst")
-#' tst <- z[["/tst"]]
 #' tst[["subtst"]]
 `[[.zarr_group` <- function(x, i) {
   x$get_node(i)

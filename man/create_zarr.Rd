@@ -7,11 +7,12 @@
 create_zarr(location)
 }
 \arguments{
-\item{location}{Character string that indicates a location on a file system
-where the data in the Zarr object will be persisted in a Zarr store in a
-directory. The character string may contain UTF-8 characters and/or use a
-file URI format. The Zarr specification recommends that the location use
-the ".zarr" extension to identify the location as a Zarr store.}
+\item{location}{Optional. Character string that indicates a location on a
+file system where the data in the Zarr object will be persisted in a Zarr
+store in a directory. The character string may contain UTF-8 characters
+and/or use a file URI format. The Zarr specification recommends that the
+location use the ".zarr" extension to identify the location as a Zarr
+store. If missing, a Zarr store will be created in memory.}
 }
 \value{
 A \link{zarr} object.
