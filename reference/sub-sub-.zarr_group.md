@@ -32,13 +32,10 @@ not found.
 
 ``` r
 z <- create_zarr()
-z$add_group("/", "tst")
-#> <Zarr group> tst 
-#> Path     : /tst 
+tst <- z$add_group("/", "tst")
 z$add_group("/tst", "subtst")
 #> <Zarr group> subtst 
 #> Path     : /tst/subtst 
-tst <- z[["/tst"]]
 tst[["subtst"]]
 #> <Zarr group> subtst 
 #> Path     : /tst/subtst 

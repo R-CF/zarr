@@ -7,9 +7,9 @@
 - Dynamically set a node in a Zarr hierarchy.
 - `zarr_node$relative_path()` method retrieves the relative path from
   the node to another node or a path string. `zarr_node$absolute_path()`
-  turns a relative path into an absolute path starting from the current
-  node. `walk_path()` traverses the Zarr hierarchy from the current node
-  to a target node using relative node names, returning the requated
+  turns a relative path starting from the current node into an absolute
+  path. `walk_path()` traverses the Zarr hierarchy from the current node
+  to a target node using relative node names, returning the requested
   node.
 - Set metadata on a node in a memory store.
 - Convention classes are now coded as attribute factories.

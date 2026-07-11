@@ -14,12 +14,12 @@ create_zarr(location)
 
 - location:
 
-  Character string that indicates a location on a file system where the
-  data in the Zarr object will be persisted in a Zarr store in a
-  directory. The character string may contain UTF-8 characters and/or
+  Optional. Character string that indicates a location on a file system
+  where the data in the Zarr object will be persisted in a Zarr store in
+  a directory. The character string may contain UTF-8 characters and/or
   use a file URI format. The Zarr specification recommends that the
   location use the ".zarr" extension to identify the location as a Zarr
-  store.
+  store. If missing, a Zarr store will be created in memory.
 
 ## Value
 
@@ -31,6 +31,6 @@ A [zarr](https://r-cf.github.io/zarr/reference/zarr.md) object.
 fn <- tempfile(fileext = ".zarr")
 my_zarr_object <- create_zarr(fn)
 my_zarr_object$store$root
-#> [1] "/tmp/RtmpKc6lko/file19d122fef90e.zarr"
+#> [1] "/tmp/Rtmp5Wb0uT/file19c631d77a6e.zarr"
 unlink(fn)
 ```

@@ -139,7 +139,7 @@ type are set to `NA`.
 - `selection`:
 
   A list as long as the array has dimensions where each element is a
-  range of indices along the dimension to write. If missing or `NULL`,
+  range of indices along the dimension to read. If missing or `NULL`,
   the entire array will be read.
 
 #### Returns

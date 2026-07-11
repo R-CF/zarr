@@ -26,6 +26,7 @@
 <url><loc>https://r-cf.github.io/zarr/reference/define_array.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/fill_array_impl.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/index.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/is_valid_node_name.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/open_zarr.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/str.chunk_grid_regular.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/str.chunk_grid_sharded.html</loc></url>
