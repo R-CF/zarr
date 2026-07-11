@@ -31,6 +31,6 @@ A [zarr](https://r-cf.github.io/zarr/reference/zarr.md) object.
 fn <- tempfile(fileext = ".zarr")
 my_zarr_object <- create_zarr(fn)
 my_zarr_object$store$root
-#> [1] "/tmp/Rtmp5Wb0uT/file19c631d77a6e.zarr"
+#> [1] "/tmp/RtmpZQoG77/file18e726c6da94.zarr"
 unlink(fn)
 ```

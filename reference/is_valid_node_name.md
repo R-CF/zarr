@@ -1,4 +1,7 @@
-# Check if the name of a node is valid in Zarr. From the Zarr specification, the following constraints apply to node names:
+# Check if the name of a node is valid in Zarr
+
+From the Zarr specification, the following constraints apply to node
+names:
 
 - must not be the empty string (""), except for the root node
 
@@ -22,12 +25,11 @@ is_valid_node_name(name)
 
 - name:
 
-  Character vector of node names to check.
+  Character string with a node name to check.
 
 ## Value
 
-Logical vector of the same length as argument `name` with `TRUE` for
-each valid node name, `FALSE` otherwise.
+`TRUE` if the node name is valid, `FALSE` otherwise.
 
 ## Examples
 

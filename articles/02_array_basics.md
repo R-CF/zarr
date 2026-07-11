@@ -56,11 +56,11 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpcBVvjr/file1d1034ecac17.zarr 
+#> Location  : /tmp/RtmpOX2HPf/file1c306820cd7e.zarr 
 #> Arrays    : 1 
 #> Total size: 2.81 KB
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpcBVvjr/file1d1034ecac17.zarr 
+#> <Zarr hierarchy> /tmp/RtmpOX2HPf/file1c306820cd7e.zarr 
 #> ☰ / (root group)
 #> └ ⌗ top_array
 ```
@@ -85,7 +85,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpcBVvjr/file1d1034ecac17.zarr 
+#> <Zarr hierarchy> /tmp/RtmpOX2HPf/file1c306820cd7e.zarr 
 #> ☰ / (root group)
 #> ├ ⌗ top_array
 #> ├ ⌗ a_vector
@@ -113,7 +113,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpcBVvjr/file1d1034ecac17.zarr 
+#> Location  : /tmp/RtmpOX2HPf/file1c306820cd7e.zarr 
 #> Arrays    : 3 
 #> Total size: 6.74 KB
 unlink(fn)
@@ -236,13 +236,14 @@ automatically transformed from `NA` in R to `fill_value` in Zarr and
     "chunk_grid": {
         "name": "regular",
         "configuration": {
-          "chunk_shape": [100, 100, 5]
+          "chunk_shape": [80, 78, 5]
         }
       }
 
 A Zarr array is stored in “chunked” format, where the array is cut up
 into chunks along each dimension. The default setting is to have chunks
-with a length of 100 along each dimension (or smaller if the Zarr array
+that are an even part of the shape length in each dimension, with a
+length of at most 100 along each dimension (or smaller if the Zarr array
 is smaller, as is the case here). This results in chunks with a maximum
 size of 8MB for numeric data, 4MB for integer data and 1MB for logical
 data, before compression, for a 3D Zarr array with shape

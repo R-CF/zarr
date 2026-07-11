@@ -71,12 +71,12 @@ can be usefully classified into two groups:
     just like generic conventions except that they have a more limited
     area of application. The GeoZarr community has already developed
     some conventions such as
-    [spatial:](https://github.com/zarr-conventions/spatial) and
-    [proj:](https://github.com/zarr-experimental/geo-proj), which
-    provide a coordinate reference system for Zarr arrays.
-    Domain-specific conventions should be included in a domain package.
-    If you have an idea for a domain-specific convention, you should
-    reach out to the domain package developers.
+    [spatial](https://github.com/zarr-conventions/spatial) and
+    [proj](https://github.com/zarr-experimental/geo-proj), which provide
+    a coordinate reference system for Zarr arrays. Domain-specific
+    conventions should be included in a domain package. If you have an
+    idea for a domain-specific convention, you should reach out to the
+    domain package developers.
 
 ## Working with domains and conventions
 

@@ -118,7 +118,7 @@ chunks or shards to fetch exceeds a threshold. The default threshold is:
 
 ``` r
 
-Zarr.options$parallel_threshold
+zarr_options()$parallel_threshold
 #> [1] 20
 ```
 
@@ -140,7 +140,7 @@ To set a lower threshold for a sharded store where each shard is large:
 
 ``` r
 
-Zarr.options$parallel_threshold <- 2L
+zarr_options(key = "parallel_threshold", value = 2L)
 ```
 
 To effectively disable parallel fetching regardless of the active plan
@@ -149,7 +149,7 @@ value:
 
 ``` r
 
-Zarr.options$parallel_threshold <- .Machine$integer.max
+zarr_options(key = "parallel_threshold", value = .Machine$integer.max)
 ```
 
 ## What is parallelised
