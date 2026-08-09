@@ -1,3 +1,5 @@
+# ======= zarr_codec ===========================================================
+
 #' Zarr codecs
 #'
 #' @description Zarr codecs encode data from the user data to stored data, using
@@ -101,6 +103,8 @@ zarr_codec <- R6::R6Class('zarr_codec',
     }
   )
 )
+
+# ======= zarr_codec_transpose =================================================
 
 #' Zarr transpose codec
 #'
@@ -214,6 +218,8 @@ zarr_codec_transpose <- R6::R6Class('zarr_codec_transpose',
     }
   )
 )
+
+# ======= zarr_codec_bytes =====================================================
 
 #' Zarr bytes codec
 #'
@@ -347,6 +353,8 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
   )
 )
 
+# ======= zarr_codec_vlenutf8 +=================================================
+
 #' Zarr vlen-utf8 codec
 #'
 #' @description The Zarr "vlen-utf8" codec encodes an R character object to a
@@ -448,6 +456,8 @@ zarr_codec_vlenutf8 <- R6::R6Class('zarr_codec_vlenutf8',
   )
 )
 
+# ======= zarr_codec_ucs4 ======================================================
+
 #' Numpy UCS-4 codec
 #'
 #' @description The Numpy UCS-4 format is a fixed-length character string format
@@ -537,6 +547,8 @@ zarr_codec_ucs4 <- R6::R6Class('zarr_codec_ucs4',
     }
   )
 )
+
+# ======= zarr_codec_blosc =====================================================
 
 #' Zarr blosc codec
 #'
@@ -729,6 +741,8 @@ zarr_codec_blosc <- R6::R6Class('zarr_codec_blosc',
   )
 )
 
+# ======= zarr_codec_zstd ======================================================
+
 #' Zarr "zstd" codec
 #'
 #' @description This class provides the codec for "zstd" compression.
@@ -803,6 +817,8 @@ zarr_codec_zstd <- R6::R6Class('zarr_codec_zstd',
    }
   )
 )
+
+# ======= zarr_codec_gzip ======================================================
 
 #' Zarr gzip codec
 #'
@@ -881,6 +897,8 @@ zarr_codec_gzip <- R6::R6Class('zarr_codec_gzip',
   )
 )
 
+# ======= zarr_codec_crc32c ====================================================
+
 #' Zarr CRC32C codec
 #'
 #' @description The Zarr "CRC32C" codec computes a 32-bit checksum of a raw
@@ -940,6 +958,8 @@ zarr_codec_crc32c <- R6::R6Class('zarr_codec_crc32c',
     }
   )
 )
+
+# ======= zarr_codec_sharding ==================================================
 
 #' Zarr sharding codec
 #'

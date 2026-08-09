@@ -32,6 +32,17 @@ zarr_store <- R6::R6Class('zarr_store',
     .version = 3L,        # The zarr version, by default 3
     .chunk_sep  = '.',    # The chunk separator, default a dot '.'
 
+    # Check if the metadata has a proper CKE set. Set one if necessary.
+    check_cke = function(meta) {
+      if (meta[['node_type']] == 'group')
+        return(meta)
+      cke <- meta[['chunk_key_encoding']]
+      if (is.null(cke) || !(cke$configuration$separator %in% c('.', '/')))
+        meta[['chunk_key_encoding']] <- list(name = 'default',
+                                             configuration = list(separator = private$.chunk_sep))
+      meta
+    },
+
     # Convert Zarr v.2 metadata to v.3 metadata. Argument meta is a list, atts
     # is a list with attributes, possibly empty. Returns a list in v.3 format.
     metadata_v2_to_v3 = function(meta, atts = list()) {

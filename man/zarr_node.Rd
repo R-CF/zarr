@@ -18,6 +18,9 @@ are largely not checked, the group and array instances should do so prior
 to calling methods here. The big exception is checking the validity of node
 names.
 }
+\section{Super class}{
+\code{\link[zarr:zarr_object]{zarr_object}} -> \code{zarr_node}
+}
 \section{Active bindings}{
   \if{html}{\out{<div class="r6-active-bindings">}}
   \describe{
@@ -40,9 +43,15 @@ node of the hierarchy.}
 Setting a list that is not properly describing this object will render
 the object invalid.}
 
+    \item{\code{dirty}}{Flag to indicate that there are unsaved edits in the node.
+Such edits always concern the metadata and then in particular the
+user-level attributes. Setting the field to \code{TRUE} will ensure that the
+edits are saved to the Zarr store.}
+
     \item{\code{attributes}}{(read-only) Retrieve the list of attributes of this
 object. Attributes can be added or modified with the \code{set_attribute()}
-method or removed with the \code{delete_attributes()} method.}
+and \code{append_array_attribute()} methods or removed with the
+\code{delete_attributes()} method.}
   }
   \if{html}{\out{</div>}}
 }
@@ -51,7 +60,6 @@ method or removed with the \code{delete_attributes()} method.}
   \itemize{
     \item \href{#method-zarr_node-initialize}{\code{zarr_node$new()}}
     \item \href{#method-zarr_node-post_open}{\code{zarr_node$post_open()}}
-    \item \href{#method-zarr_node-print_attributes}{\code{zarr_node$print_attributes()}}
     \item \href{#method-zarr_node-relative_path}{\code{zarr_node$relative_path()}}
     \item \href{#method-zarr_node-absolute_path}{\code{zarr_node$absolute_path()}}
     \item \href{#method-zarr_node-walk_path}{\code{zarr_node$walk_path()}}
@@ -62,6 +70,11 @@ method or removed with the \code{delete_attributes()} method.}
     \item \href{#method-zarr_node-save}{\code{zarr_node$save()}}
   }
 }
+\if{html}{\out{<details open><summary>Inherited methods</summary>
+<ul>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_object" data-id="print_attributes"><a href='../../zarr/html/zarr_object.html#method-zarr_object-print_attributes'><code>zarr_object$print_attributes()</code></a></span></li>
+</ul>
+</details>}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_node-initialize"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_node-initialize}{}}}
@@ -84,6 +97,9 @@ specified.}
     }
     \if{html}{\out{</div>}}
   }
+  \subsection{Returns}{
+    A new instance of this class.
+  }
 }
 
 \if{html}{\out{<hr>}}
@@ -101,27 +117,6 @@ requirements should implement this method.
   }
   \subsection{Returns}{
     Self, invisibly.
-  }
-}
-
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_node-print_attributes"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_node-print_attributes}{}}}
-\subsection{\code{zarr_node$print_attributes()}}{
-  Print the metadata "attributes" to the console. Usually
-called by the \link{zarr_group} and \link{zarr_array} \code{print()} methods.
-  \subsection{Usage}{
-    \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_node$print_attributes(...)}
-    \if{html}{\out{</div>}}
-  }
-  \subsection{Arguments}{
-    \if{html}{\out{<div class="arguments">}}
-    \describe{
-      \item{\code{...}}{Arguments passed to embedded functions. Of particular interest
-is \code{width = .} to specify the maximum width of the columns.}
-    }
-    \if{html}{\out{</div>}}
   }
 }
 

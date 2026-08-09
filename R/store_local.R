@@ -297,7 +297,8 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @description Set the metadata document of the node at the location
     #'   indicated by the `prefix` argument. The formatting of the metadata
     #'   should always use the Zarr v.3 format, it will be converted internally
-    #'   if the store is Zarr v.2.
+    #'   if the store is Zarr v.2. If the metadata does not include an element
+    #'
     #' @param prefix The prefix of the node whose metadata document to set.
     #' @param metadata The metadata to persist, either a `list` or an instance
     #' of [array_builder].
@@ -308,6 +309,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         metadata <- metadata$metadata()
       if (private$.version == 2L)
         metadata <- private$metadata_v3_to_v2(metadata)
+      metadata <- private$check_cke(metadata)
       jsonlite::write_json(metadata, fn, pretty = TRUE, auto_unbox = TRUE)
       invisible(self)
     },
@@ -375,10 +377,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       if (private$.read_only)
         stop('Cannot write new objects to the Zarr store.', call. = FALSE) # nocov
 
-      cke <- metadata[['chunk_key_encoding']]
-      if (is.null(cke) || !(cke$configuration$separator %in% c('.', '/')))
-        metadata[['chunk_key_encoding']] <- list(name = 'default',
-                                                 configuration = list(separator = private$.chunk_sep))
+      metadata <- private$check_cke(metadata)
 
       if (!nzchar(name)) {
         # Create a root array

@@ -179,6 +179,7 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     set_metadata = function(prefix, metadata) {
       if (inherits(metadata, 'array_builder'))
         metadata <- metadata$metadata()
+      metadata <- private$check_cke(metadata)
       key <- if (prefix == '/') 'root' else .prefix2key(prefix)
       private$.keys[[key]] <- metadata
       invisible(self)
@@ -226,10 +227,7 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     #' @return A list with the metadata of the array, or an error if the array
     #'   could not be created.
     create_array = function(parent, name, metadata) {
-      cke <- metadata[['chunk_key_encoding']]
-      if (is.null(cke) || !(cke$configuration$separator %in% c('.', '/')))
-        metadata[['chunk_key_encoding']] <- list(name = 'default',
-                                                 configuration = list(separator = private$.chunk_sep))
+      metadata <- private$check_cke(metadata)
 
       if (nzchar(name)) {
         # Adding an array to a group

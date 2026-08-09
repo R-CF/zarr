@@ -370,7 +370,7 @@ to a Zarr group or array.
   Set the metadata document of the node at the location
 indicated by the \code{prefix} argument. The formatting of the metadata
 should always use the Zarr v.3 format, it will be converted internally
-if the store is Zarr v.2.
+if the store is Zarr v.2. If the metadata does not include an element
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_localstore$set_metadata(prefix, metadata)}

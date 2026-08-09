@@ -1,5 +1,9 @@
 # zarr (development version)
 
+- New `zarr_object` base class for name and attribute management.
+- `dirty` field can be explicitly set on any node to force writing of the metadata to the store.
+- `chunk_key_encoding` is automatically set in array metadata.
+
 # zarr 0.4.2
 
 - `zarr_node$post_open()` method allows for processing that requires the Zarr hierarchy to be in place.

@@ -40,6 +40,10 @@ x <- array(1:10000, c(500, 10, 2))
 fn <- tempfile(fileext = ".zarr")
 z <- as_zarr(x, name = "top_array", location = fn)
 z
+
+# Print the hierarchy of objects
+# Zarr groups are identified by the ☰ glyph
+# Zarr arrays use the ⌗ glyph
 z$hierarchy()
 ```
 If you have multiple R objects that you want to store in the Zarr format, you can place them all in the same store. Adding an R object to an existing store requires you to indicate the group in the Zarr object where you want to store the R object.
@@ -125,7 +129,7 @@ The codecs are a list of operations that are executed when writing a Zarr array 
 
 ##### "transpose"
 
-The first, optional, processing step is the "transpose" codec. This is included by default with the indices of the array dimensions in reverse order. Zarr comes out of the C/Python environment and matrices and arrays are stored in row-major order. R, on the other hand, used column-major order. To ensure portability while reducing processing overhead this codec is included: if it is encountered with the dimension indices in reverse order, it is a no-op in R. If you want maximum portability of your Zarr store, including for use in C or Python with Zarr readers that do not support the transpose codec then you can delete this codec from the list. Do note, however, that this will increase processing time when writing and reading Zarr arrays in R.
+The first, optional, processing step is the "transpose" codec. This is included by default with the indices of the array dimensions in reverse order. Zarr comes out of the C/Python environment and matrices and arrays are stored in row-major order. R, on the other hand, uses column-major order. To ensure portability while reducing processing overhead this codec is included: if it is encountered with the dimension indices in reverse order, it is a no-op in R. If you want maximum portability of your Zarr store, including for use in C or Python with Zarr readers that do not support the transpose codec then you can delete this codec from the list. Do note, however, that this will increase processing time when writing and reading Zarr arrays in R.
 
 ##### "bytes"
 
