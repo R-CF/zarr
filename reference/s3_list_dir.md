@@ -35,7 +35,7 @@ s3_list_dir(
   Character string. The prefix to list under. Default `""`.
 
 - region, profile, access_key, secret_key, session_token, endpoint,
-  anonymous:
+  anonymous, path_style:
 
   As in
   [zarr_s3store](https://r-cf.github.io/zarr/reference/zarr_s3store.md);

@@ -6,7 +6,7 @@ dimensions based on weights per dimension.
 ## Usage
 
 ``` r
-optimal_chunking(dim_sizes, groups, weights, chunk_values = 4L * 1024L * 1024L)
+optimal_chunking(dim_sizes, weights, chunk_values = 4L * 1024L * 1024L)
 ```
 
 ## Arguments
@@ -39,18 +39,9 @@ shape <- c(x = 50000L, y = 350L, time = 8192)
 
 # Default chunking, approaching the maximum chunk size
 optimal_chunking(dim_sizes = shape)
-#>    x    y time 
-#>  161  175  161 
+#> [1] 161 175 161
 
 # Prioritize extractions over the "time" dimension
 optimal_chunking(dim_sizes = shape, weights = c(1, 1, 2))
-#>    x    y time 
-#>   46   44 2048 
-
-# Prioritize extractions over the grouped "x" and "y" dimensions
-optimal_chunking(dim_sizes = shape,
-                 groups = list(c("x", "y"), "time"),
-                 weights = c(1.3, 1))
-#>    x    y time 
-#>   74   70  745 
+#> [1]   46   44 2048
 ```
