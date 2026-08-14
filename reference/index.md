@@ -20,6 +20,10 @@
   : Check if the name of a node is valid in Zarr
 - [`open_zarr()`](https://r-cf.github.io/zarr/reference/open_zarr.md) :
   Open a Zarr store
+- [`optimal_chunking()`](https://r-cf.github.io/zarr/reference/optimal_chunking.md)
+  : Get optimal chunking size for an array.
+- [`s3_list_dir()`](https://r-cf.github.io/zarr/reference/s3_list_dir.md)
+  : List objects/prefixes in an S3 bucket
 - [`str(`*`<chunk_grid_regular>`*`)`](https://r-cf.github.io/zarr/reference/str.chunk_grid_regular.md)
   : Compact display of a regular chunk grid
 - [`str(`*`<chunk_grid_sharded>`*`)`](https://r-cf.github.io/zarr/reference/str.chunk_grid_sharded.md)
@@ -83,10 +87,14 @@
   : In-memory Zarr Store
 - [`zarr_node`](https://r-cf.github.io/zarr/reference/zarr_node.md) :
   Zarr Hierarchy node
+- [`zarr_object`](https://r-cf.github.io/zarr/reference/zarr_object.md)
+  : Zarr base object
 - [`zarr_options()`](https://r-cf.github.io/zarr/reference/zarr_options.md)
   : Zarr package options
 - [`zarr_register_domain()`](https://r-cf.github.io/zarr/reference/zarr_register_domain.md)
   : Register a Zarr domain for this session
+- [`zarr_s3store`](https://r-cf.github.io/zarr/reference/zarr_s3store.md)
+  : Zarr Store for AWS S3 (and S3-compatible) access
 - [`zarr_store`](https://r-cf.github.io/zarr/reference/zarr_store.md) :
   Zarr Abstract Store
 - [`zarr_unregister_domain()`](https://r-cf.github.io/zarr/reference/zarr_unregister_domain.md)

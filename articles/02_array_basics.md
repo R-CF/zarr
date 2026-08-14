@@ -56,11 +56,15 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmphIn8IZ/file1d401804ad5c.zarr 
+#> Location  : /tmp/Rtmp0JD1iQ/file1cc020ef5b93.zarr 
 #> Arrays    : 1 
 #> Total size: 2.81 KB
+
+# Print the hierarchy of objects
+# Zarr groups are identified by the ☰ glyph
+# Zarr arrays use the ⌗ glyph
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmphIn8IZ/file1d401804ad5c.zarr 
+#> <Zarr hierarchy> /tmp/Rtmp0JD1iQ/file1cc020ef5b93.zarr 
 #> ☰ / (root group)
 #> └ ⌗ top_array
 ```
@@ -85,7 +89,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmphIn8IZ/file1d401804ad5c.zarr 
+#> <Zarr hierarchy> /tmp/Rtmp0JD1iQ/file1cc020ef5b93.zarr 
 #> ☰ / (root group)
 #> ├ ⌗ top_array
 #> ├ ⌗ a_vector
@@ -113,7 +117,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmphIn8IZ/file1d401804ad5c.zarr 
+#> Location  : /tmp/Rtmp0JD1iQ/file1cc020ef5b93.zarr 
 #> Arrays    : 3 
 #> Total size: 6.74 KB
 unlink(fn)
@@ -262,7 +266,7 @@ big and complicated one so we’ll look at the individual codecs.
 The first, optional, processing step is the “transpose” codec. This is
 included by default with the indices of the array dimensions in reverse
 order. Zarr comes out of the C/Python environment and matrices and
-arrays are stored in row-major order. R, on the other hand, used
+arrays are stored in row-major order. R, on the other hand, uses
 column-major order. To ensure portability while reducing processing
 overhead this codec is included: if it is encountered with the dimension
 indices in reverse order, it is a no-op in R. If you want maximum
@@ -369,7 +373,7 @@ z$add_array("/", "first_array", arr_def)
 #> <Zarr array> ⌗ first_array 
 #> Path      : /first_array 
 #> Data type : int16 
-#> Shape     : 240 310 5 
+#> Shape     : 240 310 5
 #> Chunking  : 120 31 5
 
 # Re-use the array definition
@@ -377,7 +381,7 @@ z$add_array("/", "another_array", arr_def)
 #> <Zarr array> ⌗ another_array 
 #> Path      : /another_array 
 #> Data type : int16 
-#> Shape     : 240 310 5 
+#> Shape     : 240 310 5
 #> Chunking  : 120 31 5
 
 z$hierarchy()
@@ -409,7 +413,7 @@ arr
 #> <Zarr array> ⌗  
 #> Path      : / 
 #> Data type : int32 
-#> Shape     : 5 20 4 
+#> Shape     : 5 20 4
 #> Chunking  : 5 20 4
 
 # Index the Zarr array like a regular R array

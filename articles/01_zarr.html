@@ -37,8 +37,9 @@
     <li><a class="dropdown-item" href="../articles/02_array_basics.html">2. Working with arrays</a></li>
     <li><a class="dropdown-item" href="../articles/03_attributes.html">3. Working with attributes</a></li>
     <li><a class="dropdown-item" href="../articles/04_http.html">4. HTTP stores</a></li>
-    <li><a class="dropdown-item" href="../articles/05_parallel.html">5. Parallel processing</a></li>
-    <li><a class="dropdown-item" href="../articles/06_extending.html">6. Extending Zarr</a></li>
+    <li><a class="dropdown-item" href="../articles/05_s3.html">5. S3 stores</a></li>
+    <li><a class="dropdown-item" href="../articles/06_parallel.html">6. Parallel processing</a></li>
+    <li><a class="dropdown-item" href="../articles/07_extending.html">7. Extending Zarr</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -156,7 +157,7 @@ groups and arrays. It is recommended that the name of the location has a
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/RtmpKhHwEm/file1d0826793415.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/RtmpitUk3t/file1c885d2a3b0e.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 0 </span></span>
 <span><span class="co">#&gt; Total size: 47 Bytes</span></span></code></pre></div>
 <p>The 47 bytes of storage are taken up by a “zarr.json” file. Every
@@ -175,8 +176,8 @@ giving the location of the Zarr store on disk.</p>
 <h2 id="other-zarr-stores">Other Zarr stores<a class="anchor" aria-label="anchor" href="#other-zarr-stores"></a>
 </h2>
 <p>Currently, this package supports local file system stores, online
-HTTP stores and memory stores. Support for cloud-based stores will be
-added in the near future.</p>
+HTTP and S3 stores and memory stores. Support for other stores may be
+added in the future.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -26,8 +26,9 @@ an object."></head><body>
     <li><a class="dropdown-item" href="../articles/02_array_basics.html">2. Working with arrays</a></li>
     <li><a class="dropdown-item" href="../articles/03_attributes.html">3. Working with attributes</a></li>
     <li><a class="dropdown-item" href="../articles/04_http.html">4. HTTP stores</a></li>
-    <li><a class="dropdown-item" href="../articles/05_parallel.html">5. Parallel processing</a></li>
-    <li><a class="dropdown-item" href="../articles/06_extending.html">6. Extending Zarr</a></li>
+    <li><a class="dropdown-item" href="../articles/05_s3.html">5. S3 stores</a></li>
+    <li><a class="dropdown-item" href="../articles/06_parallel.html">6. Parallel processing</a></li>
+    <li><a class="dropdown-item" href="../articles/07_extending.html">7. Extending Zarr</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -54,8 +55,8 @@ an object.</p>
 
 
     <div class="section level2">
-    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
-    <p><code><a href="zarr_node.html">zarr_node</a></code> -&gt; <code>zarr_array</code></p>
+    <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
+    <p><code><a href="zarr_object.html">zarr_object</a></code> -&gt; <code><a href="zarr_node.html">zarr_node</a></code> -&gt; <code>zarr_array</code></p>
     </div>
     <div class="section level2">
     <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
@@ -94,12 +95,12 @@ creating store keys for chunks.</p></dd>
 <li><p><a href="#method-zarr_array-hierarchy_nodes"><code>zarr_array$hierarchy_nodes()</code></a></p></li>
 <li><p><a href="#method-zarr_array-read"><code>zarr_array$read()</code></a></p></li>
 <li><p><a href="#method-zarr_array-write"><code>zarr_array$write()</code></a></p></li>
-</ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="absolute_path"><a href="zarr_node.html#method-absolute_path"><code>zarr_node$absolute_path()</code></a></span></li>
+</ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_object" data-id="print_attributes"><a href="zarr_object.html#method-print_attributes"><code>zarr_object$print_attributes()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="absolute_path"><a href="zarr_node.html#method-absolute_path"><code>zarr_node$absolute_path()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="append_array_attribute"><a href="zarr_node.html#method-append_array_attribute"><code>zarr_node$append_array_attribute()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="attribute"><a href="zarr_node.html#method-attribute"><code>zarr_node$attribute()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="delete_attribute"><a href="zarr_node.html#method-delete_attribute"><code>zarr_node$delete_attribute()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="post_open"><a href="zarr_node.html#method-post_open"><code>zarr_node$post_open()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="print_attributes"><a href="zarr_node.html#method-print_attributes"><code>zarr_node$print_attributes()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="relative_path"><a href="zarr_node.html#method-relative_path"><code>zarr_node$relative_path()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="save"><a href="zarr_node.html#method-save"><code>zarr_node$save()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="set_attribute"><a href="zarr_node.html#method-set_attribute"><code>zarr_node$set_attribute()</code></a></span></li>

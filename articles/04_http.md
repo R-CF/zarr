@@ -48,7 +48,7 @@ z[["/"]]
 #> <Zarr array> ⌗  
 #> Path      : / 
 #> Data type : float32 
-#> Shape     : 160 260 12 
+#> Shape     : 160 260 12
 #> Chunking  : 80 65 12 
 #> 
 #> Attributes:
@@ -296,7 +296,7 @@ z3[["/"]]
 #> <Zarr array> ⌗  
 #> Path      : / 
 #> Data type : uint16 
-#> Shape     : 532 2 988 256 271 
+#> Shape     : 532 2 988 256 271
 #> Chunking  : 1 1 1 256 271
 ```
 

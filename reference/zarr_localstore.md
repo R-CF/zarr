@@ -376,7 +376,7 @@ Zarr group or array.
 Set the metadata document of the node at the location indicated by the
 `prefix` argument. The formatting of the metadata should always use the
 Zarr v.3 format, it will be converted internally if the store is Zarr
-v.2.
+v.2. If the metadata does not include an element
 
 #### Usage
 

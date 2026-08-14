@@ -15,10 +15,10 @@ and arrays and large attributes will thus slow down the opening and
 writing of groups and arrays.
 
 Attributes are also used to set the properties of Zarr stores, groups
-and arrays that are formatted according to a certain profile, such as
-GeoZarr for geo-spatial data. Such attributes are managed by the profile
-code and should not be modified manually unless the profile
-documentation allows it. See the Profiles article for more details.
+and arrays that are formatted according to a certain domain, such as
+GeoZarr for geo-spatial data. Such attributes are managed by the domain
+code and should not be modified manually unless the domain documentation
+allows it. See the Extending Zarr article for more details.
 
 ## Quick start
 
@@ -43,7 +43,7 @@ z
 #> Store     : memory store 
 #> Arrays    : 0 
 #> 
-#> Attributes: (*)
+#> Attributes:
 #> title  : Data set for intelligent analysis of foo.
 #> creator: ACME Inc.
 #> license: free (as in free lunch)
@@ -58,10 +58,10 @@ arr
 #> <Zarr array> ⌗ bar 
 #> Path      : /bar 
 #> Data type : float64 
-#> Shape     : 100 200 
+#> Shape     : 100 200
 #> Chunking  : 100 100 
 #> 
-#> Attributes: (*)
+#> Attributes:
 #> title       : Bar for foo
 #> valid_range : [0, 1]
 #> actual_range: [2.5581568479538e-05, 0.999872711254284]
@@ -83,10 +83,10 @@ arr
 #> <Zarr array> ⌗ bar 
 #> Path      : /bar 
 #> Data type : float64 
-#> Shape     : 100 200 
+#> Shape     : 100 200
 #> Chunking  : 100 100 
 #> 
-#> Attributes: (*)
+#> Attributes:
 #> title       : Bar for foo and baz too
 #> valid_range : [0, 1]
 #> actual_range: [2.5581568479538e-05, 0.999872711254284]
@@ -102,10 +102,10 @@ arr
 #> <Zarr array> ⌗ bar 
 #> Path      : /bar 
 #> Data type : float64 
-#> Shape     : 100 200 
+#> Shape     : 100 200
 #> Chunking  : 100 100 
 #> 
-#> Attributes: (*)
+#> Attributes:
 #> title       : Bar for foo and baz too
 #> actual_range: [2.5581568479538e-05, 0.999872711254284]
 ```
@@ -202,7 +202,7 @@ z[["/"]]
 #> <Zarr group> [root] 
 #> Path     : / 
 #> 
-#> Attributes: (*)
+#> Attributes:
 #> simple  : root level attribute
 #> compound:
 #>   path     :
@@ -224,7 +224,7 @@ z[["/"]]
 #> <Zarr group> [root] 
 #> Path     : / 
 #> 
-#> Attributes: (*)
+#> Attributes:
 #> simple  : root level attribute
 #> compound:
 #>   path     :
@@ -237,8 +237,12 @@ list.
 
 ### JSON arrays
 
-JSON arrays do not use names, they use indexes. You can create a JSON
-array with the `append_array_attribute()`:
+JSON arrays do not use names, they use indexes. A JSON array is like an
+R vector: 1-dimensional. While it is possible to store multi-dimensional
+data in a JSON object this is discouraged because there is no built-in
+way to inform the user of the storage layout of the data: is it
+column-major ordering like in R, or row-major ordering like in C and
+Python? You can create a JSON array with the `append_array_attribute()`:
 
 ``` r
 
@@ -247,7 +251,7 @@ z[["/"]]
 #> <Zarr group> [root] 
 #> Path     : / 
 #> 
-#> Attributes: (*)
+#> Attributes:
 #> simple  : root level attribute
 #> compound:
 #>   path     :
@@ -273,7 +277,7 @@ z[["/"]]
 #> <Zarr group> [root] 
 #> Path     : / 
 #> 
-#> Attributes: (*)
+#> Attributes:
 #> simple  : root level attribute
 #> compound:
 #>   path     :
@@ -295,7 +299,7 @@ z[["/"]]
 #> <Zarr group> [root] 
 #> Path     : / 
 #> 
-#> Attributes: (*)
+#> Attributes:
 #> simple  : root level attribute
 #> compound:
 #>   path     :
@@ -315,7 +319,7 @@ z[["/"]]
 #>         array_in_array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
-The distinction between a JSON object an an array is that the former is
+The distinction between a JSON object and an array is that the former is
 a named list in R and the latter an unnamed list.
 
 ### Building nested attribute stores

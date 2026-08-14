@@ -2,7 +2,7 @@
 
 `zarr` is a package to create and access Zarr stores using native R
 code. It is designed against the specification for Zarr core version 3.
-Supported stores comprise memory, the file system and HTTP.
+Supported stores comprise memory, the file system, HTTP and S3.
 
 Zarr v.2 stores can be read and will be represented internally in the
 v.3 format.
@@ -45,7 +45,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//Rtmpw60cNc/filea54a4feeb422.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpnV3bT1/file8b7c2a097544.zarr 
 #> Arrays    : 1 
 #> Total size: 1.08 KB
 ```
@@ -71,7 +71,7 @@ arr
 #> <Zarr array> ⌗ my_array 
 #> Path      : /my_array 
 #> Data type : int32 
-#> Shape     : 5 20 4 
+#> Shape     : 5 20 4
 #> Chunking  : 5 20 4
 
 # Index the Zarr array like a regular R array
@@ -121,13 +121,13 @@ devtools::install_github("R-CF/zarr")
 
 ## Development
 
-This package is in the early phases of development and should not be
-used for production environments. Things may fail and you are advised to
-ensure that you have backups of all data that you put in a Zarr store
-with this package.
+This package is under active development and should not be used for
+production environments. Things may fail and you are advised to ensure
+that you have backups of all data that you put in a Zarr store with this
+package.
 
 Like Zarr itself, this package is modular and allows for additional
-stores, codes, transformers, extensions and profiles to be added to this
+stores, codes, transformers, extensions and domains to be added to this
 basic implementation. If you have specific needs, open an [issue on
 Github](https://github.com/R-CF/zarr/issues) or, better yet, fork the
 code and submit code suggestions via a pull request. Specific guidance

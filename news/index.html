@@ -22,8 +22,9 @@
     <li><a class="dropdown-item" href="../articles/02_array_basics.html">2. Working with arrays</a></li>
     <li><a class="dropdown-item" href="../articles/03_attributes.html">3. Working with attributes</a></li>
     <li><a class="dropdown-item" href="../articles/04_http.html">4. HTTP stores</a></li>
-    <li><a class="dropdown-item" href="../articles/05_parallel.html">5. Parallel processing</a></li>
-    <li><a class="dropdown-item" href="../articles/06_extending.html">6. Extending Zarr</a></li>
+    <li><a class="dropdown-item" href="../articles/05_s3.html">5. S3 stores</a></li>
+    <li><a class="dropdown-item" href="../articles/06_parallel.html">6. Parallel processing</a></li>
+    <li><a class="dropdown-item" href="../articles/07_extending.html">7. Extending Zarr</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -43,7 +44,14 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="zarr-development-version">zarr (development version)<a class="anchor" aria-label="anchor" href="#zarr-development-version"></a></h2>
-</div>
+<ul><li>AWS S3 store access added for reading and, with appropriate authentication, writing. The function <code><a href="../reference/s3_list_dir.html">s3_list_dir()</a></code> can be used to walk the directory listing of an S3 bucket to locate Zarr stores.</li>
+<li>New <code>zarr_object</code> base class for name and attribute management.</li>
+<li>
+<code>dirty</code> field can be explicitly set on any node to force writing of the metadata to the store.</li>
+<li>
+<code>chunk_key_encoding</code> is automatically set in array metadata.</li>
+<li>New <code><a href="../reference/optimal_chunking.html">optimal_chunking()</a></code> function to determine optimal chunking for an array, optionally applying different weights to dimensions or groups of dimensions.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.2" id="zarr-042">zarr 0.4.2<a class="anchor" aria-label="anchor" href="#zarr-042"></a></h2><p class="text-muted">CRAN release: 2026-07-11</p>
 <ul><li>

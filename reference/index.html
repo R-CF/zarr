@@ -22,8 +22,9 @@
     <li><a class="dropdown-item" href="../articles/02_array_basics.html">2. Working with arrays</a></li>
     <li><a class="dropdown-item" href="../articles/03_attributes.html">3. Working with attributes</a></li>
     <li><a class="dropdown-item" href="../articles/04_http.html">4. HTTP stores</a></li>
-    <li><a class="dropdown-item" href="../articles/05_parallel.html">5. Parallel processing</a></li>
-    <li><a class="dropdown-item" href="../articles/06_extending.html">6. Extending Zarr</a></li>
+    <li><a class="dropdown-item" href="../articles/05_s3.html">5. S3 stores</a></li>
+    <li><a class="dropdown-item" href="../articles/06_parallel.html">6. Parallel processing</a></li>
+    <li><a class="dropdown-item" href="../articles/07_extending.html">7. Extending Zarr</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -112,6 +113,20 @@
 
         </dt>
         <dd>Open a Zarr store</dd>
+
+        <dt>
+
+          <code><a href="optimal_chunking.html">optimal_chunking()</a></code>
+
+        </dt>
+        <dd>Get optimal chunking size for an array.</dd>
+
+        <dt>
+
+          <code><a href="s3_list_dir.html">s3_list_dir()</a></code>
+
+        </dt>
+        <dd>List objects/prefixes in an S3 bucket</dd>
 
         <dt>
 
@@ -339,6 +354,13 @@
 
         <dt>
 
+          <code><a href="zarr_object.html">zarr_object</a></code>
+
+        </dt>
+        <dd>Zarr base object</dd>
+
+        <dt>
+
           <code><a href="zarr_options.html">zarr_options()</a></code>
 
         </dt>
@@ -350,6 +372,13 @@
 
         </dt>
         <dd>Register a Zarr domain for this session</dd>
+
+        <dt>
+
+          <code><a href="zarr_s3store.html">zarr_s3store</a></code>
+
+        </dt>
+        <dd>Zarr Store for AWS S3 (and S3-compatible) access</dd>
 
         <dt>
 

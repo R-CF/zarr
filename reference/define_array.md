@@ -40,6 +40,6 @@ arr
 #> <Zarr array> ⌗ my_array 
 #> Path      : /my_array 
 #> Data type : int32 
-#> Shape     : 3 8 5 
+#> Shape     : 3 8 5
 #> Chunking  : 4 4 4 
 ```

@@ -94,7 +94,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpKhHwEm/file1d0826793415.zarr 
+#> Location  : /tmp/RtmpitUk3t/file1c885d2a3b0e.zarr 
 #> Arrays    : 0 
 #> Total size: 47 Bytes
 ```
@@ -120,5 +120,5 @@ unlink(fn)
 ## Other Zarr stores
 
 Currently, this package supports local file system stores, online HTTP
-stores and memory stores. Support for cloud-based stores will be added
-in the near future.
+and S3 stores and memory stores. Support for other stores may be added
+in the future.

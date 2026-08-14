@@ -16,6 +16,11 @@ arguments are largely not checked, the group and array instances should
 do so prior to calling methods here. The big exception is checking the
 validity of node names.
 
+## Super class
+
+[`zarr_object`](https://r-cf.github.io/zarr/reference/zarr_object.md)
+-\> `zarr_node`
+
 ## Active bindings
 
 - `name`:
@@ -48,11 +53,19 @@ validity of node names.
   that is not properly describing this object will render the object
   invalid.
 
+- `dirty`:
+
+  Flag to indicate that there are unsaved edits in the node. Such edits
+  always concern the metadata and then in particular the user-level
+  attributes. Setting the field to `TRUE` will ensure that the edits are
+  saved to the Zarr store.
+
 - `attributes`:
 
   (read-only) Retrieve the list of attributes of this object. Attributes
-  can be added or modified with the `set_attribute()` method or removed
-  with the `delete_attributes()` method.
+  can be added or modified with the `set_attribute()` and
+  `append_array_attribute()` methods or removed with the
+  `delete_attributes()` method.
 
 ## Methods
 
@@ -61,8 +74,6 @@ validity of node names.
 - [`zarr_node$new()`](#method-zarr_node-initialize)
 
 - [`zarr_node$post_open()`](#method-zarr_node-post_open)
-
-- [`zarr_node$print_attributes()`](#method-zarr_node-print_attributes)
 
 - [`zarr_node$relative_path()`](#method-zarr_node-relative_path)
 
@@ -79,6 +90,10 @@ validity of node names.
 - [`zarr_node$delete_attribute()`](#method-zarr_node-delete_attribute)
 
 - [`zarr_node$save()`](#method-zarr_node-save)
+
+Inherited methods
+
+- [`zarr_object$print_attributes()`](https://r-cf.github.io/zarr/reference/zarr_object.html#method-print_attributes)
 
 ------------------------------------------------------------------------
 
@@ -109,6 +124,10 @@ Initialize a new node in a Zarr hierarchy.
 
   The store to persist data in. Ignored if `parent` is specified.
 
+#### Returns
+
+A new instance of this class.
+
 ------------------------------------------------------------------------
 
 ### `zarr_node$post_open()`
@@ -125,26 +144,6 @@ implement this method.
 #### Returns
 
 Self, invisibly.
-
-------------------------------------------------------------------------
-
-### `zarr_node$print_attributes()`
-
-Print the metadata "attributes" to the console. Usually called by the
-[zarr_group](https://r-cf.github.io/zarr/reference/zarr_group.md) and
-[zarr_array](https://r-cf.github.io/zarr/reference/zarr_array.md)
-[`print()`](https://rdrr.io/r/base/print.html) methods.
-
-#### Usage
-
-    zarr_node$print_attributes(...)
-
-#### Arguments
-
-- `...`:
-
-  Arguments passed to embedded functions. Of particular interest is
-  `width = .` to specify the maximum width of the columns.
 
 ------------------------------------------------------------------------
 

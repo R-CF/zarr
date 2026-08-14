@@ -7,10 +7,11 @@ arrays.
 A Zarr group is identified by a JSON file having required metadata,
 specifically the attribute `"node_type": "group"`.
 
-## Super class
+## Super classes
 
-[`zarr_node`](https://r-cf.github.io/zarr/reference/zarr_node.md) -\>
-`zarr_group`
+[`zarr_object`](https://r-cf.github.io/zarr/reference/zarr_object.md)
+-\> [`zarr_node`](https://r-cf.github.io/zarr/reference/zarr_node.md)
+-\> `zarr_group`
 
 ## Active bindings
 
@@ -62,11 +63,11 @@ specifically the attribute `"node_type": "group"`.
 
 Inherited methods
 
+- [`zarr_object$print_attributes()`](https://r-cf.github.io/zarr/reference/zarr_object.html#method-print_attributes)
 - [`zarr_node$absolute_path()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-absolute_path)
 - [`zarr_node$append_array_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-append_array_attribute)
 - [`zarr_node$attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-attribute)
 - [`zarr_node$delete_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-delete_attribute)
-- [`zarr_node$print_attributes()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-print_attributes)
 - [`zarr_node$relative_path()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-relative_path)
 - [`zarr_node$save()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-save)
 - [`zarr_node$set_attribute()`](https://r-cf.github.io/zarr/reference/zarr_node.html#method-set_attribute)

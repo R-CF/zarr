@@ -7,8 +7,9 @@
 <url><loc>https://r-cf.github.io/zarr/articles/02_array_basics.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/articles/03_attributes.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/articles/04_http.html</loc></url>
-<url><loc>https://r-cf.github.io/zarr/articles/05_parallel.html</loc></url>
-<url><loc>https://r-cf.github.io/zarr/articles/06_extending.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/articles/05_s3.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/articles/06_parallel.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/articles/07_extending.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/articles/index.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/authors.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/cs.html</loc></url>
@@ -28,6 +29,8 @@
 <url><loc>https://r-cf.github.io/zarr/reference/index.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/is_valid_node_name.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/open_zarr.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/optimal_chunking.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/s3_list_dir.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/str.chunk_grid_regular.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/str.chunk_grid_sharded.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/str.zarr.html</loc></url>
@@ -61,8 +64,10 @@
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_localstore.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_memorystore.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_node.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_object.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_options.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_register_domain.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_s3store.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_store.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_unregister_domain.html</loc></url>
 </urlset>

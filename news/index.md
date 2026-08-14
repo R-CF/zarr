@@ -2,6 +2,20 @@
 
 ## zarr (development version)
 
+- AWS S3 store access added for reading and, with appropriate
+  authentication, writing. The function
+  [`s3_list_dir()`](https://r-cf.github.io/zarr/reference/s3_list_dir.md)
+  can be used to walk the directory listing of an S3 bucket to locate
+  Zarr stores.
+- New `zarr_object` base class for name and attribute management.
+- `dirty` field can be explicitly set on any node to force writing of
+  the metadata to the store.
+- `chunk_key_encoding` is automatically set in array metadata.
+- New
+  [`optimal_chunking()`](https://r-cf.github.io/zarr/reference/optimal_chunking.md)
+  function to determine optimal chunking for an array, optionally
+  applying different weights to dimensions or groups of dimensions.
+
 ## zarr 0.4.2
 
 CRAN release: 2026-07-11
