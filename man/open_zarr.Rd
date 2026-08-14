@@ -4,24 +4,37 @@
 \alias{open_zarr}
 \title{Open a Zarr store}
 \usage{
-open_zarr(location, read_only = FALSE)
+open_zarr(location, read_only = NULL, protocol = NULL, ...)
 }
 \arguments{
 \item{location}{Character string that indicates a location on a file system
-or a HTTP server where the Zarr store is to be found. The character string
-may contain UTF-8 characters and/or use a file URI format.}
+or a HTTP or S3 server where the Zarr store is to be found. The character
+string may contain UTF-8 characters and/or use a file URI format.}
 
 \item{read_only}{Optional. Logical that indicates if the store is to be
-opened in read-only mode. Default is \code{FALSE} for a local file system store,
-\code{TRUE} otherwise.}
+opened in read-only mode. Default is \code{ NULL}, which implies \code{FALSE} for a
+local file system store, \code{TRUE} otherwise.}
+
+\item{protocol}{Character string. Override automatic protocol detection
+('local', 'http', or 's3'). Needed for S3-compatible endpoints that
+aren't AWS and don't follow AWS's hostname conventions (MinIO, EMBASSY
+Cloud, Ceph RGW, etc.) - there's no reliable way to recognize these from
+the URL alone, you have to indicate so explicitly rather than have
+\code{open_zarr()} parse the location.}
+
+\item{...}{Additional protocol-specific parameters passed through to the
+underlying store constructor. For \verb{s3://} and S3 \verb{https://} locations,
+this includes \code{region}, \code{profile}, \code{access_key}/\code{secret_key}/
+\code{session_token}, \code{endpoint}, and \code{anonymous} — see \link{zarr_s3store}. Ignored
+for local and plain HTTP locations.}
 }
 \value{
 A \link{zarr} object.
 }
 \description{
 This function opens a Zarr object, connected to a store located on the local
-file system or on a remote server using the HTTP protocol. The Zarr object
-can be either v.2 or v.3.
+file system or on a remote server using the HTTP or S3 protocol. The Zarr
+object can be either v.2 or v.3.
 }
 \examples{
 fn <- system.file("extdata", "africa.zarr", package = "zarr")

@@ -20,6 +20,7 @@ Suggests:
     digest,
     future,
     future.apply,
+    paws.storage,
     qs2,
     testthat (>= 3.0.0),
     zlib

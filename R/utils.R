@@ -139,11 +139,66 @@ is_valid_node_name <- function(name) {
 
 #' Determines the protocol to be used with a specified store location.
 #' @noRd
+# Extend the existing .protocol() to recognize S3 locations, both the
+# s3:// URI scheme and virtual-hosted/path-style https:// URLs.
 .protocol <- function(loc) {
-  if (grepl('^http(s)?://', loc, ignore.case = TRUE))
+  if (grepl('^s3://', loc, ignore.case = TRUE) ||
+      grepl('^https?://[^/]*s3[.-]?[a-z0-9-]*\\.amazonaws\\.com', loc, ignore.case = TRUE, perl = TRUE))
+    's3'
+  else if (grepl('^http(s)?://', loc, ignore.case = TRUE))
     'http'
   else
     'local'
+}
+
+# Parse an S3 location string into bucket, prefix and region. Accepts
+# s3://bucket/prefix, virtual-hosted-style https URLs (bucket in the
+# hostname), and path-style https URLs (bucket as the first path segment).
+# Region is NULL when it can't be determined from the URL (s3:// scheme,
+# or a *.s3.amazonaws.com host, which is the us-east-1 legacy global
+# endpoint) - paws.storage's default provider chain then resolves it from
+# AWS_REGION / the shared config file.
+# NOTE: virtual-hosted-style parsing assumes the bucket name contains no
+# dots - a known AWS ambiguity, not specific to this function.
+.parse_s3_location <- function(loc) {
+  if (grepl('^s3://', loc, ignore.case = TRUE)) {
+    rest <- sub('^s3://', '', loc, ignore.case = TRUE)
+    parts <- strsplit(rest, '/', fixed = TRUE)[[1L]]
+    return(list(bucket = parts[1L],
+                prefix = if (length(parts) > 1L) paste(parts[-1L], collapse = '/') else '',
+                region = NULL, endpoint = NULL))
+  }
+
+  m <- regmatches(loc, regexec('^(https?)://([^/]+)/?(.*)$', loc, perl = TRUE))[[1L]]
+  if (length(m) != 4L)
+    stop('Cannot parse S3 location: ', loc, call. = FALSE)
+  scheme <- m[2L]; host <- m[3L]; path <- m[4L]
+
+  if (grepl('^s3[.-]?[a-z0-9-]*\\.amazonaws\\.com$', host, ignore.case = TRUE, perl = TRUE)) {
+    # AWS path-style: https://s3[.region].amazonaws.com/bucket/prefix
+    parts <- strsplit(path, '/', fixed = TRUE)[[1L]]
+    region <- sub('^s3[.-]?', '', sub('\\.amazonaws\\.com$', '', host, ignore.case = TRUE), ignore.case = TRUE)
+    return(list(bucket = parts[1L],
+                prefix = if (length(parts) > 1L) paste(parts[-1L], collapse = '/') else '',
+                region = if (nzchar(region)) region else NULL, endpoint = NULL))
+  }
+
+  m2 <- regmatches(host, regexec('^(.+)\\.s3[.-]?([a-z0-9-]*)\\.amazonaws\\.com$', host, perl = TRUE))[[1L]]
+  if (length(m2) == 3L)
+    # AWS virtual-hosted: https://bucket.s3[.-region].amazonaws.com/prefix
+    return(list(bucket = m2[2L], prefix = path,
+                region = if (nzchar(m2[3L])) m2[3L] else NULL, endpoint = NULL))
+
+  # Generic S3-compatible endpoint (MinIO, EMBASSY Cloud, Ceph RGW, ...):
+  # path-style is the only convention that works reliably without knowing
+  # the provider's virtual-hosted addressing rules, so assume it - bucket
+  # is the first path segment, the endpoint is the scheme+host itself.
+  parts <- strsplit(path, '/', fixed = TRUE)[[1L]]
+  if (!length(parts) || !nzchar(parts[1L]))
+    stop('Cannot determine bucket from S3 location: ', loc, call. = FALSE)
+  list(bucket = parts[1L],
+       prefix = if (length(parts) > 1L) paste(parts[-1L], collapse = '/') else '',
+       region = NULL, endpoint = paste0(scheme, '://', host))
 }
 
 #' Get optimal chunking for the dimension lengths in argument dims. This uses

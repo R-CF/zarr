@@ -22,14 +22,14 @@ zarr_array <- R6::R6Class('zarr_array',
     # Returns a list with pre, sep and scalar elements that describe the
     # chunk key encoding of the array.
     chunk_key_encoding = function() {
-      if (private$.store$version == 2L) { # This is not entirely correct: every array has a zarr_format setting
+      if (private$.metadata$zarr_format == 2L) {
         list(pre = '',
              sep = private$.metadata$dimension_separator %||% '.',
              scalar = '0')
       } else {
         if (private$.metadata$chunk_key_encoding$name == 'default')
           list(pre = paste0('c', private$.metadata$chunk_key_encoding$configuration$separator),
-               sep = private$.metadata$chunk_key_encoding$configuration$separator,
+               sep = private$.metadata$chunk_key_encoding$configuration$separator %||% '/',
                scalar = 'c')
         else # v2
           list(pre = '',
@@ -65,13 +65,17 @@ zarr_array <- R6::R6Class('zarr_array',
 
     #' @description Print a summary of the array to the console.
     print = function() {
+      meta <- private$.metadata
       cat('<Zarr array>', private$.glyph, private$.name, '\n')
       cat('Path      :', self$path, '\n')
       if (nzchar(private$.domain))
         cat('Domain    :', private$.domain, '\n')
       cat('Data type :', private$.data_type$data_type, '\n')
-      cat('Shape     :', private$.metadata$shape, '\n')
-      cat('Chunking  :', private$.metadata$chunk_grid$configuration$chunk_shape, '\n')
+      cat('Shape     :', meta$shape)
+      dim_names <- meta$dimension_names %||% meta$attributes$`_ARRAY_DIMENSIONS`
+      if (is.null(dim_names)) cat('\n')
+      else cat(' [', paste(dim_names, collapse = ', '), ']\n', sep = '')
+      cat('Chunking  :', meta$chunk_grid$configuration$chunk_shape, '\n')
       private$print_details()
       self$print_attributes()
       invisible(self)

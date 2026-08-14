@@ -1,0 +1,44 @@
+---
+title: "5. S3 stores"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(zarr)
+```
+The `zarr` package can read and write online stores in S3 buckets, meaning that Zarr stores published through Amazon Web Services (AWS) are accessible. Access is read-only by default; properly authenticated users may also write to the store. This package supports a variety of URLs to access S3 stores, but manual protocol setting may be necessary to distinguish between HTTP and S3 stores.
+
+# Accessing S3 buckets
+S3 buckets tend to be _very_ large and there is a significant variety in layouts. As a result, you should have some prior knowledge on how to locate and retrieve the data, usually from a web site by the data producer. This package has a utility function to crawl over the folder hierarchy of an S3 bucket for which you have the name and optionally the `region` and the URL (`endpoint` in S3 terminology) if not a standard S3 server on AWS:
+
+```{r crawl}
+# Crawling ome-zarr-scivis, a public-access repository of Zarr OME data
+s3_list_dir("ome-zarr-scivis", region = "us-east-1")
+
+# Two versions of OME: drill further down
+s3_list_dir("ome-zarr-scivis", region = "us-east-1", prefix = "v0.5")
+
+# Image layouts: drill further down
+(ome <- s3_list_dir("ome-zarr-scivis", region = "us-east-1", prefix = "v0.5/128x4"))
+```
+The list above gives the Zarr stores (".zarr" extension, as per the Zarr specification recommendation). These can be accessed in the usual fashion but take care to strip the trailing slash: the listing gives Zarr prefixes, which end in a trailing slash, but for opening a Zarr store you should specify the root of the store, not its prefix.
+```{r open}
+# Pick one, strip the trailing slash
+z <- open_zarr(paste("s3://ome-zarr-scivis", trimws(ome[22], "right", "/"), sep = "/"))
+z$hierarchy()
+
+# Let's study the lobster ("scale1" is reduced resolution)
+z[['/scale1/lobster']]
+image(z[['/scale1/lobster']][22,,])
+```
+
+# Authentication
+This package does not manage authentication for S3 buckets. S3 access is provided by the `paws.storage` package. Refer to the documentation on [credentials](https://www.paws-r-sdk.com/developer_guide/credentials/) of that package. Most (if not all) of the options for passing credentials to S3 provided by `paws` are supported by this package.
+
+# Working with array data from a S3 bucket
+You can work with array data just like you would be array data from a file system store: index it like any other R array. Keep in mind, though, that the data will be fetched over your internet connection so be very judicious in your indexing. Downloading a full array is almost always a bad idea as Zarr arrays tend to be large.
+
+A more intelligent way to download data is to look at the chunking of the array data. From the "Chunking" details we can see that a chunk (the unit of downloading data) is all of the "x" extent and half of "y" and "z" each. The most efficient way of downloading the data is then to follow the chunking scheme and download blocks of data aligned with the chunk boundaries.

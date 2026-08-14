@@ -48,6 +48,10 @@ zarr_convention <- R6::R6Class('zarr_convention',
     #'   include the name and the schema URL or all details (default).
     #' @return The updated attributes.
     register = function(attributes, brief = FALSE) {
+      conv <- attributes$zarr_conventions %||% list()
+      if (any(vapply(conv, function(c) { c$uuid == private$.uuid }, logical(1L))))
+        return(attributes)
+
       entry <- if (brief)
         list(schema_url = private$.schema, name = private$.name)
       else
@@ -57,7 +61,6 @@ zarr_convention <- R6::R6Class('zarr_convention',
              name        = private$.name,
              description = private$.description)
 
-      conv <- attributes$zarr_conventions %||% list()
       attributes$zarr_conventions <- append(conv, list(entry))
       attributes
     },
