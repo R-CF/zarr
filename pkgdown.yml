@@ -9,7 +9,7 @@ articles:
   articles/05_s3: 05_s3.html
   articles/06_parallel: 06_parallel.html
   articles/07_extending: 07_extending.html
-last_built: 2026-08-14T14:07Z
+last_built: 2026-08-14T14:55Z
 urls:
   reference: https://r-cf.github.io/zarr/reference
   article: https://r-cf.github.io/zarr/articles
