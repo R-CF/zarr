@@ -205,79 +205,30 @@ define_array <- function(data_type, shape) {
 #'
 #' # Prioritize extractions over the "time" dimension
 #' optimal_chunking(dim_sizes = shape, weights = c(1, 1, 2))
-#'
-#' # Prioritize extractions over the grouped "x" and "y" dimensions
-#' optimal_chunking(dim_sizes = shape,
-#'                  groups = list(c("x", "y"), "time"),
-#'                  weights = c(1.3, 1))
-optimal_chunking <- function(dim_sizes, groups, weights,
-                             chunk_values = 4L * 1024L * 1024L) {
-  if (missing(groups) || is.null(groups)) {
-    groups <- as.list(names(dim_sizes))
-    names(groups) <- names(dim_sizes)
-  }
-  len <- length(groups)
-
+optimal_chunking <- function(dim_sizes, weights, chunk_values = 4L * 1024L * 1024L) {
+  len <- length(dim_sizes)
   if (missing(weights))
-    weights <- rep(1L, len)
-  if (length(weights) != len)
-    stop("weights must have one entry per group (", len, "), got ", length(weights))
+    weights <- rep(1, len)
+  else if (length(weights) != len)
+    stop("weights must have one entry per dimension (", len, "), got ", length(weights))
 
-  covered <- unlist(groups)
-  missing_dims <- setdiff(names(dim_sizes), covered)
-  if (length(missing_dims) > 0)
-    stop("dimensions not covered by any group: ",
-         paste(missing_dims, collapse = ", "))
-
-  # Size-1 dimensions can never be partitioned, so their weight must not
-  # dilute the exponent that drives every other dimension's chunk size.
-  # A group counts toward the weight budget only if it has at least one
-  # dimension with size > 1.
-  group_has_volume <- vapply(groups, function(g) any(dim_sizes[g] > 1L), logical(1))
-  W <- sum(weights[group_has_volume])
-
-  if (W == 0) {
-    # every dimension is size 1; nothing to partition
-    return(as.list(dim_sizes))
-  }
+  W <- sum(weights[dim_sizes > 1L])
+  if (W == 0) # Every dimension is size 1; nothing to partition
+    return(dim_sizes)
 
   x <- chunk_values^(1 / W)
 
-  chunk_sizes <- list()
-
-  for (i in seq_along(groups)) {
-    group <- groups[[i]]
-    weight <- weights[i]
-
-    non_trivial <- group[dim_sizes[group] > 1L]
-    trivial     <- group[dim_sizes[group] == 1L]
-
-    for (dim in trivial) chunk_sizes[[dim]] <- 1L
-    if (length(non_trivial) == 0L) next
-
-    group_size <- floor(x^weight)
-
-    if (length(non_trivial) == 1L) {
-      dim <- non_trivial[1]
-      chunk_sizes[[dim]] <- min(group_size, dim_sizes[[dim]])
-    } else {
-      x_group <- group_size^(1 / length(non_trivial))
-      for (dim in non_trivial) {
-        chunk_sizes[[dim]] <- min(floor(x_group), dim_sizes[[dim]])
-      }
-    }
-  }
+  chunk_sizes <- vector("numeric", len)
+  for (d in 1:len)
+    chunk_sizes[d] <- if (dim_sizes[d] == 1L) 1
+                      else min(floor(x^weights[d]), dim_sizes[d])
 
   # Second pass: align chunk sizes to tile each dimension evenly,
   # avoiding a near-full chunk plus a small leftover remainder.
-  .align_chunk <- function(chunk_size, dim_size) {
-    if (chunk_size >= dim_size) return(dim_size)
-    n_chunks <- max(1L, round(dim_size / chunk_size))
-    as.integer(ceiling(dim_size / n_chunks))
-  }
+  for (d in 1:len)
+    chunk_sizes[d] <-
+      if (chunk_sizes[d] >= dim_sizes[d]) dim_sizes[d]
+      else ceiling(dim_sizes[d] / max(1, round(dim_sizes[d] / chunk_sizes[d])))
 
-  for (dim in names(chunk_sizes))
-    chunk_sizes[[dim]] <- .align_chunk(chunk_sizes[[dim]], dim_sizes[[dim]])
-
-  unlist(chunk_sizes[names(dim_sizes)])
+  as.integer(chunk_sizes)
 }

@@ -22,7 +22,7 @@ s3_list_dir(
 
 \item{prefix}{Character string. The prefix to list under. Default \code{""}.}
 
-\item{region, profile, access_key, secret_key, session_token, endpoint, anonymous}{As in \link{zarr_s3store}; same credential resolution and anonymous default.}
+\item{region, profile, access_key, secret_key, session_token, endpoint, anonymous, path_style}{As in \link{zarr_s3store}; same credential resolution and anonymous default.}
 }
 \value{
 A character vector of keys/prefixes found immediately below \code{prefix}.

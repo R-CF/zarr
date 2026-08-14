@@ -4,7 +4,7 @@
 \alias{optimal_chunking}
 \title{Get optimal chunking size for an array.}
 \usage{
-optimal_chunking(dim_sizes, groups, weights, chunk_values = 4L * 1024L * 1024L)
+optimal_chunking(dim_sizes, weights, chunk_values = 4L * 1024L * 1024L)
 }
 \arguments{
 \item{dim_sizes}{Named integer array of dimension lengths, corresponding to
@@ -33,9 +33,4 @@ optimal_chunking(dim_sizes = shape)
 
 # Prioritize extractions over the "time" dimension
 optimal_chunking(dim_sizes = shape, weights = c(1, 1, 2))
-
-# Prioritize extractions over the grouped "x" and "y" dimensions
-optimal_chunking(dim_sizes = shape,
-                 groups = list(c("x", "y"), "time"),
-                 weights = c(1.3, 1))
 }

@@ -577,7 +577,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
 #' datasets, before calling [open_zarr()] or `zarr_s3store$new()`.
 #' @param bucket Character string. The S3 bucket name.
 #' @param prefix Character string. The prefix to list under. Default `""`.
-#' @param region,profile,access_key,secret_key,session_token,endpoint,anonymous
+#' @param region,profile,access_key,secret_key,session_token,endpoint,anonymous,path_style
 #'   As in [zarr_s3store]; same credential resolution and anonymous default.
 #' @return A character vector of keys/prefixes found immediately below `prefix`.
 #' @export
