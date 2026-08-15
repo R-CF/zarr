@@ -60,14 +60,14 @@ dimensions based on weights per dimension.</p>
 
 
 <dl><dt id="arg-dim-sizes">dim_sizes<a class="anchor" aria-label="anchor" href="#arg-dim-sizes"></a></dt>
-<dd><p>Named integer array of dimension lengths, corresponding to
-the <code>shape</code> of the array.</p></dd>
+<dd><p>Integer array of dimension lengths, corresponding to the
+<code>shape</code> of the array.</p></dd>
 
 
 <dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
-<dd><p>Optional, numeric vector with weights per dimension.
-If omitted, each dimension will have a weight of 1L, i.e. no
-preferential chunking on any dimension.</p></dd>
+<dd><p>Optional, numeric vector with weights per dimension, in the
+same order as <code>dim_sizes</code>. If omitted, each dimension will have a weight of
+1L, i.e. no preferential chunking on any dimension.</p></dd>
 
 
 <dt id="arg-chunk-values">chunk_values<a class="anchor" aria-label="anchor" href="#arg-chunk-values"></a></dt>
@@ -78,7 +78,8 @@ elements per chunk. Default is 4 million, meaning that the chunk size of
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An integer vector with chunk length per group or dimension.</p>
+    <p>An integer vector with chunk length per dimension in the same order
+as argument <code>dim_sizes</code>.</p>
     </div>
 
     <div class="section level2">

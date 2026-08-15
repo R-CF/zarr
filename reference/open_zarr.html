@@ -75,9 +75,9 @@ local file system store, <code>TRUE</code> otherwise.</p></dd>
 
 
 <dt id="arg-protocol">protocol<a class="anchor" aria-label="anchor" href="#arg-protocol"></a></dt>
-<dd><p>Character string. Override automatic protocol detection
-('local', 'http', or 's3'). Needed for S3-compatible endpoints that
-aren't AWS and don't follow AWS's hostname conventions (MinIO, EMBASSY
+<dd><p>Optional, character string. Override automatic protocol
+detection ('local', 'http', or 's3'). Needed for S3-compatible endpoints
+that aren't AWS and don't follow AWS's hostname conventions (MinIO, EMBASSY
 Cloud, Ceph RGW, etc.) - there's no reliable way to recognize these from
 the URL alone, you have to indicate so explicitly rather than have
 <code>open_zarr()</code> parse the location.</p></dd>
@@ -85,10 +85,10 @@ the URL alone, you have to indicate so explicitly rather than have
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional protocol-specific parameters passed through to the
-underlying store constructor. For <code>s3://</code> and S3 <code>https://</code> locations,
-this includes <code>region</code>, <code>profile</code>, <code>access_key</code>/<code>secret_key</code>/
-<code>session_token</code>, <code>endpoint</code>, and <code>anonymous</code> — see <a href="zarr_s3store.html">zarr_s3store</a>. Ignored
-for local and plain HTTP locations.</p></dd>
+underlying store constructor. For <code>s3://</code> and S3 <code>https://</code> locations, this
+includes <code>region</code>, <code>profile</code>, <code>access_key</code>/<code>secret_key</code>/ <code>session_token</code>,
+<code>endpoint</code>, and <code>anonymous</code> — see <a href="zarr_s3store.html">zarr_s3store</a>. Ignored for local and
+plain HTTP locations.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -201,7 +201,9 @@ Walk from the current node to a target node indicated by the vector of
 relative path references. A call to this method moves one step closer to
 the target node, followed by a call of this method on the next node with
 the `node_names` vector with its first element removed. The target is
-thus iteratively found by walking the Zarr hierarchy.
+thus iteratively found by walking the Zarr hierarchy. The method is
+called by `zarr_group$get_node()` and the `[[` indexing method of
+`zarr`, which are both easier to work with than this method.
 
 #### Usage
 
@@ -215,7 +217,8 @@ thus iteratively found by walking the Zarr hierarchy.
   vector is resolved: a ".." value moves up to the parent of the current
   node, all other values must resolve to a child of the current node.
   The `node_names` vector is easily constructed from a relative path to
-  the target node using `strsplit(., "/", fixed = TRUE)[[1L]]`.
+  the target node using `strsplit(., "/", fixed = TRUE)[[1L]]`. With an
+  absolute path the first element ("") must be removed.
 
 #### Returns
 

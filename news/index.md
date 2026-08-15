@@ -15,6 +15,8 @@
   [`optimal_chunking()`](https://r-cf.github.io/zarr/reference/optimal_chunking.md)
   function to determine optimal chunking for an array, optionally
   applying different weights to dimensions or groups of dimensions.
+- Testing expanded.
+- Documentation expanded and updated.
 
 ## zarr 0.4.2
 

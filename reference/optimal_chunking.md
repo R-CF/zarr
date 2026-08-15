@@ -13,14 +13,14 @@ optimal_chunking(dim_sizes, weights, chunk_values = 4L * 1024L * 1024L)
 
 - dim_sizes:
 
-  Named integer array of dimension lengths, corresponding to the `shape`
-  of the array.
+  Integer array of dimension lengths, corresponding to the `shape` of
+  the array.
 
 - weights:
 
-  Optional, numeric vector with weights per dimension. If omitted, each
-  dimension will have a weight of 1L, i.e. no preferential chunking on
-  any dimension.
+  Optional, numeric vector with weights per dimension, in the same order
+  as `dim_sizes`. If omitted, each dimension will have a weight of 1L,
+  i.e. no preferential chunking on any dimension.
 
 - chunk_values:
 
@@ -30,7 +30,8 @@ optimal_chunking(dim_sizes, weights, chunk_values = 4L * 1024L * 1024L)
 
 ## Value
 
-An integer vector with chunk length per group or dimension.
+An integer vector with chunk length per dimension in the same order as
+argument `dim_sizes`.
 
 ## Examples
 

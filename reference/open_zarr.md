@@ -26,12 +26,12 @@ open_zarr(location, read_only = NULL, protocol = NULL, ...)
 
 - protocol:
 
-  Character string. Override automatic protocol detection ('local',
-  'http', or 's3'). Needed for S3-compatible endpoints that aren't AWS
-  and don't follow AWS's hostname conventions (MinIO, EMBASSY Cloud,
-  Ceph RGW, etc.) - there's no reliable way to recognize these from the
-  URL alone, you have to indicate so explicitly rather than have
-  `open_zarr()` parse the location.
+  Optional, character string. Override automatic protocol detection
+  ('local', 'http', or 's3'). Needed for S3-compatible endpoints that
+  aren't AWS and don't follow AWS's hostname conventions (MinIO, EMBASSY
+  Cloud, Ceph RGW, etc.) - there's no reliable way to recognize these
+  from the URL alone, you have to indicate so explicitly rather than
+  have `open_zarr()` parse the location.
 
 - ...:
 

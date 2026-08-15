@@ -247,7 +247,9 @@ vector of relative path references. A call to this method moves one
 step closer to the target node, followed by a call of this method on
 the next node with the <code>node_names</code> vector with its first element
 removed. The target is thus iteratively found by walking the Zarr
-hierarchy.</p><div class="section">
+hierarchy. The method is called by <code>zarr_group$get_node()</code> and the <code>[[</code>
+indexing method of <code>zarr</code>, which are both easier to work with than this
+method.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">walk_path</span><span class="op">(</span><span class="va">node_names</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
@@ -257,7 +259,8 @@ hierarchy.</p><div class="section">
 element in the vector is resolved: a ".." value moves up to the parent
 of the current node, all other values must resolve to a child of the
 current node. The <code>node_names</code> vector is easily constructed from a
-relative path to the target node using <code>strsplit(., "/", fixed = TRUE)[[1L]]</code>.</p></dd>
+relative path to the target node using <code>strsplit(., "/", fixed = TRUE)[[1L]]</code>.
+With an absolute path the first element ("") must be removed.</p></dd>
 
 
 </dl><p></p></div>
