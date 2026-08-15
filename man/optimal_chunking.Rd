@@ -7,19 +7,20 @@
 optimal_chunking(dim_sizes, weights, chunk_values = 4L * 1024L * 1024L)
 }
 \arguments{
-\item{dim_sizes}{Named integer array of dimension lengths, corresponding to
-the \code{shape} of the array.}
+\item{dim_sizes}{Integer array of dimension lengths, corresponding to the
+\code{shape} of the array.}
 
-\item{weights}{Optional, numeric vector with weights per dimension.
-If omitted, each dimension will have a weight of 1L, i.e. no
-preferential chunking on any dimension.}
+\item{weights}{Optional, numeric vector with weights per dimension, in the
+same order as \code{dim_sizes}. If omitted, each dimension will have a weight of
+1L, i.e. no preferential chunking on any dimension.}
 
 \item{chunk_values}{Optional, integer value given the maximum number of array
 elements per chunk. Default is 4 million, meaning that the chunk size of
 \code{float32} data is at most 16MB uncompressed.}
 }
 \value{
-An integer vector with chunk length per group or dimension.
+An integer vector with chunk length per dimension in the same order
+as argument \code{dim_sizes}.
 }
 \description{
 This function will determine the optimal chunking sizes of the array

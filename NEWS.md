@@ -5,6 +5,8 @@
 - `dirty` field can be explicitly set on any node to force writing of the metadata to the store.
 - `chunk_key_encoding` is automatically set in array metadata.
 - New `optimal_chunking()` function to determine optimal chunking for an array, optionally applying different weights to dimensions or groups of dimensions.
+- Testing expanded.
+- Documentation expanded and updated.
 
 # zarr 0.4.2
 

@@ -34,17 +34,17 @@ create_zarr <- function(location) {
 #' @param read_only Optional. Logical that indicates if the store is to be
 #'   opened in read-only mode. Default is ` NULL`, which implies `FALSE` for a
 #'   local file system store, `TRUE` otherwise.
-#' @param protocol Character string. Override automatic protocol detection
-#'   ('local', 'http', or 's3'). Needed for S3-compatible endpoints that
-#'   aren't AWS and don't follow AWS's hostname conventions (MinIO, EMBASSY
+#' @param protocol Optional, character string. Override automatic protocol
+#'   detection ('local', 'http', or 's3'). Needed for S3-compatible endpoints
+#'   that aren't AWS and don't follow AWS's hostname conventions (MinIO, EMBASSY
 #'   Cloud, Ceph RGW, etc.) - there's no reliable way to recognize these from
 #'   the URL alone, you have to indicate so explicitly rather than have
 #'   `open_zarr()` parse the location.
 #' @param ... Additional protocol-specific parameters passed through to the
-#'   underlying store constructor. For `s3://` and S3 `https://` locations,
-#'   this includes `region`, `profile`, `access_key`/`secret_key`/
-#'   `session_token`, `endpoint`, and `anonymous` — see [zarr_s3store]. Ignored
-#'   for local and plain HTTP locations.
+#'   underlying store constructor. For `s3://` and S3 `https://` locations, this
+#'   includes `region`, `profile`, `access_key`/`secret_key`/ `session_token`,
+#'   `endpoint`, and `anonymous` — see [zarr_s3store]. Ignored for local and
+#'   plain HTTP locations.
 #' @return A [zarr] object.
 #' @export
 #' @examples
@@ -187,15 +187,16 @@ define_array <- function(data_type, shape) {
 #' This function will determine the optimal chunking sizes of the array
 #' dimensions based on weights per dimension.
 #'
-#' @param dim_sizes Named integer array of dimension lengths, corresponding to
-#'   the `shape` of the array.
-#' @param weights Optional, numeric vector with weights per dimension.
-#'   If omitted, each dimension will have a weight of 1L, i.e. no
-#'   preferential chunking on any dimension.
+#' @param dim_sizes Integer array of dimension lengths, corresponding to the
+#'   `shape` of the array.
+#' @param weights Optional, numeric vector with weights per dimension, in the
+#'   same order as `dim_sizes`. If omitted, each dimension will have a weight of
+#'   1L, i.e. no preferential chunking on any dimension.
 #' @param chunk_values Optional, integer value given the maximum number of array
 #'   elements per chunk. Default is 4 million, meaning that the chunk size of
 #'   `float32` data is at most 16MB uncompressed.
-#' @return An integer vector with chunk length per group or dimension.
+#' @return An integer vector with chunk length per dimension in the same order
+#'   as argument `dim_sizes`.
 #' @export
 #' @examples
 #' shape <- c(x = 50000L, y = 350L, time = 8192)
@@ -210,22 +211,24 @@ optimal_chunking <- function(dim_sizes, weights, chunk_values = 4L * 1024L * 102
   if (missing(weights))
     weights <- rep(1, len)
   else if (length(weights) != len)
-    stop("weights must have one entry per dimension (", len, "), got ", length(weights))
+    stop('Length of `dim_sizes` and `weights` arguments must be the same', call. = FALSE)
+  if (any(weights <= 0))
+    stop('Weights must be positive', call. = FALSE)
 
   W <- sum(weights[dim_sizes > 1L])
   if (W == 0) # Every dimension is size 1; nothing to partition
-    return(dim_sizes)
+    return(as.integer(dim_sizes))
 
   x <- chunk_values^(1 / W)
 
   chunk_sizes <- vector("numeric", len)
-  for (d in 1:len)
+  for (d in seq_len(len))
     chunk_sizes[d] <- if (dim_sizes[d] == 1L) 1
                       else min(floor(x^weights[d]), dim_sizes[d])
 
   # Second pass: align chunk sizes to tile each dimension evenly,
   # avoiding a near-full chunk plus a small leftover remainder.
-  for (d in 1:len)
+  for (d in seq_len(len))
     chunk_sizes[d] <-
       if (chunk_sizes[d] >= dim_sizes[d]) dim_sizes[d]
       else ceiling(dim_sizes[d] / max(1, round(dim_sizes[d] / chunk_sizes[d])))

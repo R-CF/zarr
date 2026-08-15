@@ -98,3 +98,102 @@ test_that("Single array Zarr", {
   z <- as_zarr(x)
   tests(z)
 })
+
+test_that("Optimal chunking", {
+  # Errors on mismatched dimensions and weights
+  expect_error(optimal_chunking(c(100L, 200L, 300L), c(1, 1)))
+  expect_error(optimal_chunking(c(100L, 200L, 300L), c(1, 1, 1, 1)))
+
+  # Errors on negative weights"
+  expect_error(optimal_chunking(c(100L, 200L, 300L), c(1, -1, 1)))
+
+  # Defaults to equal weights when weights is missing
+  dim_sizes <- c(2000L, 2000L, 2000L)
+  r <- optimal_chunking(dim_sizes)
+  expect_equal(r[1], r[2])
+  expect_equal(r[2], r[3])
+
+  # Returns integer type
+  r <- optimal_chunking(dim_sizes, c(1, 1, 1))
+  expect_type(r, "integer")
+  expect_length(r, 3L)
+
+  # Weights must be positive
+  expect_error(optimal_chunking(dim_sizes, c(0, 2, 2)))
+
+  # Chunk sizes never exceed the corresponding dimension size
+  dim_sizes <- c(50000L, 350L, 123L)
+  weights   <- c(1.5, 1.5, 1)
+  r <- optimal_chunking(dim_sizes, weights)
+  expect_true(all(r <= dim_sizes))
+  expect_true(all(r >= 1L))
+
+  # All size-1 dimensions short-circuits to dim_sizes, as integer
+  dim_sizes <- c(1L, 1L, 1L)
+  r <- optimal_chunking(dim_sizes, c(1, 1, 1))
+  expect_equal(r, as.integer(dim_sizes))
+  expect_type(r, "integer")
+
+  # Size-1 dimensions are always chunked as 1L, regardless of weight", {
+  dim_sizes <- c(1L, 2000L, 2000L)
+  r <- optimal_chunking(dim_sizes, c(5, 1, 1))
+  expect_equal(r[1], 1L)
+
+  # Size-1 dimension's weight does not dilute the budget for other dims
+  # Weight on the degenerate dim should be excluded from W entirely
+  dim_sizes <- c(1L, 2000L, 2000L)
+  r_low  <- optimal_chunking(dim_sizes, c(0.01, 1, 1))
+  r_high <- optimal_chunking(dim_sizes, c(50,   1, 1))
+  # Since the degenerate dim's weight never counts toward W, the result
+  # for the non-degenerate dims should be identical regardless of its value
+  expect_equal(r_low[2:3], r_high[2:3])
+
+  # Single-dimension array chunks to min(chunk_values, dim_size)
+  r_small <- optimal_chunking(100L, 1, chunk_values = 4L * 1024L * 1024L)
+  expect_equal(r_small, 100L)  # whole (small) dimension fits comfortably
+
+  r_large <- optimal_chunking(10000000L, 1, chunk_values = 1000L)
+  expect_true(r_large <= 10000000L)
+  expect_true(r_large >= 1L)
+
+  # A dominant weight clips cleanly to the full dimension size
+  # t's target size vastly exceeds its actual extent -> clips to dim size
+  dim_sizes <- c(9645L, 2000L, 2000L)  # t, x, y
+  weights   <- c(3, 0.5, 0.5)
+  r <- optimal_chunking(dim_sizes, weights)
+  expect_equal(r[1], 9645L)
+
+  # Product of chunk sizes is close to chunk_values in the unclipped case
+  dim_sizes <- c(2000L, 2000L, 2000L)
+  weights   <- c(1, 1, 1)
+  chunk_values <- 4L * 1024L * 1024L
+  r <- optimal_chunking(dim_sizes, weights, chunk_values)
+  # allow generous tolerance for flooring + the alignment pass
+  expect_true(prod(r) > chunk_values * 0.8)
+  expect_true(prod(r) <= chunk_values * 1.2)
+
+  # Higher relative weight yields a larger chunk along that dimension
+  dim_sizes <- c(2000L, 2000L)
+  r <- optimal_chunking(dim_sizes, c(3, 1))
+  expect_true(r[1] > r[2])
+
+  # Alignment collapses a near-full chunk + tiny remainder into one chunk
+  # regression test: raw target (9410) is just under the dimension size
+  # (9645), which used to leave a chunk of 9410 plus a leftover of 235;
+  # the alignment pass should recognize a single chunk covers it better
+  dim_size <- 9645L
+  r <- optimal_chunking(dim_size, 1, chunk_values = 9410L)
+  expect_equal(r, 9645L)
+
+  # Alignment does not increase chunk size beyond the dimension
+  dim_sizes <- c(50000L, 350L, 123L)
+  weights   <- c(1.5, 1.5, 1)
+  r <- optimal_chunking(dim_sizes, weights)
+  expect_true(all(r <= dim_sizes))
+
+  # Weights argument order maps positionally to dim_sizes
+  dim_sizes <- c(2000L, 500L)
+  r1 <- optimal_chunking(dim_sizes, c(3, 1))
+  r2 <- optimal_chunking(rev(dim_sizes), c(1, 3))
+  expect_equal(r1, rev(r2))
+})

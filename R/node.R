@@ -136,12 +136,15 @@ zarr_node <- R6::R6Class('zarr_node',
     #'   step closer to the target node, followed by a call of this method on
     #'   the next node with the `node_names` vector with its first element
     #'   removed. The target is thus iteratively found by walking the Zarr
-    #'   hierarchy.
+    #'   hierarchy. The method is called by `zarr_group$get_node()` and the `[[`
+    #'   indexing method of `zarr`, which are both easier to work with than this
+    #'   method.
     #' @param node_names A character vector of node names to walk. The first
     #'   element in the vector is resolved: a ".." value moves up to the parent
     #'   of the current node, all other values must resolve to a child of the
     #'   current node. The `node_names` vector is easily constructed from a
     #'   relative path to the target node using `strsplit(., "/", fixed = TRUE)[[1L]]`.
+    #'   With an absolute path the first element ("") must be removed.
     #' @return The `zarr_node` that is found when the `node_names` vector is
     #'   fully walked. If the node is not found, an error will be raised.
     walk_path = function(node_names) {

@@ -183,7 +183,9 @@ vector of relative path references. A call to this method moves one
 step closer to the target node, followed by a call of this method on
 the next node with the \code{node_names} vector with its first element
 removed. The target is thus iteratively found by walking the Zarr
-hierarchy.
+hierarchy. The method is called by \code{zarr_group$get_node()} and the \code{[[}
+indexing method of \code{zarr}, which are both easier to work with than this
+method.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_node$walk_path(node_names)}
@@ -196,7 +198,8 @@ hierarchy.
 element in the vector is resolved: a ".." value moves up to the parent
 of the current node, all other values must resolve to a child of the
 current node. The \code{node_names} vector is easily constructed from a
-relative path to the target node using \code{strsplit(., "/", fixed = TRUE)[[1L]]}.}
+relative path to the target node using \code{strsplit(., "/", fixed = TRUE)[[1L]]}.
+With an absolute path the first element ("") must be removed.}
     }
     \if{html}{\out{</div>}}
   }

@@ -20,8 +20,8 @@ zarr <- R6::R6Class("zarr",
   ),
   public = list(
     #' @description Create a new Zarr instance. The Zarr instance manages the
-    #' groups and arrays in the Zarr store that it refers to. This instance
-    #' provides access to all objects in the Zarr store.
+    #'   groups and arrays in the Zarr store that it refers to. This instance
+    #'   provides access to all objects in the Zarr store.
     #' @param store An instance of a [zarr_store] descendant class where the
     #'   Zarr objects are located.
     #' @returns A `zarr` object.
@@ -71,19 +71,8 @@ zarr <- R6::R6Class("zarr",
       if (missing(path) || !is.character(path) || !startsWith(path, '/'))
         return(NULL)
 
-      parts <- strsplit(path, '/', fixed = TRUE)[[1L]]
-      if (!(len <- length(parts)))
-        return(NULL)
-
-      parts <- parts[-1L]
-      node <- private$.root
-      len <- len - 1L
-      while (len > 0L && !is.null(node)) {
-        node <- node$children[[parts[1L]]]
-        parts <- parts[-1L]
-        len <- len - 1L
-      }
-      node
+      parts <- strsplit(path, '/', fixed = TRUE)[[1L]][-1L] # Strip empty first part
+      private$.root$walk_path(parts)
     },
 
     #' @description Add a group below a given path.

@@ -148,28 +148,8 @@ zarr_group <- R6::R6Class('zarr_group',
       if (missing(path) || !is.character(path) || !nzchar(path) || startsWith(path, '/'))
         return(NULL)
 
-      matches <- regexec('^([^/]*)/(.*)', path)
-      if (matches[[1L]][1L] < 0L) {
-        if (path == '..')
-          private$.parent
-        else
-          private$.children[[path]]
-      } else {
-        parts <- regmatches(path, matches)[[1L]]
-        if (parts[2L] == '..') {
-          parent <- private$.parent
-          if (is.null(parent))
-            NULL
-          else
-            parent$get_node(parts[3L])
-        } else {
-          node <- private$.children[[parts[2L]]]
-          if (is.null(node))
-            NULL
-          else
-            node$get_node(parts[3L])
-        }
-      }
+      parts <- strsplit(path, '/', fixed = TRUE)[[1L]]
+      self$walk_path(parts)
     },
 
     #' @description Set a group or array in the current group. CAUTION: The node
