@@ -21,7 +21,17 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
   inherit = zarr_store,
   cloneable = FALSE,
   private = list(
-    .root = '.'    # The root of the zarr store as a file system path
+    .root = '.',    # The root of the zarr store as a file system path
+
+    fs_rename = function(old_rel, new_rel) {
+      old_fp <- file.path(private$.root, old_rel)
+      new_fp <- file.path(private$.root, new_rel)
+      parent <- dirname(new_fp)
+      if (!dir.exists(parent)) dir.create(parent, recursive = TRUE, mode = '0771')
+      if (file.exists(new_fp) || dir.exists(new_fp)) unlink(new_fp, recursive = TRUE)
+      file.rename(old_fp, new_fp)
+      invisible(self)
+    }
   ),
   public = list(
     #' @description Create an instance of this class.
@@ -164,6 +174,35 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       keys <- list.dirs(file.path(private$.root, prefix), full.names = FALSE, recursive = TRUE)[-1L] # exclude prefix itself
       # FIXME: Test that the keys are indeed nodes, i.e. have a file 'zarr.json'.
       paste0('/', keys)
+    },
+
+    #' @description Retrieve all chunk (and shard) keys stored for the array
+    #'   at the given prefix. Used internally to support resizing and
+    #'   promoting arrays.
+    #' @param prefix The prefix of the array whose chunk keys to retrieve.
+    #' @return A character vector of full store keys for chunk/shard files,
+    #'   excluding the array's own metadata document.
+    list_chunks = function(prefix) {
+      base <- file.path(private$.root, prefix)
+      if (!dir.exists(base)) return(character(0L))
+      files <- list.files(base, recursive = TRUE, full.names = FALSE)
+      files <- files[!(basename(files) %in% c('zarr.json', '.zarray', '.zattrs'))]
+      paste0(prefix, files)
+    },
+
+    #' @description Rename a single key on the local file system. A thin
+    #'   wrapper over `rename_prefix()` — a single chunk file is, as far as
+    #'   the file system is concerned, no different from a directory.
+    rename = function(old_key, new_key) {
+      private$fs_rename(old_key, new_key)
+    },
+
+    #' @description Rename a whole subtree of the local file system in one
+    #'   operation. Works identically whether `old_prefix` resolves to a
+    #'   directory (an outer chunk-grid dimension) or to a single chunk file
+    #'   (the innermost dimension) — both are just directory entries.
+    rename_prefix = function(old_prefix, new_prefix) {
+      private$fs_rename(old_prefix, new_prefix)
     },
 
     #' @description Store a `(key, value)` pair. The key points to a specific
@@ -424,6 +463,10 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     separator = function(value) {
       if (missing(value))
         private$.chunk_sep
+    },
+
+    supports_prefix_rename = function(value) {
+      if (missing(value)) TRUE
     }
   )
 )

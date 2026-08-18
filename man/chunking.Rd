@@ -51,6 +51,7 @@ This is set by the array when starting to use chunking for file I/O.}
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-chunking-initialize}{\code{chunking$new()}}
+    \item \href{#method-chunking-resize}{\code{chunking$resize()}}
   }
 }
 \if{html}{\out{<details open><summary>Inherited methods</summary>
@@ -82,6 +83,36 @@ shard). Ignored for a scalar array.}
   }
   \subsection{Returns}{
     An instance of \code{chunking}.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-chunking-resize"></a>}}
+\if{latex}{\out{\hypertarget{method-chunking-resize}{}}}
+\subsection{\code{chunking$resize()}}{
+  Physically resize the on-disk chunk grid: rename chunks
+whose grid index moved, delete chunks that fell entirely outside the
+new shape, and \code{NA} the excess tail of a chunk left partly outside a
+shrinking, non-chunk-aligned high boundary. No chunk payload is
+re-encoded except for that trailing clip.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunking$resize(new_shape, shift, high)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{new_shape}}{Integer vector, the array's new shape.}
+      \item{\code{shift}}{Integer vector, whole chunks by which the origin moves
+per dimension (positive = grew at the low end, negative = shrank).}
+      \item{\code{high}}{Integer vector, the requested high-end element deltas
+(used only to decide which boundary chunks need NA-clipping).}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
   }
 }
 

@@ -71,11 +71,17 @@ zarr_array <- R6::R6Class('zarr_array',
       if (nzchar(private$.domain))
         cat('Domain    :', private$.domain, '\n')
       cat('Data type :', private$.data_type$data_type, '\n')
-      cat('Shape     :', meta$shape)
-      dim_names <- meta$dimension_names %||% meta$attributes$`_ARRAY_DIMENSIONS`
-      if (is.null(dim_names)) cat('\n')
-      else cat(' [', paste(dim_names, collapse = ', '), ']\n', sep = '')
-      cat('Chunking  :', meta$chunk_grid$configuration$chunk_shape, '\n')
+      shp <- meta$shape
+      if (length(shp)) {
+        cat('Shape     :', shp)
+        dim_names <- meta$dimension_names %||% meta$attributes$`_ARRAY_DIMENSIONS`
+        if (is.null(dim_names)) cat('\n')
+        else cat(' [', paste(dim_names, collapse = ', '), ']\n', sep = '')
+        cat('Chunking  :', meta$chunk_grid$configuration$chunk_shape, '\n')
+      } else {
+        cat('Shape     : (scalar)\n')
+        cat('Chunking  : (scalar)\n')
+      }
       private$print_details()
       self$print_attributes()
       invisible(self)
@@ -128,47 +134,189 @@ zarr_array <- R6::R6Class('zarr_array',
 
     #' @description Write data for the array. The data will be chunked, encoded
     #'   and persisted in the store that the array is using. Prior to writing,
-    #'   any `NA` values are assigned the `fill_value` of the `data_type` of the
-    #'   Zarr array. Note that the logical type cannot encode `NA` in Zarr and
-    #'   any `NA` values are set to `FALSE`.
+    #'   any `NA` values are assigned the `fill_value` of the array. Note that
+    #'   the logical type cannot encode `NA` in Zarr and any `NA` values are set
+    #'   to `FALSE`.
     #' @param data An R vector, matrix or array with the data to write. The data
-    #'   in the R object has to agree with the data type of the array.
-    #' @param selection A list as long as the array has dimensions where each
-    #'   element is a range of indices along the dimension to write. If missing,
-    #'   the entire `data` object will be written.
+    #'   in the R object has to agree with the data type and rank of the array.
+    #' @param selection Optional. A `list` as long as the array has dimensions
+    #'   where each element is a range of indices along the dimension to write.
+    #'   If missing, the `data` object must have the same size as the array.
+    #'   Ignored when the array is scalar.
     #' @return Self, invisibly.
     write = function(data, selection) {
       if (storage.mode(data) != private$.data_type$Rtype)
-        stop('Data is of a different type than the array.', call. = FALSE) # nocov
+        stop('Data is of a different type than the array', call. = FALSE) # nocov
+
+      ddim <- dim(data) %||% length(data)
+      ndata <- length(ddim)
 
       array_shape <- private$.metadata$shape
+      if (!length(array_shape)) { # Scalar array
+        if (ndata == 1L && ddim == 1L) {
+          private$.chunking$write(data)
+          return(invisible(self))
+        } else
+          stop('Writing to a scalar array can include only a single value as `data`', call. = FALSE)
+      }
+
       if (missing(selection))
-        selection <- lapply(dim(data) %||% length(data), function(d) c(1L, d))
-
+        selection <- lapply(ddim, function(d) c(1L, d))
       nsel <- length(selection)
-      if (nsel == length(array_shape)) {
-        start <- sapply(selection, min)
-        stop  <- sapply(selection, max)
-        sdim  <- stop - start + 1L
+      if (nsel != length(array_shape))
+        stop('`selection` list must have the same length as the shape of the array', call. = FALSE) # nocov
+      start <- sapply(selection, min)
+      stop  <- sapply(selection, max)
+      sdim  <- stop - start + 1L
 
-        ddim <- dim(data) %||% length(data)
-        ndata <- length(ddim)
-        if (nsel < ndata)
-          stop("Data has higher rank than the selection indices.", call. = FALSE) # nocov
-        if (!(nsel == ndata && all(ddim == sdim))) {
-          # Broadcast `data` to selection dimensions
-          ddim <- c(rep(1L, nsel - ndata), ddim)
-          if (any(!(ddim == sdim | ddim == 1L)))
-            stop("Cannot broadcast data to selection dimensions", call. = FALSE) # nocov
-          data <- array(data, dim = ddim)
-          if ((proddim <- prod(sdim)) != prod(ddim))
-            data <- array(rep(data, each = proddim), dim = sdim)
+      if (nsel < ndata)
+        stop("Data has higher rank than the selection indices", call. = FALSE) # nocov
+      if (!(nsel == ndata && all(ddim == sdim))) {
+        # Broadcast `data` to selection dimensions
+        ddim <- c(rep(1L, nsel - ndata), ddim)
+        if (any(!(ddim == sdim | ddim == 1L)))
+          stop("Cannot broadcast data to selection dimensions", call. = FALSE) # nocov
+        data <- array(data, dim = ddim)
+        if ((proddim <- prod(sdim)) != prod(ddim))
+          data <- array(rep(data, each = proddim), dim = sdim)
+      }
+      dt <- private$.data_type
+      data[is.na(data)] <- dt$fill_value
+      private$.chunking$write(data, start, stop)
+
+      invisible(self)
+    },
+
+    #' @description Resize the array, growing or shrinking any combination of
+    #'   dimensions at either end in one pass. Existing chunk payload is never
+    #'   rewritten, except for a chunk left straddling a shrinking, non-chunk-
+    #'   aligned high-end boundary (its excess elements become `NA`).
+    #'
+    #'   Because the chunk grid is fixed, `low` can only move in whole chunks:
+    #'   values are rounded outward to the nearest chunk (more space added
+    #'   when growing, less removed when shrinking), so the array's origin
+    #'   may land ahead of where the actual data starts; those cells read as
+    #'   `NA`. `high` is not constrained this way.
+    #' @param low,high Integer vectors, one element per array dimension.
+    #'   Positive grows that end, negative shrinks it, `0` (default) leaves
+    #'   it unchanged.
+    #' @return Self, invisibly.
+    resize = function(low, high) {
+      shape <- private$.metadata$shape
+      nd <- length(shape)
+      if (!nd) stop('Cannot resize a scalar array; see `promote()`.', call. = FALSE)
+      if (missing(low))  low  <- integer(nd)
+      if (missing(high)) high <- integer(nd)
+      if (length(low) != nd || length(high) != nd)
+        stop('`low` and `high` must have one element per dimension of the array.', call. = FALSE)
+
+      chunk_shape <- private$.chunking$chunk_shape
+      shift <- ifelse(low >= 0L, ceiling(low / chunk_shape), -floor(-low / chunk_shape))
+      new_shape <- as.integer(shape + shift * chunk_shape + high)
+      if (any(new_shape < 1L))
+        stop('Resizing would produce a non-positive extent along one or more dimensions.', call. = FALSE)
+
+      private$.chunking$resize(new_shape, as.integer(shift), high)
+      private$.metadata$shape <- new_shape
+      private$.meta_dirty <- TRUE
+      self$save()
+      invisible(self)
+    },
+
+    #' @description Insert a new dimension into the array, increasing its
+    #'   rank by one. This operation doesn't
+    #'   grow an existing dimension, it creates one where there wasn't one before
+    #'   — the typical case being promoting a 0-d scalar array to rank 1, or
+    #'   giving an existing array a new leading dimension (e.g. turning a
+    #'   `(lat, lon)` array into a `(time, lat, lon)` array once a second
+    #'   file/time step becomes available).
+    #'
+    #'   Existing chunk payload is moved, never re-encoded: inserting a
+    #'   size-`length` dimension whose chunk size equals `length` never changes
+    #'   the relative order of elements in the encoded byte stream, for any
+    #'   array rank or transpose order, because a size-1-chunk dimension never
+    #'   contributes more than a single (vacuous) index to the enumeration.
+    #'   So every existing chunk is just renamed with a "0" grid index
+    #'   inserted at `dimension`. The new dimension therefore always starts out as
+    #'   exactly one full chunk; grow it afterwards with `resize()`.
+    #' @param dimension Integer. 1-based position of the new dimension in the
+    #'   resulting shape; `1` prepends it, `rank + 1` appends it.
+    #' @param length The size of the new dimension, and also its chunk size.
+    #'   Default `1L`.
+    #' @return Self, invisibly.
+    promote = function(dimension, length = 1L) {
+      if (inherits(private$.chunking, 'chunk_grid_sharded'))
+        stop('`promote()` is not supported for sharded arrays', call. = FALSE)
+
+      old_shape <- private$.metadata$shape
+      old_chunk <- private$.chunking$chunk_shape
+      r <- length(old_shape)
+      if (dimension < 1L || dimension > r + 1L)
+        stop('`dimension` must be between 1 and ', r + 1L, ' for an array of rank ', r, call. = FALSE)
+      if (length < 1L)
+        stop('`length` must be a positive integer', call. = FALSE)
+
+      if (r == 0L) {
+        new_shape <- as.integer(length)
+        new_chunk <- as.integer(length)
+      } else {
+        new_shape <- append(as.integer(old_shape), as.integer(length), after = dimension - 1L)
+        new_chunk <- append(as.integer(old_chunk), as.integer(length), after = dimension - 1L)
+      }
+
+      ab <- array_builder$new()
+      ab$data_type   <- private$.data_type$data_type
+      ab$fill_value  <- private$.data_type$fill_value
+      ab$shape       <- new_shape
+      ab$chunk_shape <- new_chunk
+      for (cdc in private$.chunking$codecs) {
+        if (!(cdc$name %in% c('transpose', 'bytes', 'vlen-utf8', 'ucs-4'))) {
+          frag <- cdc$metadata_fragment()
+          ab$add_codec(frag$name, frag$configuration)
         }
-        dt <- private$.data_type
-        data[is.na(data)] <- dt$fill_value
-        private$.chunking$write(data, start, stop)
-      } else
-        stop('`selection` list must have the same length as the shape of the array.', call. = FALSE) # nocov
+      }
+
+      new_meta <- ab$metadata()
+      if (length(private$.metadata$attributes))
+        new_meta$attributes <- private$.metadata$attributes
+      # Note: any existing `dimension_names` is deliberately dropped here —
+      # its length no longer matches the new rank. Set a fresh one via
+      # set_attribute()/the dedicated field once the new axis has a name.
+
+      cke <- private$chunk_key_encoding()
+      if (r == 0L) {
+        scalar_key <- paste0(self$prefix, cke$scalar)
+        chunk_key  <- paste0(self$prefix, cke$pre, '0')
+        if (private$.store$exists(scalar_key))
+          private$.store$rename(scalar_key, chunk_key)
+      } else {
+        keys <- private$.store$list_chunks(self$prefix)
+        lead <- paste0(self$prefix, cke$pre)
+        for (old_key in keys) {
+          cidx     <- as.integer(strsplit(substring(old_key, nchar(lead) + 1L), cke$sep, fixed = TRUE)[[1L]])
+          new_cidx <- append(cidx, 0L, after = dimension - 1L)
+          new_key  <- paste0(lead, paste(new_cidx, collapse = cke$sep))
+          if (old_key != new_key) private$.store$rename(old_key, new_key)
+        }
+      }
+
+      private$.store$set_metadata(self$prefix, new_meta)
+
+      # Rebuild live objects from the persisted metadata, exactly as
+      # zarr_array$initialize() does for a freshly opened array. Necessary
+      # because array_builder's chunk_shape<- setter doesn't refresh any
+      # codec already built against the transient auto-chunk shape from
+      # when shape<- ran above.
+      ab2 <- array_builder$new(new_meta)
+      private$.metadata  <- new_meta
+      private$.data_type <- ab2$data_type
+      private$.chunking  <- ab2$chunk_shape
+      private$.chunking$data_type      <- private$.data_type
+      private$.chunking$store          <- private$.store
+      private$.chunking$array_prefix   <- self$prefix
+      private$.chunking$codecs         <- ab2$codecs
+      private$.chunking$chunk_encoding <- cke
+
       invisible(self)
     }
   ),

@@ -36,6 +36,11 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 
     \item{\code{separator}}{(read-only) The default chunk separator of the local
 file store, usually a dot '.'.}
+
+    \item{\code{supports_prefix_rename}}{(read-only) Flag to indicate whether the
+store can rename an entire prefix (e.g. a directory) as a single
+operation, moving everything below it regardless of how many chunk
+keys that represents.}
   }
   \if{html}{\out{</div>}}
 }
@@ -49,6 +54,9 @@ file store, usually a dot '.'.}
     \item \href{#method-zarr_localstore-erase_prefix}{\code{zarr_localstore$erase_prefix()}}
     \item \href{#method-zarr_localstore-list_dir}{\code{zarr_localstore$list_dir()}}
     \item \href{#method-zarr_localstore-list_prefix}{\code{zarr_localstore$list_prefix()}}
+    \item \href{#method-zarr_localstore-list_chunks}{\code{zarr_localstore$list_chunks()}}
+    \item \href{#method-zarr_localstore-rename}{\code{zarr_localstore$rename()}}
+    \item \href{#method-zarr_localstore-rename_prefix}{\code{zarr_localstore$rename_prefix()}}
     \item \href{#method-zarr_localstore-set}{\code{zarr_localstore$set()}}
     \item \href{#method-zarr_localstore-set_if_not_exists}{\code{zarr_localstore$set_if_not_exists()}}
     \item \href{#method-zarr_localstore-get}{\code{zarr_localstore$get()}}
@@ -245,6 +253,76 @@ below the \code{prefix}, both for groups and arrays.
   \subsection{Returns}{
     A character vector with all paths found in the store below the
 \code{prefix} location, both for groups and arrays.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_localstore-list_chunks"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_localstore-list_chunks}{}}}
+\subsection{\code{zarr_localstore$list_chunks()}}{
+  Retrieve all chunk (and shard) keys stored for the array
+at the given prefix. Used internally to support resizing and
+promoting arrays.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$list_chunks(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{The prefix of the array whose chunk keys to retrieve.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character vector of full store keys for chunk/shard files,
+excluding the array's own metadata document.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_localstore-rename"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_localstore-rename}{}}}
+\subsection{\code{zarr_localstore$rename()}}{
+  Rename a single key on the local file system. A thin
+wrapper over \code{rename_prefix()} — a single chunk file is, as far as
+the file system is concerned, no different from a directory.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$rename(old_key, new_key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{old_key, new_key}}{Character strings, the source and destination
+keys. \code{old_key} must exist; \code{new_key} is overwritten if it exists.}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_localstore-rename_prefix"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_localstore-rename_prefix}{}}}
+\subsection{\code{zarr_localstore$rename_prefix()}}{
+  Rename a whole subtree of the local file system in one
+operation. Works identically whether \code{old_prefix} resolves to a
+directory (an outer chunk-grid dimension) or to a single chunk file
+(the innermost dimension) — both are just directory entries.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$rename_prefix(old_prefix, new_prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{old_prefix, new_prefix}}{Character strings, relative to the store
+root.}
+    }
+    \if{html}{\out{</div>}}
   }
 }
 

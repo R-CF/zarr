@@ -33,6 +33,11 @@ deleted.}
 
     \item{\code{supports_writes}}{Flag to indicate if the store can write data.}
 
+    \item{\code{supports_prefix_rename}}{(read-only) Flag to indicate whether the
+store can rename an entire prefix (e.g. a directory) as a single
+operation, moving everything below it regardless of how many chunk
+keys that represents.}
+
     \item{\code{version}}{(read-only) The Zarr version of the store.}
 
     \item{\code{separator}}{(read-only) The default separator between elements of
@@ -58,6 +63,9 @@ each array.}
     \item \href{#method-zarr_store-list}{\code{zarr_store$list()}}
     \item \href{#method-zarr_store-list_dir}{\code{zarr_store$list_dir()}}
     \item \href{#method-zarr_store-list_prefix}{\code{zarr_store$list_prefix()}}
+    \item \href{#method-zarr_store-list_chunks}{\code{zarr_store$list_chunks()}}
+    \item \href{#method-zarr_store-rename}{\code{zarr_store$rename()}}
+    \item \href{#method-zarr_store-rename_prefix}{\code{zarr_store$rename_prefix()}}
     \item \href{#method-zarr_store-set}{\code{zarr_store$set()}}
     \item \href{#method-zarr_store-set_if_not_exists}{\code{zarr_store$set_if_not_exists()}}
     \item \href{#method-zarr_store-get_metadata}{\code{zarr_store$get_metadata()}}
@@ -342,6 +350,82 @@ method is part of the abstract store interface in ZEP0001.
   \subsection{Returns}{
     A character vector with all fully-qualified keys found in the
 store, both for groups and arrays.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_store-list_chunks"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_store-list_chunks}{}}}
+\subsection{\code{zarr_store$list_chunks()}}{
+  Retrieve all chunk (and shard) keys stored for the array
+at the given prefix. Used internally to support resizing and
+promoting arrays.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$list_chunks(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{The prefix of the array whose chunk keys to retrieve.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character vector of full store keys for chunk/shard files,
+excluding the array's own metadata document.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_store-rename"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_store-rename}{}}}
+\subsection{\code{zarr_store$rename()}}{
+  Rename a key in the store, moving its value without
+necessarily reading or re-encoding it. Used internally to support
+resizing and promoting arrays. The default implementation is a plain
+copy, for stores without a cheaper native operation.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$rename(old_key, new_key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{old_key, new_key}}{Character strings, the source and destination
+keys. \code{old_key} must exist; \code{new_key} is overwritten if it exists.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_store-rename_prefix"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_store-rename_prefix}{}}}
+\subsection{\code{zarr_store$rename_prefix()}}{
+  Rename an entire prefix in one operation. Only meaningful
+for stores where \code{supports_prefix_rename} is \code{TRUE}; callers must
+check that first.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$rename_prefix(old_prefix, new_prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{old_prefix, new_prefix}}{Character strings, relative to the store
+root.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
   }
 }
 

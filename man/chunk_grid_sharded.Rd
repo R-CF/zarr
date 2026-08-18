@@ -35,6 +35,11 @@ scheme for the indexing of the internal chunks.}
     \item \href{#method-chunk_grid_sharded-read}{\code{chunk_grid_sharded$read()}}
   }
 }
+\if{html}{\out{<details open><summary>Inherited methods</summary>
+<ul>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="resize"><a href='../../zarr/html/chunking.html#method-chunking-resize'><code>chunking$resize()</code></a></span></li>
+</ul>
+</details>}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_sharded-initialize"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_sharded-initialize}{}}}

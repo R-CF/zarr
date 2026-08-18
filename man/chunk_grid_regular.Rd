@@ -31,6 +31,11 @@ reading, the list of registered codecs.}
     \item \href{#method-chunk_grid_regular-write}{\code{chunk_grid_regular$write()}}
   }
 }
+\if{html}{\out{<details open><summary>Inherited methods</summary>
+<ul>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="resize"><a href='../../zarr/html/chunking.html#method-chunking-resize'><code>chunking$resize()</code></a></span></li>
+</ul>
+</details>}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-chunk_grid_regular-initialize"></a>}}
 \if{latex}{\out{\hypertarget{method-chunk_grid_regular-initialize}{}}}
@@ -134,7 +139,8 @@ sequential plan.
       \item{\code{data}}{An R object with the same dimensionality as the Zarr array.}
       \item{\code{start, stop}}{Integer vectors of the same length as the
 dimensionality of the Zarr array, indicating the starting and ending
-(inclusive) indices of the data along each axis.}
+(inclusive) indices of the data along each axis. Ignored for a scalar
+array.}
     }
     \if{html}{\out{</div>}}
   }

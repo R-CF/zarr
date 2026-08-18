@@ -336,6 +336,34 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
       self$list_prefix('')
     },
 
+    #' @description Retrieve all chunk (and shard) keys stored for the array
+    #'   at the given prefix. Used internally to support resizing and
+    #'   promoting arrays.
+    #' @param prefix The prefix of the array whose chunk keys to retrieve.
+    #' @return A character vector of full store keys for chunk/shard files,
+    #'   excluding the array's own metadata document.
+    list_chunks = function(prefix) {
+      keys <- private$list_objects(prefix, delimiter = '')$keys
+      keys <- sub(paste0('^', private$.key_prefix), '', keys)
+      keys[keys != paste0(prefix, 'zarr.json')]
+    },
+
+    #' @description Rename a key in the store, moving its value without
+    #'   necessarily reading or re-encoding it. Used internally to support
+    #'   resizing and promoting arrays. The default implementation is a plain
+    #'   copy, for stores without a cheaper native operation.
+    #' @param old_key,new_key Character strings, the source and destination
+    #'   keys. `old_key` must exist; `new_key` is overwritten if it exists.
+    #' @return Self, invisibly.
+    rename = function(old_key, new_key) {
+      private$.client$copy_object(
+        Bucket = private$.bucket, Key = private$full_key(new_key),
+        CopySource = paste0(private$.bucket, '/', private$full_key(old_key))
+      )
+      private$.client$delete_object(Bucket = private$.bucket, Key = private$full_key(old_key))
+      invisible(self)
+    },
+
     #' @description Return the size, in bytes, of a value in the store, via
     #'   a `HeadObject` request (S3-native, no need to download the object).
     #' @param key Character string. The key whose length will be returned.

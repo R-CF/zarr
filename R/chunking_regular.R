@@ -22,6 +22,24 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
         NULL
       else
         ab$shape[transp$configuration$order]
+    },
+
+    clip_chunk = function(cidx, new_shape, clip_dims) {
+      chunk_shape  <- private$.chunk_shape
+      chunk_origin <- cidx * chunk_shape + 1L
+      io <- chunk_grid_regular_IO$new(key = private$build_chunk_prefix(cidx),
+                                      chunk_shape = chunk_shape, dtype = private$.data_type,
+                                      store = private$.store, codecs = private$.codecs)
+      for (d in clip_dims) {
+        local_start <- new_shape[d] - chunk_origin[d] + 2L
+        if (local_start > chunk_shape[d]) next
+        blank_shape    <- chunk_shape
+        blank_shape[d] <- chunk_shape[d] - local_start + 1L
+        offset    <- integer(length(chunk_shape))
+        offset[d] <- local_start - 1L
+        io$write(array(private$.data_type$fill_value, blank_shape), offset, flush = FALSE)
+      }
+      io$flush()
     }
   ),
   public = list(
@@ -33,7 +51,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #'   Ignored for a scalar array.
     #' @return An instance of `chunk_grid_regular`.
     initialize = function(array_shape, chunk_shape) {
-      if (missing(chunk_shape))
+      if (!is.na(array_shape[1L]) && missing(chunk_shape))
         chunk_shape <- .auto_chunk(array_shape)
       super$initialize('regular', array_shape, chunk_shape)
     },
@@ -189,15 +207,18 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #' @param data An R object with the same dimensionality as the Zarr array.
     #' @param start,stop Integer vectors of the same length as the
     #'   dimensionality of the Zarr array, indicating the starting and ending
-    #'   (inclusive) indices of the data along each axis.
+    #'   (inclusive) indices of the data along each axis. Ignored for a scalar
+    #'   array.
     #' @return Self, invisibly.
     write = function(data, start, stop) {
-      chunk_shape  <- private$.chunk_shape
-      nd <- length(chunk_shape)
-
       if (private$.scalar) {
         start <- 1L
         stop <- 1L
+        chunk_shape  <- 1L
+        nd <- 1L
+      } else {
+        chunk_shape  <- private$.chunk_shape
+        nd <- length(chunk_shape)
       }
 
       # Identify chunks touched by this hyperslab of data
@@ -260,6 +281,8 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     }
   )
 )
+
+# ====== chunk_grid_regular_IO =================================================
 
 #' Reader / Writer class for regular chunked arrays
 #'

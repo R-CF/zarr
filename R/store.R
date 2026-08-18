@@ -229,6 +229,39 @@ zarr_store <- R6::R6Class('zarr_store',
       stop('Class', class(self)[1L], 'must implement this method.')
     },
 
+    #' @description Retrieve all chunk (and shard) keys stored for the array
+    #'   at the given prefix. Used internally to support resizing and
+    #'   promoting arrays.
+    #' @param prefix The prefix of the array whose chunk keys to retrieve.
+    #' @return A character vector of full store keys for chunk/shard files,
+    #'   excluding the array's own metadata document.
+    list_chunks = function(prefix) {
+      stop('Class', class(self)[1L], 'must implement this method.') # nocov
+    },
+
+    #' @description Rename a key in the store, moving its value without
+    #'   necessarily reading or re-encoding it. Used internally to support
+    #'   resizing and promoting arrays. The default implementation is a plain
+    #'   copy, for stores without a cheaper native operation.
+    #' @param old_key,new_key Character strings, the source and destination
+    #'   keys. `old_key` must exist; `new_key` is overwritten if it exists.
+    #' @return Self, invisibly.
+    rename = function(old_key, new_key) {
+      self$set(new_key, self$get(old_key))
+      self$erase(old_key)
+      invisible(self)
+    },
+
+    #' @description Rename an entire prefix in one operation. Only meaningful
+    #'   for stores where `supports_prefix_rename` is `TRUE`; callers must
+    #'   check that first.
+    #' @param old_prefix,new_prefix Character strings, relative to the store
+    #'   root.
+    #' @return Self, invisibly.
+    rename_prefix = function(old_prefix, new_prefix) {
+      stop('Class', class(self)[1L], 'does not support renaming a prefix.', call. = FALSE) # nocov
+    },
+
     #' @description Store a (key, value) pair.
     #' @param key The key whose value to set.
     #' @param value The value to set, typically a chunk of data.
@@ -327,6 +360,14 @@ zarr_store <- R6::R6Class('zarr_store',
     supports_writes = function(value) {
       if (missing(value))
         private$.supports_writes
+    },
+
+    #' @field supports_prefix_rename (read-only) Flag to indicate whether the
+    #'   store can rename an entire prefix (e.g. a directory) as a single
+    #'   operation, moving everything below it regardless of how many chunk
+    #'   keys that represents.
+    supports_prefix_rename = function(value) {
+      if (missing(value)) FALSE
     },
 
     #' @field version (read-only) The Zarr version of the store.

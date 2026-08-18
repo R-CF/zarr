@@ -75,7 +75,7 @@ array_builder <- R6::R6Class('array_builder',
     # update the list of codecs. Must have a data_type and a shape before any
     # codecs can be set.
     update_codecs = function() {
-      private$.codecs <- if (!is.null(private$.data_type) && !is.na(private$.shape[1L])) {
+      private$.codecs <- if (!is.null(private$.data_type)) {
         # Transpose?
         cdc <- if (private$.portable || length(private$.shape) == 1L) list()
                else list(transpose = zarr_codec_transpose$new(length(private$.shape)))
@@ -102,7 +102,7 @@ array_builder <- R6::R6Class('array_builder',
         if (!is.list(metadata)) {
           meta <- .parse_metadata(metadata)
           if (inherits(meta, "try-error")) {
-            warning('Argument `metadata` is not a valid JSON document. Discarding.', call. = FALSE) # nocov
+            warning('Argument `metadata` is not a valid JSON document - discarding', call. = FALSE) # nocov
             meta <- list()
           }
         } else
@@ -110,12 +110,12 @@ array_builder <- R6::R6Class('array_builder',
 
         if (length(meta)) {
           if (meta$zarr_format != 3)
-            stop('Metadata document is not for a Zarr version 3 object.', call. = FALSE) # nocov
+            stop('Metadata document is not for a Zarr version 3 object', call. = FALSE) # nocov
           self$format <- meta$zarr_format
           if (meta$node_type != 'array')
             stop('Metadata document is not for a Zarr array.', call. = FALSE) # nocov
 
-          # Set properties through the active fields, checking is done there.
+          # Set properties through the active fields, checking is done there
           self$shape <- meta$shape
           self$data_type <- meta$data_type
           self$fill_value <- meta$fill_value
@@ -127,6 +127,8 @@ array_builder <- R6::R6Class('array_builder',
             names(private$.codecs) <- sapply(meta$codecs, function(c) c$name)
           }
         }
+      } else {
+        private$.chunk_shape <- chunk_grid_regular$new(private$.shape)
       }
     },
 
@@ -255,7 +257,6 @@ array_builder <- R6::R6Class('array_builder',
     #'   otherwise.
     is_valid = function() {
       !is.null(private$.data_type) &&
-      !is.null(private$.chunk_shape) &&
       length(private$.codecs)
     }
   ),
@@ -355,7 +356,7 @@ array_builder <- R6::R6Class('array_builder',
       else {
         if (!length(value)) { # Scalar value
           private$.shape <- NA_integer_
-          private$.chunk_shape <- 1L
+          private$.chunk_shape <- chunk_grid_regular$new(NA_integer_)
         } else if (is.numeric(value) && all((value <- as.integer(value)) > 0L)) {
           private$.shape <- value
           private$.chunk_shape <- chunk_grid_regular$new(value) # Automatic chunk shape

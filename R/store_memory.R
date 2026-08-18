@@ -53,7 +53,7 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     #' @return `TRUE`. This operation always proceeds successfully once invoked,
     #' even if argument `key` does not point to an existing key.
     erase = function(key) {
-      private$.keys[!startsWith(names(private$.keys), key)]
+      private$.keys <- private$.keys[!startsWith(names(private$.keys), key)]
       TRUE
     },
 
@@ -63,7 +63,7 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     #' @return `TRUE`. This operation always proceeds successfully once invoked,
     #' even if argument `prefix` does not point to any existing keys.
     erase_prefix = function(prefix) {
-      private$.keys[!startsWith(names(private$.keys), prefix)]
+      private$.keys <- private$.keys[!startsWith(names(private$.keys), prefix)]
       TRUE
     },
 
@@ -91,6 +91,30 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     list_prefix = function(prefix) {
       keys <- names(private$.keys)
       keys[startsWith(keys, prefix)]
+    },
+
+    #' @description Retrieve all chunk (and shard) keys stored for the array
+    #'   at the given prefix. Used internally to support resizing and
+    #'   promoting arrays.
+    #' @param prefix The prefix of the array whose chunk keys to retrieve.
+    #' @return A character vector of full store keys for chunk/shard files,
+    #'   excluding the array's own metadata document.
+    list_chunks = function(prefix) {
+      keys <- names(private$.keys)
+      keys[startsWith(keys, prefix)]
+    },
+
+    #' @description Rename a key in the store, moving its value without
+    #'   necessarily reading or re-encoding it. Used internally to support
+    #'   resizing and promoting arrays. The default implementation is a plain
+    #'   copy, for stores without a cheaper native operation.
+    #' @param old_key,new_key Character strings, the source and destination
+    #'   keys. `old_key` must exist; `new_key` is overwritten if it exists.
+    #' @return Self, invisibly.
+    rename = function(old_key, new_key) {
+      private$.keys[[new_key]] <- private$.keys[[old_key]]
+      private$.keys[[old_key]] <- NULL
+      invisible(self)
     },
 
     #' @description Store a `(key, value)` pair. If the `value` exists, it will

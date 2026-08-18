@@ -61,6 +61,8 @@ usually a slash '/'.}
     \item \href{#method-zarr_s3store-list_dir}{\code{zarr_s3store$list_dir()}}
     \item \href{#method-zarr_s3store-list_prefix}{\code{zarr_s3store$list_prefix()}}
     \item \href{#method-zarr_s3store-list}{\code{zarr_s3store$list()}}
+    \item \href{#method-zarr_s3store-list_chunks}{\code{zarr_s3store$list_chunks()}}
+    \item \href{#method-zarr_s3store-rename}{\code{zarr_s3store$rename()}}
     \item \href{#method-zarr_s3store-getsize}{\code{zarr_s3store$getsize()}}
     \item \href{#method-zarr_s3store-getsize_prefix}{\code{zarr_s3store$getsize_prefix()}}
     \item \href{#method-zarr_s3store-is_empty}{\code{zarr_s3store$is_empty()}}
@@ -74,6 +76,11 @@ usually a slash '/'.}
     \item \href{#method-zarr_s3store-create_array}{\code{zarr_s3store$create_array()}}
   }
 }
+\if{html}{\out{<details open><summary>Inherited methods</summary>
+<ul>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="rename_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-rename_prefix'><code>zarr_store$rename_prefix()</code></a></span></li>
+</ul>
+</details>}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_s3store-initialize"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_s3store-initialize}{}}}
@@ -284,6 +291,57 @@ prefixed with \code{/} for consistency with \link{zarr_httpstore}.
   }
   \subsection{Returns}{
     A character vector with all keys found in the store.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_s3store-list_chunks"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_s3store-list_chunks}{}}}
+\subsection{\code{zarr_s3store$list_chunks()}}{
+  Retrieve all chunk (and shard) keys stored for the array
+at the given prefix. Used internally to support resizing and
+promoting arrays.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_s3store$list_chunks(prefix)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{prefix}}{The prefix of the array whose chunk keys to retrieve.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character vector of full store keys for chunk/shard files,
+excluding the array's own metadata document.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_s3store-rename"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_s3store-rename}{}}}
+\subsection{\code{zarr_s3store$rename()}}{
+  Rename a key in the store, moving its value without
+necessarily reading or re-encoding it. Used internally to support
+resizing and promoting arrays. The default implementation is a plain
+copy, for stores without a cheaper native operation.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_s3store$rename(old_key, new_key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{old_key, new_key}}{Character strings, the source and destination
+keys. \code{old_key} must exist; \code{new_key} is overwritten if it exists.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
   }
 }
 

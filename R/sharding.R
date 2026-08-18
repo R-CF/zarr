@@ -31,6 +31,7 @@ chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
     initialize = function(array_shape, chunk_shape, inner_shape, index_loc,
                           inner_codecs, index_codecs) {
       super$initialize('sharding_indexed', array_shape, chunk_shape)
+      private$.clip_supported <- FALSE
       if (private$.scalar)
         stop('Cannot use sharding on a scalar array', call. = FALSE)
 

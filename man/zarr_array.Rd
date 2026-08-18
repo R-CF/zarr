@@ -38,6 +38,8 @@ creating store keys for chunks.}
     \item \href{#method-zarr_array-hierarchy_nodes}{\code{zarr_array$hierarchy_nodes()}}
     \item \href{#method-zarr_array-read}{\code{zarr_array$read()}}
     \item \href{#method-zarr_array-write}{\code{zarr_array$write()}}
+    \item \href{#method-zarr_array-resize}{\code{zarr_array$resize()}}
+    \item \href{#method-zarr_array-promote}{\code{zarr_array$promote()}}
   }
 }
 \if{html}{\out{<details><summary>Inherited methods</summary>
@@ -147,9 +149,9 @@ or \code{NULL}, the entire array will be read.}
 \subsection{\code{zarr_array$write()}}{
   Write data for the array. The data will be chunked, encoded
 and persisted in the store that the array is using. Prior to writing,
-any \code{NA} values are assigned the \code{fill_value} of the \code{data_type} of the
-Zarr array. Note that the logical type cannot encode \code{NA} in Zarr and
-any \code{NA} values are set to \code{FALSE}.
+any \code{NA} values are assigned the \code{fill_value} of the array. Note that
+the logical type cannot encode \code{NA} in Zarr and any \code{NA} values are set
+to \code{FALSE}.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_array$write(data, selection)}
@@ -159,10 +161,84 @@ any \code{NA} values are set to \code{FALSE}.
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{data}}{An R vector, matrix or array with the data to write. The data
-in the R object has to agree with the data type of the array.}
-      \item{\code{selection}}{A list as long as the array has dimensions where each
-element is a range of indices along the dimension to write. If missing,
-the entire \code{data} object will be written.}
+in the R object has to agree with the data type and rank of the array.}
+      \item{\code{selection}}{Optional. A \code{list} as long as the array has dimensions
+where each element is a range of indices along the dimension to write.
+If missing, the \code{data} object must have the same size as the array.
+Ignored when the array is scalar.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_array-resize"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-resize}{}}}
+\subsection{\code{zarr_array$resize()}}{
+  Resize the array, growing or shrinking any combination of
+dimensions at either end in one pass. Existing chunk payload is never
+rewritten, except for a chunk left straddling a shrinking, non-chunk-
+aligned high-end boundary (its excess elements become \code{NA}).
+
+Because the chunk grid is fixed, \code{low} can only move in whole chunks:
+values are rounded outward to the nearest chunk (more space added
+when growing, less removed when shrinking), so the array's origin
+may land ahead of where the actual data starts; those cells read as
+\code{NA}. \code{high} is not constrained this way.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$resize(low, high)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{low, high}}{Integer vectors, one element per array dimension.
+Positive grows that end, negative shrinks it, \code{0} (default) leaves
+it unchanged.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_array-promote"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-promote}{}}}
+\subsection{\code{zarr_array$promote()}}{
+  Insert a new dimension into the array, increasing its
+rank by one. This operation doesn't
+grow an existing dimension, it creates one where there wasn't one before
+— the typical case being promoting a 0-d scalar array to rank 1, or
+giving an existing array a new leading dimension (e.g. turning a
+\verb{(lat, lon)} array into a \verb{(time, lat, lon)} array once a second
+file/time step becomes available).
+
+Existing chunk payload is moved, never re-encoded: inserting a
+size-\code{length} dimension whose chunk size equals \code{length} never changes
+the relative order of elements in the encoded byte stream, for any
+array rank or transpose order, because a size-1-chunk dimension never
+contributes more than a single (vacuous) index to the enumeration.
+So every existing chunk is just renamed with a "0" grid index
+inserted at \code{dimension}. The new dimension therefore always starts out as
+exactly one full chunk; grow it afterwards with \code{resize()}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$promote(dimension, length = 1L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{dimension}}{Integer. 1-based position of the new dimension in the
+resulting shape; \code{1} prepends it, \code{rank + 1} appends it.}
+      \item{\code{length}}{The size of the new dimension, and also its chunk size.
+Default \code{1L}.}
     }
     \if{html}{\out{</div>}}
   }

@@ -58,12 +58,15 @@ usually a slash '/'.}
     \item \href{#method-zarr_httpstore-create_array}{\code{zarr_httpstore$create_array()}}
   }
 }
-\if{html}{\out{<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize'><code>zarr_store$getsize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize_prefix'><code>zarr_store$getsize_prefix()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href='../../zarr/html/zarr_store.html#method-zarr_store-is_empty'><code>zarr_store$is_empty()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href='../../zarr/html/zarr_store.html#method-zarr_store-list'><code>zarr_store$list()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list_chunks"><a href='../../zarr/html/zarr_store.html#method-zarr_store-list_chunks'><code>zarr_store$list_chunks()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="rename"><a href='../../zarr/html/zarr_store.html#method-zarr_store-rename'><code>zarr_store$rename()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="rename_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-rename_prefix'><code>zarr_store$rename_prefix()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}
