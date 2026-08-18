@@ -80,6 +80,9 @@ Inherited methods
 - [`zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
 - [`zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
 - [`zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
+- [`zarr_store$list_chunks()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list_chunks)
+- [`zarr_store$rename()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-rename)
+- [`zarr_store$rename_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-rename_prefix)
 
 ------------------------------------------------------------------------
 

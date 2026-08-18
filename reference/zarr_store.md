@@ -40,6 +40,12 @@ https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html#abstract-store-in
 
   Flag to indicate if the store can write data.
 
+- `supports_prefix_rename`:
+
+  (read-only) Flag to indicate whether the store can rename an entire
+  prefix (e.g. a directory) as a single operation, moving everything
+  below it regardless of how many chunk keys that represents.
+
 - `version`:
 
   (read-only) The Zarr version of the store.
@@ -78,6 +84,12 @@ https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html#abstract-store-in
 - [`zarr_store$list_dir()`](#method-zarr_store-list_dir)
 
 - [`zarr_store$list_prefix()`](#method-zarr_store-list_prefix)
+
+- [`zarr_store$list_chunks()`](#method-zarr_store-list_chunks)
+
+- [`zarr_store$rename()`](#method-zarr_store-rename)
+
+- [`zarr_store$rename_prefix()`](#method-zarr_store-rename_prefix)
 
 - [`zarr_store$set()`](#method-zarr_store-set)
 
@@ -354,6 +366,73 @@ of the abstract store interface in ZEP0001.
 
 A character vector with all fully-qualified keys found in the store,
 both for groups and arrays.
+
+------------------------------------------------------------------------
+
+### `zarr_store$list_chunks()`
+
+Retrieve all chunk (and shard) keys stored for the array at the given
+prefix. Used internally to support resizing and promoting arrays.
+
+#### Usage
+
+    zarr_store$list_chunks(prefix)
+
+#### Arguments
+
+- `prefix`:
+
+  The prefix of the array whose chunk keys to retrieve.
+
+#### Returns
+
+A character vector of full store keys for chunk/shard files, excluding
+the array's own metadata document.
+
+------------------------------------------------------------------------
+
+### `zarr_store$rename()`
+
+Rename a key in the store, moving its value without necessarily reading
+or re-encoding it. Used internally to support resizing and promoting
+arrays. The default implementation is a plain copy, for stores without a
+cheaper native operation.
+
+#### Usage
+
+    zarr_store$rename(old_key, new_key)
+
+#### Arguments
+
+- `old_key, new_key`:
+
+  Character strings, the source and destination keys. `old_key` must
+  exist; `new_key` is overwritten if it exists.
+
+#### Returns
+
+Self, invisibly.
+
+------------------------------------------------------------------------
+
+### `zarr_store$rename_prefix()`
+
+Rename an entire prefix in one operation. Only meaningful for stores
+where `supports_prefix_rename` is `TRUE`; callers must check that first.
+
+#### Usage
+
+    zarr_store$rename_prefix(old_prefix, new_prefix)
+
+#### Arguments
+
+- `old_prefix, new_prefix`:
+
+  Character strings, relative to the store root.
+
+#### Returns
+
+Self, invisibly.
 
 ------------------------------------------------------------------------
 

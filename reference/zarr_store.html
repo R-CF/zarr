@@ -96,6 +96,13 @@ deleted.</p></dd>
 <dd><p>Flag to indicate if the store can write data.</p></dd>
 
 
+    <dt><code>supports_prefix_rename</code></dt>
+<dd><p>(read-only) Flag to indicate whether the
+store can rename an entire prefix (e.g. a directory) as a single
+operation, moving everything below it regardless of how many chunk
+keys that represents.</p></dd>
+
+
     <dt><code>version</code></dt>
 <dd><p>(read-only) The Zarr version of the store.</p></dd>
 
@@ -127,6 +134,9 @@ each array.</p></dd>
 <li><p><a href="#method-zarr_store-list"><code>zarr_store$list()</code></a></p></li>
 <li><p><a href="#method-zarr_store-list_dir"><code>zarr_store$list_dir()</code></a></p></li>
 <li><p><a href="#method-zarr_store-list_prefix"><code>zarr_store$list_prefix()</code></a></p></li>
+<li><p><a href="#method-zarr_store-list_chunks"><code>zarr_store$list_chunks()</code></a></p></li>
+<li><p><a href="#method-zarr_store-rename"><code>zarr_store$rename()</code></a></p></li>
+<li><p><a href="#method-zarr_store-rename_prefix"><code>zarr_store$rename_prefix()</code></a></p></li>
 <li><p><a href="#method-zarr_store-set"><code>zarr_store$set()</code></a></p></li>
 <li><p><a href="#method-zarr_store-set_if_not_exists"><code>zarr_store$set_if_not_exists()</code></a></p></li>
 <li><p><a href="#method-zarr_store-get_metadata"><code>zarr_store$get_metadata()</code></a></p></li>
@@ -382,42 +392,41 @@ store, both for groups and arrays.</p>
 
 </div>
 
-<p></p><hr><a id="method-zarr_store-set"></a><div class="section">
-<h3 id="zarr-store-set-"><code>zarr_store$set()</code><a class="anchor" aria-label="anchor" href="#zarr-store-set-"></a></h3>
-<p>Store a (key, value) pair.</p><div class="section">
+<p></p><hr><a id="method-zarr_store-list_chunks"></a><div class="section">
+<h3 id="zarr-store-list-chunks-"><code>zarr_store$list_chunks()</code><a class="anchor" aria-label="anchor" href="#zarr-store-list-chunks-"></a></h3>
+<p>Retrieve all chunk (and shard) keys stored for the array
+at the given prefix. Used internally to support resizing and
+promoting arrays.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">list_chunks</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>key</code></dt>
-<dd><p>The key whose value to set.</p></dd>
-
-      <dt><code>value</code></dt>
-<dd><p>The value to set, typically a chunk of data.</p></dd>
+<p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
+<dd><p>The prefix of the array whose chunk keys to retrieve.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
-<p>Self, invisibly.</p>
+<p>A character vector of full store keys for chunk/shard files,
+excluding the array's own metadata document.</p>
 </div>
 
 </div>
 
-<p></p><hr><a id="method-zarr_store-set_if_not_exists"></a><div class="section">
-<h3 id="zarr-store-set-if-not-exists-"><code>zarr_store$set_if_not_exists()</code><a class="anchor" aria-label="anchor" href="#zarr-store-set-if-not-exists-"></a></h3>
-<p>Store a key to argument <code>value</code> if the key is not already
-present. This method is part of the abstract store interface in
-ZEP0001.</p><div class="section">
+<p></p><hr><a id="method-zarr_store-rename"></a><div class="section">
+<h3 id="zarr-store-rename-"><code>zarr_store$rename()</code><a class="anchor" aria-label="anchor" href="#zarr-store-rename-"></a></h3>
+<p>Rename a key in the store, moving its value without
+necessarily reading or re-encoding it. Used internally to support
+resizing and promoting arrays. The default implementation is a plain
+copy, for stores without a cheaper native operation.</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">set_if_not_exists</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="va">old_key</span>, <span class="va">new_key</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>key</code></dt>
-<dd><p>The key whose value to set.</p></dd>
-
-      <dt><code>value</code></dt>
-<dd><p>The value to set, typically an R array.</p></dd>
+<p></p><div class="arguments"><dl><dt><code>old_key, new_key</code></dt>
+<dd><p>Character strings, the source and destination
+keys. <code>old_key</code> must exist; <code>new_key</code> is overwritten if it exists.</p></dd>
 
 
 </dl><p></p></div>
@@ -428,14 +437,82 @@ ZEP0001.</p><div class="section">
 
 </div>
 
+<p></p><hr><a id="method-zarr_store-rename_prefix"></a><div class="section">
+<h3 id="zarr-store-rename-prefix-"><code>zarr_store$rename_prefix()</code><a class="anchor" aria-label="anchor" href="#zarr-store-rename-prefix-"></a></h3>
+<p>Rename an entire prefix in one operation. Only meaningful
+for stores where <code>supports_prefix_rename</code> is <code>TRUE</code>; callers must
+check that first.</p><div class="section">
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">rename_prefix</span><span class="op">(</span><span class="va">old_prefix</span>, <span class="va">new_prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>old_prefix, new_prefix</code></dt>
+<dd><p>Character strings, relative to the store
+root.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<p>Self, invisibly.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_store-set"></a><div class="section">
+<h3 id="zarr-store-set-"><code>zarr_store$set()</code><a class="anchor" aria-label="anchor" href="#zarr-store-set-"></a></h3>
+<p>Store a (key, value) pair.</p><div class="section">
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>key</code></dt>
+<dd><p>The key whose value to set.</p></dd>
+
+      <dt><code>value</code></dt>
+<dd><p>The value to set, typically a chunk of data.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
+<p>Self, invisibly.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_store-set_if_not_exists"></a><div class="section">
+<h3 id="zarr-store-set-if-not-exists-"><code>zarr_store$set_if_not_exists()</code><a class="anchor" aria-label="anchor" href="#zarr-store-set-if-not-exists-"></a></h3>
+<p>Store a key to argument <code>value</code> if the key is not already
+present. This method is part of the abstract store interface in
+ZEP0001.</p><div class="section">
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">set_if_not_exists</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>key</code></dt>
+<dd><p>The key whose value to set.</p></dd>
+
+      <dt><code>value</code></dt>
+<dd><p>The value to set, typically an R array.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
+<p>Self, invisibly.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_store-get_metadata"></a><div class="section">
 <h3 id="zarr-store-get-metadata-"><code>zarr_store$get_metadata()</code><a class="anchor" aria-label="anchor" href="#zarr-store-get-metadata-"></a></h3>
 <p>Retrieve the metadata document of the node at the location
 indicated by the <code>prefix</code> argument.</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to retrieve.</p></dd>
 
@@ -450,10 +527,10 @@ indicated by the <code>prefix</code> argument.</p><div class="section">
 <p>Set the metadata document of the node at the location
 indicated by the <code>prefix</code> argument. This is a no-op for stores that
 have no writing capability. Other stores must override this method.</p><div class="section">
-<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span><span class="va">prefix</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<h4 id="arguments-16">Arguments<a class="anchor" aria-label="anchor" href="#arguments-16"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to set.</p></dd>
 
@@ -464,7 +541,7 @@ of <a href="array_builder.html">array_builder</a>.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-17">Returns<a class="anchor" aria-label="anchor" href="#returns-17"></a></h4>
 <p>Self, invisible.</p>
 </div>
 
@@ -474,10 +551,10 @@ of <a href="array_builder.html">array_builder</a>.</p></dd>
 <h3 id="zarr-store-create-group-"><code>zarr_store$create_group()</code><a class="anchor" aria-label="anchor" href="#zarr-store-create-group-"></a></h3>
 <p>Create a new group in the store under the specified path to
 the <code>parent</code> argument. The <code>parent</code> path must point to a Zarr group.</p><div class="section">
-<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">create_group</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
+<h4 id="arguments-17">Arguments<a class="anchor" aria-label="anchor" href="#arguments-17"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>The path to the parent group of the new group.</p></dd>
 
@@ -487,7 +564,7 @@ the <code>parent</code> argument. The <code>parent</code> path must point to a Z
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
+<h4 id="returns-18">Returns<a class="anchor" aria-label="anchor" href="#returns-18"></a></h4>
 <p>A list with the metadata of the group, or an error if the group
 could not be created.</p>
 </div>
@@ -498,10 +575,10 @@ could not be created.</p>
 <h3 id="zarr-store-create-array-"><code>zarr_store$create_array()</code><a class="anchor" aria-label="anchor" href="#zarr-store-create-array-"></a></h3>
 <p>Create a new array in the store under the specified path to
 the <code>parent</code> argument. The <code>parent</code> path must point to a Zarr group.</p><div class="section">
-<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
+<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_store</span><span class="op">$</span><span class="fu">create_array</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
+<h4 id="arguments-18">Arguments<a class="anchor" aria-label="anchor" href="#arguments-18"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>The path to the parent group of the new array.</p></dd>
 
@@ -511,7 +588,7 @@ the <code>parent</code> argument. The <code>parent</code> path must point to a Z
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
+<h4 id="returns-19">Returns<a class="anchor" aria-label="anchor" href="#returns-19"></a></h4>
 <p>A list with the metadata of the array, or an error if the array
 could not be created.</p>
 </div>

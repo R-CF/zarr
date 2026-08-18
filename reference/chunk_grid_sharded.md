@@ -39,6 +39,10 @@ either and totally useless anyway.
 
 - [`chunk_grid_sharded$read()`](#method-chunk_grid_sharded-read)
 
+Inherited methods
+
+- [`chunking$resize()`](https://r-cf.github.io/zarr/reference/chunking.html#method-resize)
+
 ------------------------------------------------------------------------
 
 ### `chunk_grid_sharded$new()`

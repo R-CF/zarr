@@ -108,6 +108,8 @@ always a dot '.'.</p></dd>
 <li><p><a href="#method-zarr_memorystore-erase_prefix"><code>zarr_memorystore$erase_prefix()</code></a></p></li>
 <li><p><a href="#method-zarr_memorystore-list_dir"><code>zarr_memorystore$list_dir()</code></a></p></li>
 <li><p><a href="#method-zarr_memorystore-list_prefix"><code>zarr_memorystore$list_prefix()</code></a></p></li>
+<li><p><a href="#method-zarr_memorystore-list_chunks"><code>zarr_memorystore$list_chunks()</code></a></p></li>
+<li><p><a href="#method-zarr_memorystore-rename"><code>zarr_memorystore$rename()</code></a></p></li>
 <li><p><a href="#method-zarr_memorystore-set"><code>zarr_memorystore$set()</code></a></p></li>
 <li><p><a href="#method-zarr_memorystore-set_if_not_exists"><code>zarr_memorystore$set_if_not_exists()</code></a></p></li>
 <li><p><a href="#method-zarr_memorystore-get"><code>zarr_memorystore$get()</code></a></p></li>
@@ -119,6 +121,7 @@ always a dot '.'.</p></dd>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href="zarr_store.html#method-getsize_prefix"><code>zarr_store$getsize_prefix()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href="zarr_store.html#method-is_empty"><code>zarr_store$is_empty()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href="zarr_store.html#method-list"><code>zarr_store$list()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="rename_prefix"><a href="zarr_store.html#method-rename_prefix"><code>zarr_store$rename_prefix()</code></a></span></li>
 </ul></details></p><hr><a id="method-zarr_memorystore-initialize"></a><div class="section">
 <h3 id="zarr-memorystore-new-"><code>zarr_memorystore$new()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-new-"></a></h3>
 <p>Create an instance of this class.</p><div class="section">
@@ -251,14 +254,59 @@ below the <code>prefix</code>.</p>
 
 </div>
 
+<p></p><hr><a id="method-zarr_memorystore-list_chunks"></a><div class="section">
+<h3 id="zarr-memorystore-list-chunks-"><code>zarr_memorystore$list_chunks()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-list-chunks-"></a></h3>
+<p>Retrieve all chunk (and shard) keys stored for the array
+at the given prefix. Used internally to support resizing and
+promoting arrays.</p><div class="section">
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">list_chunks</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
+<dd><p>The prefix of the array whose chunk keys to retrieve.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p>A character vector of full store keys for chunk/shard files,
+excluding the array's own metadata document.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_memorystore-rename"></a><div class="section">
+<h3 id="zarr-memorystore-rename-"><code>zarr_memorystore$rename()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-rename-"></a></h3>
+<p>Rename a key in the store, moving its value without
+necessarily reading or re-encoding it. Used internally to support
+resizing and promoting arrays. The default implementation is a plain
+copy, for stores without a cheaper native operation.</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="va">old_key</span>, <span class="va">new_key</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>old_key, new_key</code></dt>
+<dd><p>Character strings, the source and destination
+keys. <code>old_key</code> must exist; <code>new_key</code> is overwritten if it exists.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<p>Self, invisibly.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_memorystore-set"></a><div class="section">
 <h3 id="zarr-memorystore-set-"><code>zarr_memorystore$set()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-set-"></a></h3>
 <p>Store a <code>(key, value)</code> pair. If the <code>value</code> exists, it will
 be overwritten.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>The key whose value to set.</p></dd>
 
@@ -269,7 +317,7 @@ be overwritten.</p><div class="section">
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -279,10 +327,10 @@ be overwritten.</p><div class="section">
 <h3 id="zarr-memorystore-set-if-not-exists-"><code>zarr_memorystore$set_if_not_exists()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-set-if-not-exists-"></a></h3>
 <p>Store a <code>(key, value)</code> pair. If the <code>key</code> exists, nothing
 will be written.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">set_if_not_exists</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>The key whose value to set.</p></dd>
 
@@ -292,7 +340,7 @@ will be written.</p><div class="section">
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>Self, invisibly, or an error.</p>
 </div>
 
@@ -301,10 +349,10 @@ will be written.</p><div class="section">
 <p></p><hr><a id="method-zarr_memorystore-get"></a><div class="section">
 <h3 id="zarr-memorystore-get-"><code>zarr_memorystore$get()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-get-"></a></h3>
 <p>Retrieve the value associated with a given key.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">key</span>, prototype <span class="op">=</span> <span class="cn">NULL</span>, byte_range <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key for which to get data.</p></dd>
 
@@ -325,7 +373,7 @@ starts after the end of the object, an error will be returned.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p>An raw vector of data, or <code>NULL</code> if no data was found.</p>
 </div>
 
@@ -335,17 +383,17 @@ starts after the end of the object, an error will be returned.</p></dd>
 <h3 id="zarr-memorystore-get-metadata-"><code>zarr_memorystore$get_metadata()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-get-metadata-"></a></h3>
 <p>Retrieve the metadata document at the location indicated by
 the <code>prefix</code> argument.</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix whose metadata document to retrieve.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p>A list with the metadata, or <code>NULL</code> if the prefix is not pointing
 to a Zarr array.</p>
 </div>
@@ -357,10 +405,10 @@ to a Zarr array.</p>
 <p>Set the metadata document of the node at the location
 indicated by the <code>prefix</code> argument. The formatting of the metadata
 should always use the Zarr v.3 format.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span><span class="va">prefix</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to set.</p></dd>
 
@@ -371,7 +419,7 @@ of <a href="array_builder.html">array_builder</a>.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>Self, invisible</p>
 </div>
 
@@ -380,10 +428,10 @@ of <a href="array_builder.html">array_builder</a>.</p></dd>
 <p></p><hr><a id="method-zarr_memorystore-create_group"></a><div class="section">
 <h3 id="zarr-memorystore-create-group-"><code>zarr_memorystore$create_group()</code><a class="anchor" aria-label="anchor" href="#zarr-memorystore-create-group-"></a></h3>
 <p>Create a new group in the store under the specified path.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">create_group</span><span class="op">(</span><span class="va">path</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to the parent group of the new group. Ignored when
 creating a root group.</p></dd>
@@ -396,7 +444,7 @@ root group or array already exists.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>A list with the metadata of the group, or an error if the group
 could not be created.</p>
 </div>
@@ -408,10 +456,10 @@ could not be created.</p>
 <p>Create a new array in the store under key constructed from
 the specified path to the <code>parent</code> argument and the <code>name</code>. The key may
 not already exist in the store.</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_memorystore</span><span class="op">$</span><span class="fu">create_array</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>The path to the parent group of the new array. This is
 ignored if the <code>name</code> argument is the empty string.</p></dd>
@@ -429,7 +477,7 @@ separator.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
 <p>A list with the metadata of the array, or an error if the array
 could not be created.</p>
 </div>

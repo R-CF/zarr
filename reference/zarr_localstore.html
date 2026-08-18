@@ -105,6 +105,13 @@ arguments are valid, in particular keys and prefixes.</p>
 file store, usually a dot '.'.</p></dd>
 
 
+    <dt><code>supports_prefix_rename</code></dt>
+<dd><p>(read-only) Flag to indicate whether the
+store can rename an entire prefix (e.g. a directory) as a single
+operation, moving everything below it regardless of how many chunk
+keys that represents.</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -119,6 +126,9 @@ file store, usually a dot '.'.</p></dd>
 <li><p><a href="#method-zarr_localstore-erase_prefix"><code>zarr_localstore$erase_prefix()</code></a></p></li>
 <li><p><a href="#method-zarr_localstore-list_dir"><code>zarr_localstore$list_dir()</code></a></p></li>
 <li><p><a href="#method-zarr_localstore-list_prefix"><code>zarr_localstore$list_prefix()</code></a></p></li>
+<li><p><a href="#method-zarr_localstore-list_chunks"><code>zarr_localstore$list_chunks()</code></a></p></li>
+<li><p><a href="#method-zarr_localstore-rename"><code>zarr_localstore$rename()</code></a></p></li>
+<li><p><a href="#method-zarr_localstore-rename_prefix"><code>zarr_localstore$rename_prefix()</code></a></p></li>
 <li><p><a href="#method-zarr_localstore-set"><code>zarr_localstore$set()</code></a></p></li>
 <li><p><a href="#method-zarr_localstore-set_if_not_exists"><code>zarr_localstore$set_if_not_exists()</code></a></p></li>
 <li><p><a href="#method-zarr_localstore-get"><code>zarr_localstore$get()</code></a></p></li>
@@ -291,6 +301,67 @@ below the <code>prefix</code>, both for groups and arrays.</p>
 
 </div>
 
+<p></p><hr><a id="method-zarr_localstore-list_chunks"></a><div class="section">
+<h3 id="zarr-localstore-list-chunks-"><code>zarr_localstore$list_chunks()</code><a class="anchor" aria-label="anchor" href="#zarr-localstore-list-chunks-"></a></h3>
+<p>Retrieve all chunk (and shard) keys stored for the array
+at the given prefix. Used internally to support resizing and
+promoting arrays.</p><div class="section">
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">list_chunks</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
+<dd><p>The prefix of the array whose chunk keys to retrieve.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p>A character vector of full store keys for chunk/shard files,
+excluding the array's own metadata document.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_localstore-rename"></a><div class="section">
+<h3 id="zarr-localstore-rename-"><code>zarr_localstore$rename()</code><a class="anchor" aria-label="anchor" href="#zarr-localstore-rename-"></a></h3>
+<p>Rename a single key on the local file system. A thin
+wrapper over <code>rename_prefix()</code> — a single chunk file is, as far as
+the file system is concerned, no different from a directory.</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="va">old_key</span>, <span class="va">new_key</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>old_key, new_key</code></dt>
+<dd><p>Character strings, the source and destination
+keys. <code>old_key</code> must exist; <code>new_key</code> is overwritten if it exists.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_localstore-rename_prefix"></a><div class="section">
+<h3 id="zarr-localstore-rename-prefix-"><code>zarr_localstore$rename_prefix()</code><a class="anchor" aria-label="anchor" href="#zarr-localstore-rename-prefix-"></a></h3>
+<p>Rename a whole subtree of the local file system in one
+operation. Works identically whether <code>old_prefix</code> resolves to a
+directory (an outer chunk-grid dimension) or to a single chunk file
+(the innermost dimension) — both are just directory entries.</p><div class="section">
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">rename_prefix</span><span class="op">(</span><span class="va">old_prefix</span>, <span class="va">new_prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>old_prefix, new_prefix</code></dt>
+<dd><p>Character strings, relative to the store
+root.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_localstore-set"></a><div class="section">
 <h3 id="zarr-localstore-set-"><code>zarr_localstore$set()</code><a class="anchor" aria-label="anchor" href="#zarr-localstore-set-"></a></h3>
 <p>Store a <code>(key, value)</code> pair. The key points to a specific
@@ -300,10 +371,10 @@ with a "/") and may be composite. It must include the name of the file.
 An example would be "group/subgroup/array/c0.0.0". The group hierarchy
 and the array must have been created before. If the <code>value</code> exists, it
 will be overwritten.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>The key whose value to set.</p></dd>
 
@@ -313,7 +384,7 @@ will be overwritten.</p><div class="section">
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>Self, invisibly, or an error.</p>
 </div>
 
@@ -328,10 +399,10 @@ with a "/") and may be composite. It must include the name of the file.
 An example would be "group/subgroup/array/c0.0.0". The group hierarchy
 and the array must have been created before. If the <code>key</code> exists,
 nothing will be written.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">set_if_not_exists</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>The key whose value to set.</p></dd>
 
@@ -341,7 +412,7 @@ nothing will be written.</p><div class="section">
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>Self, invisibly, or an error.</p>
 </div>
 
@@ -350,10 +421,10 @@ nothing will be written.</p><div class="section">
 <p></p><hr><a id="method-zarr_localstore-get"></a><div class="section">
 <h3 id="zarr-localstore-get-"><code>zarr_localstore$get()</code><a class="anchor" aria-label="anchor" href="#zarr-localstore-get-"></a></h3>
 <p>Retrieve the value associated with a given key.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">key</span>, prototype <span class="op">=</span> <span class="cn">NULL</span>, byte_range <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key for which to get data.</p></dd>
 
@@ -374,7 +445,7 @@ starts after the end of the object, an error will be returned.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>An raw vector of data, or <code>NULL</code> if no data was found.</p>
 </div>
 
@@ -385,17 +456,17 @@ starts after the end of the object, an error will be returned.</p></dd>
 <p>Retrieve the metadata document of the node at the location
 indicated by the <code>prefix</code> argument. The metadata will always be
 presented to the caller in the Zarr v.3 format.</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to retrieve.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p>A list with the metadata, or <code>NULL</code> if the prefix is not pointing
 to a Zarr group or array.</p>
 </div>
@@ -408,10 +479,10 @@ to a Zarr group or array.</p>
 indicated by the <code>prefix</code> argument. The formatting of the metadata
 should always use the Zarr v.3 format, it will be converted internally
 if the store is Zarr v.2. If the metadata does not include an element</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span><span class="va">prefix</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to set.</p></dd>
 
@@ -422,7 +493,7 @@ of <a href="array_builder.html">array_builder</a>.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p>Self, invisible</p>
 </div>
 
@@ -431,17 +502,17 @@ of <a href="array_builder.html">array_builder</a>.</p></dd>
 <p></p><hr><a id="method-zarr_localstore-is_group"></a><div class="section">
 <h3 id="zarr-localstore-is-group-"><code>zarr_localstore$is_group()</code><a class="anchor" aria-label="anchor" href="#zarr-localstore-is-group-"></a></h3>
 <p>Test if <code>path</code> is pointing to a Zarr group.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">is_group</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to test.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p><code>TRUE</code> if the <code>path</code> points to a Zarr group, <code>FALSE</code> otherwise.</p>
 </div>
 
@@ -450,10 +521,10 @@ of <a href="array_builder.html">array_builder</a>.</p></dd>
 <p></p><hr><a id="method-zarr_localstore-create_group"></a><div class="section">
 <h3 id="zarr-localstore-create-group-"><code>zarr_localstore$create_group()</code><a class="anchor" aria-label="anchor" href="#zarr-localstore-create-group-"></a></h3>
 <p>Create a new group in the store under the specified path.</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">create_group</span><span class="op">(</span><span class="va">path</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to the parent group of the new group. Ignored when
 creating a root group.</p></dd>
@@ -466,7 +537,7 @@ root group or array already exists.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>A list with the metadata of the group, or an error if the group
 could not be created.</p>
 </div>
@@ -477,10 +548,10 @@ could not be created.</p>
 <h3 id="zarr-localstore-create-array-"><code>zarr_localstore$create_array()</code><a class="anchor" aria-label="anchor" href="#zarr-localstore-create-array-"></a></h3>
 <p>Create a new array in the store under the specified path to
 the <code>parent</code> argument.</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">create_array</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<h4 id="arguments-16">Arguments<a class="anchor" aria-label="anchor" href="#arguments-16"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>The path to the parent group of the new array. Ignored when
 creating a root array.</p></dd>
@@ -500,7 +571,7 @@ than a dot "." or a slash "/".</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
 <p>A list with the metadata of the array, or an error if the array
 could not be created.</p>
 </div>

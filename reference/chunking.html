@@ -129,6 +129,7 @@ This is set by the array when starting to use chunking for file I/O.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 <p></p><ul><li><p><a href="#method-chunking-initialize"><code>chunking$new()</code></a></p></li>
+<li><p><a href="#method-chunking-resize"><code>chunking$resize()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_extension" data-id="metadata_fragment"><a href="zarr_extension.html#method-metadata_fragment"><code>zarr_extension$metadata_fragment()</code></a></span></li>
 </ul></details></p><hr><a id="method-chunking-initialize"></a><div class="section">
 <h3 id="chunking-new-"><code>chunking$new()</code><a class="anchor" aria-label="anchor" href="#chunking-new-"></a></h3>
@@ -154,6 +155,37 @@ shard). Ignored for a scalar array.</p></dd>
 </div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>An instance of <code>chunking</code>.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-chunking-resize"></a><div class="section">
+<h3 id="chunking-resize-"><code>chunking$resize()</code><a class="anchor" aria-label="anchor" href="#chunking-resize-"></a></h3>
+<p>Physically resize the on-disk chunk grid: rename chunks
+whose grid index moved, delete chunks that fell entirely outside the
+new shape, and <code>NA</code> the excess tail of a chunk left partly outside a
+shrinking, non-chunk-aligned high boundary. No chunk payload is
+re-encoded except for that trailing clip.</p><div class="section">
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunking</span><span class="op">$</span><span class="fu">resize</span><span class="op">(</span><span class="va">new_shape</span>, <span class="va">shift</span>, <span class="va">high</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>new_shape</code></dt>
+<dd><p>Integer vector, the array's new shape.</p></dd>
+
+      <dt><code>shift</code></dt>
+<dd><p>Integer vector, whole chunks by which the origin moves
+per dimension (positive = grew at the low end, negative = shrank).</p></dd>
+
+      <dt><code>high</code></dt>
+<dd><p>Integer vector, the requested high-end element deltas
+(used only to decide which boundary chunks need NA-clipping).</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>Self, invisibly.</p>
 </div>
 
 </div>

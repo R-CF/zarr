@@ -75,6 +75,10 @@ It should be accessed through group and array objects.
 
 - [`zarr_s3store$list()`](#method-zarr_s3store-list)
 
+- [`zarr_s3store$list_chunks()`](#method-zarr_s3store-list_chunks)
+
+- [`zarr_s3store$rename()`](#method-zarr_s3store-rename)
+
 - [`zarr_s3store$getsize()`](#method-zarr_s3store-getsize)
 
 - [`zarr_s3store$getsize_prefix()`](#method-zarr_s3store-getsize_prefix)
@@ -96,6 +100,10 @@ It should be accessed through group and array objects.
 - [`zarr_s3store$create_group()`](#method-zarr_s3store-create_group)
 
 - [`zarr_s3store$create_array()`](#method-zarr_s3store-create_array)
+
+Inherited methods
+
+- [`zarr_store$rename_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-rename_prefix)
 
 ------------------------------------------------------------------------
 
@@ -317,6 +325,52 @@ Retrieve all keys in the store.
 #### Returns
 
 A character vector with all keys found in the store.
+
+------------------------------------------------------------------------
+
+### `zarr_s3store$list_chunks()`
+
+Retrieve all chunk (and shard) keys stored for the array at the given
+prefix. Used internally to support resizing and promoting arrays.
+
+#### Usage
+
+    zarr_s3store$list_chunks(prefix)
+
+#### Arguments
+
+- `prefix`:
+
+  The prefix of the array whose chunk keys to retrieve.
+
+#### Returns
+
+A character vector of full store keys for chunk/shard files, excluding
+the array's own metadata document.
+
+------------------------------------------------------------------------
+
+### `zarr_s3store$rename()`
+
+Rename a key in the store, moving its value without necessarily reading
+or re-encoding it. Used internally to support resizing and promoting
+arrays. The default implementation is a plain copy, for stores without a
+cheaper native operation.
+
+#### Usage
+
+    zarr_s3store$rename(old_key, new_key)
+
+#### Arguments
+
+- `old_key, new_key`:
+
+  Character strings, the source and destination keys. `old_key` must
+  exist; `new_key` is overwritten if it exists.
+
+#### Returns
+
+Self, invisibly.
 
 ------------------------------------------------------------------------
 

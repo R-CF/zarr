@@ -48,6 +48,10 @@ object.
 
 - [`zarr_array$write()`](#method-zarr_array-write)
 
+- [`zarr_array$resize()`](#method-zarr_array-resize)
+
+- [`zarr_array$promote()`](#method-zarr_array-promote)
+
 Inherited methods
 
 - [`zarr_object$print_attributes()`](https://r-cf.github.io/zarr/reference/zarr_object.html#method-print_attributes)
@@ -153,9 +157,9 @@ A vector, matrix or array of data.
 
 Write data for the array. The data will be chunked, encoded and
 persisted in the store that the array is using. Prior to writing, any
-`NA` values are assigned the `fill_value` of the `data_type` of the Zarr
-array. Note that the logical type cannot encode `NA` in Zarr and any
-`NA` values are set to `FALSE`.
+`NA` values are assigned the `fill_value` of the array. Note that the
+logical type cannot encode `NA` in Zarr and any `NA` values are set to
+`FALSE`.
 
 #### Usage
 
@@ -166,13 +170,83 @@ array. Note that the logical type cannot encode `NA` in Zarr and any
 - `data`:
 
   An R vector, matrix or array with the data to write. The data in the R
-  object has to agree with the data type of the array.
+  object has to agree with the data type and rank of the array.
 
 - `selection`:
 
-  A list as long as the array has dimensions where each element is a
-  range of indices along the dimension to write. If missing, the entire
-  `data` object will be written.
+  Optional. A `list` as long as the array has dimensions where each
+  element is a range of indices along the dimension to write. If
+  missing, the `data` object must have the same size as the array.
+  Ignored when the array is scalar.
+
+#### Returns
+
+Self, invisibly.
+
+------------------------------------------------------------------------
+
+### `zarr_array$resize()`
+
+Resize the array, growing or shrinking any combination of dimensions at
+either end in one pass. Existing chunk payload is never rewritten,
+except for a chunk left straddling a shrinking, non-chunk- aligned
+high-end boundary (its excess elements become `NA`).
+
+Because the chunk grid is fixed, `low` can only move in whole chunks:
+values are rounded outward to the nearest chunk (more space added when
+growing, less removed when shrinking), so the array's origin may land
+ahead of where the actual data starts; those cells read as `NA`. `high`
+is not constrained this way.
+
+#### Usage
+
+    zarr_array$resize(low, high)
+
+#### Arguments
+
+- `low, high`:
+
+  Integer vectors, one element per array dimension. Positive grows that
+  end, negative shrinks it, `0` (default) leaves it unchanged.
+
+#### Returns
+
+Self, invisibly.
+
+------------------------------------------------------------------------
+
+### `zarr_array$promote()`
+
+Insert a new dimension into the array, increasing its rank by one. This
+operation doesn't grow an existing dimension, it creates one where there
+wasn't one before — the typical case being promoting a 0-d scalar array
+to rank 1, or giving an existing array a new leading dimension (e.g.
+turning a `(lat, lon)` array into a `(time, lat, lon)` array once a
+second file/time step becomes available).
+
+Existing chunk payload is moved, never re-encoded: inserting a
+size-`length` dimension whose chunk size equals `length` never changes
+the relative order of elements in the encoded byte stream, for any array
+rank or transpose order, because a size-1-chunk dimension never
+contributes more than a single (vacuous) index to the enumeration. So
+every existing chunk is just renamed with a "0" grid index inserted at
+`dimension`. The new dimension therefore always starts out as exactly
+one full chunk; grow it afterwards with `resize()`.
+
+#### Usage
+
+    zarr_array$promote(dimension, length = 1L)
+
+#### Arguments
+
+- `dimension`:
+
+  Integer. 1-based position of the new dimension in the resulting shape;
+  `1` prepends it, `rank + 1` appends it.
+
+- `length`:
+
+  The size of the new dimension, and also its chunk size. Default `1L`.
 
 #### Returns
 

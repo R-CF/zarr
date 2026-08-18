@@ -7,6 +7,13 @@
   [`s3_list_dir()`](https://r-cf.github.io/zarr/reference/s3_list_dir.md)
   can be used to walk the directory listing of an S3 bucket to locate
   Zarr stores.
+- New `zarr_array::resize()` method with which arrays can be resized,
+  growing or shrinking across all dimensions simultaneously, including
+  on the lower end of the dimensions. When changing the “low” side of
+  the dimensions, which is always by full chunks, the indexing of all
+  data changes to use the new origin.
+- New `zarr_array::promote()` method which adds a dimension to the
+  array.
 - New `zarr_object` base class for name and attribute management.
 - `dirty` field can be explicitly set on any node to force writing of
   the metadata to the store.
@@ -15,6 +22,8 @@
   [`optimal_chunking()`](https://r-cf.github.io/zarr/reference/optimal_chunking.md)
   function to determine optimal chunking for an array, optionally
   applying different weights to dimensions or groups of dimensions.
+- Better support for scalar arrays. Scalar arrays can now be constructed
+  by the `array_builder` class and written to like regular arrays.
 - Testing expanded.
 - Documentation expanded and updated.
 

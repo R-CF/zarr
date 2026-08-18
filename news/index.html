@@ -45,12 +45,15 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="zarr-development-version">zarr (development version)<a class="anchor" aria-label="anchor" href="#zarr-development-version"></a></h2>
 <ul><li>AWS S3 store access added for reading and, with appropriate authentication, writing. The function <code><a href="../reference/s3_list_dir.html">s3_list_dir()</a></code> can be used to walk the directory listing of an S3 bucket to locate Zarr stores.</li>
+<li>New <code>zarr_array::resize()</code> method with which arrays can be resized, growing or shrinking across all dimensions simultaneously, including on the lower end of the dimensions. When changing the “low” side of the dimensions, which is always by full chunks, the indexing of all data changes to use the new origin.</li>
+<li>New <code>zarr_array::promote()</code> method which adds a dimension to the array.</li>
 <li>New <code>zarr_object</code> base class for name and attribute management.</li>
 <li>
 <code>dirty</code> field can be explicitly set on any node to force writing of the metadata to the store.</li>
 <li>
 <code>chunk_key_encoding</code> is automatically set in array metadata.</li>
 <li>New <code><a href="../reference/optimal_chunking.html">optimal_chunking()</a></code> function to determine optimal chunking for an array, optionally applying different weights to dimensions or groups of dimensions.</li>
+<li>Better support for scalar arrays. Scalar arrays can now be constructed by the <code>array_builder</code> class and written to like regular arrays.</li>
 <li>Testing expanded.</li>
 <li>Documentation expanded and updated.</li>
 </ul></div>

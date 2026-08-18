@@ -42,6 +42,12 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
   (read-only) The default chunk separator of the local file store,
   usually a dot '.'.
 
+- `supports_prefix_rename`:
+
+  (read-only) Flag to indicate whether the store can rename an entire
+  prefix (e.g. a directory) as a single operation, moving everything
+  below it regardless of how many chunk keys that represents.
+
 ## Methods
 
 ### Public methods
@@ -59,6 +65,12 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 - [`zarr_localstore$list_dir()`](#method-zarr_localstore-list_dir)
 
 - [`zarr_localstore$list_prefix()`](#method-zarr_localstore-list_prefix)
+
+- [`zarr_localstore$list_chunks()`](#method-zarr_localstore-list_chunks)
+
+- [`zarr_localstore$rename()`](#method-zarr_localstore-rename)
+
+- [`zarr_localstore$rename_prefix()`](#method-zarr_localstore-rename_prefix)
 
 - [`zarr_localstore$set()`](#method-zarr_localstore-set)
 
@@ -251,6 +263,66 @@ Retrieve all keys and prefixes with a given prefix.
 
 A character vector with all paths found in the store below the `prefix`
 location, both for groups and arrays.
+
+------------------------------------------------------------------------
+
+### `zarr_localstore$list_chunks()`
+
+Retrieve all chunk (and shard) keys stored for the array at the given
+prefix. Used internally to support resizing and promoting arrays.
+
+#### Usage
+
+    zarr_localstore$list_chunks(prefix)
+
+#### Arguments
+
+- `prefix`:
+
+  The prefix of the array whose chunk keys to retrieve.
+
+#### Returns
+
+A character vector of full store keys for chunk/shard files, excluding
+the array's own metadata document.
+
+------------------------------------------------------------------------
+
+### `zarr_localstore$rename()`
+
+Rename a single key on the local file system. A thin wrapper over
+`rename_prefix()` — a single chunk file is, as far as the file system is
+concerned, no different from a directory.
+
+#### Usage
+
+    zarr_localstore$rename(old_key, new_key)
+
+#### Arguments
+
+- `old_key, new_key`:
+
+  Character strings, the source and destination keys. `old_key` must
+  exist; `new_key` is overwritten if it exists.
+
+------------------------------------------------------------------------
+
+### `zarr_localstore$rename_prefix()`
+
+Rename a whole subtree of the local file system in one operation. Works
+identically whether `old_prefix` resolves to a directory (an outer
+chunk-grid dimension) or to a single chunk file (the innermost
+dimension) — both are just directory entries.
+
+#### Usage
+
+    zarr_localstore$rename_prefix(old_prefix, new_prefix)
+
+#### Arguments
+
+- `old_prefix, new_prefix`:
+
+  Character strings, relative to the store root.
 
 ------------------------------------------------------------------------
 

@@ -50,6 +50,10 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 - [`zarr_memorystore$list_prefix()`](#method-zarr_memorystore-list_prefix)
 
+- [`zarr_memorystore$list_chunks()`](#method-zarr_memorystore-list_chunks)
+
+- [`zarr_memorystore$rename()`](#method-zarr_memorystore-rename)
+
 - [`zarr_memorystore$set()`](#method-zarr_memorystore-set)
 
 - [`zarr_memorystore$set_if_not_exists()`](#method-zarr_memorystore-set_if_not_exists)
@@ -70,6 +74,7 @@ Inherited methods
 - [`zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
 - [`zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
 - [`zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
+- [`zarr_store$rename_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-rename_prefix)
 
 ------------------------------------------------------------------------
 
@@ -209,6 +214,52 @@ Retrieve all keys and prefixes with a given prefix.
 
 A character vector with all paths found in the store below the `prefix`
 location.
+
+------------------------------------------------------------------------
+
+### `zarr_memorystore$list_chunks()`
+
+Retrieve all chunk (and shard) keys stored for the array at the given
+prefix. Used internally to support resizing and promoting arrays.
+
+#### Usage
+
+    zarr_memorystore$list_chunks(prefix)
+
+#### Arguments
+
+- `prefix`:
+
+  The prefix of the array whose chunk keys to retrieve.
+
+#### Returns
+
+A character vector of full store keys for chunk/shard files, excluding
+the array's own metadata document.
+
+------------------------------------------------------------------------
+
+### `zarr_memorystore$rename()`
+
+Rename a key in the store, moving its value without necessarily reading
+or re-encoding it. Used internally to support resizing and promoting
+arrays. The default implementation is a plain copy, for stores without a
+cheaper native operation.
+
+#### Usage
+
+    zarr_memorystore$rename(old_key, new_key)
+
+#### Arguments
+
+- `old_key, new_key`:
+
+  Character strings, the source and destination keys. `old_key` must
+  exist; `new_key` is overwritten if it exists.
+
+#### Returns
+
+Self, invisibly.
 
 ------------------------------------------------------------------------
 

@@ -155,6 +155,8 @@ usually a slash '/'.</p></dd>
 <li><p><a href="#method-zarr_s3store-list_dir"><code>zarr_s3store$list_dir()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-list_prefix"><code>zarr_s3store$list_prefix()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-list"><code>zarr_s3store$list()</code></a></p></li>
+<li><p><a href="#method-zarr_s3store-list_chunks"><code>zarr_s3store$list_chunks()</code></a></p></li>
+<li><p><a href="#method-zarr_s3store-rename"><code>zarr_s3store$rename()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-getsize"><code>zarr_s3store$getsize()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-getsize_prefix"><code>zarr_s3store$getsize_prefix()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-is_empty"><code>zarr_s3store$is_empty()</code></a></p></li>
@@ -166,7 +168,8 @@ usually a slash '/'.</p></dd>
 <li><p><a href="#method-zarr_s3store-is_group"><code>zarr_s3store$is_group()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-create_group"><code>zarr_s3store$create_group()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-create_array"><code>zarr_s3store$create_array()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-zarr_s3store-initialize"></a><div class="section">
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="rename_prefix"><a href="zarr_store.html#method-rename_prefix"><code>zarr_store$rename_prefix()</code></a></span></li>
+</ul></details></p><hr><a id="method-zarr_s3store-initialize"></a><div class="section">
 <h3 id="zarr-s-store-new-"><code>zarr_s3store$new()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-new-"></a></h3>
 <p>Create an instance of this class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -371,21 +374,66 @@ prefixed with <code>/</code> for consistency with <a href="zarr_httpstore.html">
 
 </div>
 
+<p></p><hr><a id="method-zarr_s3store-list_chunks"></a><div class="section">
+<h3 id="zarr-s-store-list-chunks-"><code>zarr_s3store$list_chunks()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-list-chunks-"></a></h3>
+<p>Retrieve all chunk (and shard) keys stored for the array
+at the given prefix. Used internally to support resizing and
+promoting arrays.</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">list_chunks</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
+<dd><p>The prefix of the array whose chunk keys to retrieve.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<p>A character vector of full store keys for chunk/shard files,
+excluding the array's own metadata document.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_s3store-rename"></a><div class="section">
+<h3 id="zarr-s-store-rename-"><code>zarr_s3store$rename()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-rename-"></a></h3>
+<p>Rename a key in the store, moving its value without
+necessarily reading or re-encoding it. Used internally to support
+resizing and promoting arrays. The default implementation is a plain
+copy, for stores without a cheaper native operation.</p><div class="section">
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="va">old_key</span>, <span class="va">new_key</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>old_key, new_key</code></dt>
+<dd><p>Character strings, the source and destination
+keys. <code>old_key</code> must exist; <code>new_key</code> is overwritten if it exists.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<p>Self, invisibly.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_s3store-getsize"></a><div class="section">
 <h3 id="zarr-s-store-getsize-"><code>zarr_s3store$getsize()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-getsize-"></a></h3>
 <p>Return the size, in bytes, of a value in the store, via
 a <code>HeadObject</code> request (S3-native, no need to download the object).</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">getsize</span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key whose length will be returned.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>The size, in bytes, of the object.</p>
 </div>
 
@@ -397,17 +445,17 @@ a <code>HeadObject</code> request (S3-native, no need to download the object).</
 under the group indicated by <code>prefix</code>, summed from a single
 (paginated) <code>ListObjectsV2</code> scan rather than per-key <code>HeadObject</code>
 calls.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">getsize_prefix</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Character string. The prefix to groups to scan.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p>The total size, in bytes, as a single numeric value.</p>
 </div>
 
@@ -417,17 +465,17 @@ calls.</p><div class="section">
 <h3 id="zarr-s-store-is-empty-"><code>zarr_s3store$is_empty()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-is-empty-"></a></h3>
 <p>Is the group empty? Uses a single <code>MaxKeys = 1</code>
 <code>ListObjectsV2</code> request rather than a full listing.</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">is_empty</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Character string. The prefix to the group to scan.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p><code>TRUE</code> if the group indicated by argument <code>prefix</code> has no
 sub-groups or arrays, <code>FALSE</code> otherwise.</p>
 </div>
@@ -442,10 +490,10 @@ opened with <code>read_only = TRUE</code>.</p>
 not expected to matter for typical Zarr chunk sizes. If you start
 writing very large chunks (or use very large shards), this needs a
 multipart-upload path instead — not implemented here.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key to write to.</p></dd>
 
@@ -455,7 +503,7 @@ multipart-upload path instead — not implemented here.</p><div class="section">
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -473,10 +521,10 @@ a <code>paws.storage</code> version whose S3 client exposes <code>IfNoneMatch</c
 services (older MinIO releases, some others) reject or ignore the
 header — if you're targeting one of those, this will need a
 fallback to a check-then-put instead, which reintroduces the race.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">set_if_not_exists</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key to write to.</p></dd>
 
@@ -486,7 +534,7 @@ fallback to a check-then-put instead, which reintroduces the race.</p><div class
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -495,10 +543,10 @@ fallback to a check-then-put instead, which reintroduces the race.</p><div class
 <p></p><hr><a id="method-zarr_s3store-get"></a><div class="section">
 <h3 id="zarr-s-store-get-"><code>zarr_s3store$get()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-get-"></a></h3>
 <p>Retrieve the value associated with a given key.</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">key</span>, prototype <span class="op">=</span> <span class="cn">NULL</span>, byte_range <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key for which to get data.</p></dd>
 
@@ -515,7 +563,7 @@ vector <code>c(start, end)</code> with an exclusive end.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
 <p>A raw vector with the data pointed at by the key, or <code>NULL</code> if
 the key does not exist.</p>
 </div>
@@ -526,17 +574,17 @@ the key does not exist.</p>
 <h3 id="zarr-s-store-get-metadata-"><code>zarr_s3store$get_metadata()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-get-metadata-"></a></h3>
 <p>Retrieve the metadata document of the node at <code>prefix</code>,
 always presented in Zarr v.3 format.</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to retrieve.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
 <p>A list with the metadata, or <code>NULL</code> if the prefix does not
 point to a Zarr group or array.</p>
 </div>
@@ -547,10 +595,10 @@ point to a Zarr group or array.</p>
 <h3 id="zarr-s-store-set-metadata-"><code>zarr_s3store$set_metadata()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-set-metadata-"></a></h3>
 <p>Write the metadata document for the node at <code>prefix</code>.
 No-op if the store was opened with <code>read_only = TRUE</code>.</p><div class="section">
-<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span><span class="va">prefix</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to write.</p></dd>
 
@@ -560,7 +608,7 @@ No-op if the store was opened with <code>read_only = TRUE</code>.</p><div class=
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
+<h4 id="returns-17">Returns<a class="anchor" aria-label="anchor" href="#returns-17"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -569,17 +617,17 @@ No-op if the store was opened with <code>read_only = TRUE</code>.</p><div class=
 <p></p><hr><a id="method-zarr_s3store-is_group"></a><div class="section">
 <h3 id="zarr-s-store-is-group-"><code>zarr_s3store$is_group()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-is-group-"></a></h3>
 <p>Test if <code>path</code> is pointing to a Zarr group.</p><div class="section">
-<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">is_group</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
+<h4 id="arguments-16">Arguments<a class="anchor" aria-label="anchor" href="#arguments-16"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to test.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
+<h4 id="returns-18">Returns<a class="anchor" aria-label="anchor" href="#returns-18"></a></h4>
 <p><code>TRUE</code> if the <code>path</code> points to a Zarr group, <code>FALSE</code> otherwise.</p>
 </div>
 
@@ -589,10 +637,10 @@ No-op if the store was opened with <code>read_only = TRUE</code>.</p><div class=
 <h3 id="zarr-s-store-create-group-"><code>zarr_s3store$create_group()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-create-group-"></a></h3>
 <p>Create a new group in the store under <code>parent</code>. Errors
 if the store was opened with <code>read_only = TRUE</code>.</p><div class="section">
-<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
+<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">create_group</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
+<h4 id="arguments-17">Arguments<a class="anchor" aria-label="anchor" href="#arguments-17"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>Character string. Path of the parent node.</p></dd>
 
@@ -602,7 +650,7 @@ if the store was opened with <code>read_only = TRUE</code>.</p><div class="secti
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-17">Returns<a class="anchor" aria-label="anchor" href="#returns-17"></a></h4>
+<h4 id="returns-19">Returns<a class="anchor" aria-label="anchor" href="#returns-19"></a></h4>
 <p>A list with the metadata of the newly-created group.</p>
 </div>
 
@@ -615,10 +663,10 @@ if the store was opened with <code>read_only = TRUE</code>.</p><div class="secti
 array metadata (shape, dtype, chunking, codecs) cannot be inferred
 and must be supplied by the caller. Errors if the store was opened
 with <code>read_only = TRUE</code>.</p><div class="section">
-<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
+<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">create_array</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-16">Arguments<a class="anchor" aria-label="anchor" href="#arguments-16"></a></h4>
+<h4 id="arguments-18">Arguments<a class="anchor" aria-label="anchor" href="#arguments-18"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>Character string. Path of the parent node.</p></dd>
 
@@ -631,7 +679,7 @@ with <code>read_only = TRUE</code>.</p><div class="section">
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-18">Returns<a class="anchor" aria-label="anchor" href="#returns-18"></a></h4>
+<h4 id="returns-20">Returns<a class="anchor" aria-label="anchor" href="#returns-20"></a></h4>
 <p>A list with the metadata of the newly-created array, as written.</p>
 </div>
 

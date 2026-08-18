@@ -32,6 +32,10 @@ transformation.
 
 - [`chunk_grid_regular$write()`](#method-chunk_grid_regular-write)
 
+Inherited methods
+
+- [`chunking$resize()`](https://r-cf.github.io/zarr/reference/chunking.html#method-resize)
+
 ------------------------------------------------------------------------
 
 ### `chunk_grid_regular$new()`
@@ -132,7 +136,7 @@ Write data to the array. Writing data always uses a sequential plan.
 
   Integer vectors of the same length as the dimensionality of the Zarr
   array, indicating the starting and ending (inclusive) indices of the
-  data along each axis.
+  data along each axis. Ignored for a scalar array.
 
 #### Returns
 

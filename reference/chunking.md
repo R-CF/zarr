@@ -57,6 +57,8 @@ There is no point instantiating this class directly, other than in the
 
 - [`chunking$new()`](#method-chunking-initialize)
 
+- [`chunking$resize()`](#method-chunking-resize)
+
 Inherited methods
 
 - [`zarr_extension$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_extension.html#method-metadata_fragment)
@@ -91,3 +93,37 @@ called by descendant classes.
 #### Returns
 
 An instance of `chunking`.
+
+------------------------------------------------------------------------
+
+### `chunking$resize()`
+
+Physically resize the on-disk chunk grid: rename chunks whose grid index
+moved, delete chunks that fell entirely outside the new shape, and `NA`
+the excess tail of a chunk left partly outside a shrinking,
+non-chunk-aligned high boundary. No chunk payload is re-encoded except
+for that trailing clip.
+
+#### Usage
+
+    chunking$resize(new_shape, shift, high)
+
+#### Arguments
+
+- `new_shape`:
+
+  Integer vector, the array's new shape.
+
+- `shift`:
+
+  Integer vector, whole chunks by which the origin moves per dimension
+  (positive = grew at the low end, negative = shrank).
+
+- `high`:
+
+  Integer vector, the requested high-end element deltas (used only to
+  decide which boundary chunks need NA-clipping).
+
+#### Returns
+
+Self, invisibly.
