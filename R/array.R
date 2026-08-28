@@ -395,6 +395,8 @@ str.zarr_array <- function(object, ...) {
 #' arr <- z[["/"]]
 #' arr[3:5, 7:9]
 "[.zarr_array" <- function(x, i, j, ..., drop = TRUE) {
+  caller_env <- parent.frame()
+
   sc <- sys.call()
   args <- sc[-(1:2)]      # remove function name and x
   args$drop <- NULL       # remove drop if present
@@ -407,7 +409,7 @@ str.zarr_array <- function(object, ...) {
       if (is.symbol(arg) && identical(arg, quote(expr = )))
         NULL
       else
-        eval(arg, parent.frame())
+        eval(arg, caller_env)
     })
 
     nd <- length(x$shape)
@@ -420,7 +422,7 @@ str.zarr_array <- function(object, ...) {
         # Missing index
         selection[[d]] <- c(1L, x$shape[d])
       } else {
-        sel <- eval(indices[[d]], parent.frame())
+        sel <- indices[[d]]
         if (is.logical(sel))
           sel <- which(sel)
         else if (any(sel < 0L))
