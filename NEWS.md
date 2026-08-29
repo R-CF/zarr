@@ -1,4 +1,4 @@
-# zarr (development version)
+# zarr 0.5.0
 
 - AWS S3 store access added for reading and, with appropriate authentication, writing. The function `s3_list_dir()` can be used to walk the directory listing of an S3 bucket to locate Zarr stores.
 - New `zarr_array::resize()` method with which arrays can be resized, growing or shrinking across all dimensions simultaneously, including on the lower end of the dimensions. When changing the "low" side of the dimensions, which is always by full chunks, the indexing of all data changes to use the new origin.
