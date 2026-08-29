@@ -55,6 +55,7 @@ zarr_store              # abstract key-value store interface
   zarr_memorystore      # in-memory (list-backed)
   zarr_localstore       # local filesystem (supports byte-range reads)
   zarr_httpstore        # HTTP (read-only, supports byte-range reads via Range header)
+  zarr_s3store          # AWS S3 store, using paws package
 
 zarr_node               # base for hierarchy nodes
   zarr_group            # container node
