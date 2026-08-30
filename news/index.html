@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="zarr-development-version">zarr (development version)<a class="anchor" aria-label="anchor" href="#zarr-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.5.0" id="zarr-050">zarr 0.5.0<a class="anchor" aria-label="anchor" href="#zarr-050"></a></h2>
 <ul><li>AWS S3 store access added for reading and, with appropriate authentication, writing. The function <code><a href="../reference/s3_list_dir.html">s3_list_dir()</a></code> can be used to walk the directory listing of an S3 bucket to locate Zarr stores.</li>
 <li>New <code>zarr_array::resize()</code> method with which arrays can be resized, growing or shrinking across all dimensions simultaneously, including on the lower end of the dimensions. When changing the “low” side of the dimensions, which is always by full chunks, the indexing of all data changes to use the new origin.</li>
 <li>New <code>zarr_array::promote()</code> method which adds a dimension to the array.</li>

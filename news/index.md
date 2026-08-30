@@ -1,6 +1,6 @@
 # Changelog
 
-## zarr (development version)
+## zarr 0.5.0
 
 - AWS S3 store access added for reading and, with appropriate
   authentication, writing. The function
