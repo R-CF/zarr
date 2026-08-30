@@ -1,3 +1,5 @@
+# zarr (development version)
+
 # zarr 0.5.0
 
 - AWS S3 store access added for reading and, with appropriate authentication, writing. The function `s3_list_dir()` can be used to walk the directory listing of an S3 bucket to locate Zarr stores.

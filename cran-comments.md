@@ -1,3 +1,7 @@
+## Resubmission
+This is a resubmission without revdep files that were accidentally included in the previous submission.
+
+## Release details
 This minor release adds AWS S3 store access and important new functionality such as array resizing and promotion.
 
 The documentation has been expanded.
