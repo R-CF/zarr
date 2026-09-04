@@ -38,6 +38,7 @@ creating store keys for chunks.}
     \item \href{#method-zarr_array-hierarchy_nodes}{\code{zarr_array$hierarchy_nodes()}}
     \item \href{#method-zarr_array-read}{\code{zarr_array$read()}}
     \item \href{#method-zarr_array-write}{\code{zarr_array$write()}}
+    \item \href{#method-zarr_array-flush}{\code{zarr_array$flush()}}
     \item \href{#method-zarr_array-resize}{\code{zarr_array$resize()}}
     \item \href{#method-zarr_array-promote}{\code{zarr_array$promote()}}
   }
@@ -61,7 +62,7 @@ creating store keys for chunks.}
 \if{latex}{\out{\hypertarget{method-zarr_array-initialize}{}}}
 \subsection{\code{zarr_array$new()}}{
   Initialize a new array in a Zarr hierarchy. The array must
-already exist in the store
+already exist in the store.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_array$new(name, metadata, parent, store)}
@@ -154,7 +155,7 @@ the logical type cannot encode \code{NA} in Zarr and any \code{NA} values are se
 to \code{FALSE}.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_array$write(data, selection)}
+    \preformatted{zarr_array$write(data, selection, flush = TRUE)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -166,11 +167,30 @@ in the R object has to agree with the data type and rank of the array.}
 where each element is a range of indices along the dimension to write.
 If missing, the \code{data} object must have the same size as the array.
 Ignored when the array is scalar.}
+      \item{\code{flush}}{Logical, default is \code{TRUE}. Should the chunks that have been
+written to be flushed to the store (\code{TRUE}), or should they be left
+stale for further writes to the same chunk (\code{FALSE}). Leaving the
+chunks stale for further writing leads to better performance when
+chunks are written to multiple times. Call the \code{flush()} method to
+persist data in stale chunks.}
     }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
     Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_array-flush"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-flush}{}}}
+\subsection{\code{zarr_array$flush()}}{
+  Persist the data in all chunks with pending edits to the
+store.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$flush()}
+    \if{html}{\out{</div>}}
   }
 }
 

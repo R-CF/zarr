@@ -28,6 +28,9 @@ chunking <- R6::R6Class('chunking',
     .scalar         = FALSE,  # Is the array scalar?
     .chunk_shape    = NULL,   # Shape of an individual chunk (or shard)
     .chunk_map      = NULL,   # Map of [chunk_id] instances for I/O
+    .chunk_touch    = NULL,   # Parallel map: chunk_key -> last-touched tick
+    .tick           = 0L,     # Monotonically increasing touch counter
+    .chunk_bytes    = 0L,     # Bytes per resident chunk buffer (0 = not yet known)
     .data_type      = NULL,   # Data type of the array
     .array_prefix   = '',     # Prefix to the array in the store
     .cke            = list(), # Settings of the chunk key encoding
@@ -51,6 +54,29 @@ chunking <- R6::R6Class('chunking',
     # .clip_supported guards it first.
     clip_chunk = function(cidx, new_shape, clip_dims) {
       stop('Class', class(self)[1L], 'cannot clip a partial chunk') # nocov
+    },
+
+    # Record or refresh a chunk's position in the LRU order. Call on every
+    # cache hit and on every insert.
+    touch_chunk = function(key) {
+      private$.tick <- private$.tick + 1L
+      assign(key, private$.tick, envir = private$.chunk_touch)
+    },
+
+    # Ensure there is room for one more resident chunk before inserting a new
+    # one. Evicts the least-recently-touched entries, flushing each first if
+    # it has unpersisted changes. No-op until .chunk_bytes is known.
+    evict_for_capacity = function() {
+      if (private$.chunk_bytes <= 0L) return(invisible(NULL))
+      cap <- max(1L, Zarr.options$chunk_cache_bytes %/% private$.chunk_bytes)
+      while (length(private$.chunk_touch) >= cap) {
+        ticks  <- unlist(as.list(private$.chunk_touch, all.names = TRUE))
+        oldest <- names(ticks)[which.min(ticks)]
+        io <- private$.chunk_map[[oldest]]
+        if (!is.null(io)) io$flush()
+        rm(list = oldest, envir = private$.chunk_map)
+        rm(list = oldest, envir = private$.chunk_touch)
+      }
     }
   ),
   public = list(
@@ -81,6 +107,7 @@ chunking <- R6::R6Class('chunking',
           stop('Chunk shape is not valid for `array_shape`', call. = FALSE) # nocov
       }
       private$.chunk_map <- new.env(parent = emptyenv())
+      private$.chunk_touch <- new.env(parent = emptyenv())
     },
 
     #' @description Physically resize the on-disk chunk grid: rename chunks
@@ -160,7 +187,10 @@ chunking <- R6::R6Class('chunking',
       }
 
       private$.array_shape <- new_shape
+      for (key in ls(private$.chunk_map, all.names = TRUE))
+        private$.chunk_map[[key]]$flush()
       private$.chunk_map   <- new.env(parent = emptyenv())
+      private$.chunk_touch <- new.env(parent = emptyenv())
       invisible(self)
     }
   ),
@@ -186,9 +216,11 @@ chunking <- R6::R6Class('chunking',
     data_type = function(value) {
       if (missing(value))
         private$.data_type
-      else if (inherits(value, 'zarr_data_type'))
+      else if (inherits(value, 'zarr_data_type')) {
         private$.data_type <- value
-      else
+        if (!is.null(private$.chunk_shape))
+          private$.chunk_bytes <- prod(private$.chunk_shape) * value$size
+      } else
         stop('Must set a valid data type.', call. = FALSE) # nocov
     },
 

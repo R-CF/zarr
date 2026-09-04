@@ -40,7 +40,7 @@ zarr_array <- R6::R6Class('zarr_array',
   ),
   public = list(
     #' @description Initialize a new array in a Zarr hierarchy. The array must
-    #'   already exist in the store
+    #'   already exist in the store.
     #' @param name The name of the array.
     #' @param metadata List with the metadata of the array.
     #' @param parent The parent `zarr_group` instance of this new array, can be
@@ -143,8 +143,14 @@ zarr_array <- R6::R6Class('zarr_array',
     #'   where each element is a range of indices along the dimension to write.
     #'   If missing, the `data` object must have the same size as the array.
     #'   Ignored when the array is scalar.
+    #' @param flush Logical, default is `TRUE`. Should the chunks that have been
+    #'   written to be flushed to the store (`TRUE`), or should they be left
+    #'   stale for further writes to the same chunk (`FALSE`). Leaving the
+    #'   chunks stale for further writing leads to better performance when
+    #'   chunks are written to multiple times. Call the `flush()` method to
+    #'   persist data in stale chunks.
     #' @return Self, invisibly.
-    write = function(data, selection) {
+    write = function(data, selection, flush = TRUE) {
       if (storage.mode(data) != private$.data_type$Rtype)
         stop('Data is of a different type than the array', call. = FALSE) # nocov
 
@@ -182,9 +188,15 @@ zarr_array <- R6::R6Class('zarr_array',
       }
       dt <- private$.data_type
       data[is.na(data)] <- dt$fill_value
-      private$.chunking$write(data, start, stop)
+      private$.chunking$write(data, start, stop, flush)
 
       invisible(self)
+    },
+
+    #' @description Persist the data in all chunks with pending edits to the
+    #'   store.
+    flush = function() {
+      private$.chunking$flush()
     },
 
     #' @description Resize the array, growing or shrinking any combination of

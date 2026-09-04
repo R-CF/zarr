@@ -174,14 +174,14 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       } else {
         # Sequential — reuse cached IO instances from .chunk_map
         chunk_results <- lapply(chunk_info, function(info) {
-          if (!exists(info$key, private$.chunk_map, inherits = FALSE))
+          if (!exists(info$key, private$.chunk_map, inherits = FALSE)) {
+            private$evict_for_capacity()
             private$.chunk_map[[info$key]] <- chunk_grid_regular_IO$new(
-              key         = info$key,
-              chunk_shape = chunk_shape,
-              dtype       = private$.data_type,
-              store       = private$.store,
-              codecs      = private$.codecs
+              key = info$key, chunk_shape = chunk_shape, dtype = private$.data_type,
+              store = private$.store, codecs = private$.codecs
             )
+          }
+          private$touch_chunk(info$key)
           list(
             chunk_data    = private$.chunk_map[[info$key]]$read(info$offset, info$overlap_count),
             overlap_start = info$overlap_start,
@@ -209,8 +209,14 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #'   dimensionality of the Zarr array, indicating the starting and ending
     #'   (inclusive) indices of the data along each axis. Ignored for a scalar
     #'   array.
+    #' @param flush Logical, default is `TRUE`. Should the chunks that have been
+    #'   written to be flushed to the store (`TRUE`), or should they be left
+    #'   stale for further writes to the same chunk (`FALSE`). Leaving the
+    #'   chunks stale for further writing leads to better performance when
+    #'   chunks are written to multiple times. Call the `flush()` method to
+    #'   persist data in stale chunks.
     #' @return Self, invisibly.
-    write = function(data, start, stop) {
+    write = function(data, start, stop, flush = TRUE) {
       if (private$.scalar) {
         start <- 1L
         stop <- 1L
@@ -248,23 +254,28 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
 
         # Get or create chunk IO object
         if (!exists(chunk_key, private$.chunk_map, inherits = FALSE)) {
+          private$evict_for_capacity()
           private$.chunk_map[[chunk_key]] <- chunk_grid_regular_IO$new(
-            key = chunk_key,
-            chunk_shape = chunk_shape,
-            dtype = private$.data_type,
-            store = private$.store,
-            codecs = private$.codecs
+            key = chunk_key, chunk_shape = chunk_shape, dtype = private$.data_type,
+            store = private$.store, codecs = private$.codecs
           )
         }
+        private$touch_chunk(chunk_key)
 
         # Queue synchronous write
         private$.chunk_map[[chunk_key]]$write(
           data = data_slice,
           offset = overlap_start - chunk_origin,
-          flush = TRUE
+          flush = flush
         )
       }
       invisible(self)
+    },
+
+    #' @description Persist the data in all chunks with pending edits to the
+    #'   store.
+    flush = function() {
+      lapply(private$.chunk_map, function(chunk) chunk$flush())
     }
   ),
   active = list(

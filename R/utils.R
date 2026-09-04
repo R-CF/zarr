@@ -17,9 +17,10 @@ zarr_options <- function(key, value) {
     Zarr.options[[key]]
   else {
     switch(key,
-           'chunk_length' = if (is.numeric(value)) Zarr.options$chunk_length <- as.integer(value[1L]),
-           'min_compress' = if (is.numeric(value)) Zarr.options$min_compress <- as.integer(value[1L]),
-           'eps'          = if (is.numeric(value)) Zarr.options$eps <- value[1L]
+           'chunk_length'      = if (is.numeric(value)) Zarr.options$chunk_length <- as.integer(value[1L]),
+           'chunk_cache_bytes' = if (is.numeric(value)) Zarr.options$chunk_cache_bytes <- as.numeric(value[1L]),
+           'min_compress'      = if (is.numeric(value)) Zarr.options$min_compress <- as.integer(value[1L]),
+           'eps'               = if (is.numeric(value)) Zarr.options$eps <- value[1L]
     )
   }
 }

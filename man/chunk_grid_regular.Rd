@@ -29,6 +29,7 @@ reading, the list of registered codecs.}
     \item \href{#method-chunk_grid_regular-metadata_fragment}{\code{chunk_grid_regular$metadata_fragment()}}
     \item \href{#method-chunk_grid_regular-read}{\code{chunk_grid_regular$read()}}
     \item \href{#method-chunk_grid_regular-write}{\code{chunk_grid_regular$write()}}
+    \item \href{#method-chunk_grid_regular-flush}{\code{chunk_grid_regular$flush()}}
   }
 }
 \if{html}{\out{<details open><summary>Inherited methods</summary>
@@ -130,7 +131,7 @@ the Zarr array is a scalar.}
 sequential plan.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{chunk_grid_regular$write(data, start, stop)}
+    \preformatted{chunk_grid_regular$write(data, start, stop, flush = TRUE)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -141,11 +142,30 @@ sequential plan.
 dimensionality of the Zarr array, indicating the starting and ending
 (inclusive) indices of the data along each axis. Ignored for a scalar
 array.}
+      \item{\code{flush}}{Logical, default is \code{TRUE}. Should the chunks that have been
+written to be flushed to the store (\code{TRUE}), or should they be left
+stale for further writes to the same chunk (\code{FALSE}). Leaving the
+chunks stale for further writing leads to better performance when
+chunks are written to multiple times. Call the \code{flush()} method to
+persist data in stale chunks.}
     }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
     Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-chunk_grid_regular-flush"></a>}}
+\if{latex}{\out{\hypertarget{method-chunk_grid_regular-flush}{}}}
+\subsection{\code{chunk_grid_regular$flush()}}{
+  Persist the data in all chunks with pending edits to the
+store.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_regular$flush()}
+    \if{html}{\out{</div>}}
   }
 }
 

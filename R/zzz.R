@@ -9,6 +9,7 @@ Zarr.options <- new.env(parent = emptyenv())
   assign("min_compress", 100L, envir = Zarr.options) # Minimum array size before compression is set
   assign("eps", .Machine$double.eps^0.5, envir = Zarr.options)
   assign("parallel_threshold", 20, envir = Zarr.options)
+  assign("chunk_cache_bytes", 64L * 1024L * 1024L, envir = Zarr.options)  # 64 MB default, per array
 
   # Register the generic conventions for Zarr
   assign("conventions", data.frame(
