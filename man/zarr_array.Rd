@@ -27,6 +27,11 @@ creating store keys for chunks.}
 
     \item{\code{codecs}}{The list of codecs that this array uses for encoding data
 (and decoding in inverse order).}
+
+    \item{\code{raw_read}}{Set or retrieve the logical flag that indicates if data
+read from a Zarr store should have cells with the \code{fill_value} of the
+array be converted to \code{NA} (\code{FALSE}) or kept as-is (\code{TRUE}). The value
+applies to the array for all subsequent reads.}
   }
   \if{html}{\out{</div>}}
 }

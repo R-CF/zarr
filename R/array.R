@@ -15,6 +15,9 @@ zarr_array <- R6::R6Class('zarr_array',
     # An instance of `chunk_grid_regular` to manage data chunking and I/O.
     .chunking = NULL,
 
+    # Should cells with `fill_value` be converted to `NA` or be presented "raw"?
+    .raw_read = FALSE,
+
     # The glyph used for depicting an array when printing. Descendant classes
     # may override this to more easily identify different classes of arrays.
     .glyph = '\u2317',
@@ -115,19 +118,21 @@ zarr_array <- R6::R6Class('zarr_array',
         start <- sapply(selection, min)
         stop  <- sapply(selection, max)
         if (any(start < 1L | start > array_shape | stop > array_shape))
-          stop('Array selection indices are out of bounds.', call. = FALSE) # nocov
+          stop('Array selection indices are out of bounds', call. = FALSE) # nocov
         data <- private$.chunking$read(start, stop)
 
-        fill <- private$.data_type$fill_value
-        Rtype <- private$.data_type$Rtype
-        if (is.nan(fill))
-          data[which(is.nan(data))] <- NA
-        else if (Rtype == 'integer')
-          data[data == fill] <- NA
-        else if (!(Rtype %in% c('logical', 'integer64', 'character'))) # FIXME: is.na(integer64)??
-          data[.near(data, fill)] <- NA
+        if (!private$.raw_read) {
+          fill <- private$.data_type$fill_value
+          Rtype <- private$.data_type$Rtype
+          if (is.nan(fill))
+            data[which(is.nan(data))] <- NA
+          else if (Rtype == 'integer')
+            data[data == fill] <- NA
+          else if (!(Rtype %in% c('logical', 'integer64', 'character'))) # FIXME: is.na(integer64)??
+            data[.near(data, fill)] <- NA
+        }
       } else
-        stop('`selection` list must have the same length as the shape of the array.', call. = FALSE) # nocov
+        stop('`selection` list must have the same length as the shape of the array', call. = FALSE) # nocov
 
       data
     },
@@ -364,6 +369,16 @@ zarr_array <- R6::R6Class('zarr_array',
     codecs = function(value) {
       if (missing(value))
         private$.chunking$codecs
+    },
+
+    #' @field raw_read Set or retrieve the logical flag that indicates if data
+    #'   read from a Zarr store should have cells with the `fill_value` of the
+    #'   array be converted to `NA` (`FALSE`) or kept as-is (`TRUE`). The value
+    #'   applies to the array for all subsequent reads.
+    raw_read = function(value) {
+      if (missing(value)) private$.raw_read
+      else if (is.logical(value) && length(value) == 1L) private$.raw_read <- value
+      else stop('The raw_read property must be set with a single logical value', call. = FALSE)
     }
   )
 )

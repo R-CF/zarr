@@ -191,14 +191,19 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
         })
       }
 
-      # Sequential assembly into output array
-      for (res in chunk_results) {
-        data_start <- res$overlap_start - start
-        idx <- lapply(seq_len(nd), function(d)
-          seq(data_start[d] + 1L, data_start[d] + res$overlap_count[d]))
-        data <- do.call(`[<-`, c(list(data), idx, list(value = res$chunk_data)))
+      if (length(chunk_results) == 1L) {
+        # Single chunk touched, return as-is
+        data <- chunk_results[[1L]]$chunk_data
+        if (nd == 1L) dim(data) <- NULL
+      } else {
+        # Sequential assembly into output array
+        for (res in chunk_results) {
+          data_start <- res$overlap_start - start
+          idx <- lapply(seq_len(nd), function(d)
+            seq(data_start[d] + 1L, data_start[d] + res$overlap_count[d]))
+          data <- do.call(`[<-`, c(list(data), idx, list(value = res$chunk_data)))
+        }
       }
-
       data
     },
 
