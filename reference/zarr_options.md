@@ -51,4 +51,7 @@ zarr_options()
 #> 1 d89b30cf-ed8c-43d5-9a16-b492f0cd8786
 #> 2 3bbe438d-df37-49fe-8e2b-739296d46dfb
 #> 
+#> $chunk_cache_bytes
+#> [1] 67108864
+#> 
 ```

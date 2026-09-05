@@ -32,6 +32,8 @@ transformation.
 
 - [`chunk_grid_regular$write()`](#method-chunk_grid_regular-write)
 
+- [`chunk_grid_regular$flush()`](#method-chunk_grid_regular-flush)
+
 Inherited methods
 
 - [`chunking$resize()`](https://r-cf.github.io/zarr/reference/chunking.html#method-resize)
@@ -124,7 +126,7 @@ Write data to the array. Writing data always uses a sequential plan.
 
 #### Usage
 
-    chunk_grid_regular$write(data, start, stop)
+    chunk_grid_regular$write(data, start, stop, flush = TRUE)
 
 #### Arguments
 
@@ -138,6 +140,26 @@ Write data to the array. Writing data always uses a sequential plan.
   array, indicating the starting and ending (inclusive) indices of the
   data along each axis. Ignored for a scalar array.
 
+- `flush`:
+
+  Logical, default is `TRUE`. Should the chunks that have been written
+  to be flushed to the store (`TRUE`), or should they be left stale for
+  further writes to the same chunk (`FALSE`). Leaving the chunks stale
+  for further writing leads to better performance when chunks are
+  written to multiple times. Call the
+  [`flush()`](https://rdrr.io/r/base/connections.html) method to persist
+  data in stale chunks.
+
 #### Returns
 
 Self, invisibly.
+
+------------------------------------------------------------------------
+
+### `chunk_grid_regular$flush()`
+
+Persist the data in all chunks with pending edits to the store.
+
+#### Usage
+
+    chunk_grid_regular$flush()

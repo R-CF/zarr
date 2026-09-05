@@ -34,6 +34,13 @@ object.
   The list of codecs that this array uses for encoding data (and
   decoding in inverse order).
 
+- `raw_read`:
+
+  Set or retrieve the logical flag that indicates if data read from a
+  Zarr store should have cells with the `fill_value` of the array be
+  converted to `NA` (`FALSE`) or kept as-is (`TRUE`). The value applies
+  to the array for all subsequent reads.
+
 ## Methods
 
 ### Public methods
@@ -47,6 +54,8 @@ object.
 - [`zarr_array$read()`](#method-zarr_array-read)
 
 - [`zarr_array$write()`](#method-zarr_array-write)
+
+- [`zarr_array$flush()`](#method-zarr_array-flush)
 
 - [`zarr_array$resize()`](#method-zarr_array-resize)
 
@@ -70,7 +79,7 @@ Inherited methods
 ### `zarr_array$new()`
 
 Initialize a new array in a Zarr hierarchy. The array must already exist
-in the store
+in the store.
 
 #### Usage
 
@@ -163,7 +172,7 @@ logical type cannot encode `NA` in Zarr and any `NA` values are set to
 
 #### Usage
 
-    zarr_array$write(data, selection)
+    zarr_array$write(data, selection, flush = TRUE)
 
 #### Arguments
 
@@ -179,9 +188,29 @@ logical type cannot encode `NA` in Zarr and any `NA` values are set to
   missing, the `data` object must have the same size as the array.
   Ignored when the array is scalar.
 
+- `flush`:
+
+  Logical, default is `TRUE`. Should the chunks that have been written
+  to be flushed to the store (`TRUE`), or should they be left stale for
+  further writes to the same chunk (`FALSE`). Leaving the chunks stale
+  for further writing leads to better performance when chunks are
+  written to multiple times. Call the
+  [`flush()`](https://rdrr.io/r/base/connections.html) method to persist
+  data in stale chunks.
+
 #### Returns
 
 Self, invisibly.
+
+------------------------------------------------------------------------
+
+### `zarr_array$flush()`
+
+Persist the data in all chunks with pending edits to the store.
+
+#### Usage
+
+    zarr_array$flush()
 
 ------------------------------------------------------------------------
 

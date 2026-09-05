@@ -1,8 +1,7 @@
 # Create a Zarr store
 
-This function creates a Zarr v.3 instance, with a store located on the
-local file system. The root of the Zarr store will be a group to which
-other groups or arrays can be added.
+This function creates a Zarr v.3 instance. The root of the Zarr store
+will be a group to which other groups or arrays can be added.
 
 ## Usage
 
@@ -31,6 +30,6 @@ A [zarr](https://r-cf.github.io/zarr/reference/zarr.md) object.
 fn <- tempfile(fileext = ".zarr")
 my_zarr_object <- create_zarr(fn)
 my_zarr_object$store$root
-#> [1] "/tmp/RtmpwabE4y/file195b3143b50c.zarr"
+#> [1] "/tmp/RtmpNyUxK0/file19411dff0d62.zarr"
 unlink(fn)
 ```

@@ -78,6 +78,7 @@ reading, the list of registered codecs.</p></dd>
 <li><p><a href="#method-chunk_grid_regular-metadata_fragment"><code>chunk_grid_regular$metadata_fragment()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_regular-read"><code>chunk_grid_regular$read()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_regular-write"><code>chunk_grid_regular$write()</code></a></p></li>
+<li><p><a href="#method-chunk_grid_regular-flush"><code>chunk_grid_regular$flush()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="resize"><a href="chunking.html#method-resize"><code>chunking$resize()</code></a></span></li>
 </ul></details></p><hr><a id="method-chunk_grid_regular-initialize"></a><div class="section">
 <h3 id="chunk-grid-regular-new-"><code>chunk_grid_regular$new()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-new-"></a></h3>
@@ -160,7 +161,7 @@ the Zarr array is a scalar.</p></dd>
 <p>Write data to the array. Writing data always uses a
 sequential plan.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">data</span>, <span class="va">start</span>, <span class="va">stop</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">data</span>, <span class="va">start</span>, <span class="va">stop</span>, flush <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
@@ -172,11 +173,29 @@ dimensionality of the Zarr array, indicating the starting and ending
 (inclusive) indices of the data along each axis. Ignored for a scalar
 array.</p></dd>
 
+      <dt><code>flush</code></dt>
+<dd><p>Logical, default is <code>TRUE</code>. Should the chunks that have been
+written to be flushed to the store (<code>TRUE</code>), or should they be left
+stale for further writes to the same chunk (<code>FALSE</code>). Leaving the
+chunks stale for further writing leads to better performance when
+chunks are written to multiple times. Call the <code><a href="https://rdrr.io/r/base/connections.html" class="external-link">flush()</a></code> method to
+persist data in stale chunks.</p></dd>
+
 
 </dl><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>Self, invisibly.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-chunk_grid_regular-flush"></a><div class="section">
+<h3 id="chunk-grid-regular-flush-"><code>chunk_grid_regular$flush()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-regular-flush-"></a></h3>
+<p>Persist the data in all chunks with pending edits to the
+store.</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_regular</span><span class="op">$</span><span class="fu">flush</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 </div>

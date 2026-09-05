@@ -83,6 +83,13 @@ creating store keys for chunks.</p></dd>
 (and decoding in inverse order).</p></dd>
 
 
+    <dt><code>raw_read</code></dt>
+<dd><p>Set or retrieve the logical flag that indicates if data
+read from a Zarr store should have cells with the <code>fill_value</code> of the
+array be converted to <code>NA</code> (<code>FALSE</code>) or kept as-is (<code>TRUE</code>). The value
+applies to the array for all subsequent reads.</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -95,6 +102,7 @@ creating store keys for chunks.</p></dd>
 <li><p><a href="#method-zarr_array-hierarchy_nodes"><code>zarr_array$hierarchy_nodes()</code></a></p></li>
 <li><p><a href="#method-zarr_array-read"><code>zarr_array$read()</code></a></p></li>
 <li><p><a href="#method-zarr_array-write"><code>zarr_array$write()</code></a></p></li>
+<li><p><a href="#method-zarr_array-flush"><code>zarr_array$flush()</code></a></p></li>
 <li><p><a href="#method-zarr_array-resize"><code>zarr_array$resize()</code></a></p></li>
 <li><p><a href="#method-zarr_array-promote"><code>zarr_array$promote()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_object" data-id="print_attributes"><a href="zarr_object.html#method-print_attributes"><code>zarr_object$print_attributes()</code></a></span></li>
@@ -110,7 +118,7 @@ creating store keys for chunks.</p></dd>
 </ul></details></p><hr><a id="method-zarr_array-initialize"></a><div class="section">
 <h3 id="zarr-array-new-"><code>zarr_array$new()</code><a class="anchor" aria-label="anchor" href="#zarr-array-new-"></a></h3>
 <p>Initialize a new array in a Zarr hierarchy. The array must
-already exist in the store</p><div class="section">
+already exist in the store.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_array.html">zarr_array</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">name</span>, <span class="va">metadata</span>, <span class="va">parent</span>, <span class="va">store</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
@@ -196,7 +204,7 @@ any <code>NA</code> values are assigned the <code>fill_value</code> of the array
 the logical type cannot encode <code>NA</code> in Zarr and any <code>NA</code> values are set
 to <code>FALSE</code>.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">data</span>, <span class="va">selection</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">data</span>, <span class="va">selection</span>, flush <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
@@ -209,11 +217,29 @@ where each element is a range of indices along the dimension to write.
 If missing, the <code>data</code> object must have the same size as the array.
 Ignored when the array is scalar.</p></dd>
 
+      <dt><code>flush</code></dt>
+<dd><p>Logical, default is <code>TRUE</code>. Should the chunks that have been
+written to be flushed to the store (<code>TRUE</code>), or should they be left
+stale for further writes to the same chunk (<code>FALSE</code>). Leaving the
+chunks stale for further writing leads to better performance when
+chunks are written to multiple times. Call the <code><a href="https://rdrr.io/r/base/connections.html" class="external-link">flush()</a></code> method to
+persist data in stale chunks.</p></dd>
+
 
 </dl><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>Self, invisibly.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-zarr_array-flush"></a><div class="section">
+<h3 id="zarr-array-flush-"><code>zarr_array$flush()</code><a class="anchor" aria-label="anchor" href="#zarr-array-flush-"></a></h3>
+<p>Persist the data in all chunks with pending edits to the
+store.</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">flush</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 </div>
@@ -229,7 +255,7 @@ values are rounded outward to the nearest chunk (more space added
 when growing, less removed when shrinking), so the array's origin
 may land ahead of where the actual data starts; those cells read as
 <code>NA</code>. <code>high</code> is not constrained this way.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">resize</span><span class="op">(</span><span class="va">low</span>, <span class="va">high</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
@@ -264,7 +290,7 @@ contributes more than a single (vacuous) index to the enumeration.
 So every existing chunk is just renamed with a "0" grid index
 inserted at <code>dimension</code>. The new dimension therefore always starts out as
 exactly one full chunk; grow it afterwards with <code>resize()</code>.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">promote</span><span class="op">(</span><span class="va">dimension</span>, length <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
