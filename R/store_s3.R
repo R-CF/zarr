@@ -611,7 +611,8 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
 #' @export
 #' @examples
 #' # OME test data
-#' (prefix <- s3_list_dir("ome-zarr-scivis", region = "us-east-1"))
+#' if (requireNamespace("paws.storage", quietly = TRUE))
+#'  (prefix <- s3_list_dir("ome-zarr-scivis", region = "us-east-1"))
 #'
 s3_list_dir <- function(bucket, prefix = '', region = NULL, profile = NULL,
                         access_key = NULL, secret_key = NULL, session_token = NULL,

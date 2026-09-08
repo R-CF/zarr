@@ -58,7 +58,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//Rtmpabcg9a/fileaf1d6e5c71fe.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpKTjmVF/file3a91308e1a64.zarr 
 #> Arrays    : 1 
 #> Total size: 1.08 KB
 ```
@@ -127,7 +127,7 @@ You can install the development version of `zarr` from
 
 ## Development
 
-This package is under active development and should not be used for
+This package is under active development and should not yet be used for
 production environments. Things may fail and you are advised to ensure
 that you have backups of all data that you put in a Zarr store with this
 package.

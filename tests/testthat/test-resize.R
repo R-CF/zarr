@@ -172,6 +172,8 @@ test_that("resize: input validation", {
 })
 
 test_that("resize: sharded arrays", {
+  testthat::skip_if_not_installed("zlib")
+
   src <- 'testdata/sharded_test.zarr'
   parent <- tempfile()
   dir.create(parent)
@@ -219,6 +221,8 @@ test_that("promote: scalar array becomes a functional rank-1 array", {
 })
 
 test_that("promote: inserting a new axis preserves data and codecs", {
+  testthat::skip_if_not_installed("zlib")
+
   z <- create_zarr()
   x <- array(1:12L, c(4L, 3L))
 

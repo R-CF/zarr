@@ -1,10 +1,7 @@
-## Resubmission
-This is a resubmission without revdep files that were accidentally included in the previous submission.
-
 ## Release details
-This minor release adds AWS S3 store access and important new functionality such as array resizing and promotion.
+This is a patch to conditionally run tests and examples with suggested packages, as was flagged on the previous release.
 
-The documentation has been expanded.
+Additionally, some new functionality on cache management has been added to preserve RAM memory over long sessions.
 
 ## R CMD check results
 

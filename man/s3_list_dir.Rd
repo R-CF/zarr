@@ -35,6 +35,7 @@ datasets, before calling \code{\link[=open_zarr]{open_zarr()}} or \code{zarr_s3s
 }
 \examples{
 # OME test data
-(prefix <- s3_list_dir("ome-zarr-scivis", region = "us-east-1"))
+if (requireNamespace("paws.storage", quietly = TRUE))
+ (prefix <- s3_list_dir("ome-zarr-scivis", region = "us-east-1"))
 
 }

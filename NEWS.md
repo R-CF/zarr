@@ -1,5 +1,9 @@
 # zarr (development version)
 
+- Chunk management improved, size-limited cache with a LRU eviction scheme. The size of the cache (per array) can be controlled with the session option `chunk_cache_bytes`.
+- New `zarr_array$raw_read` field can be set to control conversion of the Zarr array `fill_value` to R's `NA` upon reading (`FALSE`, default) or to skip the conversion (`TRUE`) for faster loading when data is known not to have fill values or when these are managed at the application level.
+- Fix tests and example that use suggested package to run conditionally.
+
 # zarr 0.5.0
 
 - AWS S3 store access added for reading and, with appropriate authentication, writing. The function `s3_list_dir()` can be used to walk the directory listing of an S3 bucket to locate Zarr stores.

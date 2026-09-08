@@ -194,7 +194,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       if (length(chunk_results) == 1L) {
         # Single chunk touched, return as-is
         data <- chunk_results[[1L]]$chunk_data
-        if (nd == 1L) dim(data) <- NULL
+        if (nd == 1L) dim(data) <- NULL # FIXME: Check if this works with integer64
       } else {
         # Sequential assembly into output array
         for (res in chunk_results) {
