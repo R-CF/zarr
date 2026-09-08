@@ -1,4 +1,4 @@
-# zarr (development version)
+# zarr 0.5.1
 
 - Chunk management improved, size-limited cache with a LRU eviction scheme. The size of the cache (per array) can be controlled with the session option `chunk_cache_bytes`.
 - New `zarr_array$raw_read` field can be set to control conversion of the Zarr array `fill_value` to R's `NA` upon reading (`FALSE`, default) or to skip the conversion (`TRUE`) for faster loading when data is known not to have fill values or when these are managed at the application level.
