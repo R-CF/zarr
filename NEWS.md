@@ -1,3 +1,5 @@
+# zarr (development version)
+
 # zarr 0.5.1
 
 - Chunk management improved, size-limited cache with a LRU eviction scheme. The size of the cache (per array) can be controlled with the session option `chunk_cache_bytes`.
