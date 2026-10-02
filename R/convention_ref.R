@@ -8,8 +8,8 @@
 #'
 #' ```{r schema, eval = FALSE}
 #' {
-#'  "schema_url": "https://raw.githubusercontent.com/R-CF/zarr_convention_ref/main/schema.json",
-#'  "spec_url": "https://raw.githubusercontent.com/R-CF/zarr_convention_ref/main/README.md",
+#'  "schema_url": "https://raw.githubusercontent.com/R-CF/zarr_convention_ref/refs/tags/v2.0.0/schema.json",
+#'  "spec_url": "https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md",
 #'  "uuid": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786",
 #'  "name": "ref",
 #'  "description": "Referencing Zarr objects external to the current Zarr object"
@@ -63,9 +63,9 @@ zarr_convention_ref <- R6::R6Class('zarr_convention_ref',
     #' @return A new instance of a "ref" convention agent.
     initialize = function() {
       super$initialize(name   = 'ref',
-                       schema = 'https://raw.githubusercontent.com/R-CF/zarr_convention_ref/main/schema.json',
+                       schema = 'https://raw.githubusercontent.com/R-CF/zarr_convention_ref/refs/tags/v2.0.0/schema.json',
                        uuid   = 'd89b30cf-ed8c-43d5-9a16-b492f0cd8786')
-      private$.spec <- 'https://raw.githubusercontent.com/R-CF/zarr_convention_ref/main/README.md'
+      private$.spec <- 'https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md'
       private$.description <- 'Referencing Zarr objects external to the current Zarr object'
     },
 

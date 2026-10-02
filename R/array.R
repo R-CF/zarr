@@ -79,7 +79,7 @@ zarr_array <- R6::R6Class('zarr_array',
         cat('Shape     :', shp)
         dim_names <- meta$dimension_names %||% meta$attributes$`_ARRAY_DIMENSIONS`
         if (is.null(dim_names)) cat('\n')
-        else cat(' [', paste(dim_names, collapse = ', '), ']\n', sep = '')
+        else cat(' [', paste(dim_names[1:length(shp)], collapse = ', '), ']\n', sep = '')
         cat('Chunking  :', meta$chunk_grid$configuration$chunk_shape, '\n')
       } else {
         cat('Shape     : (scalar)\n')
@@ -105,7 +105,7 @@ zarr_array <- R6::R6Class('zarr_array',
 
     #' @description Read some or all of the array data for the array. For all
     #'   types other than logical, any data elements with the `fill_value` of
-    #'   the Zarr data type are set to `NA`.
+    #'   the Zarr data type are set to `NA` if the `raw_read` field is `TRUE`.
     #' @param selection A list as long as the array has dimensions where each
     #'   element is a range of indices along the dimension to read. If missing
     #'   or `NULL`, the entire array will be read.

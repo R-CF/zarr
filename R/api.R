@@ -117,7 +117,7 @@ as_zarr <- function(x, name = NULL, location = NULL) {
       ab$add_codec('blosc', list(clevel = 6L))
 
     if (inherits(location, 'zarr_group')) {
-      if (missing(name) || is.null(name))
+      if (is.null(name))
         stop('Argument `name` must be provided', call. = FALSE)
       out <- location
       arr <- out$add_array(name, ab)
@@ -128,7 +128,7 @@ as_zarr <- function(x, name = NULL, location = NULL) {
       else
         zarr_localstore$new(root = location)
 
-      if (missing(name) || is.null(name) || !nzchar(name)) {
+      if (is.null(name) || !nzchar(name)) {
         name <- ''
         store$create_array(name = '', metadata = ab$metadata())
       } else if (is_valid_node_name(name)) {
@@ -143,6 +143,7 @@ as_zarr <- function(x, name = NULL, location = NULL) {
     }
 
     # Store the data from x
+    dimnames(x) <- NULL # Avoid dimnames on cached data
     arr$write(x)
 
     if (inherits(location, 'zarr_group'))

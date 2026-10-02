@@ -136,7 +136,7 @@ array_builder <- R6::R6Class('array_builder',
     print = function() {
       cat('<Zarr array metadata>', if (self$is_valid()) 'VALID' else 'INCOMPLETE', '\n')
       meta <- private$build_metadata()
-      cat(jsonlite::toJSON(meta, auto_unbox = TRUE, pretty = TRUE))
+      cat(jsonlite::toJSON(meta, auto_unbox = TRUE, pretty = TRUE, digits = NA))
       invisible(self)
     },
 
@@ -148,7 +148,7 @@ array_builder <- R6::R6Class('array_builder',
       if (format == 'list')
         private$build_metadata()
       else if (format == 'json')
-        jsonlite::toJSON(private$build_metadata(), auto_unbox = TRUE, pretty = TRUE)
+        jsonlite::toJSON(private$build_metadata(), auto_unbox = TRUE, pretty = TRUE, digits = NA)
       else
         stop('Bad format for Zarr metadata.', call. = FALSE) # nocov
     },

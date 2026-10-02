@@ -129,7 +129,7 @@ group hierarchy.
 \subsection{\code{zarr_array$read()}}{
   Read some or all of the array data for the array. For all
 types other than logical, any data elements with the \code{fill_value} of
-the Zarr data type are set to \code{NA}.
+the Zarr data type are set to \code{NA} if the \code{raw_read} field is \code{TRUE}.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_array$read(selection)}

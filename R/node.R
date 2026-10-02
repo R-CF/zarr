@@ -210,7 +210,7 @@ zarr_node <- R6::R6Class('zarr_node',
     #'   existing values.
     #' @return Self, invisibly.
     append_array_attribute = function(name, value, after = NULL) {
-      private$.metadata[["attributes"]] <-
+      private$.metadata[["attributes"]] <- # NOTE: Name of super is same as here but with different signature
         super$append_array_attribute(private$.metadata[["attributes"]], name, value, after)
       private$.meta_dirty <- TRUE
       invisible(self)

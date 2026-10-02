@@ -14,7 +14,7 @@ Zarr.options <- new.env(parent = emptyenv())
   # Register the generic conventions for Zarr
   assign("conventions", data.frame(
     name   = c('ref', 'uom'),
-    schema = c('https://raw.githubusercontent.com/R-CF/zarr_convention_ref/main/schema.json',
+    schema = c('https://raw.githubusercontent.com/R-CF/zarr_convention_ref/refs/tags/v2.0.0/schema.json',
                'https://raw.githubusercontent.com/clbarnes/zarr-convention-uom/refs/tags/v1/schema.json'),
     uuid   = c('d89b30cf-ed8c-43d5-9a16-b492f0cd8786',
                '3bbe438d-df37-49fe-8e2b-739296d46dfb')

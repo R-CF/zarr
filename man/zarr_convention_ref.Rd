@@ -12,8 +12,8 @@ Zarr store or in an external Zarr store. In particular, the following
 convention is implemented here:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{\{
- "schema_url": "https://raw.githubusercontent.com/R-CF/zarr_convention_ref/main/schema.json",
- "spec_url": "https://raw.githubusercontent.com/R-CF/zarr_convention_ref/main/README.md",
+ "schema_url": "https://raw.githubusercontent.com/R-CF/zarr_convention_ref/refs/tags/v2.0.0/schema.json",
+ "spec_url": "https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md",
  "uuid": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786",
  "name": "ref",
  "description": "Referencing Zarr objects external to the current Zarr object"

@@ -101,11 +101,11 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         if (self$version == 3L)
           jsonlite::write_json(list(zarr_format = 3, node_type = "group"),
                                path = file.path(private$.root, 'zarr.json'),
-                               auto_unbox = TRUE, pretty = T)
+                               auto_unbox = TRUE, pretty = T, digits = NA)
         else
           jsonlite::write_json(list(zarr_format = 2),
                                path = file.path(private$.root, '.zgroup'),
-                               auto_unbox = TRUE, pretty = T)
+                               auto_unbox = TRUE, pretty = T, digits = NA)
         TRUE
       }
     },
@@ -144,11 +144,11 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         if (self$version == 3L)
           jsonlite::write_json(list(zarr_format = 3, node_type = 'group'),
                                path = file.path(private$.root, paste0(prefix, 'zarr.json')),
-                               auto_unbox = TRUE, pretty = T)
+                               auto_unbox = TRUE, pretty = T, digits = NA)
         else
           jsonlite::write_json(list(zarr_format = 2),
                                path = file.path(private$.root, paste0(prefix, '.zgroup')),
-                               auto_unbox = TRUE, pretty = T)
+                               auto_unbox = TRUE, pretty = T, digits = NA)
         TRUE
       }
     },
@@ -349,7 +349,13 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       if (private$.version == 2L)
         metadata <- private$metadata_v3_to_v2(metadata)
       metadata <- private$check_cke(metadata)
-      jsonlite::write_json(metadata, fn, pretty = TRUE, auto_unbox = TRUE)
+      if (metadata$node_type == 'array') {
+        metadata$shape <- I(metadata$shape)
+        metadata$chunk_grid$configuration$chunk_shape <- I(metadata$chunk_grid$configuration$chunk_shape)
+        if (!is.null(metadata$dimension_names))
+          metadata$dimension_names <- I(metadata$dimension_names)
+      }
+      jsonlite::write_json(metadata, fn, pretty = TRUE, auto_unbox = TRUE, digits = NA)
       invisible(self)
     },
 
@@ -381,7 +387,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         if (file.exists(fn))
           stop('Cannot create a root group in an existing Zarr store.', call. = FALSE) # nocov
         meta <- list(zarr_format = 3, node_type = 'group')
-        jsonlite::write_json(meta, path = fn, auto_unbox = TRUE, pretty = T)
+        jsonlite::write_json(meta, path = fn, auto_unbox = TRUE, pretty = T, digits = NA)
         return(meta)
       }
 
@@ -392,7 +398,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       fp <- file.path(private$.root, path, name)
       if (dir.create(fp, showWarnings = FALSE, recursive = FALSE, mode = '0771')) {
         meta <- list(zarr_format = 3, node_type = 'group')
-        jsonlite::write_json(meta, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T)
+        jsonlite::write_json(meta, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T, digits = NA)
         meta
       } else
         stop('Could not create a group at path: ', fp, call. = FALSE) # nocov
@@ -417,13 +423,19 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         stop('Cannot write new objects to the Zarr store.', call. = FALSE) # nocov
 
       metadata <- private$check_cke(metadata)
+      if (metadata$node_type == 'array') {
+        metadata$shape <- I(metadata$shape)
+        metadata$chunk_grid$configuration$chunk_shape <- I(metadata$chunk_grid$configuration$chunk_shape)
+        if (!is.null(metadata$dimension_names))
+          metadata$dimension_names <- I(metadata$dimension_names)
+      }
 
       if (!nzchar(name)) {
         # Create a root array
         fn <- file.path(private$.root, 'zarr.json')
         if (file.exists(fn))
           stop('Cannot create a root array in an existing Zarr store.', call. = FALSE) # nocov
-        jsonlite::write_json(metadata, path = fn, auto_unbox = TRUE, pretty = T)
+        jsonlite::write_json(metadata, path = fn, auto_unbox = TRUE, pretty = T, digits = NA)
         return(metadata)
       }
 
@@ -433,7 +445,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       # Create the array
       fp <- file.path(paste0(private$.root, parent), name)
       if (dir.create(fp, showWarnings = FALSE, recursive = FALSE, mode = '0771')) {
-        jsonlite::write_json(metadata, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T)
+        jsonlite::write_json(metadata, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T, digits = NA)
         metadata
       } else
         stop('Could not create an array at path: ', fp, call. = FALSE) # nocov

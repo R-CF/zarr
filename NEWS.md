@@ -1,5 +1,9 @@
 # zarr (development version)
 
+- `zarr.json` writes arrays for `shape` and `chunk_shape` for 1D axes.
+- JSON writes use full numeric precision.
+- `ref` convention uses released version v2.0.0.
+
 # zarr 0.5.1
 
 - Chunk management improved, size-limited cache with a LRU eviction scheme. The size of the cache (per array) can be controlled with the session option `chunk_cache_bytes`.

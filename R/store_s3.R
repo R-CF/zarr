@@ -519,7 +519,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
       if (!private$.read_only) {
         metadata <- private$check_cke(metadata)
         key <- paste0(sub('^/', '', prefix), 'zarr.json')
-        body <- charToRaw(jsonlite::toJSON(metadata, auto_unbox = TRUE, null = 'null'))
+        body <- charToRaw(jsonlite::toJSON(metadata, auto_unbox = TRUE, null = 'null', digits = NA))
         self$set(key, body)
       }
       invisible(self)
