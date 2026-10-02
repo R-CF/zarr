@@ -305,6 +305,33 @@ array_builder <- R6::R6Class('array_builder',
       }
     },
 
+    #' @field data_type_from_storage.mode Set the data type of the Zarr array
+    #'   from the `storage.mode()` of the data to be written to the array with
+    #'   this `array_builder` instance. This is effectively a write-only field:
+    #'   reading the value will just return the Zarr data type, not the R type -
+    #'   use `zarr_v3_datatypes[[<zarr_data_type>]]$Rtype` for that. After
+    #'   setting the format, many fields will have been reset to a default
+    #'   value.
+    data_type_from_storage.mode = function(value) {
+      if (missing(value))
+        private$.data_type
+      else {
+        dt <- switch(value,
+                     'logical'   = 'bool',
+                     'integer'   = 'int32',
+                     'double'    = 'float64',
+                     'character' = 'string',
+                     stop('Unsupported data type:', value, call. = FALSE))
+        if (is.null(private$.data_type)) {
+          private$.data_type <- zarr_data_type$new(dt)
+          private$update_codecs()
+        } else if (private$.data_type$data_type != dt) {
+          private$.data_type$data_type <- dt
+          private$update_codecs()
+        }
+      }
+    },
+
     #' @field fill_value The value in the array of uninitialized data elements.
     #' The `fill_value` has to agree with the `data_type` of the array.
     fill_value = function(value) {
@@ -370,7 +397,8 @@ array_builder <- R6::R6Class('array_builder',
     #'   the Zarr array. When setting, pass in an integer vector of lengths of
     #'   the same size as the shape of the array. The `shape` of the array must
     #'   be set before setting this. When reading, returns an instance of class
-    #'   [chunk_grid_regular].
+    #'   [chunk_grid_regular] if the `shape` field has been set, `NULL`
+    #'   otherwise.
     chunk_shape = function(value) {
       if (missing(value))
         private$.chunk_shape

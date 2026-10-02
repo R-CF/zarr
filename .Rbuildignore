@@ -15,4 +15,4 @@
 ^\.claude$
 ^CLAUDE.md$
 ^tests/testthat/testdata$
-^\revdep$
+^revdep$

@@ -34,7 +34,7 @@ zarr_array <- R6::R6Class('zarr_array',
           list(pre = paste0('c', private$.metadata$chunk_key_encoding$configuration$separator),
                sep = private$.metadata$chunk_key_encoding$configuration$separator %||% '/',
                scalar = 'c')
-        else # v2
+        else # v2 chunking
           list(pre = '',
                sep = private$.metadata$chunk_key_encoding$configuration$separator %||% '.',
                scalar = '0')
@@ -42,21 +42,32 @@ zarr_array <- R6::R6Class('zarr_array',
     }
   ),
   public = list(
-    #' @description Initialize a new array in a Zarr hierarchy. The array must
-    #'   already exist in the store.
-    #' @param name The name of the array.
+    #' @description Initialize a new array in a Zarr hierarchy. The array will
+    #'   be created in the store if it does not yet exist.
+    #' @param name The name of the array. For a single-array store, this must be
+    #'   an empty string, otherwise a valid Zarr node name.
     #' @param metadata List with the metadata of the array.
     #' @param parent The parent `zarr_group` instance of this new array, can be
-    #'   missing or `NULL` if the Zarr object should have just this array.
+    #'   missing or `NULL` if the Zarr store should have just this array.
     #' @param store The [zarr_store] instance to persist data in. Ignored if
     #'   `parent` is specified.
     #' @return An instance of `zarr_array`.
     initialize = function(name, metadata, parent, store) {
       ab <- array_builder$new(metadata)
       if (!ab$is_valid())
-        stop('Invalid metadata for an array.', call. = FALSE) # nocov
+        stop('Invalid metadata for an array', call. = FALSE) # nocov
+
+      # Create the array if it does not yet exist
+      if (!isTRUE(nzchar(name))) { # name == '' || is.null(name)
+        # Single-array store so array goes in the store root
+        if (!store$exists('zarr.json'))
+          metadata <- store$create_array(name = '', metadata = metadata)
+      } else if (!store$exists(paste0(.path2prefix(parent$path), name))) {
+        metadata <- store$create_array(parent = parent$path, name = name, metadata = metadata)
+      }
 
       super$initialize(name, metadata, parent, store)
+
       private$.data_type <- ab$data_type
       private$.chunking <- ab$chunk_shape
       private$.chunking$data_type <- private$.data_type
@@ -64,6 +75,9 @@ zarr_array <- R6::R6Class('zarr_array',
       private$.chunking$array_prefix <- self$prefix
       private$.chunking$codecs <- ab$codecs
       private$.chunking$chunk_encoding <- private$chunk_key_encoding()
+
+      if (!missing(parent) && inherits(parent, 'zarr_group'))
+        parent$set_node(self)
     },
 
     #' @description Print a summary of the array to the console.
@@ -221,17 +235,17 @@ zarr_array <- R6::R6Class('zarr_array',
     resize = function(low, high) {
       shape <- private$.metadata$shape
       nd <- length(shape)
-      if (!nd) stop('Cannot resize a scalar array; see `promote()`.', call. = FALSE)
+      if (!nd) stop('Cannot resize a scalar array; see `promote()`', call. = FALSE)
       if (missing(low))  low  <- integer(nd)
       if (missing(high)) high <- integer(nd)
       if (length(low) != nd || length(high) != nd)
-        stop('`low` and `high` must have one element per dimension of the array.', call. = FALSE)
+        stop('`low` and `high` must have one element per dimension of the array', call. = FALSE)
 
       chunk_shape <- private$.chunking$chunk_shape
       shift <- ifelse(low >= 0L, ceiling(low / chunk_shape), -floor(-low / chunk_shape))
       new_shape <- as.integer(shape + shift * chunk_shape + high)
       if (any(new_shape < 1L))
-        stop('Resizing would produce a non-positive extent along one or more dimensions.', call. = FALSE)
+        stop('Resizing would produce a non-positive extent along one or more dimensions', call. = FALSE)
 
       private$.chunking$resize(new_shape, as.integer(shift), high)
       private$.metadata$shape <- new_shape
@@ -441,7 +455,7 @@ str.zarr_array <- function(object, ...) {
 
     nd <- length(x$shape)
     if (length(indices) != nd)
-      stop('Invalid number of selection indices for the array.', call. = FALSE) # nocov
+      stop('Invalid number of selection indices for the array', call. = FALSE) # nocov
     selection <- vector("list", nd)
 
     for (d in seq_len(nd)) {

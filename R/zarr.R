@@ -30,12 +30,14 @@ zarr <- R6::R6Class("zarr",
 
       # Build the node hierarchy
       metadata <- private$.store$get_metadata('/')
-      private$.root <- .buildNode(name = '', metadata = metadata, parent = NULL, store = private$.store)
-      if (inherits(private$.root, 'zarr_group'))
-        private$.root$build_hierarchy()
+      if (!is.null(metadata)) {
+        private$.root <- .buildNode(name = '', metadata = metadata, parent = NULL, store = private$.store)
+        if (inherits(private$.root, 'zarr_group'))
+          private$.root$build_hierarchy()
 
-      # Post-open processing
-      private$.root$post_open()
+        # Post-open processing
+        private$.root$post_open()
+      }
     },
 
     #' @description Print a summary of the Zarr object to the console.
@@ -46,12 +48,16 @@ zarr <- R6::R6Class("zarr",
       cat('Store     :', private$.store$friendlyClassName, '\n')
       if (fs)
         cat('Location  :', private$.store$root, '\n')
-      arrays <- if (inherits(private$.root, 'zarr_array')) '1 (single array store)'
-                else private$.root$count_arrays()
-      cat('Arrays    :', arrays, '\n')
-      if (fs)
-        cat('Total size:', .size_string(sum(file.size(list.files(private$.store$root, full.names = TRUE, recursive = TRUE)))), '\n')
-      private$.root$print_attributes()
+      if (is.null(private$.root))
+        cat('Arrays    : (unitialised)\n')
+      else {
+        arrays <- if (inherits(private$.root, 'zarr_array')) '1 (single array store)'
+                  else private$.root$count_arrays()
+        cat('Arrays    :', arrays, '\n')
+        if (fs)
+          cat('Total size:', .size_string(sum(file.size(list.files(private$.store$root, full.names = TRUE, recursive = TRUE)))), '\n')
+        private$.root$print_attributes()
+      }
     },
 
     #' @description Print the Zarr hierarchy to the console.

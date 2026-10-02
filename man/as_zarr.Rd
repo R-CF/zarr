@@ -5,7 +5,7 @@
 \alias{as_zarr}
 \title{Convert an R object into a Zarr array}
 \usage{
-as_zarr(x, name = NULL, location = NULL)
+as_zarr(x, name = "", location = NULL)
 }
 \arguments{
 \item{x}{The R object to convert. Must be a vector, matrix or array of a

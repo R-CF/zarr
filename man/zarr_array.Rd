@@ -66,8 +66,8 @@ applies to the array for all subsequent reads.}
 \if{html}{\out{<a id="method-zarr_array-initialize"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_array-initialize}{}}}
 \subsection{\code{zarr_array$new()}}{
-  Initialize a new array in a Zarr hierarchy. The array must
-already exist in the store.
+  Initialize a new array in a Zarr hierarchy. The array will
+be created in the store if it does not yet exist.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_array$new(name, metadata, parent, store)}
@@ -76,10 +76,11 @@ already exist in the store.
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{name}}{The name of the array.}
+      \item{\code{name}}{The name of the array. For a single-array store, this must be
+an empty string, otherwise a valid Zarr node name.}
       \item{\code{metadata}}{List with the metadata of the array.}
       \item{\code{parent}}{The parent \code{zarr_group} instance of this new array, can be
-missing or \code{NULL} if the Zarr object should have just this array.}
+missing or \code{NULL} if the Zarr store should have just this array.}
       \item{\code{store}}{The \link{zarr_store} instance to persist data in. Ignored if
 \code{parent} is specified.}
     }

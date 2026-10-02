@@ -58,6 +58,14 @@ data will be permuted before writing the array to the store. A value of
     \item{\code{data_type}}{The data type of the Zarr array. After changing the
 format, many fields will have been reset to a default value.}
 
+    \item{\code{data_type_from_storage.mode}}{Set the data type of the Zarr array
+from the \code{storage.mode()} of the data to be written to the array with
+this \code{array_builder} instance. This is effectively a write-only field:
+reading the value will just return the Zarr data type, not the R type -
+use \verb{zarr_v3_datatypes[[<zarr_data_type>]]$Rtype} for that. After
+setting the format, many fields will have been reset to a default
+value.}
+
     \item{\code{fill_value}}{The value in the array of uninitialized data elements.
 The \code{fill_value} has to agree with the \code{data_type} of the array.}
 
@@ -69,7 +77,8 @@ chunking settings to their default values.}
 the Zarr array. When setting, pass in an integer vector of lengths of
 the same size as the shape of the array. The \code{shape} of the array must
 be set before setting this. When reading, returns an instance of class
-\link{chunk_grid_regular}.}
+\link{chunk_grid_regular} if the \code{shape} field has been set, \code{NULL}
+otherwise.}
 
     \item{\code{codec_info}}{(read-only) Retrieve a \code{data.frame} of registered codec
 modes and names for this array.}

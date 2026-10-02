@@ -99,7 +99,7 @@ chunking <- R6::R6Class('chunking',
         if (is.integer(array_shape) && all(array_shape > 0L))
           private$.array_shape <- array_shape
         else
-          stop('Array shape must be defined using integer vector of positive values.', call. = FALSE) # nocov
+          stop('Array shape must be defined using integer vector of positive values', call. = FALSE) # nocov
 
         if (is.integer(chunk_shape) && all(chunk_shape > 0L) && length(array_shape) == length(chunk_shape))
           private$.chunk_shape <- chunk_shape

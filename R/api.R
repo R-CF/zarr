@@ -100,57 +100,42 @@ open_zarr <- function(location, read_only = NULL, protocol = NULL, ...) {
 #' x <- array(1:400, c(5, 20, 4))
 #' z <- as_zarr(x)
 #' z
-as_zarr <- function(x, name = NULL, location = NULL) {
-  if (is.numeric(x) || is.logical(x) || is.character(x)) {
-    # Build the array metadata from x
-    ab <- array_builder$new()
-    ab$data_type <- switch(storage.mode(x),
-                           'logical'   = 'bool',
-                           'integer'   = 'int32',
-                           'double'    = 'float64',
-                           'character' = 'string',
-                           stop('Unsupported data type:', storage.mode(x), call. = FALSE))
-    d <- dim(x) %||% length(x)
-    ab$shape <- d
-    ab$chunk_shape <- .auto_chunk(d)
-    if (prod(d) > Zarr.options$min_compress)
-      ab$add_codec('blosc', list(clevel = 6L))
+as_zarr <- function(x, name = '', location = NULL) {
+  dimnames(x) <- NULL # Avoid dimnames on cached data
 
-    if (inherits(location, 'zarr_group')) {
-      if (is.null(name))
-        stop('Argument `name` must be provided', call. = FALSE)
-      out <- location
-      arr <- out$add_array(name, ab)
-    } else {
-      # Create the store and add the array to make the store valid
-      store <- if (missing(location) || is.null(location) || !nzchar(location))
-        zarr_memorystore$new()
-      else
-        zarr_localstore$new(root = location)
+  # Build the array metadata from x
+  ab <- array_builder$new()
+  ab$data_type_from_storage.mode <- storage.mode(x)
+  d <- dim(x) %||% length(x)
+  ab$shape <- d
+  ab$chunk_shape <- auto_chunk(d)
+  if (prod(d) > Zarr.options$min_compress)
+    ab$add_codec('blosc', list(clevel = 6L))
 
-      if (is.null(name) || !nzchar(name)) {
-        name <- ''
-        store$create_array(name = '', metadata = ab$metadata())
-      } else if (is_valid_node_name(name)) {
-        store$create_group(name = '')
-        store$create_array(parent = '/', name = name, metadata = ab$metadata())
-      } else
-        stop('Invalid name for a Zarr array: ', name, call. = FALSE)
-
-      # Create the Zarr object and get a handle on the newly created array
-      out <- zarr$new(store)
-      arr <- out[[paste0('/', name)]]
-    }
-
-    # Store the data from x
-    dimnames(x) <- NULL # Avoid dimnames on cached data
+  # New array in existing store
+  if (inherits(location, 'zarr_group')) {
+    arr <- out$add_array(name, ab)
     arr$write(x)
-
-    if (inherits(location, 'zarr_group'))
-      arr
-    else
-      out
+    return(location)
   }
+
+  # Create the store for the new array
+  store <- if (missing(location) || is.null(location) || !nzchar(location))
+    zarr_memorystore$new()
+  else
+    zarr_localstore$new(root = location)
+  if (nzchar(name))
+    store$create_group(name = '')
+  out <- zarr$new(store)
+
+  if (!nzchar(name)) {
+    out$root <- zarr_array$new(name = '', metadata = ab$metadata(), store = store)
+    out$root$write(x)
+  } else {
+    arr <- zarr_array$new(name = name, metadata = ab$metadata(), parent = out$root, store = store)
+    arr$write(x)
+  }
+  out
 }
 
 #' Define the properties of a new Zarr array.

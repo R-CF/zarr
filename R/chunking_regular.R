@@ -52,7 +52,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #' @return An instance of `chunk_grid_regular`.
     initialize = function(array_shape, chunk_shape) {
       if (!is.na(array_shape[1L]) && missing(chunk_shape))
-        chunk_shape <- .auto_chunk(array_shape)
+        chunk_shape <- auto_chunk(array_shape)
       super$initialize('regular', array_shape, chunk_shape)
     },
 

@@ -29,7 +29,7 @@ zarr_group <- R6::R6Class('zarr_group',
     initialize = function(name, metadata, parent, store) {
       super$initialize(name, metadata, parent, store)
       if (metadata$node_type != 'group')
-        stop('Invalid metadata for a group.', call. = FALSE) # nocov
+        stop('Invalid metadata for a group', call. = FALSE) # nocov
     },
 
     #' @description This method is called automatically after a Zarr store is
@@ -121,7 +121,7 @@ zarr_group <- R6::R6Class('zarr_group',
         for (i in 1:len) {
           meta <- try(private$.store$get_metadata(paste0(prefix, dirs[i], '/')), silent = TRUE)
           if (inherits(meta, "try-error"))
-            warning(paste0('Error reading metadata from location ', dirs[i], '. Ignoring.'), call. = FALSE)
+            warning(paste0('Error reading metadata from location ', dirs[i], ' - ignoring'), call. = FALSE)
           else if (!is.null(meta)) {
             node <- .buildNode(name = dirs[i], metadata = meta, parent = self, store = self$store)
             children[[i]] <- if (inherits(node, 'zarr_node')) node else NULL
@@ -206,17 +206,10 @@ zarr_group <- R6::R6Class('zarr_group',
     #' @return The newly created `zarr_array` instance, or `NULL` if the array
     #'   could not be created.
     add_array = function(name, metadata) {
-      if (!private$check_name(name))
-        stop('Invalid name for a Zarr object: ', name, call. = FALSE) # nocov
-
       if (inherits(metadata, 'array_builder'))
         metadata <- metadata$metadata()
-
-      meta <- private$.store$create_array(self$path, name, metadata)
-      if (is.list(meta)) {
-        arr <- zarr_array$new(name, meta, self, self$store)
-        private$.children <- append(private$.children, setNames(list(arr), name))
-        arr
+      if (is.list(metadata)) {
+        zarr_array$new(name, metadata, self, self$store)
       } else
         NULL
     },

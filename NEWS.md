@@ -1,5 +1,6 @@
 # zarr (development version)
 
+- The `array_builder` class has a field `data_type_from_storage.mode` that can make a Zarr data type from an R storage mode.
 - `zarr.json` writes arrays for `shape` and `chunk_shape` for 1D axes.
 - JSON writes use full numeric precision.
 - `ref` convention uses released version v2.0.0.
