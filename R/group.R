@@ -20,16 +20,26 @@ zarr_group <- R6::R6Class('zarr_group',
     #'   exist in the store.
     #' @param name The name of the group. For a root group, this is the empty
     #'   string `""`.
-    #' @param metadata List with the metadata of the group.
+    #' @param metadata Optional. List with the metadata of the group. If omitted
+    #'   it will default to a simple Zarr v.3 group.
     #' @param parent The parent `zarr_group` instance of this new group, can be
-    #'   missing or `NULL` for the root group.
-    #' @param store The [zarr_store] instance to persist data in. Ignored if
-    #'   `parent` is specified.
+    #'   a `zarr` instance for the root group.
     #' @return An instance of `zarr_group`.
-    initialize = function(name, metadata, parent, store) {
-      super$initialize(name, metadata, parent, store)
+    initialize = function(name, metadata = list(zarr_format = 3, node_type = "group"), parent) {
+      # Create the group in the store if it does not yet exist
+      if (inherits(parent, 'zarr')) {
+        if (!parent$store$exists('zarr.json'))
+          metadata <- parent$store$create_group(name = '')
+      } else if (!parent$store$exists(paste0(.path2prefix(parent$path), name))) {
+        metadata <- parent$store$create_group(path = parent$path, name = name)
+      }
+
+      super$initialize(name, metadata, parent)
       if (metadata$node_type != 'group')
         stop('Invalid metadata for a group', call. = FALSE) # nocov
+
+      if (inherits(parent, 'zarr_group')) parent$set_node(self)
+      else parent$root <- self
     },
 
     #' @description This method is called automatically after a Zarr store is
@@ -123,7 +133,7 @@ zarr_group <- R6::R6Class('zarr_group',
           if (inherits(meta, "try-error"))
             warning(paste0('Error reading metadata from location ', dirs[i], ' - ignoring'), call. = FALSE)
           else if (!is.null(meta)) {
-            node <- .buildNode(name = dirs[i], metadata = meta, parent = self, store = self$store)
+            node <- .buildNode(name = dirs[i], metadata = meta, parent = self)
             children[[i]] <- if (inherits(node, 'zarr_node')) node else NULL
             if (meta$node_type == 'group')
               node$build_hierarchy()
@@ -183,19 +193,9 @@ zarr_group <- R6::R6Class('zarr_group',
 
     #' @description Add a group to the Zarr hierarchy under the current group.
     #' @param name The name of the new group.
-    #' @return The newly created `zarr_group` instance, or `NULL` if the group
-    #'   could not be created.
+    #' @return The newly created `zarr_group` instance.
     add_group = function(name) {
-      if (!private$check_name(name))
-        stop('Invalid name for a Zarr object: ', name, call. = FALSE) # nocov
-
-      meta <- private$.store$create_group(self$path, name)
-      if (is.list(meta)) {
-        grp <- zarr_group$new(name, meta, self, self$store)
-        private$.children <- append(private$.children, setNames(list(grp), name))
-        grp
-      } else
-        NULL
+      zarr_group$new(name = name, parent = self)
     },
 
     #' @description Add an array to the Zarr hierarchy in the current group.
@@ -209,7 +209,7 @@ zarr_group <- R6::R6Class('zarr_group',
       if (inherits(metadata, 'array_builder'))
         metadata <- metadata$metadata()
       if (is.list(metadata)) {
-        zarr_array$new(name, metadata, self, self$store)
+        zarr_array$new(name = name, metadata = metadata, parent = self)
       } else
         NULL
     },

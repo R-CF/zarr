@@ -265,21 +265,20 @@ zarr_conventions <- function() {
 #' @param metadata List, the metadata of the node to be created.
 #' @param parent A `zarr_node`, the parent of the node to be created. `NULL` for
 #'   the root node.
-#' @param store The `zarr_store` where the node is stored.
 #' @return The newly created node, either from a domain or a generic
 #'   `zarr_group` or `zarr_array`.
 #' @noRd
-.buildNode <- function(name, metadata, parent, store) {
+.buildNode <- function(name, metadata, parent) {
   for (d in zarr_domains()) {
-    node <- d$build(name, metadata, parent, store)
+    node <- d$build(name, metadata, parent)
     if (inherits(node, 'zarr_node')) return(node)
   }
 
   # Fallback: return generic node
   if (metadata$node_type == 'group')
-    zarr_group$new(name, metadata, parent, store)
+    zarr_group$new(name, metadata, parent)
   else
-    zarr_array$new(name, metadata, parent, store)
+    zarr_array$new(name, metadata, parent)
 }
 
 # This internal function supports codec management for sharding

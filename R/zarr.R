@@ -22,16 +22,63 @@ zarr <- R6::R6Class("zarr",
     #' @description Create a new Zarr instance. The Zarr instance manages the
     #'   groups and arrays in the Zarr store that it refers to. This instance
     #'   provides access to all objects in the Zarr store.
-    #' @param store An instance of a [zarr_store] descendant class where the
-    #'   Zarr objects are located.
+    #'
+    #'   This method can open any Zarr store located on systems with a supported
+    #'   protocol ('local', 's3', 'http').
+    #'
+    #'   This method can also create a new Zarr store on a local file system or
+    #'   in memory. It is not possible to create a new store on S3 or an a web
+    #'   server. The newly created store is uninitialised, it is an empty
+    #'   directory. Either assign a [zarr_array] to the `root` field, or create
+    #'   a root [zarr_group] to make the store valid and usable.
+    #' @param store Optional. Either an instance of a [zarr_store] descendant
+    #'   class where the Zarr objects are located, or character string that
+    #'   indicates a location on a file system or a HTTP or S3 server where the
+    #'   Zarr store is to be found. The character string may contain UTF-8
+    #'   characters and/or use a file URI format. On a local file system the
+    #'   Zarr store will be created if it does not exist. If omitted, an
+    #'   in-memory Zarr store will be created.
+    #' @param read_only Optional. Logical that indicates if the store is to be
+    #'   opened in read-only mode. Default is ` NULL`, which implies `FALSE` for
+    #'   a local file system and memory store, `TRUE` otherwise.
+    #' @param protocol Optional, character string. Override automatic protocol
+    #'   detection ('local', 'http', or 's3'). Needed for S3-compatible
+    #'   endpoints that aren't AWS and don't follow AWS's hostname conventions
+    #'   (MinIO, EMBASSY Cloud, Ceph RGW, etc.) - there's no reliable way to
+    #'   recognize these from the URL alone, you have to indicate so explicitly
+    #'   rather than have this method parse the location.
+    #' @param ... Additional protocol-specific parameters passed through to the
+    #'   underlying store constructor. For `s3://` and S3 `https://` locations,
+    #'   this includes `region`, `profile`, `access_key`/`secret_key`/
+    #'   `session_token`, `endpoint`, and `anonymous` — see [zarr_s3store].
+    #'   Ignored for memory, local and plain HTTP locations.
     #' @returns A `zarr` object.
-    initialize = function(store) {
-      private$.store <- store
+    initialize = function(store, read_only = NULL, protocol = NULL, ...) {
+      private$.store <- if (missing(store) || is.null(store))
+        zarr_memorystore$new()
+      else if (inherits(store, 'zarr_store'))
+        store
+      else if (is.character(store) && length(store) == 1L) {
+        protocol <- protocol %||% .protocol(store)
+        if (is.null(read_only))
+          read_only <- protocol != 'local'
+
+        switch(protocol,
+               's3'    = {
+                 loc <- .parse_s3_location(store)
+                 zarr_s3store$new(bucket = loc$bucket, prefix = loc$prefix,
+                                  region = loc$region, endpoint = loc$endpoint,
+                                  read_only = read_only, ...)},
+               'http'  = zarr_httpstore$new(url = store),
+               'local' = zarr_localstore$new(root = store, read_only = read_only),
+               stop('Argument `store` points to an unrecognizable location: ', store, call. = FALSE))
+      } else
+        stop('Argument `store` must be a `zarr_store` instance or a single character string', call. = FALSE)
 
       # Build the node hierarchy
       metadata <- private$.store$get_metadata('/')
       if (!is.null(metadata)) {
-        private$.root <- .buildNode(name = '', metadata = metadata, parent = NULL, store = private$.store)
+        private$.root <- .buildNode(name = '', metadata = metadata, parent = self)
         if (inherits(private$.root, 'zarr_group'))
           private$.root$build_hierarchy()
 
@@ -62,9 +109,14 @@ zarr <- R6::R6Class("zarr",
 
     #' @description Print the Zarr hierarchy to the console.
     hierarchy = function() {
-      cat('<Zarr hierarchy>', private$.store$root, '\n')
-      hier <- private$.root$hierarchy_nodes(1L, 1L)
-      cat(hier, sep = '')
+      cat('<Zarr hierarchy> ')
+      if (is.null(private$.root))
+        cat('(uninitialised)\n')
+      else {
+        cat(private$.store$root, '\n')
+        hier <- private$.root$hierarchy_nodes(1L, 1L)
+        cat(hier, sep = '')
+      }
     },
 
     #' @description Retrieve the group or array represented by the node located
@@ -127,24 +179,22 @@ zarr <- R6::R6Class("zarr",
       if (inherits(grp, 'zarr_group')) {
         if (recursive)
           grp$delete_all()
-        if (!is.null(grp$parent))
+        if (inherits(grp$parent, 'zarr_group'))
           grp$parent$delete(grp$name)
       }
       invisible(self)
     },
 
     #' @description Delete an array from the Zarr object. If the array is the
-    #'   root of the Zarr object, it will be converted into a regular Zarr
-    #'   object with a root group. **Warning:** this operation is irreversible
-    #'   for many stores!
+    #'   root of the Zarr object, the Zarr object will become uninitialised.
+    #'   **Warning:** this operation is irreversible for many stores!
     #' @param path The path to the array.
     #' @return Self, invisible.
     delete_array = function(path) {
       if (path == '/') {
         # Deleting a single array Zarr: result will be a group Zarr
         if (private$.store$clear())
-          private$.root <- zarr_group$new(name = '', parent = NULL, store = private$.store,
-                                          metadata = private$.store$get_metadata(''))
+          private$.root <- NULL
       } else {
         # Deleting an array somewhere in the hierarchy
         arr <- self$get_node(path)

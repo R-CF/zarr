@@ -43,41 +43,38 @@ zarr_array <- R6::R6Class('zarr_array',
   ),
   public = list(
     #' @description Initialize a new array in a Zarr hierarchy. The array will
-    #'   be created in the store if it does not yet exist.
-    #' @param name The name of the array. For a single-array store, this must be
-    #'   an empty string, otherwise a valid Zarr node name.
+    #'   be created in the store if it does not yet exist, opened otherwise.
+    #' @param name The name of the array. Ignored for a single-array store.
     #' @param metadata List with the metadata of the array.
-    #' @param parent The parent `zarr_group` instance of this new array, can be
-    #'   missing or `NULL` if the Zarr store should have just this array.
-    #' @param store The [zarr_store] instance to persist data in. Ignored if
-    #'   `parent` is specified.
+    #' @param parent The parent [zarr_group] instance of this new array, or the
+    #'   [zarr] object for a single-array store.
     #' @return An instance of `zarr_array`.
-    initialize = function(name, metadata, parent, store) {
+    initialize = function(name, metadata, parent) {
       ab <- array_builder$new(metadata)
       if (!ab$is_valid())
         stop('Invalid metadata for an array', call. = FALSE) # nocov
 
-      # Create the array if it does not yet exist
-      if (!isTRUE(nzchar(name))) { # name == '' || is.null(name)
+      # Create the array in the store if it does not yet exist
+      if (inherits(parent, 'zarr')) {
         # Single-array store so array goes in the store root
-        if (!store$exists('zarr.json'))
-          metadata <- store$create_array(name = '', metadata = metadata)
-      } else if (!store$exists(paste0(.path2prefix(parent$path), name))) {
-        metadata <- store$create_array(parent = parent$path, name = name, metadata = metadata)
+        if (!parent$store$exists('zarr.json'))
+          metadata <- parent$store$create_array(name = '', metadata = metadata)
+      } else if (!parent$store$exists(paste0(.path2prefix(parent$path), name))) {
+        metadata <- parent$store$create_array(parent = parent$path, name = name, metadata = metadata)
       }
 
-      super$initialize(name, metadata, parent, store)
+      super$initialize(name, metadata, parent)
 
       private$.data_type <- ab$data_type
       private$.chunking <- ab$chunk_shape
       private$.chunking$data_type <- private$.data_type
-      private$.chunking$store <- store
+      private$.chunking$store <- private$.store
       private$.chunking$array_prefix <- self$prefix
       private$.chunking$codecs <- ab$codecs
       private$.chunking$chunk_encoding <- private$chunk_key_encoding()
 
-      if (!missing(parent) && inherits(parent, 'zarr_group'))
-        parent$set_node(self)
+      if (inherits(parent, 'zarr_group')) parent$set_node(self)
+      else parent$root <- self
     },
 
     #' @description Print a summary of the array to the console.

@@ -69,7 +69,11 @@ hierarchy starting from the current group, as a character vector.}
 exist in the store.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_group$new(name, metadata, parent, store)}
+    \preformatted{zarr_group$new(
+  name,
+  metadata = list(zarr_format = 3, node_type = "group"),
+  parent
+)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -77,11 +81,10 @@ exist in the store.
     \describe{
       \item{\code{name}}{The name of the group. For a root group, this is the empty
 string \code{""}.}
-      \item{\code{metadata}}{List with the metadata of the group.}
+      \item{\code{metadata}}{Optional. List with the metadata of the group. If omitted
+it will default to a simple Zarr v.3 group.}
       \item{\code{parent}}{The parent \code{zarr_group} instance of this new group, can be
-missing or \code{NULL} for the root group.}
-      \item{\code{store}}{The \link{zarr_store} instance to persist data in. Ignored if
-\code{parent} is specified.}
+a \code{zarr} instance for the root group.}
     }
     \if{html}{\out{</div>}}
   }
@@ -267,8 +270,7 @@ should be included in the count. Default is \code{TRUE}.}
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    The newly created \code{zarr_group} instance, or \code{NULL} if the group
-could not be created.
+    The newly created \code{zarr_group} instance.
   }
 }
 

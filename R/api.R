@@ -16,10 +16,9 @@
 #' my_zarr_object$store$root
 #' unlink(fn)
 create_zarr <- function(location) {
-  store <- if (missing(location) || !nzchar(location)) zarr_memorystore$new()
-           else zarr_localstore$new(location)
-  store$create_group(name = '')
-  zarr$new(store)
+  z <- zarr$new(location)
+  zarr_group$new(name = '', parent = z)
+  z
 }
 
 #' Open a Zarr store
@@ -51,22 +50,7 @@ create_zarr <- function(location) {
 #' africa <- open_zarr(fn)
 #' africa
 open_zarr <- function(location, read_only = NULL, protocol = NULL, ...) {
-  proto <- protocol %||% .protocol(location)
-  if (is.null(read_only))
-    read_only <- proto != 'local'
-
-  store <- switch(proto,
-                  'local' = zarr_localstore$new(location, read_only),
-                  'http'  = zarr_httpstore$new(location),
-                  's3'    = {
-                    loc <- .parse_s3_location(location)
-                    zarr_s3store$new(bucket = loc$bucket, prefix = loc$prefix,
-                                     region = loc$region, endpoint = loc$endpoint,
-                                     read_only = read_only, ...)
-                  },
-                  stop('Unsupported location: ', location, call. = FALSE)
-  )
-  zarr$new(store)
+  zarr$new(location, read_only, protocol, ...)
 }
 
 #' Convert an R object into a Zarr array
@@ -114,25 +98,18 @@ as_zarr <- function(x, name = '', location = NULL) {
 
   # New array in existing store
   if (inherits(location, 'zarr_group')) {
-    arr <- out$add_array(name, ab)
+    arr <- location$add_array(name, ab)
     arr$write(x)
     return(location)
   }
 
-  # Create the store for the new array
-  store <- if (missing(location) || is.null(location) || !nzchar(location))
-    zarr_memorystore$new()
-  else
-    zarr_localstore$new(root = location)
-  if (nzchar(name))
-    store$create_group(name = '')
-  out <- zarr$new(store)
-
+  out <- zarr$new(location)
   if (!nzchar(name)) {
-    out$root <- zarr_array$new(name = '', metadata = ab$metadata(), store = store)
+    zarr_array$new(name = '', metadata = ab$metadata(), parent = out)
     out$root$write(x)
   } else {
-    arr <- zarr_array$new(name = name, metadata = ab$metadata(), parent = out$root, store = store)
+    zarr_group$new(name = '', parent = out)
+    arr <- zarr_array$new(name = name, metadata = ab$metadata(), parent = out$root)
     arr$write(x)
   }
   out

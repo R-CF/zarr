@@ -26,10 +26,15 @@ names.
   \describe{
     \item{\code{name}}{(read-only) The name of the node.}
 
-    \item{\code{parent}}{The parent of the node. For a root node this returns
-\code{NULL}, otherwise this \code{zarr_group} or \code{zarr_array} instance. CAUTION:
-Setting the parent of a node can invalidate the Zarr hierarchy -
-expert use only.}
+    \item{\code{zarr}}{(read-only) Retrieve the \link{zarr} object that manages this
+node.}
+
+    \item{\code{parent}}{The parent of the node. For a root node this returns the
+\code{zarr} object, otherwise this \code{zarr_group} or \code{zarr_array} instance.
+CAUTION: Setting the parent of a node can invalidate the Zarr hierarchy
+\itemize{
+\item expert use only.
+}}
 
     \item{\code{store}}{(read-only) The store of the node.}
 
@@ -82,7 +87,7 @@ and \code{append_array_attribute()} methods or removed with the
   Initialize a new node in a Zarr hierarchy.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_node$new(name, metadata, parent, store)}
+    \preformatted{zarr_node$new(name, metadata, parent)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -90,10 +95,8 @@ and \code{append_array_attribute()} methods or removed with the
     \describe{
       \item{\code{name}}{The name of the node.}
       \item{\code{metadata}}{List with the metadata of the node.}
-      \item{\code{parent}}{The parent node of this new node. Must be omitted when
-initializing a root node.}
-      \item{\code{store}}{The store to persist data in. Ignored if \code{parent} is
-specified.}
+      \item{\code{parent}}{The parent node of this new node, either a \link{zarr_group} or
+a \link{zarr} instance.}
     }
     \if{html}{\out{</div>}}
   }

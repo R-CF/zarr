@@ -54,19 +54,16 @@ zarr_node <- R6::R6Class('zarr_node',
     #' @description Initialize a new node in a Zarr hierarchy.
     #' @param name The name of the node.
     #' @param metadata List with the metadata of the node.
-    #' @param parent The parent node of this new node. Must be omitted when
-    #' initializing a root node.
-    #' @param store The store to persist data in. Ignored if `parent` is
-    #'   specified.
+    #' @param parent The parent node of this new node, either a [zarr_group] or
+    #' a [zarr] instance.
     #' @return A new instance of this class.
-    initialize = function(name, metadata, parent, store) {
-      if (missing(parent) || is.null(parent)) name <- ''
+    initialize = function(name, metadata, parent) {
+      if (inherits(parent, 'zarr')) name <- ''
       super$initialize(name)
 
       private$.metadata <- metadata
-      if (!missing(parent))
-        private$.parent <- parent
-      private$.store <- if (is.null(private$.parent)) store else parent$store
+      private$.parent <- parent
+      private$.store <- parent$store
     },
 
     #' @description This method is called automatically after a Zarr store is
@@ -254,10 +251,19 @@ zarr_node <- R6::R6Class('zarr_node',
         private$.name
     },
 
-    #' @field parent The parent of the node. For a root node this returns
-    #'   `NULL`, otherwise this `zarr_group` or `zarr_array` instance. CAUTION:
-    #'   Setting the parent of a node can invalidate the Zarr hierarchy -
-    #'   expert use only.
+    #' @field zarr (read-only) Retrieve the [zarr] object that manages this
+    #'   node.
+    zarr = function(value) {
+      if (missing(value)) {
+        if (inherits(private$.parent, 'zarr')) private$.parent
+        else private$.parent$zarr
+      }
+    },
+
+    #' @field parent The parent of the node. For a root node this returns the
+    #'   `zarr` object, otherwise this `zarr_group` or `zarr_array` instance.
+    #'   CAUTION: Setting the parent of a node can invalidate the Zarr hierarchy
+    #'   - expert use only.
     parent = function(value) {
       if (missing(value))
         private$.parent
