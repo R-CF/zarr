@@ -56,15 +56,16 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpIqkCvE/file1cc22162b1d9.zarr 
+#> Location  : /tmp/Rtmp5Kig1v/file1d97249f4093.zarr 
 #> Arrays    : 1 
 #> Total size: 2.81 KB
 
 # Print the hierarchy of objects
 # Zarr groups are identified by the ☰ glyph
 # Zarr arrays use the ⌗ glyph
+# (Domains may use other glyphs)
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpIqkCvE/file1cc22162b1d9.zarr 
+#> <Zarr hierarchy> /tmp/Rtmp5Kig1v/file1d97249f4093.zarr 
 #> ☰ / (root group)
 #> └ ⌗ top_array
 ```
@@ -89,7 +90,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpIqkCvE/file1cc22162b1d9.zarr 
+#> <Zarr hierarchy> /tmp/Rtmp5Kig1v/file1d97249f4093.zarr 
 #> ☰ / (root group)
 #> ├ ⌗ top_array
 #> ├ ⌗ a_vector
@@ -117,7 +118,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpIqkCvE/file1cc22162b1d9.zarr 
+#> Location  : /tmp/Rtmp5Kig1v/file1d97249f4093.zarr 
 #> Arrays    : 3 
 #> Total size: 6.74 KB
 unlink(fn)
@@ -385,7 +386,7 @@ z$add_array("/", "another_array", arr_def)
 #> Chunking  : 120 31 5
 
 z$hierarchy()
-#> <Zarr hierarchy> 
+#> <Zarr hierarchy>  
 #> ☰ / (root group)
 #> ├ ⌗ first_array
 #> └ ⌗ another_array

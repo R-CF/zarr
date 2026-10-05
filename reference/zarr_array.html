@@ -11,7 +11,7 @@ an object."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,25 +117,27 @@ applies to the array for all subsequent reads.</p></dd>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_node" data-id="walk_path"><a href="zarr_node.html#method-walk_path"><code>zarr_node$walk_path()</code></a></span></li>
 </ul></details></p><hr><a id="method-zarr_array-initialize"></a><div class="section">
 <h3 id="zarr-array-new-"><code>zarr_array$new()</code><a class="anchor" aria-label="anchor" href="#zarr-array-new-"></a></h3>
-<p>Initialize a new array in a Zarr hierarchy. The array must
-already exist in the store.</p><div class="section">
+<p>Initialize a new array in a Zarr hierarchy. The array will
+be created in the store if it does not yet exist, opened otherwise.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_array.html">zarr_array</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">name</span>, <span class="va">metadata</span>, <span class="va">parent</span>, <span class="va">store</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_array.html">zarr_array</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">name</span>, <span class="va">metadata</span>, <span class="va">parent</span>, no_create_check <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
-<dd><p>The name of the array.</p></dd>
+<dd><p>The name of the array. Ignored for a single-array store.</p></dd>
 
       <dt><code>metadata</code></dt>
 <dd><p>List with the metadata of the array.</p></dd>
 
       <dt><code>parent</code></dt>
-<dd><p>The parent <code>zarr_group</code> instance of this new array, can be
-missing or <code>NULL</code> if the Zarr object should have just this array.</p></dd>
+<dd><p>The parent <a href="zarr_group.html">zarr_group</a> instance of this new array, or the
+<a href="zarr.html">zarr</a> object for a single-array store.</p></dd>
 
-      <dt><code>store</code></dt>
-<dd><p>The <a href="zarr_store.html">zarr_store</a> instance to persist data in. Ignored if
-<code>parent</code> is specified.</p></dd>
+      <dt><code>no_create_check</code></dt>
+<dd><p>Optional, logical flag to indicate if a check for
+existence of the group in the store should be made. Default is <code>FALSE</code>.
+Set to <code>TRUE</code> only when existence has been established before calling
+this method.</p></dd>
 
 
 </dl><p></p></div>
@@ -177,7 +179,7 @@ group hierarchy.</p><div class="section">
 <h3 id="zarr-array-read-"><code>zarr_array$read()</code><a class="anchor" aria-label="anchor" href="#zarr-array-read-"></a></h3>
 <p>Read some or all of the array data for the array. For all
 types other than logical, any data elements with the <code>fill_value</code> of
-the Zarr data type are set to <code>NA</code>.</p><div class="section">
+the Zarr data type are set to <code>NA</code> if the <code>raw_read</code> field is <code>TRUE</code>.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="va">selection</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">

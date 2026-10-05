@@ -5,7 +5,8 @@
 Zarr is a widely used format for the storage and retrieval of
 n-dimensional array data from data stores ranging from local file
 systems to the cloud. This package is a native Zarr implementation in R
-with support for all required features of Zarr version 3.
+with support for all required features of Zarr version 3. It can also
+read Zarr version 2 stores.
 
 ## Creating Zarr objects
 
@@ -60,7 +61,7 @@ grp1$add_group(name = "กลุ่มย่อย") # = subgroup in Thai
 
 # The hierarchy of groups
 z$hierarchy()
-#> <Zarr hierarchy> 
+#> <Zarr hierarchy>  
 #> ☰ / (root group)
 #> ├ ☰ first_group
 #> │ ├ ☰ grp1_subgroup
@@ -94,7 +95,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpHnNKB5/file1c862f0c59b2.zarr 
+#> Location  : /tmp/Rtmpoq9ioi/file1d5f43f11bc.zarr 
 #> Arrays    : 0 
 #> Total size: 47 Bytes
 ```

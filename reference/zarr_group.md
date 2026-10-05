@@ -82,7 +82,12 @@ store.
 
 #### Usage
 
-    zarr_group$new(name, metadata, parent, store)
+    zarr_group$new(
+      name,
+      metadata = list(zarr_format = 3, node_type = "group"),
+      parent,
+      no_create_check = FALSE
+    )
 
 #### Arguments
 
@@ -93,17 +98,19 @@ store.
 
 - `metadata`:
 
-  List with the metadata of the group.
+  Optional. List with the metadata of the group. If omitted it will
+  default to a simple Zarr v.3 group.
 
 - `parent`:
 
-  The parent `zarr_group` instance of this new group, can be missing or
-  `NULL` for the root group.
+  The parent `zarr_group` instance of this new group, can be a `zarr`
+  instance for the root group.
 
-- `store`:
+- `no_create_check`:
 
-  The [zarr_store](https://r-cf.github.io/zarr/reference/zarr_store.md)
-  instance to persist data in. Ignored if `parent` is specified.
+  Optional, logical flag to indicate if a check for existence of the
+  group in the store should be made. Default is `FALSE`. Set to `TRUE`
+  only when existence has been established before calling this method.
 
 #### Returns
 
@@ -269,8 +276,7 @@ Add a group to the Zarr hierarchy under the current group.
 
 #### Returns
 
-The newly created `zarr_group` instance, or `NULL` if the group could
-not be created.
+The newly created `zarr_group` instance.
 
 ------------------------------------------------------------------------
 

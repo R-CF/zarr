@@ -55,14 +55,13 @@ arr$set_attribute("title", "Bar for foo")
 arr$set_attribute("valid_range", c(0, 1))
 arr$set_attribute("actual_range", range(x))
 arr 
-#> <Zarr array> ⌗ bar 
-#> Path      : /bar 
-#> Data type : float64 
-#> Shape     : 100 200
-#> Chunking  : 100 100 
-#> 
+#> <Zarr group> [root] 
+#> Path     : / 
+#> Arrays   : bar
 #> Attributes:
 #> title       : Bar for foo
+#> creator     : ACME Inc.
+#> license     : free (as in free lunch)
 #> valid_range : [0, 1]
 #> actual_range: [2.5581568479538e-05, 0.999872711254284]
 ```
@@ -80,14 +79,13 @@ attributes this allows you to update an existing attribute value too.
 
 arr$set_attribute("title", paste(arr$attributes[["title"]], "and baz too"))
 arr
-#> <Zarr array> ⌗ bar 
-#> Path      : /bar 
-#> Data type : float64 
-#> Shape     : 100 200
-#> Chunking  : 100 100 
-#> 
+#> <Zarr group> [root] 
+#> Path     : / 
+#> Arrays   : bar
 #> Attributes:
 #> title       : Bar for foo and baz too
+#> creator     : ACME Inc.
+#> license     : free (as in free lunch)
 #> valid_range : [0, 1]
 #> actual_range: [2.5581568479538e-05, 0.999872711254284]
 ```
@@ -99,14 +97,13 @@ with the attribute name to delete as argument.
 
 arr$delete_attribute("valid_range")
 arr
-#> <Zarr array> ⌗ bar 
-#> Path      : /bar 
-#> Data type : float64 
-#> Shape     : 100 200
-#> Chunking  : 100 100 
-#> 
+#> <Zarr group> [root] 
+#> Path     : / 
+#> Arrays   : bar
 #> Attributes:
 #> title       : Bar for foo and baz too
+#> creator     : ACME Inc.
+#> license     : free (as in free lunch)
 #> actual_range: [2.5581568479538e-05, 0.999872711254284]
 ```
 

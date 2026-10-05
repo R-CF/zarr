@@ -18,17 +18,19 @@ object to represent the contents of the HTTP store.
 
 ``` r
 
-# Publicly accessible Zarr v.2 HTTP store with consolidated metadata
-z <- open_zarr("https://data.earthdatahub.destine.eu/public/test-dataset-v0.zarr")
+# Publicly accessible Zarr v.2 store with consolidated metadata, accessed using the 'http' protocol
+z <- open_zarr('https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1', protocol = 'http')
 #> Loading required namespace: curl
 z$hierarchy()
-#> <Zarr hierarchy> https://data.earthdatahub.destine.eu/public/test-dataset-v0.zarr 
+#> <Zarr hierarchy> https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1 
 #> ☰ / (root group)
-#> ├ ⌗ age_band_lower_bound
-#> ├ ⌗ demographic_totals
-#> ├ ⌗ latitude
-#> ├ ⌗ longitude
-#> └ ⌗ year
+#> ├ ⌗ analysed_sst
+#> ├ ⌗ analysis_error
+#> ├ ⌗ lat
+#> ├ ⌗ lon
+#> ├ ⌗ mask
+#> ├ ⌗ sea_ice_fraction
+#> └ ⌗ time
 ```
 
 ### Single-array store
@@ -327,7 +329,6 @@ points, which expands to about 271GB of integer data in R!
 A more intelligent way to download data is to look at the chunking of
 the array data. From the “axes” array in the “multiscales” attribute we
 can see that a chunk (the unit of downloading data) is all of the “x”
-and “y” extent for a single “\[z, c, t\]” tuple. The most efficient way
-of downloading the data is then to follow the chunking scheme and
-download one or a few of the “z”, “c” and “t” values and all of “x” and
-“y”.
+and “y” extent for a single `(z, c, t)` tuple. The most efficient way of
+downloading the data is then to follow the chunking scheme and download
+one or a few of the “z”, “c” and “t” values and all of “x” and “y”.

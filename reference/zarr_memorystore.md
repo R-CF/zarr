@@ -404,11 +404,11 @@ Create a new group in the store under the specified path.
 
 #### Usage
 
-    zarr_memorystore$create_group(path, name)
+    zarr_memorystore$create_group(parent, name)
 
 #### Arguments
 
-- `path`:
+- `parent`:
 
   The path to the parent group of the new group. Ignored when creating a
   root group.

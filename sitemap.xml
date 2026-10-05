@@ -18,6 +18,7 @@
 <url><loc>https://r-cf.github.io/zarr/reference/array-indexing.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/array_builder.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/as_zarr.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/auto_chunk.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/chunk_grid_regular.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/chunk_grid_regular_IO.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/chunk_grid_sharded.html</loc></url>

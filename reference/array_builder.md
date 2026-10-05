@@ -58,6 +58,16 @@ been created.
   The data type of the Zarr array. After changing the format, many
   fields will have been reset to a default value.
 
+- `data_type_from_storage.mode`:
+
+  Set the data type of the Zarr array from the
+  [`storage.mode()`](https://rdrr.io/r/base/mode.html) of the data to be
+  written to the array with this `array_builder` instance. This is
+  effectively a write-only field: reading the value will just return the
+  Zarr data type, not the R type - use
+  `zarr_v3_datatypes[[<zarr_data_type>]]$Rtype` for that. After setting
+  the format, many fields will have been reset to a default value.
+
 - `fill_value`:
 
   The value in the array of uninitialized data elements. The
@@ -75,7 +85,8 @@ been created.
   When setting, pass in an integer vector of lengths of the same size as
   the shape of the array. The `shape` of the array must be set before
   setting this. When reading, returns an instance of class
-  [chunk_grid_regular](https://r-cf.github.io/zarr/reference/chunk_grid_regular.md).
+  [chunk_grid_regular](https://r-cf.github.io/zarr/reference/chunk_grid_regular.md)
+  if the `shape` field has been set, `NULL` otherwise.
 
 - `codec_info`:
 

@@ -27,11 +27,19 @@ validity of node names.
 
   (read-only) The name of the node.
 
+- `zarr`:
+
+  (read-only) Retrieve the
+  [zarr](https://r-cf.github.io/zarr/reference/zarr.md) object that
+  manages this node.
+
 - `parent`:
 
-  The parent of the node. For a root node this returns `NULL`, otherwise
-  this `zarr_group` or `zarr_array` instance. CAUTION: Setting the
-  parent of a node can invalidate the Zarr hierarchy - expert use only.
+  The parent of the node. For a root node this returns the `zarr`
+  object, otherwise this `zarr_group` or `zarr_array` instance. CAUTION:
+  Setting the parent of a node can invalidate the Zarr hierarchy
+
+  - expert use only.
 
 - `store`:
 
@@ -103,7 +111,7 @@ Initialize a new node in a Zarr hierarchy.
 
 #### Usage
 
-    zarr_node$new(name, metadata, parent, store)
+    zarr_node$new(name, metadata, parent)
 
 #### Arguments
 
@@ -117,12 +125,9 @@ Initialize a new node in a Zarr hierarchy.
 
 - `parent`:
 
-  The parent node of this new node. Must be omitted when initializing a
-  root node.
-
-- `store`:
-
-  The store to persist data in. Ignored if `parent` is specified.
+  The parent node of this new node, either a
+  [zarr_group](https://r-cf.github.io/zarr/reference/zarr_group.md) or a
+  [zarr](https://r-cf.github.io/zarr/reference/zarr.md) instance.
 
 #### Returns
 

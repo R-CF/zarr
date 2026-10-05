@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,14 +124,13 @@ allows it. See the Extending Zarr article for more details.</p>
 <span><span class="va">arr</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"valid_range"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">arr</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"actual_range"</span>, <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">arr</span> </span>
-<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗ bar </span></span>
-<span><span class="co">#&gt; Path      : /bar </span></span>
-<span><span class="co">#&gt; Data type : float64 </span></span>
-<span><span class="co">#&gt; Shape     : 100 200</span></span>
-<span><span class="co">#&gt; Chunking  : 100 100 </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
+<span><span class="co">#&gt; Path     : / </span></span>
+<span><span class="co">#&gt; Arrays   : bar</span></span>
 <span><span class="co">#&gt; Attributes:</span></span>
 <span><span class="co">#&gt; title       : Bar for foo</span></span>
+<span><span class="co">#&gt; creator     : ACME Inc.</span></span>
+<span><span class="co">#&gt; license     : free (as in free lunch)</span></span>
 <span><span class="co">#&gt; valid_range : [0, 1]</span></span>
 <span><span class="co">#&gt; actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
 <p>You can programmatically retrieve the full set of attributes with the
@@ -146,14 +145,13 @@ too.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">arr</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"title"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">arr</span><span class="op">$</span><span class="va">attributes</span><span class="op">[[</span><span class="st">"title"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"and baz too"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">arr</span></span>
-<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗ bar </span></span>
-<span><span class="co">#&gt; Path      : /bar </span></span>
-<span><span class="co">#&gt; Data type : float64 </span></span>
-<span><span class="co">#&gt; Shape     : 100 200</span></span>
-<span><span class="co">#&gt; Chunking  : 100 100 </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
+<span><span class="co">#&gt; Path     : / </span></span>
+<span><span class="co">#&gt; Arrays   : bar</span></span>
 <span><span class="co">#&gt; Attributes:</span></span>
 <span><span class="co">#&gt; title       : Bar for foo and baz too</span></span>
+<span><span class="co">#&gt; creator     : ACME Inc.</span></span>
+<span><span class="co">#&gt; license     : free (as in free lunch)</span></span>
 <span><span class="co">#&gt; valid_range : [0, 1]</span></span>
 <span><span class="co">#&gt; actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
 <p>If you want to delete an attribute, use the
@@ -162,14 +160,13 @@ as argument.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">arr</span><span class="op">$</span><span class="fu">delete_attribute</span><span class="op">(</span><span class="st">"valid_range"</span><span class="op">)</span></span>
 <span><span class="va">arr</span></span>
-<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗ bar </span></span>
-<span><span class="co">#&gt; Path      : /bar </span></span>
-<span><span class="co">#&gt; Data type : float64 </span></span>
-<span><span class="co">#&gt; Shape     : 100 200</span></span>
-<span><span class="co">#&gt; Chunking  : 100 100 </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
+<span><span class="co">#&gt; Path     : / </span></span>
+<span><span class="co">#&gt; Arrays   : bar</span></span>
 <span><span class="co">#&gt; Attributes:</span></span>
 <span><span class="co">#&gt; title       : Bar for foo and baz too</span></span>
+<span><span class="co">#&gt; creator     : ACME Inc.</span></span>
+<span><span class="co">#&gt; license     : free (as in free lunch)</span></span>
 <span><span class="co">#&gt; actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
 <p>The <code>(*)</code> after the the heading “Attributes:” indicates
 that there are unsaved changes to the attributes, meaning that the

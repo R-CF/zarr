@@ -27,7 +27,7 @@ names."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,11 +88,16 @@ names.</p>
 <dd><p>(read-only) The name of the node.</p></dd>
 
 
+    <dt><code>zarr</code></dt>
+<dd><p>(read-only) Retrieve the <a href="zarr.html">zarr</a> object that manages this
+node.</p></dd>
+
+
     <dt><code>parent</code></dt>
-<dd><p>The parent of the node. For a root node this returns
-<code>NULL</code>, otherwise this <code>zarr_group</code> or <code>zarr_array</code> instance. CAUTION:
-Setting the parent of a node can invalidate the Zarr hierarchy -
-expert use only.</p></dd>
+<dd><p>The parent of the node. For a root node this returns the
+<code>zarr</code> object, otherwise this <code>zarr_group</code> or <code>zarr_array</code> instance.
+CAUTION: Setting the parent of a node can invalidate the Zarr hierarchy</p><ul><li><p>expert use only.</p></li>
+</ul></dd>
 
 
     <dt><code>store</code></dt>
@@ -151,7 +156,7 @@ and <code>append_array_attribute()</code> methods or removed with the
 <h3 id="zarr-node-new-"><code>zarr_node$new()</code><a class="anchor" aria-label="anchor" href="#zarr-node-new-"></a></h3>
 <p>Initialize a new node in a Zarr hierarchy.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_node.html">zarr_node</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">name</span>, <span class="va">metadata</span>, <span class="va">parent</span>, <span class="va">store</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_node.html">zarr_node</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">name</span>, <span class="va">metadata</span>, <span class="va">parent</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
@@ -161,12 +166,8 @@ and <code>append_array_attribute()</code> methods or removed with the
 <dd><p>List with the metadata of the node.</p></dd>
 
       <dt><code>parent</code></dt>
-<dd><p>The parent node of this new node. Must be omitted when
-initializing a root node.</p></dd>
-
-      <dt><code>store</code></dt>
-<dd><p>The store to persist data in. Ignored if <code>parent</code> is
-specified.</p></dd>
+<dd><p>The parent node of this new node, either a <a href="zarr_group.html">zarr_group</a> or
+a <a href="zarr.html">zarr</a> instance.</p></dd>
 
 
 </dl><p></p></div>

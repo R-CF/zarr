@@ -45,7 +45,7 @@ zarr_options()
 #> 1  ref
 #> 2  uom
 #>                                                                                    schema
-#> 1             https://raw.githubusercontent.com/R-CF/zarr_convention_ref/main/schema.json
+#> 1 https://raw.githubusercontent.com/R-CF/zarr_convention_ref/refs/tags/v2.0.0/schema.json
 #> 2 https://raw.githubusercontent.com/clbarnes/zarr-convention-uom/refs/tags/v1/schema.json
 #>                                   uuid
 #> 1 d89b30cf-ed8c-43d5-9a16-b492f0cd8786

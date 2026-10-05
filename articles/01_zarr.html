@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,7 +77,8 @@
 <p>Zarr is a widely used format for the storage and retrieval of
 n-dimensional array data from data stores ranging from local file
 systems to the cloud. This package is a native Zarr implementation in R
-with support for all required features of Zarr version 3.</p>
+with support for all required features of Zarr version 3. It can also
+read Zarr version 2 stores.</p>
 </div>
 <div class="section level2">
 <h2 id="creating-zarr-objects">Creating Zarr objects<a class="anchor" aria-label="anchor" href="#creating-zarr-objects"></a>
@@ -126,7 +127,7 @@ groups as your data requires to any other group:</p>
 <span></span>
 <span><span class="co"># The hierarchy of groups</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt;  </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
 <span><span class="co">#&gt; ├ ☰ first_group</span></span>
 <span><span class="co">#&gt; │ ├ ☰ grp1_subgroup</span></span>
@@ -157,7 +158,7 @@ groups and arrays. It is recommended that the name of the location has a
 <span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
 <span><span class="co">#&gt; Version   : 3 </span></span>
 <span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/RtmpHnNKB5/file1c862f0c59b2.zarr </span></span>
+<span><span class="co">#&gt; Location  : /tmp/Rtmpoq9ioi/file1d5f43f11bc.zarr </span></span>
 <span><span class="co">#&gt; Arrays    : 0 </span></span>
 <span><span class="co">#&gt; Total size: 47 Bytes</span></span></code></pre></div>
 <p>The 47 bytes of storage are taken up by a “zarr.json” file. Every

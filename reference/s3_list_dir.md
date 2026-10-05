@@ -49,6 +49,7 @@ A character vector of keys/prefixes found immediately below `prefix`.
 
 ``` r
 # OME test data
-(prefix <- s3_list_dir("ome-zarr-scivis", region = "us-east-1"))
+if (requireNamespace("paws.storage", quietly = TRUE))
+ (prefix <- s3_list_dir("ome-zarr-scivis", region = "us-east-1"))
 #> [1] "v0.4/" "v0.5/"
 ```

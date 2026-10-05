@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,9 +44,19 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="zarr-development-version">zarr (development version)<a class="anchor" aria-label="anchor" href="#zarr-development-version"></a></h2>
+<p>This release contains <strong>API breaking changes</strong>.</p>
+<p>Code has been refactored to make it more agile and less error-prone. Two major changes have been implemented: 1. The <code>zarr_store</code> class is no longer used in the public-facing API. Most store-oriented tasks are now handled through the <code>zarr</code> class, including creating a new store. 2. Instantiating a <code>zarr_array</code> will create it in the store if it does not yet exist, and attach itself to its parent, usually a <code>zarr_group</code> but it could also be a <code>zarr</code> instance in the case of a single-array store.</p>
+<p>These changes impact the signature of several methods: - <code>zarr$new()</code> has several new arguments following the first <code>store</code> argument. All additional arguments are optional so existing code will remain functional. The <code>store</code> argument has additional functionality. - <code>zarr_group$new()</code> and <code>zarr_array$new()</code> no longer have the <code>store</code> argument. - Several other methods in these three classes have related signature changes, but these changes are not relevant for end users or application developers of this package.</p>
+<p>Other changes: - New field <code>zarr</code> in class <code>zarr_node</code> to retrieve the <code>zarr</code> instance that manages the node. - The <code>array_builder</code> class has a field <code>data_type_from_storage.mode</code> that can make a Zarr data type from an R storage mode. - <code>zarr.json</code> writes arrays for <code>shape</code> and <code>chunk_shape</code> for 1D axes. - JSON writes use full numeric precision. - <code>ref</code> convention uses released version v2.0.0.</p>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.0" id="zarr-050">zarr 0.5.0<a class="anchor" aria-label="anchor" href="#zarr-050"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.5.1" id="zarr-051">zarr 0.5.1<a class="anchor" aria-label="anchor" href="#zarr-051"></a></h2><p class="text-muted">CRAN release: 2026-09-08</p>
+<ul><li>Chunk management improved, size-limited cache with a LRU eviction scheme. The size of the cache (per array) can be controlled with the session option <code>chunk_cache_bytes</code>.</li>
+<li>New <code>zarr_array$raw_read</code> field can be set to control conversion of the Zarr array <code>fill_value</code> to R’s <code>NA</code> upon reading (<code>FALSE</code>, default) or to skip the conversion (<code>TRUE</code>) for faster loading when data is known not to have fill values or when these are managed at the application level.</li>
+<li>Fix tests and example that use suggested package to run conditionally.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.0" id="zarr-050">zarr 0.5.0<a class="anchor" aria-label="anchor" href="#zarr-050"></a></h2><p class="text-muted">CRAN release: 2026-08-30</p>
 <ul><li>AWS S3 store access added for reading and, with appropriate authentication, writing. The function <code><a href="../reference/s3_list_dir.html">s3_list_dir()</a></code> can be used to walk the directory listing of an S3 bucket to locate Zarr stores.</li>
 <li>New <code>zarr_array::resize()</code> method with which arrays can be resized, growing or shrinking across all dimensions simultaneously, including on the lower end of the dimensions. When changing the “low” side of the dimensions, which is always by full chunks, the indexing of all data changes to use the new origin.</li>
 <li>New <code>zarr_array::promote()</code> method which adds a dimension to the array.</li>

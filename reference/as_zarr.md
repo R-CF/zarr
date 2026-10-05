@@ -8,7 +8,7 @@ smaller) and compressed.
 ## Usage
 
 ``` r
-as_zarr(x, name = NULL, location = NULL)
+as_zarr(x, name = "", location = NULL)
 ```
 
 ## Arguments

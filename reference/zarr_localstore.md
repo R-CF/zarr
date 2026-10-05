@@ -497,11 +497,11 @@ Create a new group in the store under the specified path.
 
 #### Usage
 
-    zarr_localstore$create_group(path, name)
+    zarr_localstore$create_group(parent, name)
 
 #### Arguments
 
-- `path`:
+- `parent`:
 
   The path to the parent group of the new group. Ignored when creating a
   root group.

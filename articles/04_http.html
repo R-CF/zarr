@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,17 +90,19 @@ the groups and arrays present in the store. When a
 and groups and arrays will be added to the <code>zarr</code> object to
 represent the contents of the HTTP store.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Publicly accessible Zarr v.2 HTTP store with consolidated metadata</span></span>
-<span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/open_zarr.html">open_zarr</a></span><span class="op">(</span><span class="st">"https://data.earthdatahub.destine.eu/public/test-dataset-v0.zarr"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Publicly accessible Zarr v.2 store with consolidated metadata, accessed using the 'http' protocol</span></span>
+<span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/open_zarr.html">open_zarr</a></span><span class="op">(</span><span class="st">'https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1'</span>, protocol <span class="op">=</span> <span class="st">'http'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required namespace: curl</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; https://data.earthdatahub.destine.eu/public/test-dataset-v0.zarr </span></span>
+<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1 </span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
-<span><span class="co">#&gt; ├ ⌗ age_band_lower_bound</span></span>
-<span><span class="co">#&gt; ├ ⌗ demographic_totals</span></span>
-<span><span class="co">#&gt; ├ ⌗ latitude</span></span>
-<span><span class="co">#&gt; ├ ⌗ longitude</span></span>
-<span><span class="co">#&gt; └ ⌗ year</span></span></code></pre></div>
+<span><span class="co">#&gt; ├ ⌗ analysed_sst</span></span>
+<span><span class="co">#&gt; ├ ⌗ analysis_error</span></span>
+<span><span class="co">#&gt; ├ ⌗ lat</span></span>
+<span><span class="co">#&gt; ├ ⌗ lon</span></span>
+<span><span class="co">#&gt; ├ ⌗ mask</span></span>
+<span><span class="co">#&gt; ├ ⌗ sea_ice_fraction</span></span>
+<span><span class="co">#&gt; └ ⌗ time</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="single-array-store">Single-array store<a class="anchor" aria-label="anchor" href="#single-array-store"></a>
@@ -392,9 +394,10 @@ expands to about 271GB of integer data in R!</p>
 <p>A more intelligent way to download data is to look at the chunking of
 the array data. From the “axes” array in the “multiscales” attribute we
 can see that a chunk (the unit of downloading data) is all of the “x”
-and “y” extent for a single “[z, c, t]” tuple. The most efficient way of
-downloading the data is then to follow the chunking scheme and download
-one or a few of the “z”, “c” and “t” values and all of “x” and “y”.</p>
+and “y” extent for a single <code>(z, c, t)</code> tuple. The most
+efficient way of downloading the data is then to follow the chunking
+scheme and download one or a few of the “z”, “c” and “t” values and all
+of “x” and “y”.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

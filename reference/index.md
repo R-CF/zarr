@@ -8,6 +8,8 @@
   : Array builder
 - [`as_zarr()`](https://r-cf.github.io/zarr/reference/as_zarr.md) :
   Convert an R object into a Zarr array
+- [`auto_chunk()`](https://r-cf.github.io/zarr/reference/auto_chunk.md)
+  : Optimal chunking for an array
 - [`chunk_grid_regular`](https://r-cf.github.io/zarr/reference/chunk_grid_regular.md)
   : Chunk management
 - [`chunk_grid_sharded`](https://r-cf.github.io/zarr/reference/chunk_grid_sharded.md)

@@ -67,7 +67,7 @@ created.'></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,6 +159,16 @@ data will be permuted before writing the array to the store. A value of
 format, many fields will have been reset to a default value.</p></dd>
 
 
+    <dt><code>data_type_from_storage.mode</code></dt>
+<dd><p>Set the data type of the Zarr array
+from the <code><a href="https://rdrr.io/r/base/mode.html" class="external-link">storage.mode()</a></code> of the data to be written to the array with
+this <code>array_builder</code> instance. This is effectively a write-only field:
+reading the value will just return the Zarr data type, not the R type -
+use <code>zarr_v3_datatypes[[&lt;zarr_data_type&gt;]]$Rtype</code> for that. After
+setting the format, many fields will have been reset to a default
+value.</p></dd>
+
+
     <dt><code>fill_value</code></dt>
 <dd><p>The value in the array of uninitialized data elements.
 The <code>fill_value</code> has to agree with the <code>data_type</code> of the array.</p></dd>
@@ -175,7 +185,8 @@ chunking settings to their default values.</p></dd>
 the Zarr array. When setting, pass in an integer vector of lengths of
 the same size as the shape of the array. The <code>shape</code> of the array must
 be set before setting this. When reading, returns an instance of class
-<a href="chunk_grid_regular.html">chunk_grid_regular</a>.</p></dd>
+<a href="chunk_grid_regular.html">chunk_grid_regular</a> if the <code>shape</code> field has been set, <code>NULL</code>
+otherwise.</p></dd>
 
 
     <dt><code>codec_info</code></dt>

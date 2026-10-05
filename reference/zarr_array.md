@@ -78,18 +78,18 @@ Inherited methods
 
 ### `zarr_array$new()`
 
-Initialize a new array in a Zarr hierarchy. The array must already exist
-in the store.
+Initialize a new array in a Zarr hierarchy. The array will be created in
+the store if it does not yet exist, opened otherwise.
 
 #### Usage
 
-    zarr_array$new(name, metadata, parent, store)
+    zarr_array$new(name, metadata, parent, no_create_check = FALSE)
 
 #### Arguments
 
 - `name`:
 
-  The name of the array.
+  The name of the array. Ignored for a single-array store.
 
 - `metadata`:
 
@@ -97,13 +97,17 @@ in the store.
 
 - `parent`:
 
-  The parent `zarr_group` instance of this new array, can be missing or
-  `NULL` if the Zarr object should have just this array.
+  The parent
+  [zarr_group](https://r-cf.github.io/zarr/reference/zarr_group.md)
+  instance of this new array, or the
+  [zarr](https://r-cf.github.io/zarr/reference/zarr.md) object for a
+  single-array store.
 
-- `store`:
+- `no_create_check`:
 
-  The [zarr_store](https://r-cf.github.io/zarr/reference/zarr_store.md)
-  instance to persist data in. Ignored if `parent` is specified.
+  Optional, logical flag to indicate if a check for existence of the
+  group in the store should be made. Default is `FALSE`. Set to `TRUE`
+  only when existence has been established before calling this method.
 
 #### Returns
 
@@ -142,7 +146,7 @@ from the Zarr object or a group to display the full group hierarchy.
 
 Read some or all of the array data for the array. For all types other
 than logical, any data elements with the `fill_value` of the Zarr data
-type are set to `NA`.
+type are set to `NA` if the `raw_read` field is `TRUE`.
 
 #### Usage
 

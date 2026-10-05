@@ -77,17 +77,58 @@ Create a new Zarr instance. The Zarr instance manages the groups and
 arrays in the Zarr store that it refers to. This instance provides
 access to all objects in the Zarr store.
 
+This method can open any Zarr store located on systems with a supported
+protocol ('local', 's3', 'http').
+
+This method can also create a new Zarr store on a local file system or
+in memory. It is not possible to create a new store on S3 or an a web
+server. The newly created store is uninitialised, it is an empty
+directory. Either assign a
+[zarr_array](https://r-cf.github.io/zarr/reference/zarr_array.md) to the
+`root` field, or create a root
+[zarr_group](https://r-cf.github.io/zarr/reference/zarr_group.md) to
+make the store valid and usable.
+
 #### Usage
 
-    zarr$new(store)
+    zarr$new(store, read_only = NULL, protocol = NULL, ...)
 
 #### Arguments
 
 - `store`:
 
-  An instance of a
+  Optional. Either an instance of a
   [zarr_store](https://r-cf.github.io/zarr/reference/zarr_store.md)
-  descendant class where the Zarr objects are located.
+  descendant class where the Zarr objects are located, or character
+  string that indicates a location on a file system or a HTTP or S3
+  server where the Zarr store is to be found. The character string may
+  contain UTF-8 characters and/or use a file URI format. On a local file
+  system the Zarr store will be created if it does not exist. If
+  omitted, an in-memory Zarr store will be created.
+
+- `read_only`:
+
+  Optional. Logical that indicates if the store is to be opened in
+  read-only mode. Default is ` NULL`, which implies `FALSE` for a local
+  file system and memory store, `TRUE` otherwise.
+
+- `protocol`:
+
+  Optional, character string. Override automatic protocol detection
+  ('local', 'http', or 's3'). Needed for S3-compatible endpoints that
+  aren't AWS and don't follow AWS's hostname conventions (MinIO, EMBASSY
+  Cloud, Ceph RGW, etc.) - there's no reliable way to recognize these
+  from the URL alone, you have to indicate so explicitly rather than
+  have this method parse the location.
+
+- `...`:
+
+  Additional protocol-specific parameters passed through to the
+  underlying store constructor. For `s3://` and S3 `https://` locations,
+  this includes `region`, `profile`, `access_key`/`secret_key`/
+  `session_token`, `endpoint`, and `anonymous` — see
+  [zarr_s3store](https://r-cf.github.io/zarr/reference/zarr_s3store.md).
+  Ignored for memory, local and plain HTTP locations.
 
 #### Returns
 
@@ -230,8 +271,8 @@ Self, invisible.
 ### `zarr$delete_array()`
 
 Delete an array from the Zarr object. If the array is the root of the
-Zarr object, it will be converted into a regular Zarr object with a root
-group. **Warning:** this operation is irreversible for many stores!
+Zarr object, the Zarr object will become uninitialised. **Warning:**
+this operation is irreversible for many stores!
 
 #### Usage
 
