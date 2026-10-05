@@ -24,14 +24,21 @@ zarr_group <- R6::R6Class('zarr_group',
     #'   it will default to a simple Zarr v.3 group.
     #' @param parent The parent `zarr_group` instance of this new group, can be
     #'   a `zarr` instance for the root group.
+    #' @param no_create_check Optional, logical flag to indicate if a check for
+    #'   existence of the group in the store should be made. Default is `FALSE`.
+    #'   Set to `TRUE` only when existence has been established before calling
+    #'   this method.
     #' @return An instance of `zarr_group`.
-    initialize = function(name, metadata = list(zarr_format = 3, node_type = "group"), parent) {
-      # Create the group in the store if it does not yet exist
-      if (inherits(parent, 'zarr')) {
-        if (!parent$store$exists('zarr.json'))
-          metadata <- parent$store$create_group(name = '')
-      } else if (!parent$store$exists(paste0(.path2prefix(parent$path), name))) {
-        metadata <- parent$store$create_group(path = parent$path, name = name)
+    initialize = function(name, metadata = list(zarr_format = 3, node_type = "group"),
+                          parent, no_create_check = FALSE) {
+      if (!no_create_check) {
+        # Create the group in the store if it does not yet exist
+        if (inherits(parent, 'zarr')) {
+          if (is.null(parent$store$get_metadata('/')))
+            metadata <- parent$store$create_group(name = '')
+        } else if (is.null(parent$store$get_metadata(paste0(parent$prefix, name, '/')))) {
+          metadata <- parent$store$create_group(parent = parent$path, name = name)
+        }
       }
 
       super$initialize(name, metadata, parent)

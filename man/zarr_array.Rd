@@ -70,7 +70,7 @@ applies to the array for all subsequent reads.}
 be created in the store if it does not yet exist, opened otherwise.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_array$new(name, metadata, parent)}
+    \preformatted{zarr_array$new(name, metadata, parent, no_create_check = FALSE)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -80,6 +80,10 @@ be created in the store if it does not yet exist, opened otherwise.
       \item{\code{metadata}}{List with the metadata of the array.}
       \item{\code{parent}}{The parent \link{zarr_group} instance of this new array, or the
 \link{zarr} object for a single-array store.}
+      \item{\code{no_create_check}}{Optional, logical flag to indicate if a check for
+existence of the group in the store should be made. Default is \code{FALSE}.
+Set to \code{TRUE} only when existence has been established before calling
+this method.}
     }
     \if{html}{\out{</div>}}
   }

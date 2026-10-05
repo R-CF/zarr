@@ -72,7 +72,8 @@ exist in the store.
     \preformatted{zarr_group$new(
   name,
   metadata = list(zarr_format = 3, node_type = "group"),
-  parent
+  parent,
+  no_create_check = FALSE
 )}
     \if{html}{\out{</div>}}
   }
@@ -85,6 +86,10 @@ string \code{""}.}
 it will default to a simple Zarr v.3 group.}
       \item{\code{parent}}{The parent \code{zarr_group} instance of this new group, can be
 a \code{zarr} instance for the root group.}
+      \item{\code{no_create_check}}{Optional, logical flag to indicate if a check for
+existence of the group in the store should be made. Default is \code{FALSE}.
+Set to \code{TRUE} only when existence has been established before calling
+this method.}
     }
     \if{html}{\out{</div>}}
   }

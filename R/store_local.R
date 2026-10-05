@@ -64,7 +64,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         if (!file.exists(meta_path <- file.path(root, 'zarr.json')))
           if (!file.exists(meta_path <- file.path(root, '.zgroup')))
             if (!file.exists(meta_path <- file.path(root, '.zarray')))
-              stop('No Zarr store at the root location.', call. = FALSE) # nocov
+              stop('No Zarr store at the root location', call. = FALSE) # nocov
         meta <- .parse_metadata(rawToChar(readBin(meta_path, "raw", file.size(meta_path))))
         format <- meta$zarr_format
         if (is.null(format) || !(format == 3L || format == 2L))
@@ -274,7 +274,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
       } else {
         start <- byte_range[1L]
         if (start > sz)
-          stop('Byte-range of request is invalid.', call. = FALSE) # nocov
+          stop('Byte-range of request is invalid', call. = FALSE) # nocov
         if (length(byte_range) == 1L) {
           if (start >= 0L) {
             # Read to the end
@@ -289,7 +289,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         }
       }
       if (n < 1L)
-        stop('Byte-range of request is invalid.', call. = FALSE) # nocov
+        stop('Byte-range of request is invalid', call. = FALSE) # nocov
 
       f <- file(f, 'rb')
       on.exit(close(f))
@@ -370,32 +370,32 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     },
 
     #' @description Create a new group in the store under the specified path.
-    #' @param path The path to the parent group of the new group. Ignored when
+    #' @param parent The path to the parent group of the new group. Ignored when
     #'   creating a root group.
     #' @param name The name of the new group. This may be an empty string `""`
     #'   to create a root group. It is an error to supply an empty string if a
     #'   root group or array already exists.
     #' @return A list with the metadata of the group, or an error if the group
     #'   could not be created.
-    create_group = function(path, name) {
+    create_group = function(parent, name) {
       if (private$.read_only)
-        stop('Cannot write new objects to the Zarr store.', call. = FALSE) # nocov
+        stop('Cannot write new objects to the Zarr store', call. = FALSE) # nocov
 
       if (!nzchar(name)) {
         # Create a root group
         fn <- file.path(private$.root, 'zarr.json')
         if (file.exists(fn))
-          stop('Cannot create a root group in an existing Zarr store.', call. = FALSE) # nocov
+          stop('Cannot create a root group in an existing Zarr store', call. = FALSE) # nocov
         meta <- list(zarr_format = 3, node_type = 'group')
         jsonlite::write_json(meta, path = fn, auto_unbox = TRUE, pretty = T, digits = NA)
         return(meta)
       }
 
-      if (!self$is_group(path))
-        stop('Path does not point to a Zarr group: ', path, call. = FALSE) # nocov
+      if (!self$is_group(parent))
+        stop('Path does not point to a Zarr group: ', parent, call. = FALSE) # nocov
 
       # Create the sub-group
-      fp <- file.path(private$.root, path, name)
+      fp <- file.path(private$.root, parent, name)
       if (dir.create(fp, showWarnings = FALSE, recursive = FALSE, mode = '0771')) {
         meta <- list(zarr_format = 3, node_type = 'group')
         jsonlite::write_json(meta, path = file.path(fp, 'zarr.json'), auto_unbox = TRUE, pretty = T, digits = NA)
@@ -420,7 +420,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #'   could not be created.
     create_array = function(parent, name, metadata) {
       if (private$.read_only)
-        stop('Cannot write new objects to the Zarr store.', call. = FALSE) # nocov
+        stop('Cannot write new objects to the Zarr store', call. = FALSE) # nocov
 
       metadata <- private$check_cke(metadata)
       if (metadata$node_type == 'array') {
@@ -434,7 +434,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         # Create a root array
         fn <- file.path(private$.root, 'zarr.json')
         if (file.exists(fn))
-          stop('Cannot create a root array in an existing Zarr store.', call. = FALSE) # nocov
+          stop('Cannot create a root array in an existing Zarr store', call. = FALSE) # nocov
         jsonlite::write_json(metadata, path = fn, auto_unbox = TRUE, pretty = T, digits = NA)
         return(metadata)
       }

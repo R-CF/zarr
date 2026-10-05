@@ -210,19 +210,19 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     },
 
     #' @description Create a new group in the store under the specified path.
-    #' @param path The path to the parent group of the new group. Ignored when
+    #' @param parent The path to the parent group of the new group. Ignored when
     #'   creating a root group.
     #' @param name The name of the new group. This may be an empty string `""`
     #'   to create a root group. It is an error to supply an empty string if a
     #'   root group or array already exists.
     #' @return A list with the metadata of the group, or an error if the group
     #'   could not be created.
-    create_group = function(path, name) {
+    create_group = function(parent, name) {
       meta <- list(zarr_format = 3, node_type = 'group')
 
       if (nzchar(name)) {
         # Adding a sub-group
-        path <- .path2key(path)
+        path <- .path2key(parent)
         key <- if (nzchar(path)) {
           if (!(path %in% names(private$.keys)))
             stop('Path does not point to a Zarr group: ', path, call. = FALSE) # nocov

@@ -276,9 +276,9 @@ zarr_conventions <- function() {
 
   # Fallback: return generic node
   if (metadata$node_type == 'group')
-    zarr_group$new(name, metadata, parent)
+    zarr_group$new(name, metadata, parent, no_create_check = TRUE)
   else
-    zarr_array$new(name, metadata, parent)
+    zarr_array$new(name, metadata, parent, no_create_check = TRUE)
 }
 
 # This internal function supports codec management for sharding

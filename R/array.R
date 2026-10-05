@@ -48,19 +48,25 @@ zarr_array <- R6::R6Class('zarr_array',
     #' @param metadata List with the metadata of the array.
     #' @param parent The parent [zarr_group] instance of this new array, or the
     #'   [zarr] object for a single-array store.
+    #' @param no_create_check Optional, logical flag to indicate if a check for
+    #'   existence of the group in the store should be made. Default is `FALSE`.
+    #'   Set to `TRUE` only when existence has been established before calling
+    #'   this method.
     #' @return An instance of `zarr_array`.
-    initialize = function(name, metadata, parent) {
+    initialize = function(name, metadata, parent, no_create_check = FALSE) {
       ab <- array_builder$new(metadata)
       if (!ab$is_valid())
         stop('Invalid metadata for an array', call. = FALSE) # nocov
 
-      # Create the array in the store if it does not yet exist
-      if (inherits(parent, 'zarr')) {
-        # Single-array store so array goes in the store root
-        if (!parent$store$exists('zarr.json'))
-          metadata <- parent$store$create_array(name = '', metadata = metadata)
-      } else if (!parent$store$exists(paste0(.path2prefix(parent$path), name))) {
-        metadata <- parent$store$create_array(parent = parent$path, name = name, metadata = metadata)
+      if (!no_create_check) {
+        # Create the array in the store if it does not yet exist
+        if (inherits(parent, 'zarr')) {
+          # Single-array store so array goes in the store root
+          if (is.null(parent$store$get_metadata(.path2prefix(parent$path))))
+            metadata <- parent$store$create_array(name = '', metadata = metadata)
+        } else if (is.null(parent$store$get_metadata(paste0(parent$prefix, name, '/')))) {
+          metadata <- parent$store$create_array(parent = parent$path, name = name, metadata = metadata)
+        }
       }
 
       super$initialize(name, metadata, parent)

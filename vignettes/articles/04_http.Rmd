@@ -1,5 +1,12 @@
 ---
 title: "4. HTTP stores"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
 ---
 
 ```{r, include = FALSE}
@@ -16,9 +23,9 @@ The `zarr` package can read online stores over HTTP, meaning that Zarr stores pu
 ## Zarr v.2: Consolidated metadata
 Zarr v.2 supports consolidated metadata, a JSON file called `.zmetadata` in the root of the HTPP store which lists all the groups and arrays present in the store. When a `.zmetadata` file is present, it will be automatically read and groups and arrays will be added to the `zarr` object to represent the contents of the HTTP store.
 
-```{r edh}
-# Publicly accessible Zarr v.2 HTTP store with consolidated metadata
-z <- open_zarr("https://data.earthdatahub.destine.eu/public/test-dataset-v0.zarr")
+```{r sst}
+# Publicly accessible Zarr v.2 store with consolidated metadata, accessed using the 'http' protocol
+z <- open_zarr('https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1', protocol = 'http')
 z$hierarchy()
 ```
 
@@ -58,4 +65,4 @@ For more complicated cases, it may be useful to write a small package on top of 
 # Working with array data from a HTTP store
 You can work with array data just like you would be array data from a file system store: index it like any other R array. Keep in mind, though, that the data will be fetched over your internet connection so be very judicious in your indexing. Downloading a full array is almost always a bad idea as Zarr arrays tend to be large. In the OME-Zarr example above, there are `532 * 2 * 988 * 256 * 271 = 72930271232` grid points, which expands to about 271GB of integer data in R!
 
-A more intelligent way to download data is to look at the chunking of the array data. From the "axes" array in the "multiscales" attribute we can see that a chunk (the unit of downloading data) is all of the "x" and "y" extent for a single "[z, c, t]" tuple. The most efficient way of downloading the data is then to follow the chunking scheme and download one or a few of the "z", "c" and "t" values and all of "x" and "y".
+A more intelligent way to download data is to look at the chunking of the array data. From the "axes" array in the "multiscales" attribute we can see that a chunk (the unit of downloading data) is all of the "x" and "y" extent for a single `(z, c, t)` tuple. The most efficient way of downloading the data is then to follow the chunking scheme and download one or a few of the "z", "c" and "t" values and all of "x" and "y".

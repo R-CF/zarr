@@ -497,13 +497,13 @@ of \link{array_builder}.}
   Create a new group in the store under the specified path.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_localstore$create_group(path, name)}
+    \preformatted{zarr_localstore$create_group(parent, name)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{path}}{The path to the parent group of the new group. Ignored when
+      \item{\code{parent}}{The path to the parent group of the new group. Ignored when
 creating a root group.}
       \item{\code{name}}{The name of the new group. This may be an empty string \code{""}
 to create a root group. It is an error to supply an empty string if a

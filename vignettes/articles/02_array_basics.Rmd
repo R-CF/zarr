@@ -44,6 +44,7 @@ z
 # Print the hierarchy of objects
 # Zarr groups are identified by the ☰ glyph
 # Zarr arrays use the ⌗ glyph
+# (Domains may use other glyphs)
 z$hierarchy()
 ```
 If you have multiple R objects that you want to store in the Zarr format, you can place them all in the same store. Adding an R object to an existing store requires you to indicate the group in the Zarr object where you want to store the R object.

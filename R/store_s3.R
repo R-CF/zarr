@@ -223,7 +223,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
         if (!is.null(meta)) {
           meta <- .parse_metadata(rawToChar(meta))
           if (meta$zarr_consolidated_format != 1L)
-            stop('Unsupported version of consolidated metadata.', call. = FALSE)
+            stop('Unsupported version of consolidated metadata', call. = FALSE)
 
           format <- meta$metadata$.zgroup$zarr_format
           if (is.null(format) || format != 2L)
@@ -485,14 +485,21 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
         return(.parse_metadata(rawToChar(meta)))
       }
 
+      if (prefix == '/') prefix <- ''
+
       if (is.null(private$.metadata$zarr_consolidated_format)) {
-        atts <- private$request('.zattrs')
-        if (!is.null(atts))
-          atts <- .parse_metadata(rawToChar(atts))
-        meta <- private$metadata_v2_to_v3(private$.metadata, atts)
+        meta <- if (!nzchar(prefix)) private$.metadata
+        else {
+          raw <- private$request(paste0(prefix, '.zgroup')) %||%
+                 private$request(paste0(prefix, '.zarray'))
+          if (is.null(raw)) return(NULL)
+          .parse_metadata(rawToChar(raw))
+        }
+        atts <- private$request(paste0(prefix, '.zattrs'))
+        atts <- if (is.null(atts)) list() else .parse_metadata(rawToChar(atts))
+        meta <- private$metadata_v2_to_v3(meta, atts)
       } else {
         nm <- names(private$.metadata$metadata)
-        if (prefix == '/') prefix <- ''
         m <- paste0(prefix, '.zgroup')
         if (!(m %in% nm)) {
           m <- paste0(prefix, '.zarray')
@@ -542,7 +549,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
     #' @return A list with the metadata of the newly-created group.
     create_group = function(parent, name) {
       if (private$.read_only)
-        stop('Cannot write to a read-only zarr_s3store.', call. = FALSE)
+        stop('Cannot write to a read-only zarr_s3store', call. = FALSE)
       prefix <- paste0(.path2prefix(parent), name, '/')
       meta <- list(zarr_format = 3L, node_type = 'group', attributes = list())
       self$set_metadata(prefix, meta)
@@ -561,7 +568,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
     #' @return A list with the metadata of the newly-created array, as written.
     create_array = function(parent, name, metadata) {
       if (private$.read_only)
-        stop('Cannot write to a read-only zarr_s3store.', call. = FALSE)
+        stop('Cannot write to a read-only zarr_s3store', call. = FALSE)
       prefix <- paste0(.path2prefix(parent), name, '/')
       self$set_metadata(prefix, metadata)
       metadata
