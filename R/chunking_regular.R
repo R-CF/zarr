@@ -340,6 +340,9 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
             aperm(buf, rev(seq_along(private$.chunk_shape)))
           } else buf
         }
+        # array() and aperm() drop the class, but not the bits, of integer64
+        if (private$.data_type$Rtype == 'integer64')
+          class(private$.buffer) <- 'integer64'
       }
     },
 

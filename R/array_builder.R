@@ -340,15 +340,16 @@ array_builder <- R6::R6Class('array_builder',
           private$.data_type$fill_value
         else {
           dt <- private$.data_type$data_type
-          private$.data_type$fill_value <- if (is.na(value))
+          private$.data_type$fill_value <- if (is.na(value) || inherits(value, 'integer64'))
             value
           else if (is.numeric(value)) {
             if (dt == 'string')
               stop('Invalid `fill_value`', call. = FALSE)
             switch(dt,
               'int32' = if (value < -.Machine$integer.max || value > .Machine$integer.max) NA_integer_ else as.integer(value),
-              'int64' = ,
-              'uint32' = if (value < -.Machine$integer.max || value > .Machine$integer.max) bit64::NA_integer64_ else bit64::as.integer64(value),
+              # JSON parses INT64_MAX to the double 2^63, just out of range
+              'int64' = if (value >= 2^63) bit64::as.integer64('9223372036854775807') else bit64::as.integer64(value),
+              'uint32' = if (value < 0 || value > 4294967295) bit64::NA_integer64_ else bit64::as.integer64(value),
               'int8' = ,
               'int16' = ,
               'uint8' = ,

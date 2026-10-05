@@ -238,6 +238,11 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
     # The shape of a chunk of array data, an integer vector.
     .chunk_shape = NULL,
 
+    # Byte weights of a uint32 value, in the configured byte order.
+    uint32_weights = function() {
+      if (private$.configuration$endian == 'little') 256^(0:3) else 256^(3:0)
+    },
+
     # Print the configuration information to the console. This is called by
     # zarr_codec$print().
     print_configuration = function() {
@@ -305,8 +310,11 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
 
       if (dt$data_type == 'logical') {
         as.raw(as.integer(data))
-      } else if (dt$data_type == 'integer64') {
-        writeBin(unclass(data), raw(), endian = private$.configuration$endian)
+      } else if (dt$Rtype == 'integer64') {
+        if (dt$size == 8L)
+          writeBin(unclass(data), raw(), endian = private$.configuration$endian)
+        else # uint32: R has no unsigned 32-bit type, compose the bytes
+          as.raw(t(outer(as.double(data), private$uint32_weights(), function(v, w) (v %/% w) %% 256L)))
       } else
         writeBin(data, raw(), size = dt$size, endian = private$.configuration$endian)
     },
@@ -325,9 +333,12 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
       out <- if (Rtype == 'logical') {
         as.logical(as.integer(data))
       } else if (Rtype == 'integer64') {
-        vals <- readBin(data, what = 'double', n = n, endian = private$.configuration$endian)
-        class(vals) <- 'integer64'
-        vals
+        if (dt$size == 8L) {
+          vals <- readBin(data, what = 'double', n = n, endian = private$.configuration$endian)
+          class(vals) <- 'integer64'
+          vals
+        } else # uint32
+          bit64::as.integer64(colSums(matrix(as.integer(data), nrow = 4L) * private$uint32_weights()))
       } else if (dt$size < 4L)
         readBin(data, what = Rtype, size = dt$size, signed = dt$signed,
                 n = n, endian = private$.configuration$endian)

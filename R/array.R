@@ -143,9 +143,9 @@ zarr_array <- R6::R6Class('zarr_array',
           Rtype <- private$.data_type$Rtype
           if (is.nan(fill))
             data[which(is.nan(data))] <- NA
-          else if (Rtype == 'integer')
+          else if (Rtype %in% c('integer', 'integer64'))
             data[data == fill] <- NA
-          else if (!(Rtype %in% c('logical', 'integer64', 'character'))) # FIXME: is.na(integer64)??
+          else if (!(Rtype %in% c('logical', 'character')))
             data[.near(data, fill)] <- NA
         }
       } else
@@ -173,7 +173,8 @@ zarr_array <- R6::R6Class('zarr_array',
     #'   persist data in stale chunks.
     #' @return Self, invisibly.
     write = function(data, selection, flush = TRUE) {
-      if (storage.mode(data) != private$.data_type$Rtype)
+      Rtype <- private$.data_type$Rtype
+      if (if (Rtype == 'integer64') !bit64::is.integer64(data) else storage.mode(data) != Rtype)
         stop('Data is of a different type than the array', call. = FALSE) # nocov
 
       ddim <- dim(data) %||% length(data)

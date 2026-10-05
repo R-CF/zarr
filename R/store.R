@@ -99,7 +99,7 @@ zarr_store <- R6::R6Class('zarr_store',
           ab$add_codec(meta$compressor$id, configuration = meta$compressor)
 
         v3 <- c(ab$metadata(),
-                list(chunk_key_encoding = list(name = 'default',
+                list(chunk_key_encoding = list(name = 'v2',
                                                configuration = list(separator = meta$dimension_separator %||% '.'))))
       }
 
