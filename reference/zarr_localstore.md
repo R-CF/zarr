@@ -160,10 +160,9 @@ array, or a chunk.
 
 ### `zarr_localstore$clear()`
 
-Clear the store. Remove all keys and values from the store. Invoking
-this method deletes affected files on the file system and this action
-can not be undone. The only file that will remain is "zarr.json" or
-".zgroup" (version 2) in the root of this store.
+Clear the store. Remove all keys and values from the store. WARNING:
+Invoking this method deletes affected files on the file system and this
+action can not be undone.
 
 #### Usage
 

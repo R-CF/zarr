@@ -201,9 +201,8 @@ group, an array, or a chunk.</p><div class="section">
 <p></p><hr><a id="method-zarr_localstore-clear"></a><div class="section">
 <h3 id="zarr-localstore-clear-"><code>zarr_localstore$clear()</code><a class="anchor" aria-label="anchor" href="#zarr-localstore-clear-"></a></h3>
 <p>Clear the store. Remove all keys and values from the store.
-Invoking this method deletes affected files on the file system and this
-action can not be undone. The only file that will remain is "zarr.json"
-or ".zgroup" (version 2) in the root of this store.</p><div class="section">
+WARNING: Invoking this method deletes affected files on the file system
+and this action can not be undone.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
