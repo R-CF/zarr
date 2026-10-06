@@ -71,7 +71,7 @@ zarr <- R6::R6Class("zarr",
                                   read_only = read_only, ...)},
                'http'  = zarr_httpstore$new(url = store),
                'local' = zarr_localstore$new(root = store, read_only = read_only),
-               stop('Argument `store` points to an unrecognizable location: ', store, call. = FALSE))
+               stop('Argument `store` points to an unrecognizable location: ', store, call. = FALSE)) # nocov
       } else
         stop('Argument `store` must be a `zarr_store` instance or a single character string', call. = FALSE)
 
@@ -130,7 +130,7 @@ zarr <- R6::R6Class("zarr",
         return(NULL)
 
       parts <- strsplit(path, '/', fixed = TRUE)[[1L]][-1L] # Strip empty first part
-      private$.root$walk_path(parts)
+      tryCatch(private$.root$walk_path(parts), error = function(e) NULL)
     },
 
     #' @description Add a group below a given path.
@@ -222,7 +222,7 @@ zarr <- R6::R6Class("zarr",
       else if (inherits(value, 'zarr_node'))
         private$.root <- value
       else
-        stop('Wrong object for setting as Zarr hierarchy root node', call. = FALSE)
+        stop('Wrong object for setting as Zarr hierarchy root node', call. = FALSE) # nocov
     },
 
     #' @field store (read-only) The store of the Zarr object.

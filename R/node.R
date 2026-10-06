@@ -148,7 +148,8 @@ zarr_node <- R6::R6Class('zarr_node',
       if (!length(node_names)) return(self)
 
       if (node_names[1L] == '..') {
-        if (is.null(private$.parent))
+        # The parent of the root node is the `zarr` object, not a node
+        if (!inherits(private$.parent, 'zarr_node'))
           stop('Target Zarr node specified beyond the root node', call. = FALSE)
         private$.parent$walk_path(node_names[-1L])
       } else {

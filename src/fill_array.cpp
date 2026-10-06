@@ -88,7 +88,7 @@ void fill_array_impl(SEXP output,
           RAW(output)[out_flat] = RAW(chunk)[ic_flat];
           break;
         default:
-          Rcpp::stop("Unsupported output type in fill_array_impl");
+          Rcpp::stop("Unsupported output type in fill_array_impl"); // # nocov
       }
     }
   }

@@ -143,9 +143,8 @@ group, an array, or a chunk.
 \if{latex}{\out{\hypertarget{method-zarr_localstore-clear}{}}}
 \subsection{\code{zarr_localstore$clear()}}{
   Clear the store. Remove all keys and values from the store.
-Invoking this method deletes affected files on the file system and this
-action can not be undone. The only file that will remain is "zarr.json"
-or ".zgroup" (version 2) in the root of this store.
+WARNING: Invoking this method deletes affected files on the file system
+and this action can not be undone.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_localstore$clear()}

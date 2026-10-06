@@ -163,7 +163,7 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
       } else {
         start <- byte_range[1L]
         if (start > sz)
-          stop('Byte-range of request is invalid.', call. = FALSE) # nocov
+          stop('Byte-range of request is invalid', call. = FALSE) # nocov
         if (length(byte_range) == 1L) {
           if (start >= 0L) {
             # Read to the end
@@ -178,7 +178,7 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
         }
       }
       if (n < 1L)
-        stop('Byte-range of request is invalid.', call. = FALSE) # nocov
+        stop('Byte-range of request is invalid', call. = FALSE) # nocov
 
       return(value[(start + 1L):(start + n)]) # return(value[start:(start + n - 1L)])
     },

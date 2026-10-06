@@ -26,8 +26,9 @@ zarr_convention_uom <- R6::R6Class('zarr_convention_uom',
     # Optional: Character string with the UOM. If not given, the default is unity '1'
     .ucum_unit = '1',
 
-    # Optional: Character string with free-text description of the UOM
-    .description = character(0)
+    # Optional: Character string with free-text description of the UOM. Not
+    # `.description`, which is the description of the convention itself.
+    .uom_description = ''
   ),
   public = list(
     #' @description Create a new instance of a "uom" convention agent.
@@ -54,15 +55,19 @@ zarr_convention_uom <- R6::R6Class('zarr_convention_uom',
       else
         stop('Attribute `unit` must be a character string', call. = FALSE)
 
-      if (is.character(version) && length(version) == 1L && nzchar(version))
-        private$.ucum_version <- version
-      else
-        stop('Attribute `version` must be a character string indicating the UCUM version', call. = FALSE)
+      if (!missing(version)) {
+        if (is.character(version) && length(version) == 1L && nzchar(version))
+          private$.ucum_version <- version
+        else
+          stop('Attribute `version` must be a character string indicating the UCUM version', call. = FALSE)
+      }
 
-      if (!missing(description) && is.character(description) && length(description) == 1L && nzchar(description))
-        private$.description <- description
-      else
-        stop('Attribute `description` must be a character string', call. = FALSE)
+      if (!missing(description)) {
+        if (is.character(description) && length(description) == 1L && nzchar(description))
+          private$.uom_description <- description
+        else
+          stop('Attribute `description` must be a character string', call. = FALSE)
+      }
     },
 
     #' @description Reset any attributes that may have been set to their default
@@ -71,7 +76,7 @@ zarr_convention_uom <- R6::R6Class('zarr_convention_uom',
     clear = function() {
       private$.ucum_unit <- '1'
       private$.ucum_version <- '2.2'
-      private$.description <- character(0)
+      private$.uom_description <- ''
     },
 
     #' @description Return the data of this instance for inclusion in the
@@ -79,8 +84,8 @@ zarr_convention_uom <- R6::R6Class('zarr_convention_uom',
     #' @return A `list` with Zarr attributes for a group or array.
     as_list = function() {
       ucum <- list(version = private$.ucum_version, unit = private$.ucum_unit)
-      if (nzchar(private$.description))
-        list(ucum = ucum, description = private$.description)
+      if (nzchar(private$.uom_description))
+        list(ucum = ucum, description = private$.uom_description)
       else
         list(ucum = ucum)
     }

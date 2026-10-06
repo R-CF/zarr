@@ -35,7 +35,7 @@ zarr_extension <- R6::R6Class('zarr_extension',
       if (!missing(name) && is.character(name) && length(name) == 1L)
         private$set_name(name)
       else
-        stop('Extension name must be a single character string.', call. = FALSE) # nocov
+        stop('Extension name must be a single character string', call. = FALSE) # nocov
     },
 
     #' @description Return the metadata fragment that describes this extension
@@ -43,7 +43,7 @@ zarr_extension <- R6::R6Class('zarr_extension',
     #'   objects.
     #' @return A list with the metadata of this extension point object.
     metadata_fragment = function() {
-      stop('This method must be implemented by descendant classes.', call. = FALSE) # nocov
+      stop('This method must be implemented by descendant classes', call. = FALSE) # nocov
     }
   ),
   active = list(
@@ -55,7 +55,7 @@ zarr_extension <- R6::R6Class('zarr_extension',
       else if (is.character(value) && length(value) == 1L)
         private$set_name(value)
       else
-        stop('Extension name must be a single character string.', call. = FALSE) # nocov
+        stop('Extension name must be a single character string', call. = FALSE) # nocov
     }
   )
 )

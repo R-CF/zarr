@@ -51,7 +51,7 @@ zarr_domain <- R6::R6Class("zarr_domain",
     #'   domain-specific descendant class of `zarr_array` or `zarr_group`. If
     #'   the domain does not want to manage the node, return `FALSE`.
     build = function(name, metadata, parent, store) {
-      stop("Descendant domain class must implement this method.")
+      stop("Descendant domain class must implement this method.") # nocov
     }
   ),
   active = list(

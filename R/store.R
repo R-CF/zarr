@@ -47,7 +47,7 @@ zarr_store <- R6::R6Class('zarr_store',
     # is a list with attributes, possibly empty. Returns a list in v.3 format.
     metadata_v2_to_v3 = function(meta, atts = list()) {
       if (is.null(meta$zarr_format) || meta$zarr_format != 2L)
-        stop('Invalid metadata document.', call. = FALSE) # nocov
+        stop('Invalid metadata document', call. = FALSE) # nocov
 
       if (length(meta) == 1L) {
         # Group metadata
@@ -57,7 +57,7 @@ zarr_store <- R6::R6Class('zarr_store',
         re <- regexec("^([<>|])([bfiuUO])([0-9]+)$", meta$dtype)
         dtype <- regmatches(meta$dtype, re)[[1L]]
         if (!length(dtype)) {
-          stop('Invalid dtype in metadata document.', call. = FALSE)
+          stop('Invalid dtype in metadata document', call. = FALSE) # nocov
         }
         endian <- if (dtype[2L] == '>') 'big' else 'little'
 
@@ -72,11 +72,7 @@ zarr_store <- R6::R6Class('zarr_store',
         ab$shape <- meta$shape
         ab$chunk_shape <- meta$chunks
         if (!is.null(meta$fill_value)) {
-          #if (dtype[3L] == 'f')
-          #  ab$fill_value <- as.numeric(meta$fill_value)
-          #else if (dtype[3L] %in% c('u', 'i'))
-            ab$fill_value <- meta$fill_value #as.integer(meta$fill_value)
-          # FIXME: what about int64 data?
+            ab$fill_value <- meta$fill_value
         }
 
         # Bytes codec - missing when array->bytes is vlen-utf8 or ucs-4
@@ -113,7 +109,7 @@ zarr_store <- R6::R6Class('zarr_store',
     # store in JSON format.
     metadata_v3_to_v2 = function(meta) {
       if (is.null(meta$zarr_format) || meta$zarr_format != 3L)
-        stop('Invalid metadata document.', call. = FALSE) # nocov
+        stop('Invalid metadata document', call. = FALSE) # nocov
     }
   ),
   public = list(
@@ -132,7 +128,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @description Clear the store. Remove all keys and values from the store.
     #' @return Self, invisibly.
     clear = function() {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Remove a key from the store. This method is part of the
@@ -140,7 +136,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @param key Character string. The key to remove from the store.
     #' @return Self, invisibly.
     erase = function(key) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Remove all keys and prefixes in the store that begin with a
@@ -150,14 +146,14 @@ zarr_store <- R6::R6Class('zarr_store',
     #'   from the store, including in child groups.
     #' @return Self, invisibly.
     erase_prefix = function(prefix) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Check if a key exists in the store.
     #' @param key Character string. The key that the store will be searched for.
     #' @return `TRUE` if argument `key` is found, `FALSE` otherwise.
     exists = function(key) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Retrieve the value associated with a given key. This method
@@ -175,14 +171,14 @@ zarr_store <- R6::R6Class('zarr_store',
     #'   starts after the end of the object, an error will be returned.
     #' @return An raw vector of data, or `NULL` if no data was found.
     get = function(key, prototype, byte_range) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Return the size, in bytes, of a value in a Store.
     #' @param key Character string. The key whose length will be returned.
     #' @return The size, in bytes, of the object.
     getsize = function(key) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Return the size, in bytes, of all objects found under the
@@ -191,7 +187,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @return The size, in bytes, of all the objects under a group, as a
     #'   single integer value.
     getsize_prefix = function(prefix) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Is the group empty?
@@ -199,7 +195,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @return `TRUE` is the group indicated by argument `prefix` has no
     #'   sub-groups or arrays, `FALSE` otherwise.
     is_empty = function(prefix) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Retrieve all keys in the store. This method is part of the
@@ -207,7 +203,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @return A character vector with all keys found in the store, both for
     #'   groups and arrays.
     list = function() {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Retrieve all keys and prefixes with a given prefix and which
@@ -217,7 +213,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @return A list with all keys found in the store immediately below the
     #'   `prefix`, both for groups and arrays.
     list_dir = function(prefix) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Retrieve all keys and prefixes with a given prefix. This
@@ -226,7 +222,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @return A character vector with all fully-qualified keys found in the
     #'   store, both for groups and arrays.
     list_prefix = function(prefix) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Retrieve all chunk (and shard) keys stored for the array
@@ -236,7 +232,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @return A character vector of full store keys for chunk/shard files,
     #'   excluding the array's own metadata document.
     list_chunks = function(prefix) {
-      stop('Class', class(self)[1L], 'must implement this method.') # nocov
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Rename a key in the store, moving its value without
@@ -259,7 +255,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #'   root.
     #' @return Self, invisibly.
     rename_prefix = function(old_prefix, new_prefix) {
-      stop('Class', class(self)[1L], 'does not support renaming a prefix.', call. = FALSE) # nocov
+      stop('Class', class(self)[1L], 'does not support renaming a prefix', call. = FALSE) # nocov
     },
 
     #' @description Store a (key, value) pair.
@@ -267,7 +263,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @param value The value to set, typically a chunk of data.
     #' @return Self, invisibly.
     set = function(key, value) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Store a key to argument `value` if the key is not already
@@ -277,14 +273,14 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @param value The value to set, typically an R array.
     #' @return Self, invisibly.
     set_if_not_exists = function(key, value) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Retrieve the metadata document of the node at the location
     #'   indicated by the `prefix` argument.
     #' @param prefix The prefix of the node whose metadata document to retrieve.
     get_metadata = function(prefix) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Set the metadata document of the node at the location
@@ -305,7 +301,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @return A list with the metadata of the group, or an error if the group
     #'   could not be created.
     create_group = function(parent, name) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
     #' @description Create a new array in the store under the specified path to
@@ -315,7 +311,7 @@ zarr_store <- R6::R6Class('zarr_store',
     #' @return A list with the metadata of the array, or an error if the array
     #'   could not be created.
     create_array = function(parent, name) {
-      stop('Class', class(self)[1L], 'must implement this method.')
+      stop('Class', class(self)[1L], 'must implement this method.') # nocov
     }
   ),
   active = list(

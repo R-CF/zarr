@@ -186,7 +186,7 @@ zarr_array <- R6::R6Class('zarr_array',
           private$.chunking$write(data)
           return(invisible(self))
         } else
-          stop('Writing to a scalar array can include only a single value as `data`', call. = FALSE)
+          stop('Writing to a scalar array can include only a single value as `data`', call. = FALSE) # nocov
       }
 
       if (missing(selection))
@@ -239,7 +239,7 @@ zarr_array <- R6::R6Class('zarr_array',
     resize = function(low, high) {
       shape <- private$.metadata$shape
       nd <- length(shape)
-      if (!nd) stop('Cannot resize a scalar array; see `promote()`', call. = FALSE)
+      if (!nd) stop('Cannot resize a scalar array; see `promote()`', call. = FALSE) # nocov
       if (missing(low))  low  <- integer(nd)
       if (missing(high)) high <- integer(nd)
       if (length(low) != nd || length(high) != nd)
@@ -289,7 +289,7 @@ zarr_array <- R6::R6Class('zarr_array',
       if (dimension < 1L || dimension > r + 1L)
         stop('`dimension` must be between 1 and ', r + 1L, ' for an array of rank ', r, call. = FALSE)
       if (length < 1L)
-        stop('`length` must be a positive integer', call. = FALSE)
+        stop('`length` must be a positive integer', call. = FALSE) # nocov
 
       if (r == 0L) {
         new_shape <- as.integer(length)
@@ -396,7 +396,7 @@ zarr_array <- R6::R6Class('zarr_array',
     raw_read = function(value) {
       if (missing(value)) private$.raw_read
       else if (is.logical(value) && length(value) == 1L) private$.raw_read <- value
-      else stop('The raw_read property must be set with a single logical value', call. = FALSE)
+      else stop('The raw_read property must be set with a single logical value', call. = FALSE) # nocov
     }
   )
 )

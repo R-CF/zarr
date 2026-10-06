@@ -113,7 +113,7 @@ array_builder <- R6::R6Class('array_builder',
             stop('Metadata document is not for a Zarr version 3 object', call. = FALSE) # nocov
           self$format <- meta$zarr_format
           if (meta$node_type != 'array')
-            stop('Metadata document is not for a Zarr array.', call. = FALSE) # nocov
+            stop('Metadata document is not for a Zarr array', call. = FALSE) # nocov
 
           # Set properties through the active fields, checking is done there
           self$shape <- meta$shape
@@ -150,7 +150,7 @@ array_builder <- R6::R6Class('array_builder',
       else if (format == 'json')
         jsonlite::toJSON(private$build_metadata(), auto_unbox = TRUE, pretty = TRUE, digits = NA)
       else
-        stop('Bad format for Zarr metadata.', call. = FALSE) # nocov
+        stop('Bad format for Zarr metadata', call. = FALSE) # nocov
     },
 
     #' @description Adds a codec at the end of the currently registered codecs.
@@ -221,7 +221,7 @@ array_builder <- R6::R6Class('array_builder',
         if (cdc$from == 'array' && private$.codecs[[1L]]$from == cdc$to)
           private$.codecs <- c(setNames(list(cdc), cdc$name), private$.codecs)
         else
-          stop('First codec must use an "array" mode for input and agree with the following codec', call. = FALSE) # nocov
+          stop('First codec must use an "array" mode for input and agree with the following codec', call. = FALSE)
       } else if (cdc$from == private$.codecs[[len - 1L]]$to && cdc$to == private$.codecs[[len]]$from)
         private$.codecs <- append(private$.codecs, setNames(list(cdc), cdc$name), after = len - 1L)
       else
@@ -244,7 +244,7 @@ array_builder <- R6::R6Class('array_builder',
           if (froms[1L] == 'array' && tos[len] == 'bytes' && all(froms[-1L] == tos[-len]))
             private$.codecs <- tst
           else
-            stop('Cannot remove codec as it will invalidate the codec list.', call. = FALSE) # nocov
+            stop('Cannot remove codec as it will invalidate the codec list', call. = FALSE) # nocov
         } else
           private$.codecs <- list()
       }
@@ -288,7 +288,7 @@ array_builder <- R6::R6Class('array_builder',
         private$.portable <- value
         private$update_codecs()
       } else
-        stop('The portable property must be set with a single logical value.', call. = FALSE) # nocov
+        stop('The portable property must be set with a single logical value', call. = FALSE) # nocov
     },
 
     #' @field data_type The data type of the Zarr array. After changing the
@@ -340,6 +340,7 @@ array_builder <- R6::R6Class('array_builder',
           private$.data_type$fill_value
         else {
           dt <- private$.data_type$data_type
+          if (is.null(value)) value <- NA # JSON null, e.g. a string array without fill value
           private$.data_type$fill_value <- if (is.na(value) || inherits(value, 'integer64'))
             value
           else if (is.numeric(value)) {
@@ -389,7 +390,7 @@ array_builder <- R6::R6Class('array_builder',
           private$.shape <- value
           private$.chunk_shape <- chunk_grid_regular$new(value) # Automatic chunk shape
         } else
-          stop('Shape must be an integer vector of lengths along each dimension of the Zarr array.', call. = FALSE) # nocov
+          stop('Shape must be an integer vector of lengths along each dimension of the Zarr array', call. = FALSE) # nocov
         private$update_codecs()
       }
     },
@@ -414,7 +415,7 @@ array_builder <- R6::R6Class('array_builder',
     codec_info = function(value) {
       if (missing(value)) {
         if (length(private$.codecs))
-          do.call(rbind, lapply(private$.codecs, function(cod) data.frame(mode = cod$mode(), codec = cod$name)))
+          do.call(rbind, lapply(private$.codecs, function(cod) data.frame(mode = cod$mode, codec = cod$name)))
       }
     },
 

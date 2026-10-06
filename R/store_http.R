@@ -58,7 +58,7 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
       else if (req$status_code == 404L)
         NULL
       else
-        stop(paste("Error", req$status_code, "on key", key), call. = FALSE)
+        stop(paste("Error", req$status_code, "on key", key), call. = FALSE) # nocov
     }
   ),
   public = list(
@@ -91,7 +91,7 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
         if (!is.null(meta)) {
           meta <- .parse_metadata(rawToChar(meta))
           if (meta$zarr_consolidated_format != 1L)
-            stop('Unsupported version of consolidated metadata.', call. = FALSE)
+            stop('Unsupported version of consolidated metadata', call. = FALSE) # nocov
 
           format <- meta$metadata$.zgroup$zarr_format
           if (is.null(format) || format != 2L)
@@ -182,7 +182,7 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
       else {
         nm <- names(private$.metadata$metadata)
         keys <- nm[startsWith(nm, prefix)]
-        paste0('/', keys)
+        if (length(keys)) paste0('/', keys) else character(0)
       }
     },
 
@@ -282,14 +282,14 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
     #' @param path,name Ignored.
     #' @return An error indicating that the group could not be created.
     create_group = function(path, name) {
-      stop('Cannot write new objects to a Zarr HTTP store.', call. = FALSE) # nocov
+      stop('Cannot write new objects to a Zarr HTTP store', call. = FALSE) # nocov
     },
 
     #' @description Creating a new array in the store is not supported.
     #' @param parent,name,metadata Ignored.
     #' @return An error indicating that the array could not be created.
     create_array = function(parent, name, metadata) {
-      stop('Cannot write new objects to a Zarr HTTP store.', call. = FALSE) # nocov
+      stop('Cannot write new objects to a Zarr HTTP store', call. = FALSE) # nocov
     }
   ),
   active = list(

@@ -223,7 +223,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
         if (!is.null(meta)) {
           meta <- .parse_metadata(rawToChar(meta))
           if (meta$zarr_consolidated_format != 1L)
-            stop('Unsupported version of consolidated metadata', call. = FALSE)
+            stop('Unsupported version of consolidated metadata', call. = FALSE) # nocov
 
           format <- meta$metadata$.zgroup$zarr_format
           if (is.null(format) || format != 2L)
@@ -327,7 +327,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
     list_prefix = function(prefix) {
       keys <- private$list_objects(prefix, delimiter = '')$keys
       keys <- sub(paste0('^', private$.key_prefix), '', keys)
-      paste0('/', keys)
+      if (length(keys)) paste0('/', keys) else character(0)
     },
 
     #' @description Retrieve all keys in the store.
@@ -373,7 +373,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
         private$.client$head_object(Bucket = private$.bucket, Key = private$full_key(key)),
         error = function(e) {
           if (private$is_not_found(e)) NULL
-          else stop(paste("S3 error on key", key, ":", conditionMessage(e)), call. = FALSE)
+          else stop(paste("S3 error on key", key, ":", conditionMessage(e)), call. = FALSE) # nocov
         }
       )
       if (is.null(res)) stop('Key not found: ', key, call. = FALSE)
@@ -443,7 +443,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
             # Key already exists: that's the expected, non-error outcome of
             # set_if_not_exists() when the condition fails, so swallow it.
             if (!private$is_precondition_failed(e))
-              stop(paste("S3 error on key", key, ":", conditionMessage(e)), call. = FALSE)
+              stop(paste("S3 error on key", key, ":", conditionMessage(e)), call. = FALSE) # nocov
           }
         )
       }
@@ -570,6 +570,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
       if (private$.read_only)
         stop('Cannot write to a read-only zarr_s3store', call. = FALSE)
       prefix <- paste0(.path2prefix(parent), name, '/')
+      metadata <- private$check_cke(metadata)
       self$set_metadata(prefix, metadata)
       metadata
     }

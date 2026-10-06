@@ -16,3 +16,4 @@
 ^CLAUDE.md$
 ^tests/testthat/testdata$
 ^revdep$
+^coverage.R$

@@ -88,8 +88,8 @@ zarr_object <- R6::R6Class('zarr_object',
 
       if (is_index) {
         if (idx < 1L || idx > length(lst) + 1L)
-          stop("Index ", idx, " is out of range for array of length ",
-               length(lst), call. = FALSE)
+          stop("Index ", idx, " is out of range for array of length ", # nocov
+               length(lst), call. = FALSE) # nocov
         if (length(path) == 1L) {
           lst[[idx]] <- value
         } else {
@@ -193,7 +193,7 @@ zarr_object <- R6::R6Class('zarr_object',
 
       path <- strsplit(name, "/", fixed = TRUE)[[1L]]
       path <- path[nzchar(path)]
-      if (!length(path)) stop("'name' must contain at least one non-empty segment", call. = FALSE)
+      if (!length(path)) stop("'name' must contain at least one non-empty segment", call. = FALSE) # nocov
 
       private$set_nested_attribute(atts, path, value)
     },
@@ -291,11 +291,11 @@ zarr_object <- R6::R6Class('zarr_object',
         lst
       }
 
-      if (is.null(atts)) return(invisible(self))
+      if (is.null(atts)) return(atts)
 
       path <- strsplit(name, "/", fixed = TRUE)[[1L]]
       path <- path[nzchar(path)]
-      if (!length(path)) return(invisible(self))
+      if (!length(path)) return(atts)
 
       .delete_nested(atts, path)
     }

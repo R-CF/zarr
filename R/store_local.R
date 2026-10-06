@@ -89,23 +89,14 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     },
 
     #' @description Clear the store. Remove all keys and values from the store.
-    #'   Invoking this method deletes affected files on the file system and this
-    #'   action can not be undone. The only file that will remain is "zarr.json"
-    #'   or ".zgroup" (version 2) in the root of this store.
+    #'   WARNING: Invoking this method deletes affected files on the file system
+    #'   and this action can not be undone.
     #' @return `TRUE` if the operation proceeded, `FALSE` otherwise.
     clear = function() {
       if (private$.read_only)
         FALSE
       else {
         unlink(paste0(private$.root, '/*'), recursive = TRUE)
-        if (self$version == 3L)
-          jsonlite::write_json(list(zarr_format = 3, node_type = "group"),
-                               path = file.path(private$.root, 'zarr.json'),
-                               auto_unbox = TRUE, pretty = T, digits = NA)
-        else
-          jsonlite::write_json(list(zarr_format = 2),
-                               path = file.path(private$.root, '.zgroup'),
-                               auto_unbox = TRUE, pretty = T, digits = NA)
         TRUE
       }
     },
@@ -173,7 +164,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     list_prefix = function(prefix) {
       keys <- list.dirs(file.path(private$.root, prefix), full.names = FALSE, recursive = TRUE)[-1L] # exclude prefix itself
       # FIXME: Test that the keys are indeed nodes, i.e. have a file 'zarr.json'.
-      paste0('/', keys)
+      if (length(keys)) paste0('/', keys) else character(0)
     },
 
     #' @description Retrieve all chunk (and shard) keys stored for the array

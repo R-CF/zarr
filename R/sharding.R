@@ -33,7 +33,7 @@ chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
       super$initialize('sharding_indexed', array_shape, chunk_shape)
       private$.clip_supported <- FALSE
       if (private$.scalar)
-        stop('Cannot use sharding on a scalar array', call. = FALSE)
+        stop('Cannot use sharding on a scalar array', call. = FALSE) # nocov
 
       private$.inner_shape  <- inner_shape
       private$.inner_grid   <- as.integer(chunk_shape / inner_shape)
@@ -209,6 +209,7 @@ chunk_grid_sharded_IO <- R6::R6Class('chunk_grid_sharded_IO',
     .inner_shape   = NULL,
     .inner_grid    = NULL,   # number of inner chunks per dimension
     .inner_codecs  = NULL,
+    .inner_perm    = NULL,   # see .chunk_permutation()
     .index_codecs  = NULL,
     .index_loc     = NULL,
     .data_type     = NULL,
@@ -222,7 +223,7 @@ chunk_grid_sharded_IO <- R6::R6Class('chunk_grid_sharded_IO',
       if (!is.null(private$.index)) return(TRUE)
 
       if (!requireNamespace('bit64', quietly = TRUE))
-      stop('Package \'bit64\' must be installed to read sharded arrays.', call. = FALSE)
+      stop('Package \'bit64\' must be installed to read sharded arrays', call. = FALSE) # nocov
 
       n_inner <- prod(private$.inner_grid)
       n_cdcs  <- length(private$.index_codecs)
@@ -286,19 +287,8 @@ chunk_grid_sharded_IO <- R6::R6Class('chunk_grid_sharded_IO',
       ic_len   <- as.numeric(entry[2L])
       ic_raw   <- shard_buf[ic_start:(ic_start + ic_len - 1L)]
 
-      # Decode through inner codec pipeline (reverse order)
-      buf    <- ic_raw
-      n_cdcs <- length(private$.inner_codecs)
-      for (i in n_cdcs:1L)
-        buf <- private$.inner_codecs[[i]]$decode(buf)
-
-      # If no transpose codec, data is in C order: flip dims and permute to R order
-      if (private$.inner_codecs[[1L]]$name != 'transpose') {
-        dim(buf) <- rev(private$.inner_shape)
-        buf      <- aperm(buf, rev(seq_along(private$.inner_shape)))
-      }
-
-      private$.decoded_cache[[key]] <- buf
+      private$.decoded_cache[[key]] <-
+        .decode_chunk(ic_raw, private$.inner_codecs, private$.inner_perm, private$.inner_shape)
     }
   ),
   public = list(
@@ -318,6 +308,7 @@ chunk_grid_sharded_IO <- R6::R6Class('chunk_grid_sharded_IO',
       private$.inner_shape   <- inner_shape
       private$.inner_grid    <- as.integer(shard_shape / inner_shape)
       private$.inner_codecs  <- inner_codecs
+      private$.inner_perm    <- .chunk_permutation(inner_codecs, length(inner_shape))
       private$.index_codecs  <- index_codecs
       private$.index_loc     <- index_loc
       private$.data_type     <- dtype

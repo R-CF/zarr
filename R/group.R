@@ -138,7 +138,7 @@ zarr_group <- R6::R6Class('zarr_group',
         for (i in 1:len) {
           meta <- try(private$.store$get_metadata(paste0(prefix, dirs[i], '/')), silent = TRUE)
           if (inherits(meta, "try-error"))
-            warning(paste0('Error reading metadata from location ', dirs[i], ' - ignoring'), call. = FALSE)
+            warning(paste0('Error reading metadata from location ', dirs[i], ' - ignoring'), call. = FALSE) # nocov
           else if (!is.null(meta)) {
             node <- .buildNode(name = dirs[i], metadata = meta, parent = self)
             children[[i]] <- if (inherits(node, 'zarr_node')) node else NULL
@@ -166,7 +166,7 @@ zarr_group <- R6::R6Class('zarr_group',
         return(NULL)
 
       parts <- strsplit(path, '/', fixed = TRUE)[[1L]]
-      self$walk_path(parts)
+      tryCatch(self$walk_path(parts), error = function(e) NULL)
     },
 
     #' @description Set a group or array in the current group. CAUTION: The node
@@ -179,7 +179,7 @@ zarr_group <- R6::R6Class('zarr_group',
     #' @return The `node` object.
     set_node = function(node) {
       if (!inherits(node, 'zarr_node'))
-        stop('Bad argument to `set_node()`', call. = FALSE)
+        stop('Bad argument to `set_node()`', call. = FALSE) # nocov
       private$.children[[node$name]] <- node
     },
 

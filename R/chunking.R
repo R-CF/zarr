@@ -221,7 +221,7 @@ chunking <- R6::R6Class('chunking',
         if (!is.null(private$.chunk_shape))
           private$.chunk_bytes <- prod(private$.chunk_shape) * value$size
       } else
-        stop('Must set a valid data type.', call. = FALSE) # nocov
+        stop('Must set a valid data type', call. = FALSE) # nocov
     },
 
     #' @field store The store of the array using the chunking scheme.
@@ -232,7 +232,7 @@ chunking <- R6::R6Class('chunking',
       else if (inherits(value, 'zarr_store'))
         private$.store <- value
       else
-        stop('Bad assignment of store.', call. = FALSE) # nocov
+        stop('Bad assignment of store', call. = FALSE) # nocov
     },
 
     #' @field array_prefix The prefix of the array using the chunking scheme.

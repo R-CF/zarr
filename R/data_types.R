@@ -36,7 +36,7 @@ zarr_data_type <- R6::R6Class('zarr_data_type',
 
     set_type = function(data_type) {
       if (missing(data_type) || !is.character(data_type) || length(data_type) != 1L)
-        stop('Data type name must be a single character string.', call. = FALSE) # nocov
+        stop('Data type name must be a single character string', call. = FALSE) # nocov
 
       if (data_type %in% names(zarr_v3_datatypes)) {
         private$.data_type <- data_type
@@ -59,7 +59,7 @@ zarr_data_type <- R6::R6Class('zarr_data_type',
     #' @return An instance of this class.
     initialize = function(data_type, fill_value = NULL) {
       if (data_type %in% c('int64', 'uint32') && !requireNamespace('bit64', quietly = TRUE))
-        stop('Package \'bit64\' must be installed for this data type.', call. = FALSE) # nocov
+        stop('Package \'bit64\' must be installed for this data type', call. = FALSE) # nocov
 
       private$set_type(data_type)
       if (!is.null(fill_value))
@@ -125,38 +125,3 @@ zarr_data_type <- R6::R6Class('zarr_data_type',
     }
   )
 )
-
-# Parse a Zarr v.2 dtype string
-zarr_v2_parse_dtype <- function(dtype) {
-  m <- regexec('^([<>|])([ifubS])([0-9]+)$', dtype)
-  parts <- regmatches(dtype, m)[[1L]]
-  if (length(parts) == 0L)
-    stop('Unsupported dtype string: ', dtype)
-
-  endian <- switch(parts[2L],
-                   '<' = 'little',
-                   '>' = 'big',
-                   '|' = 'none')
-  kind <- parts[3L]
-  size <- if (length(parts) > 3L) as.integer(parts[4L]) else 1L # '|O' type
-
-  if (kind == 'i' && size == 8L)
-    list(Rtype = 'integer64', size = size, signed = TRUE, endian = endian)
-  else if (kind == 'u' && size == 8L)
-    list(Rtype = 'integer64', size = size, signed = FALSE, endian = endian)
-  else if (kind == 'i')
-    list(Rtype = 'integer', size = size, signed = TRUE, endian = endian)
-  else if (kind == 'u')
-    list(Rtype = 'integer', size = size, signed = FALSE, endian = endian)
-  else if (kind == 'f')
-    list(Rtype = 'numeric', size = size, endian = endian)
-  else if (kind == 'b' && size == 1L)
-    list(Rtype = 'logical', size = 1L, endian = NULL)
-  else if (kind == 'S')
-    list(Rtype = 'bytes', size = size, endian = NULL)
-  else if (kind %in% c('U', 'O'))
-    list(Rtype = 'string', size = 1L, endian = NULL)
-  else
-    NULL
-}
-

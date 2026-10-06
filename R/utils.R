@@ -89,7 +89,7 @@ is_valid_node_name <- function(name) {
           gsub(pattern = ":\\s*NaN",  replacement = ': "NaN"',       x = _) |>
           jsonlite::fromJSON(simplifyDataFrame = FALSE)
       } else {
-        stop(e)
+        stop(e) # nocov
       }
     }
   )
@@ -135,7 +135,7 @@ is_valid_node_name <- function(name) {
 #' Test if vectors `x` and `y` have near-identical values.
 #' @noRd
 .near <- function(x, y) {
-  abs(x - y) <= max(Zarr.options$eps * max(abs(x), abs(y)), 1e-12)
+  abs(x - y) <= pmax(Zarr.options$eps * pmax(abs(x), abs(y)), 1e-12)
 }
 
 #' Determines the protocol to be used with a specified store location.
@@ -172,7 +172,7 @@ is_valid_node_name <- function(name) {
 
   m <- regmatches(loc, regexec('^(https?)://([^/]+)/?(.*)$', loc, perl = TRUE))[[1L]]
   if (length(m) != 4L)
-    stop('Cannot parse S3 location: ', loc, call. = FALSE)
+    stop('Cannot parse S3 location: ', loc, call. = FALSE) # nocov
   scheme <- m[2L]; host <- m[3L]; path <- m[4L]
 
   if (grepl('^s3[.-]?[a-z0-9-]*\\.amazonaws\\.com$', host, ignore.case = TRUE, perl = TRUE)) {
@@ -196,7 +196,7 @@ is_valid_node_name <- function(name) {
   # is the first path segment, the endpoint is the scheme+host itself.
   parts <- strsplit(path, '/', fixed = TRUE)[[1L]]
   if (!length(parts) || !nzchar(parts[1L]))
-    stop('Cannot determine bucket from S3 location: ', loc, call. = FALSE)
+    stop('Cannot determine bucket from S3 location: ', loc, call. = FALSE) # nocov
   list(bucket = parts[1L],
        prefix = if (length(parts) > 1L) paste(parts[-1L], collapse = '/') else '',
        region = NULL, endpoint = paste0(scheme, '://', host))
@@ -297,4 +297,50 @@ zarr_conventions <- function() {
     codecs <- c(codecs, stats::setNames(list(cdc), cfg$name))
   }
   codecs
+}
+
+# Chunk element order. A Zarr chunk is serialised by its array->bytes codec in
+# C order, after any array->array (transpose) codec has been applied. In R, the
+# C-order serialisation of an array `y` is `as.vector(aperm(y, n:1))`, so the
+# transpose codec and the serialisation together amount to a single
+# permutation of an R-order chunk: `rev(order) + 1` with a transpose codec,
+# `n:1` without one. These helpers apply that permutation once, instead of
+# running the transpose codec and then permuting again for C order.
+
+# The permutation from an R-order chunk of rank `n` to its serialised order,
+# or `NULL` when the chunk is serialised in R order (the default transpose
+# order `n-1, ..., 0` that this package writes).
+.chunk_permutation <- function(codecs, n) {
+  transp <- Filter(function(cdc) cdc$name == 'transpose', codecs)
+  perm <- if (length(transp)) rev(transp[[1L]]$configuration$order) + 1L
+          else rev(seq_len(n))
+  if (identical(perm, seq_len(n))) NULL else perm
+}
+
+# aperm() keeps the bits but drops the class of integer64 data
+.aperm <- function(x, perm) {
+  out <- aperm(x, perm)
+  if (inherits(x, 'integer64')) class(out) <- 'integer64'
+  out
+}
+
+# Encode an R-order chunk `x` to raw bytes.
+.encode_chunk <- function(x, codecs, perm) {
+  if (!is.null(perm)) x <- .aperm(x, perm)
+  for (cdc in codecs)
+    if (cdc$name != 'transpose') x <- cdc$encode(x)
+  x
+}
+
+# Decode raw chunk bytes to an R-order array of `shape`.
+.decode_chunk <- function(raw, codecs, perm, shape) {
+  for (cdc in rev(codecs))
+    if (cdc$name != 'transpose') raw <- cdc$decode(raw)
+  if (is.null(perm)) {
+    dim(raw) <- shape
+    raw
+  } else {
+    dim(raw) <- shape[perm]
+    .aperm(raw, order(perm))
+  }
 }

@@ -11,19 +11,6 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     # The underlying properties of the array
     .codecs = list(),
 
-    # Set the codecs of this chunk manager
-    set_codecs = function(codecs) {
-      private$.codecs <- codecs
-
-      transp <- codecs$transpose
-      if (is.null(transp))  # C order
-        rev(seq_along(private$.chunk_shape))
-      else if (all(diff(transp$configuration$order) == -1))
-        NULL
-      else
-        ab$shape[transp$configuration$order]
-    },
-
     clip_chunk = function(cidx, new_shape, clip_dims) {
       chunk_shape  <- private$.chunk_shape
       chunk_origin <- cidx * chunk_shape + 1L
@@ -291,9 +278,9 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       if (missing(value))
         private$.codecs
       else if (is.list(value) && all(sapply(value, inherits, 'zarr_codec')))
-        private$set_codecs(value)
+        private$.codecs <- value
       else
-        stop('Invalid list of codecs for chunk management.', call. = FALSE) # nocov
+        stop('Invalid list of codecs for chunk management', call. = FALSE) # nocov
     }
   )
 )
@@ -320,6 +307,7 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
     .codecs = list(),
     .chunk_key = '',
     .chunk_shape = NULL,
+    .perm = NULL,   # Permutation to the serialised element order, see .chunk_permutation()
 
     # Load the chunk and decode it. Result is placed in private$.buffer.
     load_chunk = function() {
@@ -328,19 +316,9 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
         private$.buffer <- if (is.null(buf)) {
           # No chunk in the store, initialize buffer with fill_data
           array(rep(private$.data_type$fill_value, prod(private$.chunk_shape)), private$.chunk_shape)
-        } else {
-          # Decode the chunk
-          for (i in length(private$.codecs):1L)
-            buf <- private$.codecs[[i]]$decode(buf)
-
-          # If there is no transpose codec (always the first one) then the
-          # chunk is in canonical C order so flip the dimensions and permute.
-          if (private$.codecs[[1L]]$name != 'transpose') {
-            dim(buf) <- rev(private$.chunk_shape)
-            aperm(buf, rev(seq_along(private$.chunk_shape)))
-          } else buf
-        }
-        # array() and aperm() drop the class, but not the bits, of integer64
+        } else
+          .decode_chunk(buf, private$.codecs, private$.perm, private$.chunk_shape)
+        # array() drops the class, but not the bits, of integer64
         if (private$.data_type$Rtype == 'integer64')
           class(private$.buffer) <- 'integer64'
       }
@@ -365,6 +343,7 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
       private$.data_type <- dtype
       private$.store <- store
       private$.codecs <- lapply(codecs, function(c) c$copy())
+      private$.perm <- .chunk_permutation(codecs, length(chunk_shape))
     },
 
     #' @description Read some data from the chunk.
@@ -422,10 +401,7 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
           # If the entire buffer is NA, don't write it, delete existing chunk
           private$.store$erase(private$.chunk_key)
         } else {
-          # Encode the buffer
-          buf <- private$.buffer
-          for (i in seq_len(length(private$.codecs)))
-            buf <- private$.codecs[[i]]$encode(buf)
+          buf <- .encode_chunk(private$.buffer, private$.codecs, private$.perm)
 
           # Write to the store
           private$.store$set(private$.chunk_key, buf)
