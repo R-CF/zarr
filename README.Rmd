@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![CRAN Status](https://www.r-pkg.org/badges/version/zarr)](https://cran.r-project.org/package=zarr) [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/grand-total/zarr)](https://cran.r-project.org/package=zarr) [![License: GPL v3](https://img.shields.io/badge/License-MIT-blue.svg)](https://mit-license.org) [![Last commit](https://img.shields.io/github/last-commit/R-CF/zarr)](https://github.com/R-CF/zarr/commits/main)
 [![R-CMD-check](https://github.com/R-CF/zarr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-CF/zarr/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/R-CF/zarr/graph/badge.svg)](https://app.codecov.io/gh/R-CF/zarr)
 <!-- badges: end -->
 
 `zarr` is a package to create and access Zarr stores using native R code. It is designed against the specification for Zarr core version 3. Supported stores comprise memory, the file system, HTTP and S3. 
@@ -74,6 +75,6 @@ You can install the development version of `zarr` from [GitHub](https://github.c
 devtools::install_github("R-CF/zarr")
 ```
 ## Development
-This package is under active development and should not yet be used for production environments. Things may fail and you are advised to ensure that you have backups of all data that you put in a Zarr store with this package.
+This package is under active development and new features are added frequently. The API is stable for the main user-facing code.
 
 Like Zarr itself, this package is modular and allows for additional stores, codes, transformers, extensions and domains to be added to this basic implementation. If you have specific needs, open an [issue on Github](https://github.com/R-CF/zarr/issues) or, better yet, fork the code and submit code suggestions via a pull request. Specific guidance for developers is being drafted.
