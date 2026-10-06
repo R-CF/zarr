@@ -50,6 +50,11 @@ create_zarr <- function(location) {
 #' africa <- open_zarr(fn)
 #' africa
 open_zarr <- function(location, read_only = NULL, protocol = NULL, ...) {
+  if (is.character(location) && length(location) == 1L &&
+      (protocol %||% .protocol(location)) == 'local' &&
+      !dir.exists(uri_to_path(location)))
+    stop('No Zarr store at location: ', location, call. = FALSE)
+
   zarr$new(location, read_only, protocol, ...)
 }
 

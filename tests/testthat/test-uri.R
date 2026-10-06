@@ -41,6 +41,26 @@ test_that("uri_to_path() decodes relative file URIs", {
   expect_equal(uri_to_path("file:stores/a%20b.zarr"), file.path("stores", "a b.zarr"))
 })
 
+test_that("uri_to_path() decodes Windows drive-letter and UNC URIs", {
+  expect_equal(uri_to_path("file:///C:/Users/my%20store/a.zarr", windows = TRUE), "C:/Users/my store/a.zarr")
+  expect_equal(uri_to_path("file:/C:/a.zarr", windows = TRUE), "C:/a.zarr")
+  expect_equal(uri_to_path("file://server/share/a%20b.zarr", windows = TRUE), "//server/share/a b.zarr")
+  expect_equal(uri_to_path("file:///data/a.zarr", windows = TRUE), "/data/a.zarr")
+})
+
+test_that("uri_to_path() treats a drive letter as an ordinary segment off Windows", {
+  expect_equal(uri_to_path("file:///C:/a.zarr", windows = FALSE), "/C:/a.zarr")
+})
+
+test_that("path_to_uri() and uri_to_path() round-trip a Windows path", {
+  skip_if_not(.Platform$OS.type == "windows")
+  fn <- file.path(tempdir(), "my store", "a.zarr")
+  uri <- path_to_uri(fn)
+  expect_match(uri, "^file:///[A-Za-z]:/")
+  expect_equal(normalizePath(uri_to_path(uri), winslash = "/", mustWork = FALSE),
+               normalizePath(fn, winslash = "/", mustWork = FALSE))
+})
+
 test_that("path_to_uri() and uri_to_path() round-trip", {
   skip_on_os("windows")
   for (p in c("/data/a.zarr", "/tmp/my store/µs/東京.zarr", "/a/b#c/d?e"))

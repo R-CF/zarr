@@ -60,12 +60,13 @@ path_to_uri <- function(path) {
 }
 
 # Decode
-uri_to_path <- function(url) {
+# `windows` selects the Windows interpretation of drive letters and UNC hosts;
+# it is an argument so that both interpretations can be tested on any OS.
+uri_to_path <- function(url, windows = .Platform$OS.type == "windows") {
   if(!startsWith(url, "file:"))
     return(url)
 
   u <- sub("^file:", "", url)
-  is_windows <- .Platform$OS.type == "windows"
 
   # Relative
   if (!startsWith(u, "/") && !grepl("^//", u)) {
@@ -75,8 +76,9 @@ uri_to_path <- function(url) {
     return(paste(parts, collapse = .Platform$file.sep))
   }
 
-  # UNC
-  if (is_windows && startsWith(u, "//")) {
+  # UNC: "file://host/share/...". Not "file:///C:/...", which is a local path
+  # with an empty authority.
+  if (windows && grepl("^//[^/]", u)) {
     parts <- strsplit(sub("^//", "", u), "/", fixed = TRUE)[[1L]]
     parts <- parts[nzchar(parts)]
     parts <- vapply(parts, utils::URLdecode, "")
@@ -89,7 +91,7 @@ uri_to_path <- function(url) {
   parts <- parts[nzchar(parts)]
   parts <- vapply(parts, utils::URLdecode, "")
 
-  if (is_windows && grepl("^[A-Za-z]:$", parts[1L]))
+  if (windows && grepl("^[A-Za-z]:$", parts[1L]))
     paste(parts, collapse = "/")
   else
     paste0("/", paste(parts, collapse = "/"))

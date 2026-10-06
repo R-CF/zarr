@@ -106,6 +106,20 @@ test_that("local store: read-only store refuses to clear or erase", {
   expect_true(dir.exists(file.path(fn, "g1")))
 })
 
+test_that("open_zarr() errors on a local location that does not exist", {
+  fn <- tempfile(fileext = ".zarr")
+  expect_error(open_zarr(fn), "No Zarr store at location")
+  expect_error(open_zarr(path_to_uri(fn)), "No Zarr store at location")
+  expect_error(open_zarr(fn, protocol = "local"), "No Zarr store at location")
+  expect_false(dir.exists(fn))
+})
+
+test_that("open_zarr() errors on a directory that is not a Zarr store", {
+  fn <- tempfile()
+  dir.create(fn)
+  expect_error(open_zarr(fn), "No Zarr store at the root location")
+})
+
 # ==== Store properties ========================================================
 
 test_that("store properties", {
@@ -124,7 +138,7 @@ test_that("store properties", {
   l <- zarr_localstore$new(fn)
   expect_equal(l$friendlyClassName, "Local file system store")
   expect_match(l$uri, "^file:///")
-  expect_equal(uri_to_path(l$uri), normalizePath(fn))
+  expect_equal(normalizePath(uri_to_path(l$uri), winslash = "/"), normalizePath(fn, winslash = "/"))
   expect_equal(l$separator, ".")
 })
 

@@ -64,7 +64,7 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
         if (!file.exists(meta_path <- file.path(root, 'zarr.json')))
           if (!file.exists(meta_path <- file.path(root, '.zgroup')))
             if (!file.exists(meta_path <- file.path(root, '.zarray')))
-              stop('No Zarr store at the root location', call. = FALSE) # nocov
+              stop('No Zarr store at the root location', call. = FALSE)
         meta <- .parse_metadata(rawToChar(readBin(meta_path, "raw", file.size(meta_path))))
         format <- meta$zarr_format
         if (is.null(format) || !(format == 3L || format == 2L))
