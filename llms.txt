@@ -45,7 +45,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpKTjmVF/file3a91308e1a64.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//Rtmp52W8mn/file670761e3511d.zarr 
 #> Arrays    : 1 
 #> Total size: 1.08 KB
 ```
@@ -121,10 +121,8 @@ devtools::install_github("R-CF/zarr")
 
 ## Development
 
-This package is under active development and should not yet be used for
-production environments. Things may fail and you are advised to ensure
-that you have backups of all data that you put in a Zarr store with this
-package.
+This package is under active development and new features are added
+frequently. The API is stable for the main user-facing code.
 
 Like Zarr itself, this package is modular and allows for additional
 stores, codes, transformers, extensions and domains to be added to this
