@@ -16,6 +16,7 @@ Imports:
     R6
 Suggests: 
     bit64,
+    cli,
     curl,
     digest,
     future,

@@ -24,8 +24,6 @@ names.
 \section{Active bindings}{
   \if{html}{\out{<div class="r6-active-bindings">}}
   \describe{
-    \item{\code{name}}{(read-only) The name of the node.}
-
     \item{\code{zarr}}{(read-only) Retrieve the \link{zarr} object that manages this
 node.}
 

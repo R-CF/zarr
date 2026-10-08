@@ -69,6 +69,7 @@ usually a slash '/'.}
     \item \href{#method-zarr_s3store-set}{\code{zarr_s3store$set()}}
     \item \href{#method-zarr_s3store-set_if_not_exists}{\code{zarr_s3store$set_if_not_exists()}}
     \item \href{#method-zarr_s3store-get}{\code{zarr_s3store$get()}}
+    \item \href{#method-zarr_s3store-get_many}{\code{zarr_s3store$get_many()}}
     \item \href{#method-zarr_s3store-get_metadata}{\code{zarr_s3store$get_metadata()}}
     \item \href{#method-zarr_s3store-set_metadata}{\code{zarr_s3store$set_metadata()}}
     \item \href{#method-zarr_s3store-is_group}{\code{zarr_s3store$is_group()}}
@@ -505,6 +506,29 @@ vector \code{c(start, end)} with an exclusive end.}
   \subsection{Returns}{
     A raw vector with the data pointed at by the key, or \code{NULL} if
 the key does not exist.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_s3store-get_many"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_s3store-get_many}{}}}
+\subsection{\code{zarr_s3store$get_many()}}{
+  Retrieve the values of several keys concurrently.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_s3store$get_many(keys)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{keys}}{Character vector of keys.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list as long as \code{keys} with a raw vector for each key, or
+\code{NULL} for a key that is not present in the store.
   }
 }
 

@@ -324,6 +324,12 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
       }
     },
 
+    # Does the buffer hold only the fill value? Such a chunk is equivalent to an
+    # absent chunk. NA and NaN fill values never compare equal, hence is.na().
+    is_fill = function() {
+      all_fill_impl(private$.buffer, private$.data_type$fill_value)
+    },
+
     # Make sure that any edits are written to the store before disappearing.
     finalize = function() {
       self$flush()
@@ -397,8 +403,8 @@ chunk_grid_regular_IO <- R6::R6Class('chunk_grid_regular_IO',
     #' @return Self, invisibly.
     flush = function() {
       if (private$.buffer_stale) {
-        if (all(is.na(private$.buffer))) {
-          # If the entire buffer is NA, don't write it, delete existing chunk
+        if (private$is_fill()) {
+          # If the entire buffer is fill values, don't write it, delete existing chunk
           private$.store$erase(private$.chunk_key)
         } else {
           buf <- .encode_chunk(private$.buffer, private$.codecs, private$.perm)

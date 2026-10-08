@@ -51,6 +51,7 @@ usually a slash '/'.}
     \item \href{#method-zarr_httpstore-set}{\code{zarr_httpstore$set()}}
     \item \href{#method-zarr_httpstore-set_if_not_exists}{\code{zarr_httpstore$set_if_not_exists()}}
     \item \href{#method-zarr_httpstore-get}{\code{zarr_httpstore$get()}}
+    \item \href{#method-zarr_httpstore-get_many}{\code{zarr_httpstore$get_many()}}
     \item \href{#method-zarr_httpstore-get_metadata}{\code{zarr_httpstore$get_metadata()}}
     \item \href{#method-zarr_httpstore-set_metadata}{\code{zarr_httpstore$set_metadata()}}
     \item \href{#method-zarr_httpstore-is_group}{\code{zarr_httpstore$is_group()}}
@@ -306,6 +307,29 @@ starts after the end of the object, an error will be returned.}
   }
   \subsection{Returns}{
     A raw vector with the data pointed at by the key.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_httpstore-get_many"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_httpstore-get_many}{}}}
+\subsection{\code{zarr_httpstore$get_many()}}{
+  Retrieve the values of several keys concurrently.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_httpstore$get_many(keys)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{keys}}{Character vector of keys.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list as long as \code{keys} with a raw vector for each key, or
+\code{NULL} for a key that is not present in the store.
   }
 }
 

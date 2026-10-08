@@ -219,6 +219,14 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
       private$request(key, byte_range)
     },
 
+    #' @description Retrieve the values of several keys concurrently.
+    #' @param keys Character vector of keys.
+    #' @return A list as long as `keys` with a raw vector for each key, or
+    #'   `NULL` for a key that is not present in the store.
+    get_many = function(keys) {
+      .fetch_urls(paste(private$.base_url, keys, sep = '/'))
+    },
+
     #' @description Retrieve the metadata document of the node at the location
     #'   indicated by the `prefix` argument. The metadata will always be
     #'   presented to the caller in the Zarr v.3 format. Attributes, if present,

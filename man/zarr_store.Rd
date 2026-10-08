@@ -57,6 +57,7 @@ each array.}
     \item \href{#method-zarr_store-erase_prefix}{\code{zarr_store$erase_prefix()}}
     \item \href{#method-zarr_store-exists}{\code{zarr_store$exists()}}
     \item \href{#method-zarr_store-get}{\code{zarr_store$get()}}
+    \item \href{#method-zarr_store-get_many}{\code{zarr_store$get_many()}}
     \item \href{#method-zarr_store-getsize}{\code{zarr_store$getsize()}}
     \item \href{#method-zarr_store-getsize_prefix}{\code{zarr_store$getsize_prefix()}}
     \item \href{#method-zarr_store-is_empty}{\code{zarr_store$is_empty()}}
@@ -215,6 +216,31 @@ starts after the end of the object, an error will be returned.}
   }
   \subsection{Returns}{
     An raw vector of data, or \code{NULL} if no data was found.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_store-get_many"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_store-get_many}{}}}
+\subsection{\code{zarr_store$get_many()}}{
+  Retrieve the values of several keys. This implementation
+retrieves them one by one; stores that can retrieve values concurrently
+override it.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$get_many(keys)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{keys}}{Character vector of keys.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A list as long as \code{keys} with a raw vector for each key, or
+\code{NULL} for a key that is not present in the store.
   }
 }
 

@@ -222,6 +222,56 @@ zarr_array <- R6::R6Class('zarr_array',
       private$.chunking$flush()
     },
 
+    #' @description Copy this array to another store. The chunks of this array
+    #'   are copied as stored and without decoding, so the copy is
+    #'   byte-identical. For a sharded array, whole shards are copied.
+    #' @details This is a method for internal use. It is called by the
+    #'   [zarr_group] `copy_to()` method, which itself is called by the [zarr]
+    #'   `save_to()` method.
+    #'
+    #'   An error is raised if this array uses storage transformers.
+    #' @param dest The `zarr` or `zarr_group` instance to copy this array into.
+    #' @param verbose A `list` with details for providing feedback; empty if no
+    #'   feedback is requested.
+    #' @return The object in argument `dest` with this array copied into it.
+    copy_to = function(dest, verbose) {
+      # Create an identical array in dest
+      arr <- zarr_array$new(private$.name, private$.metadata, dest)
+
+      # Set up the environment
+      src <- private$.chunking
+      dst <- arr$chunking
+      src$flush()
+      keys  <- src$chunk_keys()
+      skeys <- paste0(self$prefix, keys)
+
+      # Feedback
+      pb <- FALSE
+      if (!is.null(verbose)) {
+        verbose$arrays_done <- verbose$arrays_done + 1L
+        if (verbose$cli) {
+          if (length(keys) > 2L) {
+            pb <- TRUE
+            cli::cli_progress_bar(format = 'Array {.val {self$name}} | {pb_bar} | {pb_percent}', total = length(keys))
+          }
+        } else
+          cat(sprintf('Copying array "%s" (%d/%d)\n', self$name, verbose$arrays_done, verbose$arrays))
+      }
+
+      # Copy the raw chunks over to the new array
+      for (b in split(seq_along(keys), ceiling(seq_along(keys) / 100L))) {
+        bufs <- private$.store$get_many(skeys[b])
+        for (i in seq_along(b)) {
+          if (!is.null(bufs[[i]])) dst$write_raw(keys[b[i]], bufs[[i]])
+          if (pb) cli::cli_progress_update()
+        }
+      }
+      if (!is.null(verbose) && verbose$cli)
+        cli::cli_alert_success('Created array {private$.glyph} {.val {self$name}} ({verbose$arrays_done}/{verbose$arrays})')
+
+      dest
+    },
+
     #' @description Resize the array, growing or shrinking any combination of
     #'   dimensions at either end in one pass. Existing chunk payload is never
     #'   rewritten, except for a chunk left straddling a shrinking, non-chunk-

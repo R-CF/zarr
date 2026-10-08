@@ -10,6 +10,18 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// all_fill_impl
+bool all_fill_impl(SEXP x, SEXP fill);
+RcppExport SEXP _zarr_all_fill_impl(SEXP xSEXP, SEXP fillSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type fill(fillSEXP);
+    rcpp_result_gen = Rcpp::wrap(all_fill_impl(x, fill));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fill_array_impl
 void fill_array_impl(SEXP output, List chunks, List out_offsets, List ic_offsets, IntegerMatrix copy_lengths, IntegerVector out_dims, IntegerVector ic_dims);
 RcppExport SEXP _zarr_fill_array_impl(SEXP outputSEXP, SEXP chunksSEXP, SEXP out_offsetsSEXP, SEXP ic_offsetsSEXP, SEXP copy_lengthsSEXP, SEXP out_dimsSEXP, SEXP ic_dimsSEXP) {
@@ -28,6 +40,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_zarr_all_fill_impl", (DL_FUNC) &_zarr_all_fill_impl, 2},
     {"_zarr_fill_array_impl", (DL_FUNC) &_zarr_fill_array_impl, 7},
     {NULL, NULL, 0}
 };

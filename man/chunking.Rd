@@ -52,6 +52,10 @@ This is set by the array when starting to use chunking for file I/O.}
   \itemize{
     \item \href{#method-chunking-initialize}{\code{chunking$new()}}
     \item \href{#method-chunking-resize}{\code{chunking$resize()}}
+    \item \href{#method-chunking-chunk_keys}{\code{chunking$chunk_keys()}}
+    \item \href{#method-chunking-read_raw}{\code{chunking$read_raw()}}
+    \item \href{#method-chunking-write_raw}{\code{chunking$write_raw()}}
+    \item \href{#method-chunking-flush}{\code{chunking$flush()}}
   }
 }
 \if{html}{\out{<details open><summary>Inherited methods</summary>
@@ -109,6 +113,93 @@ per dimension (positive = grew at the low end, negative = shrank).}
       \item{\code{high}}{Integer vector, the requested high-end element deltas
 (used only to decide which boundary chunks need NA-clipping).}
     }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-chunking-chunk_keys"></a>}}
+\if{latex}{\out{\hypertarget{method-chunking-chunk_keys}{}}}
+\subsection{\code{chunking$chunk_keys()}}{
+  Generate the keys of all chunks in the chunk grid, or of
+all shards for a sharded array. Keys are derived from the grid and the
+chunk key encoding, not by listing the store, so this works for stores
+that cannot list their keys. Chunks need not exist in the store.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunking$chunk_keys()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A character vector of chunk keys, relative to the array prefix.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-chunking-read_raw"></a>}}
+\if{latex}{\out{\hypertarget{method-chunking-read_raw}{}}}
+\subsection{\code{chunking$read_raw()}}{
+  Read the bytes of a chunk (or shard) as they are held in
+the store, without decoding. Any pending edits to the chunk are
+flushed to the store first.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunking$read_raw(key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Chunk key relative to the array prefix, as produced by
+\code{chunk_keys()}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A raw vector, or \code{NULL} if the chunk is not present in the
+store.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-chunking-write_raw"></a>}}
+\if{latex}{\out{\hypertarget{method-chunking-write_raw}{}}}
+\subsection{\code{chunking$write_raw()}}{
+  Write the bytes of a chunk (or shard) to the store, without
+encoding. Any cached copy of the chunk is dropped. The caller is
+responsible for \code{value} being consistent with the codecs of the array.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunking$write_raw(key, value)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{Chunk key relative to the array prefix, as produced by
+\code{chunk_keys()}.}
+      \item{\code{value}}{A raw vector with the encoded chunk.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-chunking-flush"></a>}}
+\if{latex}{\out{\hypertarget{method-chunking-flush}{}}}
+\subsection{\code{chunking$flush()}}{
+  Persist the data in all chunks with pending edits to the
+store. This base implementation is a no-op for chunking schemes that
+do not buffer writes.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunking$flush()}
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{

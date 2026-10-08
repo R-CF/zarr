@@ -49,6 +49,7 @@ object, starting from the root group, as a character vector.}
     \item \href{#method-zarr-add_array}{\code{zarr$add_array()}}
     \item \href{#method-zarr-delete_group}{\code{zarr$delete_group()}}
     \item \href{#method-zarr-delete_array}{\code{zarr$delete_array()}}
+    \item \href{#method-zarr-save_to}{\code{zarr$save_to()}}
     \item \href{#method-zarr-clone}{\code{zarr$clone()}}
   }
 }
@@ -257,6 +258,46 @@ root of the Zarr object, the Zarr object will become uninitialised.
   }
   \subsection{Returns}{
     Self, invisible.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr-save_to"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr-save_to}{}}}
+\subsection{\code{zarr$save_to()}}{
+  This method can be used to save a Zarr store to a different
+location. The entire store is persisted to the new location.
+
+Note that saving a Zarr store on a local file system to another
+location on the same local file system is usually much faster with disk
+management tools of the operating system (e.g. copy/paste).
+
+The new Zarr store is always written as Zarr version 3. This method can
+thus be used to quickly convert from Zarr version 2 to version 3
+stores.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr$save_to(location, verbose = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{location}}{Character string that indicates a location where to save
+this Zarr object to. Any writable location may be used, such as a
+directory on a local file system or a bucket on a S3 server. The
+character string may contain UTF-8 characters and/or use a file URI
+format. The Zarr specification recommends that the location use the
+".zarr" extension to identify the location as a Zarr store.}
+      \item{\code{verbose}}{Should feedback be provided? Default is \code{FALSE}. When
+\code{TRUE} and in interactive mode and the \code{cli} package is installed then
+that package will be used, otherwise standard text messages will be
+printed to the console.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
   }
 }
 

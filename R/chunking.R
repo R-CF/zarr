@@ -192,7 +192,59 @@ chunking <- R6::R6Class('chunking',
       private$.chunk_map   <- new.env(parent = emptyenv())
       private$.chunk_touch <- new.env(parent = emptyenv())
       invisible(self)
-    }
+    },
+
+    #' @description Generate the keys of all chunks in the chunk grid, or of
+    #'   all shards for a sharded array. Keys are derived from the grid and the
+    #'   chunk key encoding, not by listing the store, so this works for stores
+    #'   that cannot list their keys. Chunks need not exist in the store.
+    #' @return A character vector of chunk keys, relative to the array prefix.
+    chunk_keys = function() {
+      if (private$.scalar) return(private$.cke$scalar)
+      n <- as.integer(ceiling(private$.array_shape / private$.chunk_shape))
+      grid <- as.matrix(expand.grid(lapply(n, function(k) seq_len(k) - 1L)))
+      paste0(private$.cke$pre, apply(grid, 1L, paste, collapse = private$.cke$sep))
+    },
+
+    #' @description Read the bytes of a chunk (or shard) as they are held in
+    #'   the store, without decoding. Any pending edits to the chunk are
+    #'   flushed to the store first.
+    #' @param key Chunk key relative to the array prefix, as produced by
+    #'   `chunk_keys()`.
+    #' @return A raw vector, or `NULL` if the chunk is not present in the
+    #'   store.
+    read_raw = function(key) {
+      key <- paste0(private$.array_prefix, key)
+      io <- private$.chunk_map[[key]]
+      if (!is.null(io)) io$flush()
+      private$.store$get(key)
+    },
+
+    #' @description Write the bytes of a chunk (or shard) to the store, without
+    #'   encoding. Any cached copy of the chunk is dropped. The caller is
+    #'   responsible for `value` being consistent with the codecs of the array.
+    #' @param key Chunk key relative to the array prefix, as produced by
+    #'   `chunk_keys()`.
+    #' @param value A raw vector with the encoded chunk.
+    #' @return Self, invisibly.
+    write_raw = function(key, value) {
+      key <- paste0(private$.array_prefix, key)
+      io <- private$.chunk_map[[key]]
+      if (!is.null(io)) {
+        # Flush, so the finalizer of the dropped buffer can't overwrite `value`
+        io$flush()
+        rm(list = key, envir = private$.chunk_map)
+        rm(list = key, envir = private$.chunk_touch)
+      }
+      private$.store$set(key, value)
+      invisible(self)
+    },
+
+    #' @description Persist the data in all chunks with pending edits to the
+    #'   store. This base implementation is a no-op for chunking schemes that
+    #'   do not buffer writes.
+    #' @return Self, invisibly.
+    flush = function() invisible(self)
   ),
   active = list(
     #' @field chunk_shape (read-only) The dimensions of each chunk in the chunk

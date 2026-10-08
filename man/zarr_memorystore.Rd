@@ -54,8 +54,9 @@ always a dot '.'.}
     \item \href{#method-zarr_memorystore-create_array}{\code{zarr_memorystore$create_array()}}
   }
 }
-\if{html}{\out{<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="get_many"><a href='../../zarr/html/zarr_store.html#method-zarr_store-get_many'><code>zarr_store$get_many()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize'><code>zarr_store$getsize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize_prefix'><code>zarr_store$getsize_prefix()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href='../../zarr/html/zarr_store.html#method-zarr_store-is_empty'><code>zarr_store$is_empty()</code></a></span></li>

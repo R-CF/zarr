@@ -44,6 +44,7 @@ applies to the array for all subsequent reads.}
     \item \href{#method-zarr_array-read}{\code{zarr_array$read()}}
     \item \href{#method-zarr_array-write}{\code{zarr_array$write()}}
     \item \href{#method-zarr_array-flush}{\code{zarr_array$flush()}}
+    \item \href{#method-zarr_array-copy_to}{\code{zarr_array$copy_to()}}
     \item \href{#method-zarr_array-resize}{\code{zarr_array$resize()}}
     \item \href{#method-zarr_array-promote}{\code{zarr_array$promote()}}
   }
@@ -198,6 +199,39 @@ store.
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_array$flush()}
     \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_array-copy_to"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-copy_to}{}}}
+\subsection{\code{zarr_array$copy_to()}}{
+  Copy this array to another store. The chunks of this array
+are copied as stored and without decoding, so the copy is
+byte-identical. For a sharded array, whole shards are copied.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$copy_to(dest, verbose)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{dest}}{The \code{zarr} or \code{zarr_group} instance to copy this array into.}
+      \item{\code{verbose}}{A \code{list} with details for providing feedback; empty if no
+feedback is requested.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Details}{
+    This is a method for internal use. It is called by the
+\link{zarr_group} \code{copy_to()} method, which itself is called by the \link{zarr}
+\code{save_to()} method.
+
+An error is raised if this array uses storage transformers.
+  }
+  \subsection{Returns}{
+    The object in argument \code{dest} with this array copied into it.
   }
 }
 

@@ -34,7 +34,10 @@ reading, the list of registered codecs.}
 }
 \if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="chunk_keys"><a href='../../zarr/html/chunking.html#method-chunking-chunk_keys'><code>chunking$chunk_keys()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="read_raw"><a href='../../zarr/html/chunking.html#method-chunking-read_raw'><code>chunking$read_raw()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="resize"><a href='../../zarr/html/chunking.html#method-chunking-resize'><code>chunking$resize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="write_raw"><a href='../../zarr/html/chunking.html#method-chunking-write_raw'><code>chunking$write_raw()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}

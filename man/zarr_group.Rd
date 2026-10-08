@@ -44,6 +44,7 @@ hierarchy starting from the current group, as a character vector.}
     \item \href{#method-zarr_group-count_arrays}{\code{zarr_group$count_arrays()}}
     \item \href{#method-zarr_group-add_group}{\code{zarr_group$add_group()}}
     \item \href{#method-zarr_group-add_array}{\code{zarr_group$add_array()}}
+    \item \href{#method-zarr_group-copy_to}{\code{zarr_group$copy_to()}}
     \item \href{#method-zarr_group-delete}{\code{zarr_group$delete()}}
     \item \href{#method-zarr_group-delete_all}{\code{zarr_group$delete_all()}}
   }
@@ -69,12 +70,7 @@ hierarchy starting from the current group, as a character vector.}
 exist in the store.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_group$new(
-  name,
-  metadata = list(zarr_format = 3, node_type = "group"),
-  parent,
-  no_create_check = FALSE
-)}
+    \preformatted{zarr_group$new(name, metadata, parent, no_create_check = FALSE)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -302,6 +298,36 @@ definition.}
   \subsection{Returns}{
     The newly created \code{zarr_array} instance, or \code{NULL} if the array
 could not be created.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_group-copy_to"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_group-copy_to}{}}}
+\subsection{\code{zarr_group$copy_to()}}{
+  Copy this group to another group. Child objects, sub-groups
+and arrays, are recursively visited to be copied too.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_group$copy_to(dest, verbose)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{dest}}{A \code{zarr} or \code{zarr_group} instance to copy this group into.}
+      \item{\code{verbose}}{A \code{list} with details for providing feedback; empty if no
+feedback is requested.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Details}{
+    This is a method for internal use. It is called by the \link{zarr}
+\code{save_to()} method.
+  }
+  \subsection{Returns}{
+    The object in argument \code{dest} with this group and descendant
+objects copied into it.
   }
 }
 

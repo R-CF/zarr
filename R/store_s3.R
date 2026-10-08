@@ -39,6 +39,7 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
     .metadata   = list(),      # The metadata of the object at the root of the store
     .nodes      = character(0),# Cached node paths from consolidated metadata, if present
     .read_only  = FALSE,
+    .anonymous  = NULL,
 
     # Build the full S3 key from a store-relative key.
     full_key = function(key) {
@@ -183,19 +184,20 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
 
       if (is.null(anonymous))
         anonymous <- is.null(profile) && is.null(access_key)
+      private$.anonymous <- isTRUE(anonymous)
+
       if (is.null(path_style))
         path_style <- !is.null(endpoint)
 
       private$.bucket <- bucket
       private$.key_prefix <- if (nzchar(prefix)) sub('/*$', '/', prefix) else ''
-      # private$.read_only is set below via super$initialize()
 
       cfg <- list()
       if (!is.null(region)) cfg$region <- region
       if (!is.null(endpoint)) cfg$endpoint <- endpoint
       if (isTRUE(path_style)) cfg$s3_force_path_style <- TRUE
 
-      if (isTRUE(anonymous)) {
+      if (private$.anonymous) {
         cfg$credentials <- list(anonymous = TRUE)
       } else if (!is.null(access_key)) {
         cfg$credentials <- list(creds = list(
@@ -462,6 +464,20 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
     #'   the key does not exist.
     get = function(key, prototype = NULL, byte_range = NULL) {
       private$request(key, byte_range)
+    },
+
+    #' @description Retrieve the values of several keys concurrently.
+    #' @param keys Character vector of keys.
+    #' @return A list as long as `keys` with a raw vector for each key, or
+    #'   `NULL` for a key that is not present in the store.
+    get_many = function(keys) {
+      if (!requireNamespace('curl', quietly = TRUE)) return(super$get_many(keys))
+      urls <- vapply(keys, function(k)
+        private$.client$generate_presigned_url('get_object',
+                                               params = list(Bucket = private$.bucket, Key = private$full_key(k))),
+        character(1L), USE.NAMES = FALSE)
+      if (private$.anonymous) urls <- sub('\\?.*$', '', urls)
+      .fetch_urls(urls)
     },
 
     #' @description Retrieve the metadata document of the node at `prefix`,

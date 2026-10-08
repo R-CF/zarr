@@ -246,12 +246,6 @@ zarr_node <- R6::R6Class('zarr_node',
     }
   ),
   active = list(
-    #' @field name (read-only) The name of the node.
-    name = function(value) {
-      if (missing(value))
-        private$.name
-    },
-
     #' @field zarr (read-only) Retrieve the [zarr] object that manages this
     #'   node.
     zarr = function(value) {

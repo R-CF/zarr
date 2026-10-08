@@ -202,6 +202,25 @@ is_valid_node_name <- function(name) {
        region = NULL, endpoint = paste0(scheme, '://', host))
 }
 
+# Fetch URLs concurrently with curl's multi interface. Returns a list of raw
+# vectors in the order of `urls`, NULL for a 404; any other status is an error.
+.fetch_urls <- function(urls, host_con = 6L) {
+  out  <- vector('list', length(urls))
+  pool <- curl::new_pool(host_con = host_con)
+  for (i in seq_along(urls)) local({
+    i <- i
+    curl::multi_add(curl::new_handle(url = urls[i]), pool = pool,
+                    done = function(res) {
+                      if (res$status_code == 200L) out[[i]] <<- res$content
+                      else if (res$status_code != 404L)
+                        stop('Error ', res$status_code, ' on ', urls[i], call. = FALSE)
+                    },
+                    fail = function(msg) stop(msg, ' on ', urls[i], call. = FALSE))
+  })
+  curl::multi_run(pool = pool)
+  out
+}
+
 #' Optimal chunking for an array
 #'
 #' This function computes the optimal dimension lengths of a single chunk from

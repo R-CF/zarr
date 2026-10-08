@@ -174,6 +174,16 @@ zarr_store <- R6::R6Class('zarr_store',
       stop('Class', class(self)[1L], 'must implement this method') # nocov
     },
 
+    #' @description Retrieve the values of several keys. This implementation
+    #'   retrieves them one by one; stores that can retrieve values concurrently
+    #'   override it.
+    #' @param keys Character vector of keys.
+    #' @return A list as long as `keys` with a raw vector for each key, or
+    #'   `NULL` for a key that is not present in the store.
+    get_many = function(keys) {
+      lapply(keys, self$get)
+    },
+
     #' @description Return the size, in bytes, of a value in a Store.
     #' @param key Character string. The key whose length will be returned.
     #' @return The size, in bytes, of the object.

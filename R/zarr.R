@@ -202,6 +202,50 @@ zarr <- R6::R6Class("zarr",
           arr$parent$delete(arr$name)
       }
       invisible(self)
+    },
+
+    #' @description This method can be used to save a Zarr store to a different
+    #'   location. The entire store is persisted to the new location.
+    #'
+    #'   Note that saving a Zarr store on a local file system to another
+    #'   location on the same local file system is usually much faster with disk
+    #'   management tools of the operating system (e.g. copy/paste).
+    #'
+    #'   The new Zarr store is always written as Zarr version 3. This method can
+    #'   thus be used to quickly convert from Zarr version 2 to version 3
+    #'   stores.
+    #' @param location Character string that indicates a location where to save
+    #'   this Zarr object to. Any writable location may be used, such as a
+    #'   directory on a local file system or a bucket on a S3 server. The
+    #'   character string may contain UTF-8 characters and/or use a file URI
+    #'   format. The Zarr specification recommends that the location use the
+    #'   ".zarr" extension to identify the location as a Zarr store.
+    #' @param verbose Should feedback be provided? Default is `FALSE`. When
+    #'   `TRUE` and in interactive mode and the `cli` package is installed then
+    #'   that package will be used, otherwise standard text messages will be
+    #'   printed to the console.
+    #' @return Self, invisibly.
+    save_to = function(location, verbose = FALSE) {
+      if (is.null(private$.root))
+        stop('Cannot save an unitialised `zarr` object', call. = FALSE)
+
+      paths <- self$arrays
+      st <- vapply(paths, function(p) length(self$get_node(p)$metadata$storage_transformers) > 0L, logical(1L))
+      if (any(st))
+        stop('Cannot save arrays that use storage transformers: ',
+             paste(paths[st], collapse = ', '), call. = FALSE)
+
+      if (isTRUE(verbose)) {
+        verbose <- new.env()
+        verbose$arrays <- length(z$arrays); verbose$arrays_done <- 0L
+        verbose$groups <- length(z$groups); verbose$groups_done <- 0L
+        verbose$cli <- requireNamespace('cli', quietly = TRUE)
+      } else
+        verbose <- NULL
+
+      z <- zarr$new(location, read_only = FALSE)
+      private$.root$copy_to(dest = z, verbose = verbose)
+      invisible(self)
     }
   ),
   active = list(

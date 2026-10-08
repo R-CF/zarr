@@ -29,21 +29,32 @@ zarr_group <- R6::R6Class('zarr_group',
     #'   Set to `TRUE` only when existence has been established before calling
     #'   this method.
     #' @return An instance of `zarr_group`.
-    initialize = function(name, metadata = list(zarr_format = 3, node_type = "group"),
-                          parent, no_create_check = FALSE) {
+    initialize = function(name, metadata, parent, no_create_check = FALSE) {
+      supplied <- !missing(metadata)
+      if (supplied && metadata$node_type != 'group')
+        stop('Invalid metadata for a group', call. = FALSE) # nocov
+
+      meta <- NULL
       if (!no_create_check) {
         # Create the group in the store if it does not yet exist
         if (inherits(parent, 'zarr')) {
           if (is.null(parent$store$get_metadata('/')))
-            metadata <- parent$store$create_group(name = '')
+            meta <- parent$store$create_group(name = '')
         } else if (is.null(parent$store$get_metadata(paste0(parent$prefix, name, '/')))) {
-          metadata <- parent$store$create_group(parent = parent$path, name = name)
+          meta <- parent$store$create_group(parent = parent$path, name = name)
         }
       }
 
-      super$initialize(name, metadata, parent)
-      if (metadata$node_type != 'group')
-        stop('Invalid metadata for a group', call. = FALSE) # nocov
+      super$initialize(name,
+                       if (supplied) metadata else meta %||% list(zarr_format = 3L, node_type = 'group'),
+                       parent)
+
+      # Persist supplied metadata when the group is new in this store, or replaces
+      # the default root group of a fresh store
+      if (supplied && !no_create_check) {
+        private$.meta_dirty <- TRUE
+        self$save()
+      }
 
       if (inherits(parent, 'zarr_group')) parent$set_node(self)
       else parent$root <- self
@@ -219,6 +230,29 @@ zarr_group <- R6::R6Class('zarr_group',
         zarr_array$new(name = name, metadata = metadata, parent = self)
       } else
         NULL
+    },
+
+    #' @description Copy this group to another group. Child objects, sub-groups
+    #'   and arrays, are recursively visited to be copied too.
+    #' @details This is a method for internal use. It is called by the [zarr]
+    #'   `save_to()` method.
+    #' @param dest A `zarr` or `zarr_group` instance to copy this group into.
+    #' @param verbose A `list` with details for providing feedback; empty if no
+    #'   feedback is requested.
+    #' @return The object in argument `dest` with this group and descendant
+    #'   objects copied into it.
+    copy_to = function(dest, verbose) {
+      grp <- zarr_group$new(self$name, private$.metadata, dest)
+      name <- if (nzchar(self$name)) self$name else '/'
+      if (!is.null(verbose)) {
+        verbose$groups_done <- verbose$groups_done + 1L
+        if (verbose$cli) {
+          cli::cli_alert_success('Created group \u2630 {.val {name}} ({verbose$groups_done}/{verbose$groups})')
+        } else cat(sprintf('Created group "%s" (%d/%d)\n', name, verbose$groups_done, verbose$groups))
+      }
+      for (c in seq_along(private$.children))
+        private$.children[[c]]$copy_to(grp, verbose)
+      dest
     },
 
     #' @description Delete a group or an array contained by this group. When
