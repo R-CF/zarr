@@ -103,6 +103,7 @@ applies to the array for all subsequent reads.</p></dd>
 <li><p><a href="#method-zarr_array-read"><code>zarr_array$read()</code></a></p></li>
 <li><p><a href="#method-zarr_array-write"><code>zarr_array$write()</code></a></p></li>
 <li><p><a href="#method-zarr_array-flush"><code>zarr_array$flush()</code></a></p></li>
+<li><p><a href="#method-zarr_array-copy_to"><code>zarr_array$copy_to()</code></a></p></li>
 <li><p><a href="#method-zarr_array-resize"><code>zarr_array$resize()</code></a></p></li>
 <li><p><a href="#method-zarr_array-promote"><code>zarr_array$promote()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_object" data-id="print_attributes"><a href="zarr_object.html#method-print_attributes"><code>zarr_object$print_attributes()</code></a></span></li>
@@ -246,6 +247,37 @@ store.</p><div class="section">
 
 </div>
 
+<p></p><hr><a id="method-zarr_array-copy_to"></a><div class="section">
+<h3 id="zarr-array-copy-to-"><code>zarr_array$copy_to()</code><a class="anchor" aria-label="anchor" href="#zarr-array-copy-to-"></a></h3>
+<p>Copy this array to another store. The chunks of this array
+are copied as stored and without decoding, so the copy is
+byte-identical. For a sharded array, whole shards are copied.</p><div class="section">
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">copy_to</span><span class="op">(</span><span class="va">dest</span>, <span class="va">verbose</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>dest</code></dt>
+<dd><p>The <code>zarr</code> or <code>zarr_group</code> instance to copy this array into.</p></dd>
+
+      <dt><code>verbose</code></dt>
+<dd><p>A <code>list</code> with details for providing feedback; empty if no
+feedback is requested.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>This is a method for internal use. It is called by the
+<a href="zarr_group.html">zarr_group</a> <code>copy_to()</code> method, which itself is called by the <a href="zarr.html">zarr</a>
+<code>save_to()</code> method.</p>
+<p>An error is raised if this array uses storage transformers.</p>
+</div><p></p><div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>The object in argument <code>dest</code> with this array copied into it.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_array-resize"></a><div class="section">
 <h3 id="zarr-array-resize-"><code>zarr_array$resize()</code><a class="anchor" aria-label="anchor" href="#zarr-array-resize-"></a></h3>
 <p>Resize the array, growing or shrinking any combination of
@@ -257,10 +289,10 @@ values are rounded outward to the nearest chunk (more space added
 when growing, less removed when shrinking), so the array's origin
 may land ahead of where the actual data starts; those cells read as
 <code>NA</code>. <code>high</code> is not constrained this way.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">resize</span><span class="op">(</span><span class="va">low</span>, <span class="va">high</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>low, high</code></dt>
 <dd><p>Integer vectors, one element per array dimension.
 Positive grows that end, negative shrinks it, <code>0</code> (default) leaves
@@ -269,7 +301,7 @@ it unchanged.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -292,10 +324,10 @@ contributes more than a single (vacuous) index to the enumeration.
 So every existing chunk is just renamed with a "0" grid index
 inserted at <code>dimension</code>. The new dimension therefore always starts out as
 exactly one full chunk; grow it afterwards with <code>resize()</code>.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">promote</span><span class="op">(</span><span class="va">dimension</span>, length <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>dimension</code></dt>
 <dd><p>Integer. 1-based position of the new dimension in the
 resulting shape; <code>1</code> prepends it, <code>rank + 1</code> appends it.</p></dd>
@@ -307,7 +339,7 @@ Default <code>1L</code>.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 

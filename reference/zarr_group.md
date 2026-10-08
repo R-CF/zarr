@@ -57,6 +57,8 @@ specifically the attribute `"node_type": "group"`.
 
 - [`zarr_group$add_array()`](#method-zarr_group-add_array)
 
+- [`zarr_group$copy_to()`](#method-zarr_group-copy_to)
+
 - [`zarr_group$delete()`](#method-zarr_group-delete)
 
 - [`zarr_group$delete_all()`](#method-zarr_group-delete_all)
@@ -82,12 +84,7 @@ store.
 
 #### Usage
 
-    zarr_group$new(
-      name,
-      metadata = list(zarr_format = 3, node_type = "group"),
-      parent,
-      no_create_check = FALSE
-    )
+    zarr_group$new(name, metadata, parent, no_create_check = FALSE)
 
 #### Arguments
 
@@ -304,6 +301,39 @@ Add an array to the Zarr hierarchy in the current group.
 
 The newly created `zarr_array` instance, or `NULL` if the array could
 not be created.
+
+------------------------------------------------------------------------
+
+### `zarr_group$copy_to()`
+
+Copy this group to another group. Child objects, sub-groups and arrays,
+are recursively visited to be copied too.
+
+#### Usage
+
+    zarr_group$copy_to(dest, verbose)
+
+#### Arguments
+
+- `dest`:
+
+  A `zarr` or `zarr_group` instance to copy this group into.
+
+- `verbose`:
+
+  A `list` with details for providing feedback; empty if no feedback is
+  requested.
+
+#### Details
+
+This is a method for internal use. It is called by the
+[zarr](https://r-cf.github.io/zarr/reference/zarr.md) `save_to()`
+method.
+
+#### Returns
+
+The object in argument `dest` with this group and descendant objects
+copied into it.
 
 ------------------------------------------------------------------------
 

@@ -163,6 +163,7 @@ usually a slash '/'.</p></dd>
 <li><p><a href="#method-zarr_s3store-set"><code>zarr_s3store$set()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-set_if_not_exists"><code>zarr_s3store$set_if_not_exists()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-get"><code>zarr_s3store$get()</code></a></p></li>
+<li><p><a href="#method-zarr_s3store-get_many"><code>zarr_s3store$get_many()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-get_metadata"><code>zarr_s3store$get_metadata()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-set_metadata"><code>zarr_s3store$set_metadata()</code></a></p></li>
 <li><p><a href="#method-zarr_s3store-is_group"><code>zarr_s3store$is_group()</code></a></p></li>
@@ -570,21 +571,41 @@ the key does not exist.</p>
 
 </div>
 
+<p></p><hr><a id="method-zarr_s3store-get_many"></a><div class="section">
+<h3 id="zarr-s-store-get-many-"><code>zarr_s3store$get_many()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-get-many-"></a></h3>
+<p>Retrieve the values of several keys concurrently.</p><div class="section">
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">get_many</span><span class="op">(</span><span class="va">keys</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>keys</code></dt>
+<dd><p>Character vector of keys.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
+<p>A list as long as <code>keys</code> with a raw vector for each key, or
+<code>NULL</code> for a key that is not present in the store.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_s3store-get_metadata"></a><div class="section">
 <h3 id="zarr-s-store-get-metadata-"><code>zarr_s3store$get_metadata()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-get-metadata-"></a></h3>
 <p>Retrieve the metadata document of the node at <code>prefix</code>,
 always presented in Zarr v.3 format.</p><div class="section">
-<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
+<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to retrieve.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
+<h4 id="returns-17">Returns<a class="anchor" aria-label="anchor" href="#returns-17"></a></h4>
 <p>A list with the metadata, or <code>NULL</code> if the prefix does not
 point to a Zarr group or array.</p>
 </div>
@@ -595,10 +616,10 @@ point to a Zarr group or array.</p>
 <h3 id="zarr-s-store-set-metadata-"><code>zarr_s3store$set_metadata()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-set-metadata-"></a></h3>
 <p>Write the metadata document for the node at <code>prefix</code>.
 No-op if the store was opened with <code>read_only = TRUE</code>.</p><div class="section">
-<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
+<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span><span class="va">prefix</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
+<h4 id="arguments-16">Arguments<a class="anchor" aria-label="anchor" href="#arguments-16"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to write.</p></dd>
 
@@ -608,7 +629,7 @@ No-op if the store was opened with <code>read_only = TRUE</code>.</p><div class=
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-17">Returns<a class="anchor" aria-label="anchor" href="#returns-17"></a></h4>
+<h4 id="returns-18">Returns<a class="anchor" aria-label="anchor" href="#returns-18"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -617,17 +638,17 @@ No-op if the store was opened with <code>read_only = TRUE</code>.</p><div class=
 <p></p><hr><a id="method-zarr_s3store-is_group"></a><div class="section">
 <h3 id="zarr-s-store-is-group-"><code>zarr_s3store$is_group()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-is-group-"></a></h3>
 <p>Test if <code>path</code> is pointing to a Zarr group.</p><div class="section">
-<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
+<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">is_group</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-16">Arguments<a class="anchor" aria-label="anchor" href="#arguments-16"></a></h4>
+<h4 id="arguments-17">Arguments<a class="anchor" aria-label="anchor" href="#arguments-17"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to test.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-18">Returns<a class="anchor" aria-label="anchor" href="#returns-18"></a></h4>
+<h4 id="returns-19">Returns<a class="anchor" aria-label="anchor" href="#returns-19"></a></h4>
 <p><code>TRUE</code> if the <code>path</code> points to a Zarr group, <code>FALSE</code> otherwise.</p>
 </div>
 
@@ -637,10 +658,10 @@ No-op if the store was opened with <code>read_only = TRUE</code>.</p><div class=
 <h3 id="zarr-s-store-create-group-"><code>zarr_s3store$create_group()</code><a class="anchor" aria-label="anchor" href="#zarr-s-store-create-group-"></a></h3>
 <p>Create a new group in the store under <code>parent</code>. Errors
 if the store was opened with <code>read_only = TRUE</code>.</p><div class="section">
-<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
+<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">create_group</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-17">Arguments<a class="anchor" aria-label="anchor" href="#arguments-17"></a></h4>
+<h4 id="arguments-18">Arguments<a class="anchor" aria-label="anchor" href="#arguments-18"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>Character string. Path of the parent node.</p></dd>
 
@@ -650,7 +671,7 @@ if the store was opened with <code>read_only = TRUE</code>.</p><div class="secti
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-19">Returns<a class="anchor" aria-label="anchor" href="#returns-19"></a></h4>
+<h4 id="returns-20">Returns<a class="anchor" aria-label="anchor" href="#returns-20"></a></h4>
 <p>A list with the metadata of the newly-created group.</p>
 </div>
 
@@ -663,10 +684,10 @@ if the store was opened with <code>read_only = TRUE</code>.</p><div class="secti
 array metadata (shape, dtype, chunking, codecs) cannot be inferred
 and must be supplied by the caller. Errors if the store was opened
 with <code>read_only = TRUE</code>.</p><div class="section">
-<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
+<h4 id="usage-21">Usage<a class="anchor" aria-label="anchor" href="#usage-21"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_s3store</span><span class="op">$</span><span class="fu">create_array</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-18">Arguments<a class="anchor" aria-label="anchor" href="#arguments-18"></a></h4>
+<h4 id="arguments-19">Arguments<a class="anchor" aria-label="anchor" href="#arguments-19"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>Character string. Path of the parent node.</p></dd>
 
@@ -679,7 +700,7 @@ with <code>read_only = TRUE</code>.</p><div class="section">
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-20">Returns<a class="anchor" aria-label="anchor" href="#returns-20"></a></h4>
+<h4 id="returns-21">Returns<a class="anchor" aria-label="anchor" href="#returns-21"></a></h4>
 <p>A list with the metadata of the newly-created array, as written.</p>
 </div>
 

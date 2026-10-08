@@ -36,7 +36,10 @@ transformation.
 
 Inherited methods
 
+- [`chunking$chunk_keys()`](https://r-cf.github.io/zarr/reference/chunking.html#method-chunk_keys)
+- [`chunking$read_raw()`](https://r-cf.github.io/zarr/reference/chunking.html#method-read_raw)
 - [`chunking$resize()`](https://r-cf.github.io/zarr/reference/chunking.html#method-resize)
+- [`chunking$write_raw()`](https://r-cf.github.io/zarr/reference/chunking.html#method-write_raw)
 
 ------------------------------------------------------------------------
 

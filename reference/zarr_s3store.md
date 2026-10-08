@@ -91,6 +91,8 @@ It should be accessed through group and array objects.
 
 - [`zarr_s3store$get()`](#method-zarr_s3store-get)
 
+- [`zarr_s3store$get_many()`](#method-zarr_s3store-get_many)
+
 - [`zarr_s3store$get_metadata()`](#method-zarr_s3store-get_metadata)
 
 - [`zarr_s3store$set_metadata()`](#method-zarr_s3store-set_metadata)
@@ -535,6 +537,27 @@ Retrieve the value associated with a given key.
 
 A raw vector with the data pointed at by the key, or `NULL` if the key
 does not exist.
+
+------------------------------------------------------------------------
+
+### `zarr_s3store$get_many()`
+
+Retrieve the values of several keys concurrently.
+
+#### Usage
+
+    zarr_s3store$get_many(keys)
+
+#### Arguments
+
+- `keys`:
+
+  Character vector of keys.
+
+#### Returns
+
+A list as long as `keys` with a raw vector for each key, or `NULL` for a
+key that is not present in the store.
 
 ------------------------------------------------------------------------
 

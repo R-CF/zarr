@@ -73,6 +73,8 @@ https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html#abstract-store-in
 
 - [`zarr_store$get()`](#method-zarr_store-get)
 
+- [`zarr_store$get_many()`](#method-zarr_store-get_many)
+
 - [`zarr_store$getsize()`](#method-zarr_store-getsize)
 
 - [`zarr_store$getsize_prefix()`](#method-zarr_store-getsize_prefix)
@@ -242,6 +244,28 @@ the abstract store interface in ZEP0001.
 #### Returns
 
 An raw vector of data, or `NULL` if no data was found.
+
+------------------------------------------------------------------------
+
+### `zarr_store$get_many()`
+
+Retrieve the values of several keys. This implementation retrieves them
+one by one; stores that can retrieve values concurrently override it.
+
+#### Usage
+
+    zarr_store$get_many(keys)
+
+#### Arguments
+
+- `keys`:
+
+  Character vector of keys.
+
+#### Returns
+
+A list as long as `keys` with a raw vector for each key, or `NULL` for a
+key that is not present in the store.
 
 ------------------------------------------------------------------------
 

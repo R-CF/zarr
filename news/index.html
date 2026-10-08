@@ -44,11 +44,27 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="zarr-development-version">zarr (development version)<a class="anchor" aria-label="anchor" href="#zarr-development-version"></a></h2>
-<p>This release contains <strong>API breaking changes</strong>.</p>
-<p>Code has been refactored to make it more agile and less error-prone. Two major changes have been implemented: 1. The <code>zarr_store</code> class is no longer used in the public-facing API. Most store-oriented tasks are now handled through the <code>zarr</code> class, including creating a new store. 2. Instantiating a <code>zarr_array</code> will create it in the store if it does not yet exist, and attach itself to its parent, usually a <code>zarr_group</code> but it could also be a <code>zarr</code> instance in the case of a single-array store.</p>
-<p>These changes impact the signature of several methods: - <code>zarr$new()</code> has several new arguments following the first <code>store</code> argument. All additional arguments are optional so existing code will remain functional. The <code>store</code> argument has additional functionality. - <code>zarr_group$new()</code> and <code>zarr_array$new()</code> no longer have the <code>store</code> argument. - Several other methods in these three classes have related signature changes, but these changes are not relevant for end users or application developers of this package.</p>
-<p>Other changes: - New field <code>zarr</code> in class <code>zarr_node</code> to retrieve the <code>zarr</code> instance that manages the node. - The <code>array_builder</code> class has a field <code>data_type_from_storage.mode</code> that can make a Zarr data type from an R storage mode. - <code>zarr.json</code> writes arrays for <code>shape</code> and <code>chunk_shape</code> for 1D axes. - JSON writes use full numeric precision. - <code>ref</code> convention uses released version v2.0.0.</p>
-</div>
+<p>This is the prelude to the first stable release. This major release contains <strong>API breaking changes</strong>.</p>
+<p>Code has been refactored to make it more agile and less error-prone. Two major changes have been implemented:</p>
+<ol style="list-style-type: decimal"><li>The <code>zarr_store</code> class is no longer used in the public-facing API. Most store-oriented tasks are now handled through the <code>zarr</code> class, including creating a new store.</li>
+<li>Instantiating a <code>zarr_array</code> will create it in the store if it does not yet exist, and attach itself to its parent, usually a <code>zarr_group</code> but it could also be a <code>zarr</code> instance in the case of a single-array store.</li>
+</ol><p>These changes impact the signature of several methods:</p>
+<ul><li>
+<code>zarr$new()</code> has several new arguments following the first <code>store</code> argument. All additional arguments are optional so existing code will remain functional. The <code>store</code> argument has additional functionality.</li>
+<li>
+<code>zarr_group$new()</code> and <code>zarr_array$new()</code> no longer have the <code>store</code> argument.</li>
+<li>Several other methods in these three classes have related signature changes, but these changes are not relevant for end users or application developers of this package.</li>
+</ul><p>Other features:</p>
+<ul><li>New <code>zarr$save_to()</code> method can save a <code>zarr</code> object to a new store. This is handy to save a memory store to disk, to convert a v.2 store to a v.3 store, or to get a local copy of a remote store, among other uses. Parallel reads from HTTP and S3 stores speeds up the copying.</li>
+<li>New field <code>zarr</code> in class <code>zarr_node</code> to retrieve the <code>zarr</code> instance that manages the node.</li>
+</ul><p>Minor changes:</p>
+<ul><li>The <code>array_builder</code> class has a field <code>data_type_from_storage.mode</code> that can make a Zarr data type from an R storage mode.</li>
+<li>
+<code>zarr.json</code> writes arrays for <code>shape</code> and <code>chunk_shape</code> for 1D axes.</li>
+<li>JSON writes use full numeric precision.</li>
+<li>
+<code>ref</code> convention uses released version v2.0.0.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.1" id="zarr-051">zarr 0.5.1<a class="anchor" aria-label="anchor" href="#zarr-051"></a></h2><p class="text-muted">CRAN release: 2026-09-08</p>
 <ul><li>Chunk management improved, size-limited cache with a LRU eviction scheme. The size of the cache (per array) can be controlled with the session option <code>chunk_cache_bytes</code>.</li>

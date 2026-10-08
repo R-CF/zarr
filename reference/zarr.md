@@ -67,6 +67,8 @@ instances. Each `zarr_array` is located in a `zarr_group`.
 
 - [`zarr$delete_array()`](#method-zarr-delete_array)
 
+- [`zarr$save_to()`](#method-zarr-save_to)
+
 - [`zarr$clone()`](#method-zarr-clone)
 
 ------------------------------------------------------------------------
@@ -287,6 +289,46 @@ this operation is irreversible for many stores!
 #### Returns
 
 Self, invisible.
+
+------------------------------------------------------------------------
+
+### `zarr$save_to()`
+
+This method can be used to save a Zarr store to a different location.
+The entire store is persisted to the new location.
+
+Note that saving a Zarr store on a local file system to another location
+on the same local file system is usually much faster with disk
+management tools of the operating system (e.g. copy/paste).
+
+The new Zarr store is always written as Zarr version 3. This method can
+thus be used to quickly convert from Zarr version 2 to version 3 stores.
+
+#### Usage
+
+    zarr$save_to(location, verbose = FALSE)
+
+#### Arguments
+
+- `location`:
+
+  Character string that indicates a location where to save this Zarr
+  object to. Any writable location may be used, such as a directory on a
+  local file system or a bucket on a S3 server. The character string may
+  contain UTF-8 characters and/or use a file URI format. The Zarr
+  specification recommends that the location use the ".zarr" extension
+  to identify the location as a Zarr store.
+
+- `verbose`:
+
+  Should feedback be provided? Default is `FALSE`. When `TRUE` and in
+  interactive mode and the `cli` package is installed then that package
+  will be used, otherwise standard text messages will be printed to the
+  console.
+
+#### Returns
+
+Self, invisibly.
 
 ------------------------------------------------------------------------
 

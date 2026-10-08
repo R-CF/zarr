@@ -64,6 +64,8 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 - [`zarr_httpstore$get()`](#method-zarr_httpstore-get)
 
+- [`zarr_httpstore$get_many()`](#method-zarr_httpstore-get_many)
+
 - [`zarr_httpstore$get_metadata()`](#method-zarr_httpstore-get_metadata)
 
 - [`zarr_httpstore$set_metadata()`](#method-zarr_httpstore-set_metadata)
@@ -316,6 +318,27 @@ Retrieve the value associated with a given key.
 #### Returns
 
 A raw vector with the data pointed at by the key.
+
+------------------------------------------------------------------------
+
+### `zarr_httpstore$get_many()`
+
+Retrieve the values of several keys concurrently.
+
+#### Usage
+
+    zarr_httpstore$get_many(keys)
+
+#### Arguments
+
+- `keys`:
+
+  Character vector of keys.
+
+#### Returns
+
+A list as long as `keys` with a raw vector for each key, or `NULL` for a
+key that is not present in the store.
 
 ------------------------------------------------------------------------
 

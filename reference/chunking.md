@@ -59,6 +59,14 @@ There is no point instantiating this class directly, other than in the
 
 - [`chunking$resize()`](#method-chunking-resize)
 
+- [`chunking$chunk_keys()`](#method-chunking-chunk_keys)
+
+- [`chunking$read_raw()`](#method-chunking-read_raw)
+
+- [`chunking$write_raw()`](#method-chunking-write_raw)
+
+- [`chunking$flush()`](#method-chunking-flush)
+
 Inherited methods
 
 - [`zarr_extension$metadata_fragment()`](https://r-cf.github.io/zarr/reference/zarr_extension.html#method-metadata_fragment)
@@ -123,6 +131,87 @@ for that trailing clip.
 
   Integer vector, the requested high-end element deltas (used only to
   decide which boundary chunks need NA-clipping).
+
+#### Returns
+
+Self, invisibly.
+
+------------------------------------------------------------------------
+
+### `chunking$chunk_keys()`
+
+Generate the keys of all chunks in the chunk grid, or of all shards for
+a sharded array. Keys are derived from the grid and the chunk key
+encoding, not by listing the store, so this works for stores that cannot
+list their keys. Chunks need not exist in the store.
+
+#### Usage
+
+    chunking$chunk_keys()
+
+#### Returns
+
+A character vector of chunk keys, relative to the array prefix.
+
+------------------------------------------------------------------------
+
+### `chunking$read_raw()`
+
+Read the bytes of a chunk (or shard) as they are held in the store,
+without decoding. Any pending edits to the chunk are flushed to the
+store first.
+
+#### Usage
+
+    chunking$read_raw(key)
+
+#### Arguments
+
+- `key`:
+
+  Chunk key relative to the array prefix, as produced by `chunk_keys()`.
+
+#### Returns
+
+A raw vector, or `NULL` if the chunk is not present in the store.
+
+------------------------------------------------------------------------
+
+### `chunking$write_raw()`
+
+Write the bytes of a chunk (or shard) to the store, without encoding.
+Any cached copy of the chunk is dropped. The caller is responsible for
+`value` being consistent with the codecs of the array.
+
+#### Usage
+
+    chunking$write_raw(key, value)
+
+#### Arguments
+
+- `key`:
+
+  Chunk key relative to the array prefix, as produced by `chunk_keys()`.
+
+- `value`:
+
+  A raw vector with the encoded chunk.
+
+#### Returns
+
+Self, invisibly.
+
+------------------------------------------------------------------------
+
+### `chunking$flush()`
+
+Persist the data in all chunks with pending edits to the store. This
+base implementation is a no-op for chunking schemes that do not buffer
+writes.
+
+#### Usage
+
+    chunking$flush()
 
 #### Returns
 

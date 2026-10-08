@@ -2,31 +2,47 @@
 
 ## zarr (development version)
 
-This release contains **API breaking changes**.
+This is the prelude to the first stable release. This major release
+contains **API breaking changes**.
 
 Code has been refactored to make it more agile and less error-prone. Two
-major changes have been implemented: 1. The `zarr_store` class is no
-longer used in the public-facing API. Most store-oriented tasks are now
-handled through the `zarr` class, including creating a new store. 2.
-Instantiating a `zarr_array` will create it in the store if it does not
-yet exist, and attach itself to its parent, usually a `zarr_group` but
-it could also be a `zarr` instance in the case of a single-array store.
+major changes have been implemented:
 
-These changes impact the signature of several methods: - `zarr$new()`
-has several new arguments following the first `store` argument. All
-additional arguments are optional so existing code will remain
-functional. The `store` argument has additional functionality. -
-`zarr_group$new()` and `zarr_array$new()` no longer have the `store`
-argument. - Several other methods in these three classes have related
-signature changes, but these changes are not relevant for end users or
-application developers of this package.
+1.  The `zarr_store` class is no longer used in the public-facing API.
+    Most store-oriented tasks are now handled through the `zarr` class,
+    including creating a new store.
+2.  Instantiating a `zarr_array` will create it in the store if it does
+    not yet exist, and attach itself to its parent, usually a
+    `zarr_group` but it could also be a `zarr` instance in the case of a
+    single-array store.
 
-Other changes: - New field `zarr` in class `zarr_node` to retrieve the
-`zarr` instance that manages the node. - The `array_builder` class has a
-field `data_type_from_storage.mode` that can make a Zarr data type from
-an R storage mode. - `zarr.json` writes arrays for `shape` and
-`chunk_shape` for 1D axes. - JSON writes use full numeric precision. -
-`ref` convention uses released version v2.0.0.
+These changes impact the signature of several methods:
+
+- `zarr$new()` has several new arguments following the first `store`
+  argument. All additional arguments are optional so existing code will
+  remain functional. The `store` argument has additional functionality.
+- `zarr_group$new()` and `zarr_array$new()` no longer have the `store`
+  argument.
+- Several other methods in these three classes have related signature
+  changes, but these changes are not relevant for end users or
+  application developers of this package.
+
+Other features:
+
+- New `zarr$save_to()` method can save a `zarr` object to a new store.
+  This is handy to save a memory store to disk, to convert a v.2 store
+  to a v.3 store, or to get a local copy of a remote store, among other
+  uses. Parallel reads from HTTP and S3 stores speeds up the copying.
+- New field `zarr` in class `zarr_node` to retrieve the `zarr` instance
+  that manages the node.
+
+Minor changes:
+
+- The `array_builder` class has a field `data_type_from_storage.mode`
+  that can make a Zarr data type from an R storage mode.
+- `zarr.json` writes arrays for `shape` and `chunk_shape` for 1D axes.
+- JSON writes use full numeric precision.
+- `ref` convention uses released version v2.0.0.
 
 ## zarr 0.5.1
 

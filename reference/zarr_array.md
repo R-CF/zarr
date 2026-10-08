@@ -57,6 +57,8 @@ object.
 
 - [`zarr_array$flush()`](#method-zarr_array-flush)
 
+- [`zarr_array$copy_to()`](#method-zarr_array-copy_to)
+
 - [`zarr_array$resize()`](#method-zarr_array-resize)
 
 - [`zarr_array$promote()`](#method-zarr_array-promote)
@@ -215,6 +217,43 @@ Persist the data in all chunks with pending edits to the store.
 #### Usage
 
     zarr_array$flush()
+
+------------------------------------------------------------------------
+
+### `zarr_array$copy_to()`
+
+Copy this array to another store. The chunks of this array are copied as
+stored and without decoding, so the copy is byte-identical. For a
+sharded array, whole shards are copied.
+
+#### Usage
+
+    zarr_array$copy_to(dest, verbose)
+
+#### Arguments
+
+- `dest`:
+
+  The `zarr` or `zarr_group` instance to copy this array into.
+
+- `verbose`:
+
+  A `list` with details for providing feedback; empty if no feedback is
+  requested.
+
+#### Details
+
+This is a method for internal use. It is called by the
+[zarr_group](https://r-cf.github.io/zarr/reference/zarr_group.md)
+`copy_to()` method, which itself is called by the
+[zarr](https://r-cf.github.io/zarr/reference/zarr.md) `save_to()`
+method.
+
+An error is raised if this array uses storage transformers.
+
+#### Returns
+
+The object in argument `dest` with this array copied into it.
 
 ------------------------------------------------------------------------
 

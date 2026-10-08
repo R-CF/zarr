@@ -100,6 +100,7 @@ hierarchy starting from the current group, as a character vector.</p></dd>
 <li><p><a href="#method-zarr_group-count_arrays"><code>zarr_group$count_arrays()</code></a></p></li>
 <li><p><a href="#method-zarr_group-add_group"><code>zarr_group$add_group()</code></a></p></li>
 <li><p><a href="#method-zarr_group-add_array"><code>zarr_group$add_array()</code></a></p></li>
+<li><p><a href="#method-zarr_group-copy_to"><code>zarr_group$copy_to()</code></a></p></li>
 <li><p><a href="#method-zarr_group-delete"><code>zarr_group$delete()</code></a></p></li>
 <li><p><a href="#method-zarr_group-delete_all"><code>zarr_group$delete_all()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_object" data-id="print_attributes"><a href="zarr_object.html#method-print_attributes"><code>zarr_object$print_attributes()</code></a></span></li>
@@ -116,12 +117,7 @@ hierarchy starting from the current group, as a character vector.</p></dd>
 <p>Open a group in a Zarr hierarchy. The group must already
 exist in the store.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_group.html">zarr_group</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>  <span class="va">name</span>,</span>
-<span>  metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>zarr_format <span class="op">=</span> <span class="fl">3</span>, node_type <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span>,</span>
-<span>  <span class="va">parent</span>,</span>
-<span>  no_create_check <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/zarr_group.html">zarr_group</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">name</span>, <span class="va">metadata</span>, <span class="va">parent</span>, no_create_check <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
@@ -330,15 +326,44 @@ could not be created.</p>
 
 </div>
 
+<p></p><hr><a id="method-zarr_group-copy_to"></a><div class="section">
+<h3 id="zarr-group-copy-to-"><code>zarr_group$copy_to()</code><a class="anchor" aria-label="anchor" href="#zarr-group-copy-to-"></a></h3>
+<p>Copy this group to another group. Child objects, sub-groups
+and arrays, are recursively visited to be copied too.</p><div class="section">
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">copy_to</span><span class="op">(</span><span class="va">dest</span>, <span class="va">verbose</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>dest</code></dt>
+<dd><p>A <code>zarr</code> or <code>zarr_group</code> instance to copy this group into.</p></dd>
+
+      <dt><code>verbose</code></dt>
+<dd><p>A <code>list</code> with details for providing feedback; empty if no
+feedback is requested.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>This is a method for internal use. It is called by the <a href="zarr.html">zarr</a>
+<code>save_to()</code> method.</p>
+</div><p></p><div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p>The object in argument <code>dest</code> with this group and descendant
+objects copied into it.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-zarr_group-delete"></a><div class="section">
 <h3 id="zarr-group-delete-"><code>zarr_group$delete()</code><a class="anchor" aria-label="anchor" href="#zarr-group-delete-"></a></h3>
 <p>Delete a group or an array contained by this group. When
 deleting a group it cannot contain other groups or arrays. <strong>Warning:</strong>
 this operation is irreversible for many stores!</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
 <dd><p>The name of the group or array to delete. This will also
 accept a path to a group or array but the group or array must be a node
@@ -347,7 +372,7 @@ directly under this group.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -360,10 +385,10 @@ including any sub-groups and arrays. Any specific metadata attached to
 this group is deleted as well - only a basic metadata document is
 maintained. <strong>Warning:</strong> this operation is irreversible for many
 stores!</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">delete_all</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 

@@ -23,10 +23,6 @@ validity of node names.
 
 ## Active bindings
 
-- `name`:
-
-  (read-only) The name of the node.
-
 - `zarr`:
 
   (read-only) Retrieve the

@@ -130,6 +130,10 @@ This is set by the array when starting to use chunking for file I/O.</p></dd>
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 <p></p><ul><li><p><a href="#method-chunking-initialize"><code>chunking$new()</code></a></p></li>
 <li><p><a href="#method-chunking-resize"><code>chunking$resize()</code></a></p></li>
+<li><p><a href="#method-chunking-chunk_keys"><code>chunking$chunk_keys()</code></a></p></li>
+<li><p><a href="#method-chunking-read_raw"><code>chunking$read_raw()</code></a></p></li>
+<li><p><a href="#method-chunking-write_raw"><code>chunking$write_raw()</code></a></p></li>
+<li><p><a href="#method-chunking-flush"><code>chunking$flush()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_extension" data-id="metadata_fragment"><a href="zarr_extension.html#method-metadata_fragment"><code>zarr_extension$metadata_fragment()</code></a></span></li>
 </ul></details></p><hr><a id="method-chunking-initialize"></a><div class="section">
 <h3 id="chunking-new-"><code>chunking$new()</code><a class="anchor" aria-label="anchor" href="#chunking-new-"></a></h3>
@@ -185,6 +189,83 @@ per dimension (positive = grew at the low end, negative = shrank).</p></dd>
 </dl><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>Self, invisibly.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-chunking-chunk_keys"></a><div class="section">
+<h3 id="chunking-chunk-keys-"><code>chunking$chunk_keys()</code><a class="anchor" aria-label="anchor" href="#chunking-chunk-keys-"></a></h3>
+<p>Generate the keys of all chunks in the chunk grid, or of
+all shards for a sharded array. Keys are derived from the grid and the
+chunk key encoding, not by listing the store, so this works for stores
+that cannot list their keys. Chunks need not exist in the store.</p><div class="section">
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunking</span><span class="op">$</span><span class="fu">chunk_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p>A character vector of chunk keys, relative to the array prefix.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-chunking-read_raw"></a><div class="section">
+<h3 id="chunking-read-raw-"><code>chunking$read_raw()</code><a class="anchor" aria-label="anchor" href="#chunking-read-raw-"></a></h3>
+<p>Read the bytes of a chunk (or shard) as they are held in
+the store, without decoding. Any pending edits to the chunk are
+flushed to the store first.</p><div class="section">
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunking</span><span class="op">$</span><span class="fu">read_raw</span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>key</code></dt>
+<dd><p>Chunk key relative to the array prefix, as produced by
+<code>chunk_keys()</code>.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>A raw vector, or <code>NULL</code> if the chunk is not present in the
+store.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-chunking-write_raw"></a><div class="section">
+<h3 id="chunking-write-raw-"><code>chunking$write_raw()</code><a class="anchor" aria-label="anchor" href="#chunking-write-raw-"></a></h3>
+<p>Write the bytes of a chunk (or shard) to the store, without
+encoding. Any cached copy of the chunk is dropped. The caller is
+responsible for <code>value</code> being consistent with the codecs of the array.</p><div class="section">
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunking</span><span class="op">$</span><span class="fu">write_raw</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>key</code></dt>
+<dd><p>Chunk key relative to the array prefix, as produced by
+<code>chunk_keys()</code>.</p></dd>
+
+      <dt><code>value</code></dt>
+<dd><p>A raw vector with the encoded chunk.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<p>Self, invisibly.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-chunking-flush"></a><div class="section">
+<h3 id="chunking-flush-"><code>chunking$flush()</code><a class="anchor" aria-label="anchor" href="#chunking-flush-"></a></h3>
+<p>Persist the data in all chunks with pending edits to the
+store. This base implementation is a no-op for chunking schemes that
+do not buffer writes.</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunking</span><span class="op">$</span><span class="fu">flush</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
