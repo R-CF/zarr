@@ -56,7 +56,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpAIqJ8w/file1c8df5fff7.zarr 
+#> Location  : /tmp/RtmpubyeZy/file1d671b0bcd17.zarr 
 #> Arrays    : 1 
 #> Total size: 2.81 KB
 
@@ -65,7 +65,7 @@ z
 # Zarr arrays use the ⌗ glyph
 # (Domains may use other glyphs)
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpAIqJ8w/file1c8df5fff7.zarr 
+#> <Zarr hierarchy> /tmp/RtmpubyeZy/file1d671b0bcd17.zarr 
 #> ☰ / (root group)
 #> └ ⌗ top_array
 ```
@@ -90,7 +90,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpAIqJ8w/file1c8df5fff7.zarr 
+#> <Zarr hierarchy> /tmp/RtmpubyeZy/file1d671b0bcd17.zarr 
 #> ☰ / (root group)
 #> ├ ⌗ top_array
 #> ├ ⌗ a_vector
@@ -118,7 +118,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /tmp/RtmpAIqJ8w/file1c8df5fff7.zarr 
+#> Location  : /tmp/RtmpubyeZy/file1d671b0bcd17.zarr 
 #> Arrays    : 3 
 #> Total size: 6.73 KB
 unlink(fn)
@@ -484,13 +484,12 @@ arr[1, which(seq(d[2]) <= 10), , drop = FALSE]
 ```
 
 You can also write to a Zarr array directly, for instance to write
-smaller subsets of the Zarr array. The process is a bit more
-complicated, however (due to a quirk in R):
+smaller subsets of the Zarr array.
 
 ``` r
 
-arr$write(NA_integer_, selection = list(1:5, 6, 1))
-arr$write(-99L, selection = list(2:3, 5:7, 1))
+arr[1:5, 6, 1] <- NA_integer_
+arr[2:3, 5:7, 1] <- -99L
 arr[, 1:10, 1]
 #>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 #> [1,]    1    6   11   16   21   NA   31   36   41    46

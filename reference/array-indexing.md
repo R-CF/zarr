@@ -9,6 +9,9 @@ that the indices have to be consecutive.
 ``` r
 # S3 method for class 'zarr_array'
 x[i, j, ..., drop = TRUE]
+
+# S3 method for class 'zarr_array'
+x[...] <- value
 ```
 
 ## Arguments
@@ -29,10 +32,16 @@ x[i, j, ..., drop = TRUE]
   If `TRUE` (the default), degenerate dimensions are dropped, if `FALSE`
   they are retained in the result.
 
+- value:
+
+  The value to assign to the Zarr array. This must have the same shape
+  as the slab being implied by the indices, with standard R recycling
+  rules applying.
+
 ## Value
 
 When extracting data, a vector, matrix or array, having dimensions as
-specified in the indices.
+specified in the indices. When replacing data, returns `x` invisibly.
 
 ## Examples
 
@@ -43,6 +52,12 @@ arr <- z[["/"]]
 arr[3:5, 7:9]
 #>      [,1] [,2] [,3]
 #> [1,]   63   73   83
+#> [2,]   64   74   84
+#> [3,]   65   75   85
+arr[3, 7:9] <- 1L
+arr[3:5, 7:9]
+#>      [,1] [,2] [,3]
+#> [1,]    1    1    1
 #> [2,]   64   74   84
 #> [3,]   65   75   85
 ```

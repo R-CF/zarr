@@ -29,6 +29,7 @@ These changes impact the signature of several methods:
 
 Other features:
 
+- Writing a `zarr_array` by indices can use `[<-.zarr_array`.
 - Can create a single array store.
 - New `zarr$save_to()` method can save a `zarr` object to a new store.
   This is handy to save a memory store to disk, to convert a v.2 store

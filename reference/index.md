@@ -3,6 +3,7 @@
 ## All functions
 
 - [`` `[`( ``*`<zarr_array>`*`)`](https://r-cf.github.io/zarr/reference/array-indexing.md)
+  [`` `[<-`( ``*`<zarr_array>`*`)`](https://r-cf.github.io/zarr/reference/array-indexing.md)
   : Extract or replace parts of a Zarr array
 - [`array_builder`](https://r-cf.github.io/zarr/reference/array_builder.md)
   : Array builder
