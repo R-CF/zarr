@@ -29,6 +29,7 @@ These changes impact the signature of several methods:
 
 Other features:
 
+- Can create a single array store.
 - New `zarr$save_to()` method can save a `zarr` object to a new store.
   This is handy to save a memory store to disk, to convert a v.2 store
   to a v.3 store, or to get a local copy of a remote store, among other

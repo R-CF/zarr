@@ -236,14 +236,16 @@ be created.</p>
 
 <p></p><hr><a id="method-zarr-add_array"></a><div class="section">
 <h3 id="zarr-add-array-"><code>zarr$add_array()</code><a class="anchor" aria-label="anchor" href="#zarr-add-array-"></a></h3>
-<p>Add an array in a group with a given path.</p><div class="section">
+<p>Add an array to the store.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr</span><span class="op">$</span><span class="fu">add_array</span><span class="op">(</span><span class="va">path</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
-<dd><p>The path to the group of the new array, a single character
-string.</p></dd>
+<dd><p>Optional. The path to the group of the new array, a single
+character string. If omitted, a single-array store is assumed and the
+store must be uninitialised (meaning that it cannot already hold any
+groups or arrays).</p></dd>
 
       <dt><code>name</code></dt>
 <dd><p>The name for the new array, a single character string.</p></dd>

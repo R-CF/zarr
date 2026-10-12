@@ -95,7 +95,8 @@ the store if it does not yet exist, opened otherwise.
 
 - `metadata`:
 
-  List with the metadata of the array.
+  List with the metadata of the array, or an instance of class
+  [array_builder](https://r-cf.github.io/zarr/reference/array_builder.md).
 
 - `parent`:
 

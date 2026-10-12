@@ -209,7 +209,7 @@ The newly created
 
 ### `zarr$add_array()`
 
-Add an array in a group with a given path.
+Add an array to the store.
 
 #### Usage
 
@@ -219,7 +219,10 @@ Add an array in a group with a given path.
 
 - `path`:
 
-  The path to the group of the new array, a single character string.
+  Optional. The path to the group of the new array, a single character
+  string. If omitted, a single-array store is assumed and the store must
+  be uninitialised (meaning that it cannot already hold any groups or
+  arrays).
 
 - `name`:
 
