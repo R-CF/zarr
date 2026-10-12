@@ -196,12 +196,13 @@ arr[1, which(seq(d[2]) <= 10), ]
 # indicate that, just like with R arrays.
 arr[1, which(seq(d[2]) <= 10), , drop = FALSE]
 ```
-You can also write to a Zarr array directly, for instance to write smaller subsets of the Zarr array. The process is a bit more complicated, however (due to a quirk in R):
-```{r write}
-arr$write(NA_integer_, selection = list(1:5, 6, 1))
-arr$write(-99L, selection = list(2:3, 5:7, 1))
+You can also write to a Zarr array directly, for instance to write smaller subsets of the Zarr array.
+```{r write2}
+arr[1:5, 6, 1] <- NA_integer_
+arr[2:3, 5:7, 1] <- -99L
 arr[, 1:10, 1]
 ```
+
 A few things of interest here:
 
  1. The `zarr` package uses the `R6` framework. That means that you access fields of the objects just like you would with list elements. The Zarr array has multiple properties that you can access using this syntax, here retrieving the shape of the Zarr array as an integer vector with `d <- arr$shape`.

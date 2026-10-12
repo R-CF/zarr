@@ -490,8 +490,8 @@ str.zarr_array <- function(object, ...) {
 #' @param drop If `TRUE` (the default), degenerate dimensions are dropped, if
 #'   `FALSE` they are retained in the result.
 #' @return When extracting data, a vector, matrix or array, having dimensions as
-#'   specified in the indices.
-#' @name array-indexing
+#'   specified in the indices. When replacing data, returns `x` invisibly.
+#' @rdname array-indexing
 #' @export
 #' @docType methods
 #' @examples
@@ -506,37 +506,46 @@ str.zarr_array <- function(object, ...) {
   args <- sc[-(1:2)]      # remove function name and x
   args$drop <- NULL       # remove drop if present
 
-  if ((length(args) == 1L) && (identical(args[[1L]], quote(expr = ))))
-    selection <- NULL
-  else {
-    # Replace missing indices with NULL
-    indices <- lapply(args, function(arg) {
-      if (is.symbol(arg) && identical(arg, quote(expr = )))
-        NULL
-      else
-        eval(arg, caller_env)
-    })
-
-    nd <- length(x$shape)
-    if (length(indices) != nd)
-      stop('Invalid number of selection indices for the array', call. = FALSE) # nocov
-    selection <- vector("list", nd)
-
-    for (d in seq_len(nd)) {
-      if (is.null(indices[[d]])) {
-        # Missing index
-        selection[[d]] <- c(1L, x$shape[d])
-      } else {
-        sel <- indices[[d]]
-        if (is.logical(sel))
-          sel <- which(sel)
-        else if (any(sel < 0L))
-          sel <- setdiff(seq_len(x$shape[d]), abs(sel))
-        selection[[d]] <- range(sel)
-      }
-    }
-  }
-
+  selection <- if (length(args) == 1L && identical(args[[1L]], quote(expr = ))) NULL
+               else .index_selection(x, args, caller_env)
   data <- x$read(selection)
   if (drop) drop(data) else data
+}
+
+#' @rdname array-indexing
+#' @param value The value to assign to the Zarr array. This must have the same
+#'   shape as the slab being implied by the indices, with standard R recycling
+#'   rules applying.
+#' @export
+#' @examples
+#' arr[3, 7:9] <- 1L
+#' arr[3:5, 7:9]
+#'
+`[<-.zarr_array` <- function(x, ..., value) {
+  selection <- .index_selection(x, match.call(expand.dots = FALSE)$..., parent.frame())
+  sdim <- vapply(selection, function(s) s[2L] - s[1L] + 1L, integer(1L))
+  if (is.null(dim(value)) && length(value) == prod(sdim))
+    dim(value) <- sdim
+  x$write(value, selection)
+  invisible(x)
+}
+
+# Convert unevaluated `[` / `[<-` index arguments into a list of index ranges
+# for `zarr_array$read()` and `$write()`. Empty indices select the full extent.
+.index_selection <- function(x, args, env) {
+  nd <- length(x$shape)
+  if (length(args) != nd)
+    stop('Invalid number of selection indices for the array', call. = FALSE)
+  lapply(seq_len(nd), function(d) {
+    if (identical(args[[d]], quote(expr = ))) return(c(1L, x$shape[d]))
+    sel <- eval(args[[d]], env)
+    if (is.null(sel)) return(c(1L, x$shape[d]))
+    if (is.logical(sel)) sel <- which(sel)
+    else if (any(sel < 0L)) sel <- setdiff(seq_len(x$shape[d]), abs(sel))
+    sel <- as.integer(sel)
+    r <- range(sel)
+    if (length(sel) != r[2L] - r[1L] + 1L || anyDuplicated(sel))
+      stop('Indices must be consecutive', call. = FALSE)
+    r
+  })
 }
