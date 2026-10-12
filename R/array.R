@@ -138,8 +138,8 @@ zarr_array <- R6::R6Class('zarr_array',
           stop('Array selection indices are out of bounds', call. = FALSE) # nocov
         data <- private$.chunking$read(start, stop)
 
-        if (!private$.raw_read) {
-          fill <- private$.data_type$fill_value
+        fill <- private$.data_type$fill_value
+        if (!private$.raw_read && !(is.na(fill) && !is.nan(fill))) { # NA: no fill value
           Rtype <- private$.data_type$Rtype
           if (is.nan(fill))
             data[which(is.nan(data))] <- NA
@@ -173,6 +173,8 @@ zarr_array <- R6::R6Class('zarr_array',
     #'   persist data in stale chunks.
     #' @return Self, invisibly.
     write = function(data, selection, flush = TRUE) {
+      if (private$.store$read_only)
+        stop('Cannot write to a read-only Zarr store', call. = FALSE)
       Rtype <- private$.data_type$Rtype
       if (if (Rtype == 'integer64') !bit64::is.integer64(data) else storage.mode(data) != Rtype)
         stop('Data is of a different type than the array', call. = FALSE) # nocov
@@ -287,6 +289,8 @@ zarr_array <- R6::R6Class('zarr_array',
     #'   it unchanged.
     #' @return Self, invisibly.
     resize = function(low, high) {
+      if (private$.store$read_only)
+        stop('Cannot write to a read-only Zarr store', call. = FALSE)
       shape <- private$.metadata$shape
       nd <- length(shape)
       if (!nd) stop('Cannot resize a scalar array; see `promote()`', call. = FALSE) # nocov
@@ -330,6 +334,8 @@ zarr_array <- R6::R6Class('zarr_array',
     #'   Default `1L`.
     #' @return Self, invisibly.
     promote = function(dimension, length = 1L) {
+      if (private$.store$read_only)
+        stop('Cannot write to a read-only Zarr store', call. = FALSE)
       if (inherits(private$.chunking, 'chunk_grid_sharded'))
         stop('`promote()` is not supported for sharded arrays', call. = FALSE)
 

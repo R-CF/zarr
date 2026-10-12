@@ -24,6 +24,8 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     .root = '.',    # The root of the zarr store as a file system path
 
     fs_rename = function(old_rel, new_rel) {
+      if (private$.read_only)
+        stop('Cannot write to a read-only Zarr store', call. = FALSE)
       old_fp <- file.path(private$.root, old_rel)
       new_fp <- file.path(private$.root, new_rel)
       parent <- dirname(new_fp)
@@ -207,6 +209,8 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @param value The value to set, a complete chunk of data, a `raw` vector.
     #' @return Self, invisibly, or an error.
     set = function(key, value) {
+      if (private$.read_only)
+        stop('Cannot write to a read-only Zarr store', call. = FALSE)
       fp <- file.path(private$.root, key)
       dir <- dirname(fp)
       if (!dir.exists(dir))
@@ -228,6 +232,8 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' @param value The value to set, a complete chunk of data.
     #' @return Self, invisibly, or an error.
     set_if_not_exists = function(key, value) {
+      if (private$.read_only)
+        stop('Cannot write to a read-only Zarr store', call. = FALSE)
       fp <- file.path(private$.root, key)
       if (!file.exists(fp)) {
         dir <- dirname(fp)
@@ -334,6 +340,8 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
     #' of [array_builder].
     #' @return Self, invisible
     set_metadata = function(prefix, metadata) {
+      if (private$.read_only)
+        stop('Cannot write to a read-only Zarr store', call. = FALSE)
       fn <- file.path(private$.root, paste0(prefix, 'zarr.json'))
       if (inherits(metadata, 'array_builder'))
         metadata <- metadata$metadata()

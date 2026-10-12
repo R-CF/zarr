@@ -139,6 +139,20 @@ test_that("v2 missing chunk reads as NA", {
   expect_equal(open_zarr(root)$root$read(), c(1L, 2L, NA, NA))
 })
 
+test_that("v2 null fill value does not mask data", {
+  arr <- v2_single_array("|u1", c(0L, 128L, 255L), 1L, fill = "null")
+  expect_true(is.na(arr$data_type$fill_value))
+  expect_equal(arr$read(), c(0L, 128L, 255L))
+})
+
+test_that("v2 null fill value reads a missing chunk as NA", {
+  root <- tempfile(fileext = ".zarr")
+  dir.create(root)
+  write_json_doc(root, ".zarray", zarray("<i4", 4, 2, fill = "null"))
+  write_chunk(root, "0", c(7L, 8L), 4L)
+  expect_identical(open_zarr(root)$root$read(), c(7L, 8L, NA, NA))
+})
+
 test_that("v2 blosc-compressed chunk", {
   root <- tempfile(fileext = ".zarr")
   dir.create(root)

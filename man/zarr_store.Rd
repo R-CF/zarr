@@ -91,7 +91,8 @@ be called by descendant classes, exclusively.
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{read_only}}{Flag to indicate if the store is read-only. Default
-\code{FALSE}.}
+\code{FALSE}. If argument \code{version} is smaller than 3, the store is always
+opened in read-only mode.}
       \item{\code{version}}{The version of the Zarr store. By default this is 3.}
     }
     \if{html}{\out{</div>}}

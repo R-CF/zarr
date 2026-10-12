@@ -347,7 +347,9 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
         readBin(data, what = Rtype, size = dt$size,
                 n = n, endian = private$.configuration$endian)
 
-      dim(out) <- private$.chunk_shape
+      # Filters like "packbits" change the number of elements
+      if (length(out) == prod(private$.chunk_shape))
+        dim(out) <- private$.chunk_shape
       out
     }
   ),
@@ -365,7 +367,7 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
   )
 )
 
-# ======= zarr_codec_vlenutf8 +=================================================
+# ======= zarr_codec_vlenutf8 ==================================================
 
 #' Zarr vlen-utf8 codec
 #'

@@ -54,7 +54,7 @@ zarr_store <- R6::R6Class('zarr_store',
         v3 <- list(zarr_format = 3L, node_type = 'group')
       } else {
         # Array metadata
-        re <- regexec("^([<>|])([bfiuUO])([0-9]+)$", meta$dtype)
+        re <- regexec("^([<>|])([bfiuUO])([0-9]*)$", meta$dtype)
         dtype <- regmatches(meta$dtype, re)[[1L]]
         if (!length(dtype)) {
           stop('Invalid dtype in metadata document', call. = FALSE) # nocov
@@ -71,9 +71,7 @@ zarr_store <- R6::R6Class('zarr_store',
                                'O' = 'string')
         ab$shape <- meta$shape
         ab$chunk_shape <- meta$chunks
-        if (!is.null(meta$fill_value)) {
-            ab$fill_value <- meta$fill_value
-        }
+        ab$fill_value <- meta$fill_value # null: no fill value
 
         # Bytes codec - missing when array->bytes is vlen-utf8 or ucs-4
         bytes <- ab$codecs$bytes
@@ -97,6 +95,10 @@ zarr_store <- R6::R6Class('zarr_store',
         v3 <- c(ab$metadata(),
                 list(chunk_key_encoding = list(name = 'v2',
                                                configuration = list(separator = meta$dimension_separator %||% '.'))))
+
+        # Filters, inserted around the array -> bytes codec
+        if (length(meta$filters))
+          v3$codecs <- .v2_filters_to_v3(meta$filters, v3$codecs)
       }
 
       if (length(atts))
@@ -117,11 +119,12 @@ zarr_store <- R6::R6Class('zarr_store',
     #'   "abstract", it should not be instantiated directly - it is intended to
     #'   be called by descendant classes, exclusively.
     #' @param read_only Flag to indicate if the store is read-only. Default
-    #'   `FALSE`.
+    #'   `FALSE`. If argument `version` is smaller than 3, the store is always
+    #'   opened in read-only mode.
     #' @param version The version of the Zarr store. By default this is 3.
     #' @return An instance of this class.
     initialize = function(read_only = FALSE, version = 3L) {
-      private$.read_only <- read_only
+      private$.read_only <- read_only || version == 2L
       private$.version <- version
     },
 

@@ -64,14 +64,14 @@ test_that("write_raw() drops a cached chunk", {
 test_that("array copy_to() returns dest", {
   src <- new_source()[["/g/a"]]
   dz <- create_zarr()
-  expect_identical(src$copy_to(dz$root, list()), dz$root)
+  expect_identical(src$copy_to(dz$root, NULL), dz$root)
 })
 
 test_that("array copy_to() produces byte-identical chunks", {
   src <- new_source()[["/g/a"]]
   src$write(x)
   dz <- create_zarr()
-  src$copy_to(dz$root, list())
+  src$copy_to(dz$root, NULL)
   expect_identical(stored_bytes(dz[["/a"]]), stored_bytes(src))
   expect_equal(dz[["/a"]][], x)
 })
@@ -80,7 +80,7 @@ test_that("array copy_to() leaves absent chunks absent", {
   src <- new_source()[["/g/a"]]
   src$write(x[1:4, 1:3], list(c(1L, 4L), c(1L, 3L)))
   dz <- create_zarr()
-  src$copy_to(dz$root, list())
+  src$copy_to(dz$root, NULL)
   expect_equal(sum(!sapply(stored_bytes(dz[["/a"]]), is.null)), 1L)
 })
 
@@ -88,7 +88,7 @@ test_that("array copy_to() includes unflushed edits", {
   src <- new_source()[["/g/a"]]
   src$write(x, flush = FALSE)
   dz <- create_zarr()
-  src$copy_to(dz$root, list())
+  src$copy_to(dz$root, NULL)
   expect_equal(dz[["/a"]][], x)
 })
 
@@ -96,7 +96,7 @@ test_that("array copy_to() keeps the array attributes", {
   src <- new_source()[["/g/a"]]
   src$set_attribute("units", "K")
   dz <- create_zarr()
-  src$copy_to(dz$root, list())
+  src$copy_to(dz$root, NULL)
   expect_equal(dz[["/a"]]$attribute("units"), "K")
 })
 
@@ -104,7 +104,7 @@ test_that("array copy_to() copies a scalar array", {
   src <- create_zarr()$add_array("/", "s", define_array("int32", integer(0)))
   src$write(42L)
   dz <- create_zarr()
-  src$copy_to(dz$root, list())
+  src$copy_to(dz$root, NULL)
   expect_equal(dz[["/s"]][], 42L)
 })
 
@@ -114,7 +114,7 @@ test_that("array copy_to() copies whole shards of a sharded array", {
   skip_if_not_installed("bit64")
   src <- open_zarr("testdata/sharded_test.zarr")[["/float2d"]]
   dz <- create_zarr()
-  src$copy_to(dz$root, list())
+  src$copy_to(dz$root, NULL)
   dst <- dz[["/float2d"]]
   expect_s3_class(dst$chunking, "chunk_grid_sharded")
   expect_identical(stored_bytes(dst), stored_bytes(src))
@@ -125,14 +125,14 @@ test_that("array copy_to() copies whole shards of a sharded array", {
 
 test_that("group copy_to() returns dest", {
   dz <- zarr$new()
-  expect_identical(new_source()$root$copy_to(dz, list()), dz)
+  expect_identical(new_source()$root$copy_to(dz, NULL), dz)
 })
 
 test_that("group copy_to() recreates the hierarchy", {
   z <- new_source()
   z$add_group("/g", "empty")
   dz <- zarr$new()
-  z$root$copy_to(dz, list())
+  z$root$copy_to(dz, NULL)
   expect_equal(dz$groups, z$groups)
   expect_equal(dz$arrays, z$arrays)
 })
@@ -141,7 +141,7 @@ test_that("group copy_to() copies the array data", {
   z <- new_source()
   z[["/g/a"]]$write(x)
   dz <- zarr$new()
-  z$root$copy_to(dz, list())
+  z$root$copy_to(dz, NULL)
   expect_identical(stored_bytes(dz[["/g/a"]]), stored_bytes(z[["/g/a"]]))
   expect_equal(dz[["/g/a"]][], x)
 })
@@ -149,14 +149,14 @@ test_that("group copy_to() copies the array data", {
 test_that("group copy_to() persists group attributes", {
   fn <- tempfile(fileext = ".zarr")
   on.exit(unlink(fn, recursive = TRUE))
-  new_source()$root$copy_to(zarr$new(fn), list())
+  new_source()$root$copy_to(zarr$new(fn), NULL)
   expect_equal(open_zarr(fn)[["/g"]]$attribute("kind"), "sub")
 })
 
 test_that("group copy_to() persists root group attributes", {
   fn <- tempfile(fileext = ".zarr")
   on.exit(unlink(fn, recursive = TRUE))
-  new_source()$root$copy_to(zarr$new(fn), list())
+  new_source()$root$copy_to(zarr$new(fn), NULL)
   expect_equal(open_zarr(fn)$root$attribute("title"), "source")
 })
 
@@ -165,7 +165,7 @@ test_that("group copy_to() works from memory to a local store", {
   z[["/g/a"]]$write(x)
   fn <- tempfile(fileext = ".zarr")
   on.exit(unlink(fn, recursive = TRUE))
-  z$root$copy_to(zarr$new(fn), list())
+  z$root$copy_to(zarr$new(fn), NULL)
   local <- open_zarr(fn)[["/g/a"]]
   expect_identical(stored_bytes(local), stored_bytes(z[["/g/a"]]))
   expect_equal(local[], x)
@@ -176,7 +176,7 @@ test_that("group copy_to() works from memory to a local store", {
 test_that("a single-array store copies to an empty memory store", {
   src <- as_zarr(x)$root
   dz <- zarr$new()
-  src$copy_to(dz, list())
+  src$copy_to(dz, NULL)
   expect_s3_class(dz$root, "zarr_array")
   expect_equal(dz$root[], x)
 })
@@ -185,7 +185,7 @@ test_that("a single-array store copies to an empty local store", {
   src <- as_zarr(x)$root
   fn <- tempfile(fileext = ".zarr")
   on.exit(unlink(fn, recursive = TRUE))
-  src$copy_to(zarr$new(fn), list())
+  src$copy_to(zarr$new(fn), NULL)
   local <- open_zarr(fn)
   expect_s3_class(local$root, "zarr_array")
   expect_equal(local$root[], x)

@@ -31,7 +31,8 @@ create_zarr <- function(location) {
 #'   string may contain UTF-8 characters and/or use a file URI format.
 #' @param read_only Optional. Logical that indicates if the store is to be
 #'   opened in read-only mode. Default is ` NULL`, which implies `FALSE` for a
-#'   local file system store, `TRUE` otherwise.
+#'   local file system store, `TRUE` otherwise. A Zarr version 2 store is always
+#'   opened in read-only mode.
 #' @param protocol Optional, character string. Override automatic protocol
 #'   detection ('local', 'http', or 's3'). Needed for S3-compatible endpoints
 #'   that aren't AWS and don't follow AWS's hostname conventions (MinIO, EMBASSY

@@ -13,7 +13,8 @@ string may contain UTF-8 characters and/or use a file URI format.}
 
 \item{read_only}{Optional. Logical that indicates if the store is to be
 opened in read-only mode. Default is \code{ NULL}, which implies \code{FALSE} for a
-local file system store, \code{TRUE} otherwise.}
+local file system store, \code{TRUE} otherwise. A Zarr version 2 store is always
+opened in read-only mode.}
 
 \item{protocol}{Optional, character string. Override automatic protocol
 detection ('local', 'http', or 's3'). Needed for S3-compatible endpoints

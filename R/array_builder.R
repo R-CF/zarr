@@ -177,7 +177,8 @@ array_builder <- R6::R6Class('array_builder',
 
       cdc <- switch(codec,
         'transpose'        = zarr_codec_transpose$new(length(private$.shape), configuration),
-        'bytes'            = zarr_codec_bytes$new(private$.data_type, private$.chunk_shape$chunk_shape, configuration),
+        'bytes'            = zarr_codec_bytes$new(.encoded_data_type(private$.codecs, private$.data_type),
+                                                  private$.chunk_shape$chunk_shape, configuration),
         'vlen-utf8'        = zarr_codec_vlenutf8$new(),
         'ucs-4'            = zarr_codec_ucs4$new(private$.chunk_shape$chunk_shape, configuration),
         'blosc'            = zarr_codec_blosc$new(data_type = private$.data_type, configuration),
@@ -203,7 +204,7 @@ array_builder <- R6::R6Class('array_builder',
 
           zarr_codec_sharding$new(configuration)
         },
-        stop(paste('Unknown codec:', codec), call. = FALSE)
+        .zarr_filter(codec, configuration) # Zarr v.2 filters, or error
       )
       if (!inherits(cdc, 'zarr_codec'))
         stop('Could not create a codec from the arguments:', codec, call. = FALSE) # nocov
@@ -340,7 +341,13 @@ array_builder <- R6::R6Class('array_builder',
           private$.data_type$fill_value
         else {
           dt <- private$.data_type$data_type
-          if (is.null(value)) value <- NA # JSON null, e.g. a string array without fill value
+          if (is.null(value)) # JSON null: no fill value, e.g. Zarr v.2 or a string array
+            value <- switch(private$.data_type$Rtype,
+                            integer   = NA_integer_,
+                            integer64 = bit64::NA_integer64_,
+                            double    = NA_real_,
+                            character = NA_character_,
+                            NA)
           private$.data_type$fill_value <- if (is.na(value) || inherits(value, 'integer64'))
             value
           else if (is.numeric(value)) {
