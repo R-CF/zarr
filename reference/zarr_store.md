@@ -121,7 +121,9 @@ descendant classes, exclusively.
 
 - `read_only`:
 
-  Flag to indicate if the store is read-only. Default `FALSE`.
+  Flag to indicate if the store is read-only. Default `FALSE`. If
+  argument `version` is smaller than 3, the store is always opened in
+  read-only mode.
 
 - `version`:
 

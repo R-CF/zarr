@@ -212,6 +212,22 @@ for developers is being drafted.
   : List the Zarr domains registered in this session
 - [`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
   : Zarr extension support
+- [`zarr_filter`](https://r-cf.github.io/zarr/reference/zarr_filter.md)
+  : Zarr v.2 filters
+- [`zarr_filter_astype`](https://r-cf.github.io/zarr/reference/zarr_filter_astype.md)
+  : Zarr v.2 "astype" filter
+- [`zarr_filter_categorize`](https://r-cf.github.io/zarr/reference/zarr_filter_categorize.md)
+  : Zarr v.2 "categorize" filter
+- [`zarr_filter_checksum`](https://r-cf.github.io/zarr/reference/zarr_filter_checksum.md)
+  : Zarr v.2 checksum filters
+- [`zarr_filter_delta`](https://r-cf.github.io/zarr/reference/zarr_filter_delta.md)
+  : Zarr v.2 "delta" filter
+- [`zarr_filter_fixedscaleoffset`](https://r-cf.github.io/zarr/reference/zarr_filter_fixedscaleoffset.md)
+  : Zarr v.2 "fixedscaleoffset" filter
+- [`zarr_filter_packbits`](https://r-cf.github.io/zarr/reference/zarr_filter_packbits.md)
+  : Zarr v.2 "packbits" filter
+- [`zarr_filter_shuffle`](https://r-cf.github.io/zarr/reference/zarr_filter_shuffle.md)
+  : Zarr v.2 "shuffle" filter
 - [`zarr_group`](https://r-cf.github.io/zarr/reference/zarr_group.md) :
   Zarr Group
 - [`zarr_httpstore`](https://r-cf.github.io/zarr/reference/zarr_httpstore.md)

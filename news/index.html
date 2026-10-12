@@ -57,6 +57,7 @@
 </ul><p>Other features:</p>
 <ul><li>New <code>zarr$save_to()</code> method can save a <code>zarr</code> object to a new store. This is handy to save a memory store to disk, to convert a v.2 store to a v.3 store, or to get a local copy of a remote store, among other uses. Parallel reads from HTTP and S3 stores speeds up the copying.</li>
 <li>New field <code>zarr</code> in class <code>zarr_node</code> to retrieve the <code>zarr</code> instance that manages the node.</li>
+<li>Zarr v.2 filters as defined in Python’s numcodecs are supported.</li>
 </ul><p>Minor changes:</p>
 <ul><li>The <code>array_builder</code> class has a field <code>data_type_from_storage.mode</code> that can make a Zarr data type from an R storage mode.</li>
 <li>

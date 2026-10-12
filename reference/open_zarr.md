@@ -22,7 +22,8 @@ open_zarr(location, read_only = NULL, protocol = NULL, ...)
 
   Optional. Logical that indicates if the store is to be opened in
   read-only mode. Default is ` NULL`, which implies `FALSE` for a local
-  file system store, `TRUE` otherwise.
+  file system store, `TRUE` otherwise. A Zarr version 2 store is always
+  opened in read-only mode.
 
 - protocol:
 

@@ -71,7 +71,8 @@ string may contain UTF-8 characters and/or use a file URI format.</p></dd>
 <dt id="arg-read-only">read_only<a class="anchor" aria-label="anchor" href="#arg-read-only"></a></dt>
 <dd><p>Optional. Logical that indicates if the store is to be
 opened in read-only mode. Default is <code> NULL</code>, which implies <code>FALSE</code> for a
-local file system store, <code>TRUE</code> otherwise.</p></dd>
+local file system store, <code>TRUE</code> otherwise. A Zarr version 2 store is always
+opened in read-only mode.</p></dd>
 
 
 <dt id="arg-protocol">protocol<a class="anchor" aria-label="anchor" href="#arg-protocol"></a></dt>

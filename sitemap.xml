@@ -60,6 +60,14 @@
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_domain.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_domains.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_extension.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_filter.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_filter_astype.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_filter_categorize.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_filter_checksum.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_filter_delta.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_filter_fixedscaleoffset.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_filter_packbits.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/zarr_filter_shuffle.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_group.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_httpstore.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/zarr_localstore.html</loc></url>

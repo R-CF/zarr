@@ -35,6 +35,7 @@ Other features:
   uses. Parallel reads from HTTP and S3 stores speeds up the copying.
 - New field `zarr` in class `zarr_node` to retrieve the `zarr` instance
   that manages the node.
+- Zarr v.2 filters as defined in Python’s numcodecs are supported.
 
 Minor changes:
 
