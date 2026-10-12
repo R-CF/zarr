@@ -141,26 +141,29 @@ zarr <- R6::R6Class("zarr",
     #'   be created.
     add_group = function(path, name) {
       parent <- self$get_node(path)
-      if (inherits(parent, 'zarr_group'))
-        parent$add_group(name)
-      else
-        NULL
+      if (inherits(parent, 'zarr_group')) parent$add_group(name)
+      else NULL
     },
 
-    #' @description Add an array in a group with a given path.
-    #' @param path The path to the group of the new array, a single character
-    #'   string.
+    #' @description Add an array to the store.
+    #' @param path Optional. The path to the group of the new array, a single
+    #'   character string. If omitted, a single-array store is assumed and the
+    #'   store must be uninitialised (meaning that it cannot already hold any
+    #'   groups or arrays).
     #' @param name The name for the new array, a single character string.
     #' @param metadata A `list` with the metadata for the new array, or a valid
     #'   [array_builder] instance.
     #' @return The newly created [zarr_array], or `NULL` if the array could not
     #'   be created.
     add_array = function(path, name, metadata) {
-      grp <- self$get_node(path)
-      if (inherits(grp, 'zarr_group')) {
-        grp$add_array(name, metadata)
-      } else
-        NULL
+      if (missing(path)) {
+        if (is.null(private$.root)) zarr_array$new(name = name, metadata = metadata, parent = self)
+        else stop('Must supply `path` argument when adding an array to a store', call. = FALSE)
+      } else {
+        grp <- self$get_node(path)
+        if (inherits(grp, 'zarr_group')) grp$add_array(name, metadata)
+        else NULL
+      }
     },
 
     #' @description Delete a group from the Zarr object. This will also delete

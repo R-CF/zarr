@@ -197,3 +197,12 @@ test_that("Optimal chunking", {
   r2 <- optimal_chunking(rev(dim_sizes), c(1, 3))
   expect_equal(r1, rev(r2))
 })
+
+test_that('Single array store from scratch', {
+  z <- zarr$new()
+  arr <- z$add_array(name = 'single', metadata = define_array(data_type = 'int16', shape = c(3, 4, 5)))
+  expect_r6_class(arr, 'zarr_array')
+  expect_equal(z$arrays, '/')
+  expect_null(z$groups)
+  expect_error(z$add_array(name = 'second', metadata = define_array(data_type = 'int16', shape = c(3, 4, 5))))
+})

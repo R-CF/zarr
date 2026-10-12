@@ -45,7 +45,8 @@ zarr_array <- R6::R6Class('zarr_array',
     #' @description Initialize a new array in a Zarr hierarchy. The array will
     #'   be created in the store if it does not yet exist, opened otherwise.
     #' @param name The name of the array. Ignored for a single-array store.
-    #' @param metadata List with the metadata of the array.
+    #' @param metadata List with the metadata of the array, or an instance of
+    #'   class [array_builder].
     #' @param parent The parent [zarr_group] instance of this new array, or the
     #'   [zarr] object for a single-array store.
     #' @param no_create_check Optional, logical flag to indicate if a check for
@@ -54,7 +55,10 @@ zarr_array <- R6::R6Class('zarr_array',
     #'   this method.
     #' @return An instance of `zarr_array`.
     initialize = function(name, metadata, parent, no_create_check = FALSE) {
-      ab <- array_builder$new(metadata)
+      if (inherits(metadata, 'array_builder')) {
+        ab <- metadata
+        metadata <- ab$metadata()
+      } else ab <- array_builder$new(metadata)
       if (!ab$is_valid())
         stop('Invalid metadata for an array', call. = FALSE) # nocov
 

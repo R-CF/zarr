@@ -60,7 +60,7 @@ z
 #> <Zarr>
 #> Version   : 3 
 #> Store     : Local file system store 
-#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//Rtmp52W8mn/file670761e3511d.zarr 
+#> Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpZCt184/file10e0a7104b891.zarr 
 #> Arrays    : 1 
 #> Total size: 1.08 KB
 ```
@@ -133,8 +133,8 @@ This package is under active development and new features are added
 frequently. The API is stable for the main user-facing code.
 
 Like Zarr itself, this package is modular and allows for additional
-stores, codes, transformers, extensions and domains to be added to this
-basic implementation. If you have specific needs, open an [issue on
+stores, codecs, transformers and domains to be added to this basic
+implementation. If you have specific needs, open an [issue on
 Github](https://github.com/R-CF/zarr/issues) or, better yet, fork the
 code and submit code suggestions via a pull request. Specific guidance
 for developers is being drafted.

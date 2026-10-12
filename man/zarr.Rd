@@ -184,7 +184,7 @@ be created.
 \if{html}{\out{<a id="method-zarr-add_array"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr-add_array}{}}}
 \subsection{\code{zarr$add_array()}}{
-  Add an array in a group with a given path.
+  Add an array to the store.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr$add_array(path, name, metadata)}
@@ -193,8 +193,10 @@ be created.
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{path}}{The path to the group of the new array, a single character
-string.}
+      \item{\code{path}}{Optional. The path to the group of the new array, a single
+character string. If omitted, a single-array store is assumed and the
+store must be uninitialised (meaning that it cannot already hold any
+groups or arrays).}
       \item{\code{name}}{The name for the new array, a single character string.}
       \item{\code{metadata}}{A \code{list} with the metadata for the new array, or a valid
 \link{array_builder} instance.}

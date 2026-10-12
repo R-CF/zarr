@@ -78,7 +78,8 @@ be created in the store if it does not yet exist, opened otherwise.
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{name}}{The name of the array. Ignored for a single-array store.}
-      \item{\code{metadata}}{List with the metadata of the array.}
+      \item{\code{metadata}}{List with the metadata of the array, or an instance of
+class \link{array_builder}.}
       \item{\code{parent}}{The parent \link{zarr_group} instance of this new array, or the
 \link{zarr} object for a single-array store.}
       \item{\code{no_create_check}}{Optional, logical flag to indicate if a check for
