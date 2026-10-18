@@ -43,39 +43,73 @@ zarr_object <- R6::R6Class('zarr_object',
     },
 
     # Print one level of attributes to the console. Calls itself recursively to
-    # print nested attributes. This method return a character string, which may
-    # be multi-line.
-    print_attribute_levels = function(atts, indent = 0L) {
-      pad   <- strrep("  ", indent)
-      width <- max(nchar(names(atts)))
+    # print nested attributes.
+    print_attribute_levels = function(atts, indent = 0L, withCLI = FALSE) {
+      if (withCLI) {
+        for (nm in names(atts)) {
+          val <- atts[[nm]]
 
-      for (nm in names(atts)) {
-        val <- atts[[nm]]
-
-        if (is.list(val) && !is.null(names(val)) && any(nzchar(names(val)))) {
-          # Named list: JSON object, recurse
-          cat(pad, formatC(nm, width = width, flag = "-"), ":\n", sep = "")
-          private$print_attribute_levels(val, indent + 1L)
-        } else if (is.list(val) && any(vapply(val, is.list, logical(1L)))) {
-          # Unnamed list containing lists: JSON array of objects, recurse each element
-          cat(pad, formatC(nm, width = width, flag = "-"), ":\n", sep = "")
-          for (i in seq_along(val)) {
-            cat(pad, "  [", i, "]\n", sep = "")
-            elem <- val[[i]]
-            if (is.list(elem) && !is.null(names(elem)) && any(nzchar(names(elem))))
-              private$print_attribute_levels(elem, indent + 2L)
-            else
-              cat(pad, "    ", elem, "\n", sep = "")
+          if (is.list(val) && !is.null(names(val)) && any(nzchar(names(val)))) {
+            # Named list: JSON object, recurse
+            cli::cli_li('{nm}:')
+            sub <- cli::cli_ul()
+            private$print_attribute_levels(val, indent + 1L, withCLI = TRUE)
+            cli::cli_end(sub)
+          } else if (is.list(val) && any(vapply(val, is.list, logical(1L)))) {
+            # Unnamed list containing lists: JSON array of objects, recurse each element
+            cli::cli_li('{nm}:')
+            sub_arr <- cli::cli_ul()
+            for (i in seq_along(val)) {
+              cli::cli_li('Item {i}')
+              elem <- val[[i]]
+              sub_item <- cli::cli_ul()
+              if (is.list(elem) && !is.null(names(elem)) && any(nzchar(names(elem))))
+                private$print_attribute_levels(elem, indent + 2L, withCLI = TRUE)
+              else
+                cli::cli_li('{elem}')
+              cli::cli_end(sub_item)
+            }
+            cli::cli_end(sub_arr)
+          } else if (is.list(val)) {
+            # Unnamed list of scalars: flat JSON array
+            cli::cli_li('{nm}: [{paste(unlist(val), collapse = ", ")}]')
+          } else if (length(val) > 1L) {
+            cli::cli_li('{nm}: [{paste(val, collapse = ", ")}]')
+          } else {
+            cli::cli_li('{nm}: {val}')
           }
-        } else if (is.list(val)) {
-          # Unnamed list of scalars: flat JSON array
-          cat(pad, formatC(nm, width = width, flag = "-"), ": [",
-              paste(unlist(val), collapse = ", "), "]\n", sep = "")
-        } else if (length(val) > 1L) {
-          cat(pad, formatC(nm, width = width, flag = "-"), ": [",
-              paste(val, collapse = ", "), "]\n", sep = "")
-        } else {
-          cat(pad, formatC(nm, width = width, flag = "-"), ": ", val, "\n", sep = "")
+        }
+      } else {
+        pad   <- strrep("  ", indent)
+        width <- max(nchar(names(atts)))
+
+        for (nm in names(atts)) {
+          att <- formatC(nm, width = width, flag = "-")
+          val <- atts[[nm]]
+
+          if (is.list(val) && !is.null(names(val)) && any(nzchar(names(val)))) {
+            # Named list: JSON object, recurse
+            cat(pad, att, ":\n", sep = "")
+            private$print_attribute_levels(val, indent + 1L)
+          } else if (is.list(val) && any(vapply(val, is.list, logical(1L)))) {
+            # Unnamed list containing lists: JSON array of objects, recurse each element
+            cat(pad, att, ":\n", sep = "")
+            for (i in seq_along(val)) {
+              cat(pad, "  [", i, "]\n", sep = "")
+              elem <- val[[i]]
+              if (is.list(elem) && !is.null(names(elem)) && any(nzchar(names(elem))))
+                private$print_attribute_levels(elem, indent + 2L)
+              else
+                cat(pad, "    ", elem, "\n", sep = "")
+            }
+          } else if (is.list(val)) {
+            # Unnamed list of scalars: flat JSON array
+            cat(pad, att, ": [", paste(unlist(val), collapse = ", "), "]\n", sep = "")
+          } else if (length(val) > 1L) {
+            cat(pad, att, ": [", paste(val, collapse = ", "), "]\n", sep = "")
+          } else {
+            cat(pad, att, ": ", val, "\n", sep = "")
+          }
         }
       }
     },
@@ -128,18 +162,20 @@ zarr_object <- R6::R6Class('zarr_object',
     #'   [zarr_group] and [zarr_array] `print()` methods.
     #' @param dirty Optional. Logical flag that indicates if the attributes have
     #'   unsaved edits. Default is `FALSE`.
+    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
+    #'   should be used for terminal output. The package must be installed when
+    #'   `TRUE`. Default is `FALSE`.
     #' @param ... Arguments passed to embedded functions. Of particular interest
     #'   is `width = .` to specify the maximum width of the columns.
     #' @return A (multi-line) character string with the attributes of the Zarr
     #'   object.
-    print_attributes = function(dirty = FALSE, ...) {
+    print_attributes = function(dirty = FALSE, withCLI = FALSE, ...) {
       atts <- private$display_attributes()
       if (length(atts)) {
-        if (dirty)
-          cat('\nAttributes: (*)\n')
-        else
-          cat('\nAttributes:\n')
-        private$print_attribute_levels(atts)
+        title <- if (dirty) 'Attributes (*)' else 'Attributes'
+        if (withCLI) cli::cli_rule('{title}')
+        else cat(paste0('\n', title, '\n'))
+        private$print_attribute_levels(atts, withCLI = withCLI)
       }
     },
 

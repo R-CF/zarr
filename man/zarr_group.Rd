@@ -132,15 +132,19 @@ arrays in a character vector. Usually called from the Zarr object or
 a group to display the full group hierarchy.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_group$hierarchy_nodes(idx = 1L, total = 1L)}
+    \preformatted{zarr_group$hierarchy_nodes(idx = 1L, total = 1L, withCLI = FALSE)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{idx, total}}{Arguments to control indentation. Should both be 1 (the
+      \item{\code{idx, total}}{Optional arguments to control indentation. Should both be 1 (the
 default) when called interactively. The values will be updated during
-recursion when there are groups below the current group.}
+recursion when there are groups below the current group. Ignored if
+argument \code{withCLI == TRUE}.}
+      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
+should be used for terminal output. The package must be installed when
+\code{TRUE}. Default is \code{FALSE}.}
     }
     \if{html}{\out{</div>}}
   }
@@ -150,8 +154,8 @@ recursion when there are groups below the current group.}
 \if{html}{\out{<a id="method-zarr_group-hierarchy"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_group-hierarchy}{}}}
 \subsection{\code{zarr_group$hierarchy()}}{
-  Print the Zarr hierarchy to the console from the current
-group.
+  Print the Zarr hierarchy from the current group to the
+console.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_group$hierarchy()}

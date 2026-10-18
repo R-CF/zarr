@@ -1,26 +1,18 @@
 # Tests for print(), str() and hierarchy() output, and for reading attributes
 # back by path. Output is matched with regular expressions rather than
 # snapshots so these tests also run where snapshots are skipped.
+#
+# This file tests the plain-text output; the cli output is tested in
+# test-print-cli.R. make_tree() is in helper-print.R.
 
-# A small hierarchy: /, /grp, /grp/sub, arrays /a (2-D) and /grp/b (scalar).
-make_tree <- function(location) {
-  z <- if (missing(location)) create_zarr() else create_zarr(location)
-  z$add_group("/", "grp")
-  z$add_group("/grp", "sub")
-  def <- define_array("float64", c(4L, 6L))
-  def$chunk_shape <- c(2L, 3L)
-  a <- z$add_array("/", "a", def)
-  a$write(matrix(as.numeric(1:24), 4L, 6L))
-  z$add_array("/grp", "b", define_array("int32", integer(0)))
-  z
-}
+local_mocked_bindings(.use_cli = function() FALSE)
 
 # ==== zarr object =============================================================
 
 test_that("print() of a zarr object in memory", {
   z <- make_tree()
   expect_output(print(z), "<Zarr>")
-  expect_output(print(z), "Version   : 3")
+  expect_output(print(z), "Store     : Memory store - version 3")
   expect_output(print(z), "Arrays    : 2")
   out <- capture.output(print(z))
   expect_false(any(grepl("Location", out)))
@@ -49,16 +41,47 @@ test_that("hierarchy() draws the tree", {
   expect_true(any(grepl("/ \\(root group\\)", out)))
   expect_true(any(grepl("├ ☰ grp", out)))      # first of two children
   expect_true(any(grepl("│ └ ☰ sub|│ ├ ☰ sub", out)))
-  expect_true(any(grepl("└ .* a$", out)))           # last child of root
+  expect_true(any(grepl("└ ⌗ a \\[4, 6\\]$", out)))  # last child of root, with shape
 })
 
 test_that("hierarchy() of a single-array store", {
   expect_output(as_zarr(1:10)$hierarchy(), "\\(root array\\)")
 })
 
+test_that("hierarchy() shows dimension names of arrays", {
+  meta <- define_array("int32", c(2L, 3L))$metadata()
+  meta$dimension_names <- c("y", "x")
+  z <- create_zarr()
+  z$add_array("/", "a", meta)
+  expect_output(z$hierarchy(), "└ ⌗ a \\[y = 2, x = 3\\]")
+})
+
+test_that("save_to() reports progress when verbose", {
+  out <- capture.output(make_tree()$save_to(tempfile(fileext = ".zarr"), verbose = TRUE))
+  expect_true(any(grepl('^Created group "grp"', out)))
+  expect_true(any(grepl('^Copying array "a" \\([12]/2\\)$', out)))
+})
+
 test_that("str() of a zarr object", {
   expect_output(str(make_tree()), "Zarr object with 2 arrays")
   expect_output(str(as_zarr(1:10)), "Zarr object with 1 array$")
+})
+
+# ==== Stores ==================================================================
+
+test_that("print() of a memory store", {
+  s <- zarr_memorystore$new()
+  expect_output(print(s), "<Zarr store>")
+  expect_output(print(s), "Store     : Memory store - version 3")
+})
+
+test_that("print() of a local store shows location and size", {
+  fn <- tempfile(fileext = ".zarr")
+  z <- make_tree(fn)
+  expect_output(print(z$store), "Store     : Local file system store - version 3")
+  expect_output(print(z$store), "Location  :")
+  expect_output(print(z$store), basename(fn), fixed = TRUE)
+  expect_output(print(z$store), "Total size: [0-9.]+ (Bytes|KB)")
 })
 
 # ==== Groups ==================================================================
@@ -67,12 +90,12 @@ test_that("print() of a group lists sub-groups, arrays and attributes", {
   z <- make_tree()
   grp <- z[["/grp"]]
   grp$set_attribute("title", "A group")
-  expect_output(print(grp), "<Zarr group> grp")
-  expect_output(print(grp), "Path     : /grp")
-  expect_output(print(grp), "Sub-nodes: sub")
-  expect_output(print(grp), "Arrays   : b")
-  expect_output(print(grp), "Attributes:")
-  expect_output(print(z$root), "<Zarr group> \\[root\\]")
+  expect_output(print(grp), "<Zarr group> ☰ grp")
+  expect_output(print(grp), "Path      : /grp")
+  expect_output(print(grp), "Sub-groups: sub")
+  expect_output(print(grp), "Arrays    : b")
+  expect_output(print(grp), "Attributes")
+  expect_output(print(z$root), "<Zarr group> ☰ \\[root\\]")
 })
 
 test_that("group hierarchy() starts at the group", {
@@ -149,7 +172,7 @@ test_that("print() shows nested, list and vector attributes", {
 test_that("print_attributes() flags unsaved edits", {
   a <- make_tree()[["/a"]]
   a$set_attribute("units", "K")
-  expect_output(a$print_attributes(dirty = TRUE), "Attributes: \\(\\*\\)")
+  expect_output(a$print_attributes(dirty = TRUE), "Attributes \\(\\*\\)")
   expect_silent(create_zarr()$root$print_attributes())
 })
 

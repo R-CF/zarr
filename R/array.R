@@ -18,10 +18,6 @@ zarr_array <- R6::R6Class('zarr_array',
     # Should cells with `fill_value` be converted to `NA` or be presented "raw"?
     .raw_read = FALSE,
 
-    # The glyph used for depicting an array when printing. Descendant classes
-    # may override this to more easily identify different classes of arrays.
-    .glyph = '\u2317',
-
     # Returns a list with pre, sep and scalar elements that describe the
     # chunk key encoding of the array.
     chunk_key_encoding = function() {
@@ -74,6 +70,7 @@ zarr_array <- R6::R6Class('zarr_array',
       }
 
       super$initialize(name, metadata, parent)
+      private$.glyph <- '\u2317'
 
       private$.data_type <- ab$data_type
       private$.chunking <- ab$chunk_shape
@@ -89,38 +86,81 @@ zarr_array <- R6::R6Class('zarr_array',
 
     #' @description Print a summary of the array to the console.
     print = function() {
+      withCLI <- .use_cli()
       meta <- private$.metadata
-      cat('<Zarr array>', private$.glyph, private$.name, '\n')
-      cat('Path      :', self$path, '\n')
-      if (nzchar(private$.domain))
-        cat('Domain    :', private$.domain, '\n')
-      cat('Data type :', private$.data_type$data_type, '\n')
       shp <- meta$shape
-      if (length(shp)) {
-        cat('Shape     :', shp)
-        dim_names <- meta$dimension_names %||% meta$attributes$`_ARRAY_DIMENSIONS`
-        if (is.null(dim_names)) cat('\n')
-        else cat(' [', paste(dim_names[1:length(shp)], collapse = ', '), ']\n', sep = '')
-        cat('Chunking  :', meta$chunk_grid$configuration$chunk_shape, '\n')
+      dim_names <- meta$dimension_names %||% meta$attributes$`_ARRAY_DIMENSIONS`
+
+      if (withCLI) {
+        cli::cli_h1('Zarr array {.strong {private$.glyph}} {.strong {private$.name}}')
+        cli::cli_alert_info('Path      : {self$path}')
+        if (nzchar(private$.domain))
+          cli::cli_alert_info('Domain    : {private$.domain}')
+        cli::cli_alert_info('Data type : {private$.data_type$data_type}')
+        if (len <- length(shp)) {
+          shp <- paste(shp, collapse = ', ')
+          if (!is.null(dim_names))
+            shp <- paste0(shp, ' [', paste(dim_names[1:len], collapse = ', '), ']')
+          cli::cli_alert_info('Shape     : {shp}')
+          cli::cli_alert_info('Chunking  : {paste(meta$chunk_grid$configuration$chunk_shape, collapse = ", ")}')
+        } else {
+          cli::cli_alert_info('Shape     : (scalar)')
+          cli::cli_alert_info('Chunking  : (scalar)')
+        }
       } else {
-        cat('Shape     : (scalar)\n')
-        cat('Chunking  : (scalar)\n')
+        cat('<Zarr array>', private$.glyph, private$.name, '\n')
+        cat('Path      :', self$path, '\n')
+        if (nzchar(private$.domain))
+          cat('Domain    :', private$.domain, '\n')
+        cat('Data type :', private$.data_type$data_type, '\n')
+        if (length(shp)) {
+          cat('Shape     :', shp)
+          if (is.null(dim_names)) cat('\n')
+          else cat(' [', paste(dim_names[1:length(shp)], collapse = ', '), ']\n', sep = '')
+          cat('Chunking  :', meta$chunk_grid$configuration$chunk_shape, '\n')
+        } else {
+          cat('Shape     : (scalar)\n')
+          cat('Chunking  : (scalar)\n')
+        }
       }
-      private$print_details()
-      self$print_attributes()
+      private$print_details(withCLI = withCLI)
+      self$print_attributes(withCLI = withCLI)
       invisible(self)
     },
 
-    #' @description Prints the hierarchy of this array to a character string.
-    #'   Usually called from the Zarr object or a group to display the full
-    #'   group hierarchy.
-    #' @param idx,total Arguments to control indentation.
-    hierarchy_nodes = function(idx, total) {
-      if (!nzchar(private$.name))
-        paste(private$.glyph, '(root array)\n')
+    #' @description Produce a one-line summary of the array including its name
+    #'   and shape, with dimension names if available.
+    shard = function() {
+      dim_names <- private$.metadata$dimension_names %||% private$.metadata$attributes$`_ARRAY_DIMENSIONS`
+      if (is.null(dim_names))
+        paste0(private$.name, ' [', paste(private$.metadata$shape, collapse = ', '), ']')
       else {
-        knot <- if (idx == total) '\u2514 ' else '\u251C '
-        paste0(knot, private$.glyph, ' ', private$.name, '\n')
+        dims <- mapply(function(nm, shp) paste(nm, shp, sep = ' = '), dim_names, private$.metadata$shape)
+        paste0(private$.name, ' [', paste(dims, collapse = ', '), ']')
+      }
+    },
+
+    #' @description Prints this array to a hierarchy. Usually called from the
+    #'   Zarr object or a group to display the full group hierarchy.
+    #' @param idx,total Arguments to control indentation. Ignored if argument
+    #'   `withCLI == TRUE`.
+    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
+    #'   should be used for terminal output. The package must be installed when
+    #'   `TRUE`. Default is `FALSE`.
+    hierarchy_nodes = function(idx, total, withCLI = FALSE) {
+      if (withCLI) {
+        this_div <- cli::cli_div(theme = list('ul.group' = list('list-style-type' = private$.glyph)))
+        this_grp <- cli::cli_ul(class = 'group')
+        cli::cli_li('{self$shard()}')
+        cli::cli_end(this_grp)
+        cli::cli_end(this_div)
+      } else {
+        if (!nzchar(private$.name))
+          paste(private$.glyph, '(root array)', self$shard(), '\n')
+        else {
+          knot <- if (idx == total) '\u2514 ' else '\u251C '
+          paste0(knot, private$.glyph, ' ', self$shard(), '\n')
+        }
       }
     },
 

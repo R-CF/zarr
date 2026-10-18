@@ -41,6 +41,8 @@ passed to the methods, for performance reasons, consistent with
   \describe{
     \item{\code{friendlyClassName}}{(read-only) Name of the class for printing.}
 
+    \item{\code{service}}{(read-only) The S3 connection object.}
+
     \item{\code{root}}{(read-only) The bucket and prefix of the store, as \verb{s3://}.}
 
     \item{\code{uri}}{(read-only) The URI of the store location, identical to \code{root}.}
@@ -54,6 +56,7 @@ usually a slash '/'.}
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-zarr_s3store-initialize}{\code{zarr_s3store$new()}}
+    \item \href{#method-zarr_s3store-brief}{\code{zarr_s3store$brief()}}
     \item \href{#method-zarr_s3store-exists}{\code{zarr_s3store$exists()}}
     \item \href{#method-zarr_s3store-clear}{\code{zarr_s3store$clear()}}
     \item \href{#method-zarr_s3store-erase}{\code{zarr_s3store$erase()}}
@@ -79,6 +82,7 @@ usually a slash '/'.}
 }
 \if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="print"><a href='../../zarr/html/zarr_store.html#method-zarr_store-print'><code>zarr_store$print()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="rename_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-rename_prefix'><code>zarr_store$rename_prefix()</code></a></span></li>
 </ul>
 </details>}}
@@ -146,6 +150,28 @@ permissions of the underlying credentials. Default \code{FALSE}.}
   }
   \subsection{Returns}{
     An instance of this class.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_s3store-brief"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_s3store-brief}{}}}
+\subsection{\code{zarr_s3store$brief()}}{
+  Print a brief summary of the S3 store to the console. This
+will use \code{cli} if available.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_s3store$brief(withCLI = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
+should be used for terminal output. The package must be installed when
+\code{TRUE}. Default is \code{FALSE}.}
+    }
+    \if{html}{\out{</div>}}
   }
 }
 

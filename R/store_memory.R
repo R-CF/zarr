@@ -26,7 +26,7 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     #' @return An instance of this class.
     initialize = function() {
       super$initialize(read_only = FALSE, version = 3L)
-      private$.supports_consolidated_metadata = FALSE
+      private$.supports_consolidated_metadata <- FALSE
     },
 
     #' @description Check if a key exists in the store. The key can point to a
@@ -275,7 +275,7 @@ zarr_memorystore <- R6::R6Class('zarr_memorystore',
     #' @field friendlyClassName (read-only) Name of the class for printing.
     friendlyClassName = function(value) {
       if (missing(value))
-        'memory store'
+        'Memory store'
     },
 
     #' @field separator (read-only) The separator of the memory store,

@@ -363,3 +363,8 @@ zarr_conventions <- function() {
     .aperm(raw, order(perm))
   }
 }
+
+# Helper function to test code without package cli. Not useful in any production
+# process.
+.use_cli <- function()
+  isTRUE(getOption("zarr.cli", TRUE)) && requireNamespace("cli", quietly = TRUE)

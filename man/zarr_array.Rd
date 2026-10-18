@@ -40,6 +40,7 @@ applies to the array for all subsequent reads.}
   \itemize{
     \item \href{#method-zarr_array-initialize}{\code{zarr_array$new()}}
     \item \href{#method-zarr_array-print}{\code{zarr_array$print()}}
+    \item \href{#method-zarr_array-shard}{\code{zarr_array$shard()}}
     \item \href{#method-zarr_array-hierarchy_nodes}{\code{zarr_array$hierarchy_nodes()}}
     \item \href{#method-zarr_array-read}{\code{zarr_array$read()}}
     \item \href{#method-zarr_array-write}{\code{zarr_array$write()}}
@@ -107,21 +108,37 @@ this method.}
 }
 
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_array-shard"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-shard}{}}}
+\subsection{\code{zarr_array$shard()}}{
+  Produce a one-line summary of the array including its name
+and shape, with dimension names if available.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_array$shard()}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-zarr_array-hierarchy_nodes"></a>}}
 \if{latex}{\out{\hypertarget{method-zarr_array-hierarchy_nodes}{}}}
 \subsection{\code{zarr_array$hierarchy_nodes()}}{
-  Prints the hierarchy of this array to a character string.
-Usually called from the Zarr object or a group to display the full
-group hierarchy.
+  Prints this array to a hierarchy. Usually called from the
+Zarr object or a group to display the full group hierarchy.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_array$hierarchy_nodes(idx, total)}
+    \preformatted{zarr_array$hierarchy_nodes(idx, total, withCLI = FALSE)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{idx, total}}{Arguments to control indentation.}
+      \item{\code{idx, total}}{Arguments to control indentation. Ignored if argument
+\code{withCLI == TRUE}.}
+      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
+should be used for terminal output. The package must be installed when
+\code{TRUE}. Default is \code{FALSE}.}
     }
     \if{html}{\out{</div>}}
   }

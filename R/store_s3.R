@@ -38,7 +38,6 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
     .client     = NULL,        # paws.storage S3 client
     .metadata   = list(),      # The metadata of the object at the root of the store
     .nodes      = character(0),# Cached node paths from consolidated metadata, if present
-    .read_only  = FALSE,
     .anonymous  = NULL,
 
     # Build the full S3 key from a store-relative key.
@@ -249,6 +248,31 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
       private$.metadata <- meta
 
       super$initialize(read_only = read_only, version = format)
+    },
+
+    #' @description Print a brief summary of the S3 store to the console. This
+    #'   will use `cli` if available.
+    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
+    #'   should be used for terminal output. The package must be installed when
+    #'   `TRUE`. Default is `FALSE`.
+    brief = function(withCLI = FALSE) {
+      cfg <- private$.client$.internal$config
+      super$brief(withCLI)
+      if (withCLI) {
+        if (isTRUE(nzchar(cfg$region)))
+          cli::cli_alert_info('Region    : {cfg$region}')
+        if (isTRUE(nzchar(cfg$endpoint)))
+          cli::cli_alert_info('Endpoint  : {cfg$endpoint}')
+        cli::cli_alert_info('Bucket    : {private$.bucket}')
+        cli::cli_alert_info('Key prefix: {private$.key_prefix}')
+      } else {
+        if (isTRUE(nzchar(cfg$region)))
+          cat('Region    :', cfg$region, '\n')
+        if (isTRUE(nzchar(cfg$endpoint)))
+          cat('Endpoint  :', cfg$endpoint, '\n')
+        cat('Bucket    :', private$.bucket, '\n')
+        cat('Key prefix:', private$.key_prefix, '\n')
+      }
     },
 
     #' @description Check if a key exists in the store.
@@ -596,6 +620,12 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
     friendlyClassName = function(value) {
       if (missing(value))
         'S3 store'
+    },
+
+    #' @field service (read-only) The S3 connection object.
+    service = function(value) {
+      if (missing(value))
+        private$.client
     },
 
     #' @field root (read-only) The bucket and prefix of the store, as `s3://`.

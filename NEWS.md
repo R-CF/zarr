@@ -15,11 +15,15 @@ These changes impact the signature of several methods:
 
 Other features:
 
+- R version bumped to 4.4.
 - Writing a `zarr_array` by indices can use `[<-.zarr_array`.
 - Can create a single array store.
 - New `zarr$save_to()` method can save a `zarr` object to a new store. This is handy to save a memory store to disk, to convert a v.2 store to a v.3 store, or to get a local copy of a remote store, among other uses. Parallel reads from HTTP and S3 stores speeds up the copying.
+- New `zarr_array$shard()` method will produce a 1-line summary of the array.
 - New field `zarr` in class `zarr_node` to retrieve the `zarr` instance that manages the node.
 - Zarr v.2 filters as defined in Python's numcodecs are supported.
+- The `glyph` private field has moved from `zarr_array` to `zarr_node` such that `zarr_group` can have the same flexibility when printing.
+- The `cli` package is used for printing to the console of most objects, if installed.
 
 Minor changes:
 

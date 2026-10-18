@@ -88,34 +88,46 @@ zarr <- R6::R6Class("zarr",
     },
 
     #' @description Print a summary of the Zarr object to the console.
+    #' @return Self, invisibly.
     print = function() {
-      fs <- inherits(private$.store, 'zarr_localstore')
-      cat('<Zarr>\n')
-      cat('Version   :', private$.store$version, '\n')
-      cat('Store     :', private$.store$friendlyClassName, '\n')
-      if (fs)
-        cat('Location  :', private$.store$root, '\n')
-      if (is.null(private$.root))
-        cat('Arrays    : (unitialised)\n')
-      else {
+      withCLI <- .use_cli()
+      if (withCLI) cli::cli_h1('{.strong Zarr}')
+      else cat('<Zarr>\n')
+      private$.store$brief(withCLI)
+      if (is.null(private$.root)) {
+        if (withCLI) {
+          cli::cli_rule('Contents')
+          cli::cli_alert_danger('Store is not initialised')
+        } else {
+          cat('Arrays    : (unitialised)\n')
+        }
+      } else {
         arrays <- if (inherits(private$.root, 'zarr_array')) '1 (single array store)'
                   else private$.root$count_arrays()
-        cat('Arrays    :', arrays, '\n')
-        if (fs)
-          cat('Total size:', .size_string(sum(file.size(list.files(private$.store$root, full.names = TRUE, recursive = TRUE)))), '\n')
-        private$.root$print_attributes()
+        if (withCLI) {
+          cli::cli_rule('Contents')
+          cli::cli_alert_info('Arrays: {arrays}')
+        } else cat('Arrays    :', arrays, '\n')
+        private$.root$print_attributes(withCLI = withCLI)
       }
+      invisible(self)
     },
 
     #' @description Print the Zarr hierarchy to the console.
     hierarchy = function() {
-      cat('<Zarr hierarchy> ')
       if (is.null(private$.root))
         cat('(uninitialised)\n')
       else {
-        cat(private$.store$root, '\n')
-        hier <- private$.root$hierarchy_nodes(1L, 1L)
-        cat(hier, sep = '')
+        withCLI <- .use_cli()
+        if (withCLI) {
+          cli::cli_h1('Zarr hierarchy {private$.store$root}')
+          private$.root$hierarchy_nodes(withCLI = TRUE)
+        } else {
+          cat('<Zarr hierarchy> ')
+          cat(private$.store$root, '\n')
+          hier <- private$.root$hierarchy_nodes(1L, 1L)
+          cat(hier, sep = '')
+        }
       }
     },
 
@@ -240,9 +252,9 @@ zarr <- R6::R6Class("zarr",
 
       if (isTRUE(verbose)) {
         verbose <- new.env()
-        verbose$arrays <- length(z$arrays); verbose$arrays_done <- 0L
-        verbose$groups <- length(z$groups); verbose$groups_done <- 0L
-        verbose$cli <- requireNamespace('cli', quietly = TRUE)
+        verbose$arrays <- length(self$arrays); verbose$arrays_done <- 0L
+        verbose$groups <- length(self$groups); verbose$groups_done <- 0L
+        verbose$cli <- .use_cli()
       } else
         verbose <- NULL
 

@@ -128,6 +128,39 @@ zarr_store <- R6::R6Class('zarr_store',
       private$.version <- version
     },
 
+    #' @description Print a summary of the store to the console. This will
+    #'   use `cli` if available.
+    #' @return Self, invisibly.
+    print = function() {
+      withCLI <- .use_cli()
+      if (withCLI)  cli::cli_h1('{.strong Zarr store}')
+      else cat('<Zarr store>\n')
+      self$brief(withCLI = withCLI)
+      invisible(self)
+    },
+
+    #' @description Print a brief summary of the store to the console. This will
+    #'   use `cli` if available. Specialised store classes can override this
+    #'   method to provide more details.
+    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
+    #'   should be used for terminal output. The package must be installed when
+    #'   `TRUE`. Default is `FALSE`.
+    brief = function(withCLI = FALSE) {
+      if (withCLI) {
+        cli::cli_rule(paste0('{.strong {self$friendlyClassName}} - version {private$.version}',
+                      if (private$.read_only) ' - read-only'))
+        tick <- cli::col_green(cli::symbol$tick)
+        cross <- cli::col_red(cli::symbol$cross)
+        cli::cli_text('{if (private$.supports_listing) tick else cross} Listing ',
+                      '{if (private$.supports_writes) tick else cross} Writing ',
+                      '{if (private$.supports_deletes) tick else cross} Deleting ',
+                      '{if (private$.supports_consolidated_metadata) tick else cross} Consolidated metadata')
+      } else {
+        cat('Store     :', self$friendlyClassName, '- version', private$.version,
+            if (private$.read_only) '- read-only\n' else '\n')
+      }
+    },
+
     #' @description Clear the store. Remove all keys and values from the store.
     #' @return Self, invisibly.
     clear = function() {

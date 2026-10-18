@@ -52,6 +52,8 @@ each array.}
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-zarr_store-initialize}{\code{zarr_store$new()}}
+    \item \href{#method-zarr_store-print}{\code{zarr_store$print()}}
+    \item \href{#method-zarr_store-brief}{\code{zarr_store$brief()}}
     \item \href{#method-zarr_store-clear}{\code{zarr_store$clear()}}
     \item \href{#method-zarr_store-erase}{\code{zarr_store$erase()}}
     \item \href{#method-zarr_store-erase_prefix}{\code{zarr_store$erase_prefix()}}
@@ -99,6 +101,45 @@ opened in read-only mode.}
   }
   \subsection{Returns}{
     An instance of this class.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_store-print"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_store-print}{}}}
+\subsection{\code{zarr_store$print()}}{
+  Print a summary of the store to the console. This will
+use \code{cli} if available.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$print()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_store-brief"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_store-brief}{}}}
+\subsection{\code{zarr_store$brief()}}{
+  Print a brief summary of the store to the console. This will
+use \code{cli} if available. Specialised store classes can override this
+method to provide more details.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_store$brief(withCLI = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
+should be used for terminal output. The package must be installed when
+\code{TRUE}. Default is \code{FALSE}.}
+    }
+    \if{html}{\out{</div>}}
   }
 }
 

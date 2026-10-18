@@ -95,7 +95,8 @@ local_fake_s3 <- function(.env = parent.frame()) {
   testthat::local_mocked_bindings(
     s3 = function(config = list(), ...) {
       state$config <- config
-      fake_s3(state)
+      # paws clients carry their configuration in `.internal$config`
+      c(fake_s3(state), list(.internal = list(config = config)))
     },
     .package = "paws.storage", .env = .env)
   state
@@ -179,6 +180,7 @@ test_that("S3 store byte-range reads", {
 })
 
 test_that("S3 store reads a sharded array", {
+  skip_if_not_installed("zlib")
   state <- local_fake_s3()
   upload_dir(state, test_path("testdata/sharded_test.zarr"), "bkt", "sharded.zarr/")
   local <- open_zarr(test_path("testdata/sharded_test.zarr"))
@@ -334,4 +336,48 @@ test_that("s3_list_dir() lists prefixes and keys across pages", {
 
   s3_list_dir("bkt", access_key = "AK", secret_key = "SK")
   expect_equal(state$config$credentials$creds$access_key_id, "AK")
+})
+
+# ==== print() =================================================================
+
+test_that("print() of an S3 store shows bucket, prefix, region and endpoint", {
+  local_mocked_bindings(.use_cli = function() FALSE)
+  state <- local_fake_s3()
+  new_bucket_store(state)
+  s <- zarr_s3store$new("bkt", "data/store.zarr", endpoint = "https://minio.local", region = "x")
+  expect_output(print(s), "Store     : S3 store - version 3")
+  expect_output(print(s), "Region    : x")
+  expect_output(print(s), "Endpoint  : https://minio.local", fixed = TRUE)
+  expect_output(print(s), "Bucket    : bkt")
+  expect_output(print(s), "Key prefix: data/store.zarr/")
+})
+
+test_that("print() of an S3 store omits an unset region and endpoint", {
+  local_mocked_bindings(.use_cli = function() FALSE)
+  state <- local_fake_s3()
+  new_bucket_store(state)
+  out <- capture.output(print(zarr_s3store$new("bkt", "data/store.zarr")))
+  expect_false(any(grepl("Region|Endpoint", out)))
+  expect_true(any(grepl("Bucket    : bkt", out)))
+})
+
+test_that("cli print() of an S3 store shows bucket, prefix, region and endpoint", {
+  skip_if_not_installed("cli")
+  local_mocked_bindings(.use_cli = function() TRUE)
+  state <- local_fake_s3()
+  new_bucket_store(state)
+  s <- zarr_s3store$new("bkt", "data/store.zarr", endpoint = "https://minio.local", region = "x")
+  out <- paste(cli_out(print(s)), collapse = "\n")
+  expect_match(out, "S3 store - version 3", fixed = TRUE)
+  expect_match(out, "Region    : x", fixed = TRUE)
+  expect_match(out, "Endpoint  : https://minio.local", fixed = TRUE)
+  expect_match(out, "Bucket    : bkt", fixed = TRUE)
+  expect_match(out, "Key prefix: data/store.zarr/", fixed = TRUE)
+})
+
+test_that("S3 store exposes its client", {
+  state <- local_fake_s3()
+  new_bucket_store(state)
+  s <- zarr_s3store$new("bkt", "data/store.zarr")
+  expect_true(is.function(s$service$get_object))
 })

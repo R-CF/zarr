@@ -62,6 +62,7 @@ test_that("HTTP store byte-range requests", {
 })
 
 test_that("HTTP store reads a sharded array with byte-range requests", {
+  skip_if_not_installed("zlib")
   srv <- serve_dir(test_path("testdata/sharded_test.zarr"))
   local <- open_zarr(test_path("testdata/sharded_test.zarr"))
   for (nm in c("float1d", "float2d", "int3d")) {
@@ -157,4 +158,30 @@ test_that("HTTP store reads a v2 single-array store without consolidated metadat
   z <- open_zarr(srv$url())
   expect_equal(z$root$read(), c(0.5, 1.5, 2.5, 3.5))
   expect_equal(z$root$attributes$units, "m")
+})
+
+# ==== print() =================================================================
+
+test_that("print() of an HTTP store shows the URL", {
+  local_mocked_bindings(.use_cli = function() FALSE)
+  fn <- tempfile(fileext = ".zarr")
+  as_zarr(1:10, location = fn)
+  srv <- serve_dir(fn)
+  s <- open_zarr(srv$url())$store
+  expect_output(print(s), "Store     : HTTP store - version 3 - read-only")
+  expect_output(print(s), paste0("URL       : ", s$root), fixed = TRUE)
+})
+
+test_that("cli print() of an HTTP store shows the URL and capabilities", {
+  skip_if_not_installed("cli")
+  local_mocked_bindings(.use_cli = function() TRUE)
+  fn <- tempfile(fileext = ".zarr")
+  as_zarr(1:10, location = fn)
+  srv <- serve_dir(fn)
+  s <- open_zarr(srv$url())$store
+  out <- paste(cli_out(print(s)), collapse = "\n")
+  expect_match(out, "HTTP store - version 3 - read-only", fixed = TRUE)
+  expect_match(out, paste0("URL: ", s$root), fixed = TRUE)
+  expect_match(out, paste(cli::symbol$cross, "Listing"), fixed = TRUE)
+  expect_match(out, paste(cli::symbol$cross, "Writing"), fixed = TRUE)
 })

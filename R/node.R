@@ -31,12 +31,19 @@ zarr_node <- R6::R6Class('zarr_node',
     # in the domain.
     .domain = '',
 
+    # The glyph used for depicting the node when printing. Descendant classes
+    # may override this to more easily identify different classes of nodes.
+    .glyph = '#',
+
     # Print domain-specific details, if any. A domain can print any details for
     # a group or an array. Details are printed after the Zarr object details and
     # before the attributes. If printing details, implementations should start
     # with an empty line to create visual separation between sections. This
     # implementation on the base class prints nothing.
-    print_details = function() {
+    # @param withCLI Optional. Logical flag that indicates if the `cli` package
+    #   should be used for terminal output. The package must be installed when
+    #   `TRUE`. Default is `FALSE`.
+    print_details = function(withCLI = FALSE) {
       # Intentionally empty method
     },
 

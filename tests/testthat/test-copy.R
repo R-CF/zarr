@@ -206,3 +206,21 @@ test_that("groups opened from a store are not dirty", {
   z$add_group("/", "g")$set_attribute("kind", "sub")$save()
   expect_false(open_zarr(fn)[["/g"]]$dirty)
 })
+
+# ==== zarr$save_to() ==========================================================
+
+test_that("save_to() writes a v3 copy of the hierarchy", {
+  z <- new_source()
+  z[["/g/a"]]$write(x)
+  fn <- tempfile(fileext = ".zarr")
+  expect_silent(z$save_to(fn))
+  dz <- open_zarr(fn)
+  expect_equal(dz$version, 3L)
+  expect_setequal(dz$groups, z$groups)
+  expect_equal(dz[["/g/a"]][], x)
+  expect_equal(dz[["/g"]]$attribute("kind"), "sub")
+})
+
+test_that("save_to() refuses an uninitialised zarr object", {
+  expect_error(zarr$new(zarr_memorystore$new())$save_to(tempfile()), "unitialised")
+})

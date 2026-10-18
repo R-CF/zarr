@@ -48,6 +48,7 @@ zarr_group <- R6::R6Class('zarr_group',
       super$initialize(name,
                        if (supplied) metadata else meta %||% list(zarr_format = 3L, node_type = 'group'),
                        parent)
+      private$.glyph <- '\u2630'
 
       # Persist supplied metadata when the group is new in this store, or replaces
       # the default root group of a fresh store
@@ -77,61 +78,95 @@ zarr_group <- R6::R6Class('zarr_group',
 
     #' @description Print a summary of the group to the console.
     print = function() {
+      withCLI <- .use_cli()
       name <- if (nzchar(self$name)) self$name else '[root]'
-      cat('<Zarr group>', name, '\n')
-      cat('Path     :', self$path, '\n')
-      if (nzchar(private$.domain))
-        cat('Domain   :', private$.domain, '\n')
-      if (length(self$children)) {
-        arrays <- sapply(self$children, inherits, "zarr_array")
-        if (any(!arrays))
-          cat('Sub-nodes:', paste(names(self$children)[!arrays], collapse = ', '), '\n')
-        if (any(arrays))
-          cat('Arrays   :', paste(names(self$children)[arrays], collapse = ', '))
+      if (withCLI) {
+        cli::cli_h1('Zarr group {.strong {private$.glyph}} {.strong {name}}')
+        cli::cli_alert_info('Path      : {self$path}')
+        if (nzchar(private$.domain))
+          cli::cli_alert_info('Domain    : {private$.domain}')
+      } else {
+        cat('<Zarr group>', private$.glyph, name, '\n')
+        cat('Path      :', self$path, '\n')
+        if (nzchar(private$.domain))
+          cat('Domain    :', private$.domain, '\n')
       }
-      private$print_details()
-      self$print_attributes()
+      if (length(self$children)) {
+        arrays <- vapply(self$children, inherits, logical(1L), "zarr_array", USE.NAMES = FALSE)
+        if (any(!arrays)) {
+          grp_names <- paste(names(self$children)[!arrays], collapse = ', ')
+          if (withCLI) cli::cli_alert_info('Sub-groups: {grp_names}')
+          else cat('Sub-groups:', grp_names, '\n')
+        }
+        if (any(arrays)) {
+          arr_names <- paste(names(self$children)[arrays], collapse = ', ')
+          if (withCLI) cli::cli_alert_info('Arrays    : {arr_names}')
+          else cat('Arrays    :', arr_names)
+        }
+      }
+      private$print_details(withCLI = withCLI)
+      self$print_attributes(withCLI = withCLI)
       invisible(self)
     },
 
     #' @description Collects the hierarchy of the group and its subgroups and
     #'   arrays in a character vector. Usually called from the Zarr object or
     #'   a group to display the full group hierarchy.
-    #' @param idx,total Arguments to control indentation. Should both be 1 (the
+    #' @param idx,total Optional arguments to control indentation. Should both be 1 (the
     #'   default) when called interactively. The values will be updated during
-    #'   recursion when there are groups below the current group.
-    hierarchy_nodes = function(idx = 1L, total = 1L) {
-      if (!nzchar(private$.name)) {
-        sep <- ''
-        knot <- ''
-      } else if (idx == total) {
-        sep <- '  '
-        knot <- '\u2514 '
-      } else {
-        sep <- '\u2502 '
-        knot <- '\u251C '
-      }
-
+    #'   recursion when there are groups below the current group. Ignored if
+    #'   argument `withCLI == TRUE`.
+    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
+    #'   should be used for terminal output. The package must be installed when
+    #'   `TRUE`. Default is `FALSE`.
+    hierarchy_nodes = function(idx = 1L, total = 1L, withCLI = FALSE) {
       nm <- private$.name
       if (!nzchar(nm))
         nm <- '/ (root group)'
-      hier <- paste0(knot, '\u2630 ', nm, "\n")
 
-      # Sub-groups
-      ch <- length(private$.children)
-      if (ch > 0L) {
-        sg <- unlist(sapply(1L:ch, function(g) private$.children[[g]]$hierarchy_nodes(g, ch)), use.names = FALSE)
-        hier <- c(hier, paste0(sep, sg))
+      if (withCLI) {
+        this_div <- cli::cli_div(theme = list('ul.group' = list('list-style-type' = private$.glyph)))
+        this_grp <- cli::cli_ul(class = 'group')
+        cli::cli_li('{nm}')
+        lapply(private$.children, function(g) g$hierarchy_nodes(withCLI = TRUE))
+        cli::cli_end(this_grp)
+        cli::cli_end(this_div)
+      } else {
+        # Text output
+        if (!nzchar(private$.name)) {
+          sep <- ''
+          knot <- ''
+        } else if (idx == total) {
+          sep <- '  '
+          knot <- '\u2514 '
+        } else {
+          sep <- '\u2502 '
+          knot <- '\u251C '
+        }
+        hier <- paste0(knot, private$.glyph, ' ', nm, "\n")
+
+        # Sub-groups
+        ch <- length(private$.children)
+        if (ch > 0L) {
+          sg <- unlist(sapply(1L:ch, function(g) private$.children[[g]]$hierarchy_nodes(g, ch)), use.names = FALSE)
+          hier <- c(hier, paste0(sep, sg))
+        }
+        hier
       }
-      hier
     },
 
-    #' @description Print the Zarr hierarchy to the console from the current
-    #'   group.
+    #' @description Print the Zarr hierarchy from the current group to the
+    #'   console.
     hierarchy = function() {
-      cat('<Zarr hierarchy>', self$path, '\n')
-      hier <- self$hierarchy_nodes(1L, 1L)
-      cat(hier, sep = '')
+      withCLI <- .use_cli()
+      if (withCLI) {
+        cli::cli_h1('Zarr hierarchy from {private$.glyph} {self$path}')
+        self$hierarchy_nodes(withCLI = TRUE)
+      } else {
+        cat('<Zarr hierarchy>', self$path, '\n')
+        hier <- self$hierarchy_nodes(1L, 1L)
+        cat(hier, sep = '')
+      }
     },
 
     #' @description Return the hierarchy contained in the store as a tree of
@@ -247,7 +282,7 @@ zarr_group <- R6::R6Class('zarr_group',
       if (!is.null(verbose)) {
         verbose$groups_done <- verbose$groups_done + 1L
         if (verbose$cli) {
-          cli::cli_alert_success('Created group \u2630 {.val {name}} ({verbose$groups_done}/{verbose$groups})')
+          cli::cli_alert_success('Created group {private$.glyph} {.val {name}} ({verbose$groups_done}/{verbose$groups})')
         } else cat(sprintf('Created group "%s" (%d/%d)\n', name, verbose$groups_done, verbose$groups))
       }
       for (c in seq_along(private$.children))

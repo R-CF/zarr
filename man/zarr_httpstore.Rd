@@ -42,6 +42,7 @@ usually a slash '/'.}
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-zarr_httpstore-initialize}{\code{zarr_httpstore$new()}}
+    \item \href{#method-zarr_httpstore-brief}{\code{zarr_httpstore$brief()}}
     \item \href{#method-zarr_httpstore-exists}{\code{zarr_httpstore$exists()}}
     \item \href{#method-zarr_httpstore-clear}{\code{zarr_httpstore$clear()}}
     \item \href{#method-zarr_httpstore-erase}{\code{zarr_httpstore$erase()}}
@@ -66,6 +67,7 @@ usually a slash '/'.}
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href='../../zarr/html/zarr_store.html#method-zarr_store-is_empty'><code>zarr_store$is_empty()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href='../../zarr/html/zarr_store.html#method-zarr_store-list'><code>zarr_store$list()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list_chunks"><a href='../../zarr/html/zarr_store.html#method-zarr_store-list_chunks'><code>zarr_store$list_chunks()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="print"><a href='../../zarr/html/zarr_store.html#method-zarr_store-print'><code>zarr_store$print()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="rename"><a href='../../zarr/html/zarr_store.html#method-zarr_store-rename'><code>zarr_store$rename()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="rename_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-rename_prefix'><code>zarr_store$rename_prefix()</code></a></span></li>
 </ul>
@@ -96,6 +98,28 @@ code points.}
   }
   \subsection{Returns}{
     An instance of this class.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_httpstore-brief"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_httpstore-brief}{}}}
+\subsection{\code{zarr_httpstore$brief()}}{
+  Print a brief summary of the HTTP store to the console. This
+will use \code{cli} if available.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_httpstore$brief(withCLI = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
+should be used for terminal output. The package must be installed when
+\code{TRUE}. Default is \code{FALSE}.}
+    }
+    \if{html}{\out{</div>}}
   }
 }
 

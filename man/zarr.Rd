@@ -116,6 +116,9 @@ Ignored for memory, local and plain HTTP locations.}
     \preformatted{zarr$print()}
     \if{html}{\out{</div>}}
   }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
 }
 
 \if{html}{\out{<hr>}}

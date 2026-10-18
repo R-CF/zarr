@@ -48,6 +48,7 @@ keys that represents.}
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-zarr_localstore-initialize}{\code{zarr_localstore$new()}}
+    \item \href{#method-zarr_localstore-brief}{\code{zarr_localstore$brief()}}
     \item \href{#method-zarr_localstore-exists}{\code{zarr_localstore$exists()}}
     \item \href{#method-zarr_localstore-clear}{\code{zarr_localstore$clear()}}
     \item \href{#method-zarr_localstore-erase}{\code{zarr_localstore$erase()}}
@@ -67,13 +68,14 @@ keys that represents.}
     \item \href{#method-zarr_localstore-create_array}{\code{zarr_localstore$create_array()}}
   }
 }
-\if{html}{\out{<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="get_many"><a href='../../zarr/html/zarr_store.html#method-zarr_store-get_many'><code>zarr_store$get_many()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize'><code>zarr_store$getsize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="getsize_prefix"><a href='../../zarr/html/zarr_store.html#method-zarr_store-getsize_prefix'><code>zarr_store$getsize_prefix()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="is_empty"><a href='../../zarr/html/zarr_store.html#method-zarr_store-is_empty'><code>zarr_store$is_empty()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="list"><a href='../../zarr/html/zarr_store.html#method-zarr_store-list'><code>zarr_store$list()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="zarr_store" data-id="print"><a href='../../zarr/html/zarr_store.html#method-zarr_store-print'><code>zarr_store$print()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}
@@ -113,6 +115,28 @@ Default \code{FALSE}.}
   }
   \subsection{Returns}{
     An instance of this class.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-zarr_localstore-brief"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_localstore-brief}{}}}
+\subsection{\code{zarr_localstore$brief()}}{
+  Print a brief summary of the local file system store to the
+console. This will use \code{cli} if available.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{zarr_localstore$brief(withCLI = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
+should be used for terminal output. The package must be installed when
+\code{TRUE}. Default is \code{FALSE}.}
+    }
+    \if{html}{\out{</div>}}
   }
 }
 

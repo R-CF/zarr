@@ -79,7 +79,24 @@ zarr_localstore <- R6::R6Class('zarr_localstore',
 
       super$initialize(read_only, version = format)
       private$.root <- root
-      private$.supports_consolidated_metadata = FALSE
+      private$.supports_consolidated_metadata <- FALSE
+    },
+
+    #' @description Print a brief summary of the local file system store to the
+    #'   console. This will use `cli` if available.
+    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
+    #'   should be used for terminal output. The package must be installed when
+    #'   `TRUE`. Default is `FALSE`.
+    brief = function(withCLI = FALSE) {
+      super$brief(withCLI)
+      size <- .size_string(sum(file.size(list.files(private$.root, full.names = TRUE, recursive = TRUE))))
+      if (withCLI) {
+        cli::cli_alert_info('Location  : {.file {private$.root}}')
+        cli::cli_alert_info('Total size: {size}')
+      } else {
+        cat('Location  :', private$.root, '\n')
+        cat('Total size:', size, '\n')
+      }
     },
 
     #' @description Check if a key exists in the store. The key can point to a

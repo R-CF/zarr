@@ -124,7 +124,7 @@ test_that("open_zarr() errors on a directory that is not a Zarr store", {
 
 test_that("store properties", {
   m <- zarr_memorystore$new()
-  expect_equal(m$friendlyClassName, "memory store")
+  expect_equal(m$friendlyClassName, "Memory store")
   expect_equal(m$separator, ".")
   expect_equal(m$version, 3L)
   expect_false(m$read_only)
