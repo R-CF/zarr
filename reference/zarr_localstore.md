@@ -54,6 +54,8 @@ https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
 
 - [`zarr_localstore$new()`](#method-zarr_localstore-initialize)
 
+- [`zarr_localstore$brief()`](#method-zarr_localstore-brief)
+
 - [`zarr_localstore$exists()`](#method-zarr_localstore-exists)
 
 - [`zarr_localstore$clear()`](#method-zarr_localstore-clear)
@@ -95,6 +97,7 @@ Inherited methods
 - [`zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
 - [`zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
 - [`zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
+- [`zarr_store$print()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-print)
 
 ------------------------------------------------------------------------
 
@@ -135,6 +138,25 @@ metadata file is not present.
 #### Returns
 
 An instance of this class.
+
+------------------------------------------------------------------------
+
+### `zarr_localstore$brief()`
+
+Print a brief summary of the local file system store to the console.
+This will use `cli` if available.
+
+#### Usage
+
+    zarr_localstore$brief(withCLI = FALSE)
+
+#### Arguments
+
+- `withCLI`:
+
+  Optional. Logical flag that indicates if the `cli` package should be
+  used for terminal output. The package must be installed when `TRUE`.
+  Default is `FALSE`.
 
 ------------------------------------------------------------------------
 

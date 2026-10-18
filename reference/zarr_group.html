@@ -176,13 +176,19 @@ established. All contained children will be called similarly.</p><div class="sec
 arrays in a character vector. Usually called from the Zarr object or
 a group to display the full group hierarchy.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">hierarchy_nodes</span><span class="op">(</span>idx <span class="op">=</span> <span class="fl">1L</span>, total <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">hierarchy_nodes</span><span class="op">(</span>idx <span class="op">=</span> <span class="fl">1L</span>, total <span class="op">=</span> <span class="fl">1L</span>, withCLI <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>idx, total</code></dt>
-<dd><p>Arguments to control indentation. Should both be 1 (the
+<dd><p>Optional arguments to control indentation. Should both be 1 (the
 default) when called interactively. The values will be updated during
-recursion when there are groups below the current group.</p></dd>
+recursion when there are groups below the current group. Ignored if
+argument <code>withCLI == TRUE</code>.</p></dd>
+
+      <dt><code>withCLI</code></dt>
+<dd><p>Optional. Logical flag that indicates if the <code>cli</code> package
+should be used for terminal output. The package must be installed when
+<code>TRUE</code>. Default is <code>FALSE</code>.</p></dd>
 
 
 </dl><p></p></div>
@@ -192,8 +198,8 @@ recursion when there are groups below the current group.</p></dd>
 
 <p></p><hr><a id="method-zarr_group-hierarchy"></a><div class="section">
 <h3 id="zarr-group-hierarchy-"><code>zarr_group$hierarchy()</code><a class="anchor" aria-label="anchor" href="#zarr-group-hierarchy-"></a></h3>
-<p>Print the Zarr hierarchy to the console from the current
-group.</p><div class="section">
+<p>Print the Zarr hierarchy from the current group to the
+console.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_group</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>

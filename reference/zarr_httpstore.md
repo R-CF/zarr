@@ -46,6 +46,8 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 - [`zarr_httpstore$new()`](#method-zarr_httpstore-initialize)
 
+- [`zarr_httpstore$brief()`](#method-zarr_httpstore-brief)
+
 - [`zarr_httpstore$exists()`](#method-zarr_httpstore-exists)
 
 - [`zarr_httpstore$clear()`](#method-zarr_httpstore-clear)
@@ -83,6 +85,7 @@ Inherited methods
 - [`zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
 - [`zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
 - [`zarr_store$list_chunks()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list_chunks)
+- [`zarr_store$print()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-print)
 - [`zarr_store$rename()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-rename)
 - [`zarr_store$rename_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-rename_prefix)
 
@@ -112,6 +115,25 @@ v.2 or v.3.
 #### Returns
 
 An instance of this class.
+
+------------------------------------------------------------------------
+
+### `zarr_httpstore$brief()`
+
+Print a brief summary of the HTTP store to the console. This will use
+`cli` if available.
+
+#### Usage
+
+    zarr_httpstore$brief(withCLI = FALSE)
+
+#### Arguments
+
+- `withCLI`:
+
+  Optional. Logical flag that indicates if the `cli` package should be
+  used for terminal output. The package must be installed when `TRUE`.
+  Default is `FALSE`.
 
 ------------------------------------------------------------------------
 

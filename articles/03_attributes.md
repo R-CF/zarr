@@ -38,15 +38,16 @@ z[["/"]]$set_attribute("title", "Data set for intelligent analysis of foo.")
 z[["/"]]$set_attribute("creator", "ACME Inc.")
 z[["/"]]$set_attribute("license", "free (as in free lunch)")
 z
-#> <Zarr>
-#> Version   : 3 
-#> Store     : memory store 
-#> Arrays    : 0 
 #> 
-#> Attributes:
-#> title  : Data set for intelligent analysis of foo.
-#> creator: ACME Inc.
-#> license: free (as in free lunch)
+#> ── Zarr ────────────────────────────────────────────────────────────────────────
+#> ── Memory store - version 3 ────────────────────────────────────────────────────
+#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ── Contents ────────────────────────────────────────────────────────────────────
+#> ℹ Arrays: 0
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • title: Data set for intelligent analysis of foo.
+#> • creator: ACME Inc.
+#> • license: free (as in free lunch)
 
 # Create an array and attach some attributes
 x <- array(runif(20000), c(100, 200))
@@ -55,15 +56,16 @@ arr$set_attribute("title", "Bar for foo")
 arr$set_attribute("valid_range", c(0, 1))
 arr$set_attribute("actual_range", range(x))
 arr 
-#> <Zarr group> [root] 
-#> Path     : / 
-#> Arrays   : bar
-#> Attributes:
-#> title       : Bar for foo
-#> creator     : ACME Inc.
-#> license     : free (as in free lunch)
-#> valid_range : [0, 1]
-#> actual_range: [2.5581568479538e-05, 0.999872711254284]
+#> 
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ℹ Arrays    : bar
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • title: Bar for foo
+#> • creator: ACME Inc.
+#> • license: free (as in free lunch)
+#> • valid_range: [0, 1]
+#> • actual_range: [2.5581568479538e-05, 0.999872711254284]
 ```
 
 You can programmatically retrieve the full set of attributes with the
@@ -79,15 +81,16 @@ attributes this allows you to update an existing attribute value too.
 
 arr$set_attribute("title", paste(arr$attributes[["title"]], "and baz too"))
 arr
-#> <Zarr group> [root] 
-#> Path     : / 
-#> Arrays   : bar
-#> Attributes:
-#> title       : Bar for foo and baz too
-#> creator     : ACME Inc.
-#> license     : free (as in free lunch)
-#> valid_range : [0, 1]
-#> actual_range: [2.5581568479538e-05, 0.999872711254284]
+#> 
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ℹ Arrays    : bar
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • title: Bar for foo and baz too
+#> • creator: ACME Inc.
+#> • license: free (as in free lunch)
+#> • valid_range: [0, 1]
+#> • actual_range: [2.5581568479538e-05, 0.999872711254284]
 ```
 
 If you want to delete an attribute, use the `delete_attribute()` method
@@ -97,14 +100,15 @@ with the attribute name to delete as argument.
 
 arr$delete_attribute("valid_range")
 arr
-#> <Zarr group> [root] 
-#> Path     : / 
-#> Arrays   : bar
-#> Attributes:
-#> title       : Bar for foo and baz too
-#> creator     : ACME Inc.
-#> license     : free (as in free lunch)
-#> actual_range: [2.5581568479538e-05, 0.999872711254284]
+#> 
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ℹ Arrays    : bar
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • title: Bar for foo and baz too
+#> • creator: ACME Inc.
+#> • license: free (as in free lunch)
+#> • actual_range: [2.5581568479538e-05, 0.999872711254284]
 ```
 
 The `(*)` after the the heading “Attributes:” indicates that there are
@@ -196,19 +200,19 @@ z[["/"]]$set_attribute("simple", "root level attribute")
 z[["/"]]$set_attribute("compound/path/my_attribute", "nested attribute")
 z[["/"]]$set_attribute("compound/different/branch/goes/deeper/att", "buried attribute")
 z[["/"]]
-#> <Zarr group> [root] 
-#> Path     : / 
 #> 
-#> Attributes:
-#> simple  : root level attribute
-#> compound:
-#>   path     :
-#>     my_attribute: nested attribute
-#>   different:
-#>     branch:
-#>       goes:
-#>         deeper:
-#>           att: buried attribute
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • simple: root level attribute
+#> • compound:
+#>   • path:
+#>     • my_attribute: nested attribute
+#>   • different:
+#>     • branch:
+#>       • goes:
+#>         • deeper:
+#>           • att: buried attribute
 ```
 
 When you delete an attribute, you can provide a (partial) path and
@@ -218,15 +222,15 @@ everything below that path will be deleted:
 
 z[["/"]]$delete_attribute("compound/different/branch")
 z[["/"]]
-#> <Zarr group> [root] 
-#> Path     : / 
 #> 
-#> Attributes:
-#> simple  : root level attribute
-#> compound:
-#>   path     :
-#>     my_attribute: nested attribute
-#>   different: []
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • simple: root level attribute
+#> • compound:
+#>   • path:
+#>     • my_attribute: nested attribute
+#>   • different: []
 ```
 
 Note how the element `"different"` is still there, but it is an empty
@@ -245,16 +249,16 @@ Python? You can create a JSON array with the `append_array_attribute()`:
 
 z[["/"]]$append_array_attribute("compound/different/an_array", "first array element")
 z[["/"]]
-#> <Zarr group> [root] 
-#> Path     : / 
 #> 
-#> Attributes:
-#> simple  : root level attribute
-#> compound:
-#>   path     :
-#>     my_attribute: nested attribute
-#>   different:
-#>     an_array: [first array element]
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • simple: root level attribute
+#> • compound:
+#>   • path:
+#>     • my_attribute: nested attribute
+#>   • different:
+#>     • an_array: [first array element]
 ```
 
 You do not actually add an object that is an array (although you could
@@ -271,16 +275,17 @@ z[["/"]]$append_array_attribute("compound/different/an_array", "second array ele
 z[["/"]]$append_array_attribute("compound/different/an_array", "very first array element", after = 0)
 
 z[["/"]]
-#> <Zarr group> [root] 
-#> Path     : / 
 #> 
-#> Attributes:
-#> simple  : root level attribute
-#> compound:
-#>   path     :
-#>     my_attribute: nested attribute
-#>   different:
-#>     an_array: [very first array element, first array element, second array element]
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • simple: root level attribute
+#> • compound:
+#>   • path:
+#>     • my_attribute: nested attribute
+#>   • different:
+#>     • an_array: [very first array element, first array element, second array
+#>     element]
 ```
 
 Array elements can be of different type (unlike in R):
@@ -293,27 +298,27 @@ z[["/"]]$append_array_attribute("compound/different/an_array", 4L)
 z[["/"]]$append_array_attribute("compound/different/an_array", list(string = "an_item", array_in_array = 1:10))
 
 z[["/"]]
-#> <Zarr group> [root] 
-#> Path     : / 
 #> 
-#> Attributes:
-#> simple  : root level attribute
-#> compound:
-#>   path     :
-#>     my_attribute: nested attribute
-#>   different:
-#>     an_array:
-#>       [1]
-#>         very first array element
-#>       [2]
-#>         first array element
-#>       [3]
-#>         second array element
-#>       [4]
-#>         4
-#>       [5]
-#>         string        : an_item
-#>         array_in_array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • simple: root level attribute
+#> • compound:
+#>   • path:
+#>     • my_attribute: nested attribute
+#>   • different:
+#>     • an_array:
+#>       • Item 1
+#>         • very first array element
+#>       • Item 2
+#>         • first array element
+#>       • Item 3
+#>         • second array element
+#>       • Item 4
+#>         • 4
+#>       • Item 5
+#>         • string: an_item
+#>         • array_in_array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
 The distinction between a JSON object and an array is that the former is

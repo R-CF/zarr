@@ -42,6 +42,10 @@ It should be accessed through group and array objects.
 
   (read-only) Name of the class for printing.
 
+- `service`:
+
+  (read-only) The S3 connection object.
+
 - `root`:
 
   (read-only) The bucket and prefix of the store, as `s3://`.
@@ -60,6 +64,8 @@ It should be accessed through group and array objects.
 ### Public methods
 
 - [`zarr_s3store$new()`](#method-zarr_s3store-initialize)
+
+- [`zarr_s3store$brief()`](#method-zarr_s3store-brief)
 
 - [`zarr_s3store$exists()`](#method-zarr_s3store-exists)
 
@@ -105,6 +111,7 @@ It should be accessed through group and array objects.
 
 Inherited methods
 
+- [`zarr_store$print()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-print)
 - [`zarr_store$rename_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-rename_prefix)
 
 ------------------------------------------------------------------------
@@ -192,6 +199,25 @@ Create an instance of this class.
 #### Returns
 
 An instance of this class.
+
+------------------------------------------------------------------------
+
+### `zarr_s3store$brief()`
+
+Print a brief summary of the S3 store to the console. This will use
+`cli` if available.
+
+#### Usage
+
+    zarr_s3store$brief(withCLI = FALSE)
+
+#### Arguments
+
+- `withCLI`:
+
+  Optional. Logical flag that indicates if the `cli` package should be
+  used for terminal output. The package must be installed when `TRUE`.
+  Default is `FALSE`.
 
 ------------------------------------------------------------------------
 

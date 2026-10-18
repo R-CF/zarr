@@ -53,17 +53,19 @@ A [zarr](https://r-cf.github.io/zarr/reference/zarr.md) object.
 fn <- system.file("extdata", "africa.zarr", package = "zarr")
 africa <- open_zarr(fn)
 africa
-#> <Zarr>
-#> Version   : 3 
-#> Store     : Local file system store 
-#> Location  : /home/runner/work/_temp/Library/zarr/extdata/africa.zarr 
-#> Arrays    : 1 
-#> Total size: 540.36 KB 
 #> 
-#> Attributes:
-#> title      : CRU TS4.08 Mean Temperature
-#> institution: Data held at British Atmospheric Data Centre, RAL, UK.
-#> source     : Test data for the R zarr package
-#> comment    : Do not use this data for any practical purpose other than testing the zarr package
-#> contact    : https://github.com/R-CF/zarr/issues
+#> ── Zarr ────────────────────────────────────────────────────────────────────────
+#> ── Local file system store - version 3 ─────────────────────────────────────────
+#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ℹ Location  : /home/runner/work/_temp/Library/zarr/extdata/africa.zarr
+#> ℹ Total size: 540.36 KB
+#> ── Contents ────────────────────────────────────────────────────────────────────
+#> ℹ Arrays: 1
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • title: CRU TS4.08 Mean Temperature
+#> • institution: Data held at British Atmospheric Data Centre, RAL, UK.
+#> • source: Test data for the R zarr package
+#> • comment: Do not use this data for any practical purpose other than testing
+#> the zarr package
+#> • contact: https://github.com/R-CF/zarr/issues
 ```

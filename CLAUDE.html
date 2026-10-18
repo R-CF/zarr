@@ -123,7 +123,7 @@ array_builder           # mutable builder for array metadata documents</code></p
 <li>Zarr indexing is 0-based in the spec and in stored chunk keys; all R-facing APIs are 1-based.</li>
 <li>
 <code>chunk_grid_regular</code> and <code>chunk_grid_sharded</code> cache their IO objects per chunk/shard key in a <code>.chunk_map</code> environment to avoid repeated allocation.</li>
-<li>The <code>%||%</code> null-coalescing operator and <code>.size_string()</code>, <code>.protocol()</code>, <code>.buildNode()</code> helpers live in <code>R/utils.R</code>.</li>
+<li>The <code>.size_string()</code>, <code>.protocol()</code>, <code>.buildNode()</code> helpers live in <code>R/utils.R</code>.</li>
 <li>
 <code>.build_codec_pipeline()</code> is a package-level utility that instantiates a codec list from raw metadata configuration; used by <code>array_builder$add_codec()</code> for sharding inner and index codec pipelines.</li>
 <li>Optional codecs (<code>zstd</code>, <code>gzip</code>, <code>crc32c</code>) require <code>qs2</code>, <code>zlib</code>, and <code>digest</code> respectively; <code>bit64</code> is required for sharded arrays. All are in <code>Suggests</code>, not <code>Imports</code>, checked with <code><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace()</a></code> at runtime.</li>

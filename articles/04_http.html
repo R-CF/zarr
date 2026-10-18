@@ -94,15 +94,16 @@ represent the contents of the HTTP store.</p>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/open_zarr.html">open_zarr</a></span><span class="op">(</span><span class="st">'https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1'</span>, protocol <span class="op">=</span> <span class="st">'http'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required namespace: curl</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1</span> <span style="color: #00BBBB;">───────────</span></span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
-<span><span class="co">#&gt; ├ ⌗ analysed_sst</span></span>
-<span><span class="co">#&gt; ├ ⌗ analysis_error</span></span>
-<span><span class="co">#&gt; ├ ⌗ lat</span></span>
-<span><span class="co">#&gt; ├ ⌗ lon</span></span>
-<span><span class="co">#&gt; ├ ⌗ mask</span></span>
-<span><span class="co">#&gt; ├ ⌗ sea_ice_fraction</span></span>
-<span><span class="co">#&gt; └ ⌗ time</span></span></code></pre></div>
+<span><span class="co">#&gt;   ⌗ analysed_sst [time = 6443, lat = 17999, lon = 36000]</span></span>
+<span><span class="co">#&gt;   ⌗ analysis_error [time = 6443, lat = 17999, lon = 36000]</span></span>
+<span><span class="co">#&gt;   ⌗ lat [lat = 17999]</span></span>
+<span><span class="co">#&gt;   ⌗ lon [lon = 36000]</span></span>
+<span><span class="co">#&gt;   ⌗ mask [time = 6443, lat = 17999, lon = 36000]</span></span>
+<span><span class="co">#&gt;   ⌗ sea_ice_fraction [time = 6443, lat = 17999, lon = 36000]</span></span>
+<span><span class="co">#&gt;   ⌗ time [time = 6443]</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="single-array-store">Single-array store<a class="anchor" aria-label="anchor" href="#single-array-store"></a>
@@ -117,15 +118,15 @@ the Zarr specification has no standards for attribute contents.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/open_zarr.html">open_zarr</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/R-CF/zarr/main/inst/extdata/africa.zarr/tas"</span><span class="op">)</span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗  </span></span>
-<span><span class="co">#&gt; Path      : / </span></span>
-<span><span class="co">#&gt; Data type : float32 </span></span>
-<span><span class="co">#&gt; Shape     : 160 260 12</span></span>
-<span><span class="co">#&gt; Chunking  : 80 65 12 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; long_name: near-surface temperature</span></span>
-<span><span class="co">#&gt; units    : degrees Celsius</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr array ⌗ </span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Data type : float32</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Shape     : 160, 260, 12</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Chunking  : 80, 65, 12</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • long_name: near-surface temperature</span></span>
+<span><span class="co">#&gt; • units: degrees Celsius</span></span></code></pre></div>
 <p>The downside of this approach is that you need to have knowledge of
 the Zarr resource to be able to properly interpret the data.</p>
 </div>
@@ -142,103 +143,105 @@ specification to interpret the data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A publicly accessible OME-Zarr data set</span></span>
 <span><span class="op">(</span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/open_zarr.html">open_zarr</a></span><span class="op">(</span><span class="st">"https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
-<span><span class="co">#&gt; Version   : 2 </span></span>
-<span><span class="co">#&gt; Store     : HTTP store </span></span>
-<span><span class="co">#&gt; Arrays    : 0 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; _creator   :</span></span>
-<span><span class="co">#&gt;   name   : omero-zarr</span></span>
-<span><span class="co">#&gt;   version: 0.3.0</span></span>
-<span><span class="co">#&gt; multiscales:</span></span>
-<span><span class="co">#&gt;   [1]</span></span>
-<span><span class="co">#&gt;     axes    :</span></span>
-<span><span class="co">#&gt;       [1]</span></span>
-<span><span class="co">#&gt;         name: t</span></span>
-<span><span class="co">#&gt;         type: time</span></span>
-<span><span class="co">#&gt;       [2]</span></span>
-<span><span class="co">#&gt;         name: c</span></span>
-<span><span class="co">#&gt;         type: channel</span></span>
-<span><span class="co">#&gt;       [3]</span></span>
-<span><span class="co">#&gt;         name: z</span></span>
-<span><span class="co">#&gt;         type: space</span></span>
-<span><span class="co">#&gt;         unit: micrometer</span></span>
-<span><span class="co">#&gt;       [4]</span></span>
-<span><span class="co">#&gt;         name: y</span></span>
-<span><span class="co">#&gt;         type: space</span></span>
-<span><span class="co">#&gt;         unit: micrometer</span></span>
-<span><span class="co">#&gt;       [5]</span></span>
-<span><span class="co">#&gt;         name: x</span></span>
-<span><span class="co">#&gt;         type: space</span></span>
-<span><span class="co">#&gt;         unit: micrometer</span></span>
-<span><span class="co">#&gt;     datasets:</span></span>
-<span><span class="co">#&gt;       [1]</span></span>
-<span><span class="co">#&gt;         coordinateTransformations:</span></span>
-<span><span class="co">#&gt;           [1]</span></span>
-<span><span class="co">#&gt;             scale: [1, 1, 1, 1, 1]</span></span>
-<span><span class="co">#&gt;             type : scale</span></span>
-<span><span class="co">#&gt;         path                     : 0</span></span>
-<span><span class="co">#&gt;       [2]</span></span>
-<span><span class="co">#&gt;         coordinateTransformations:</span></span>
-<span><span class="co">#&gt;           [1]</span></span>
-<span><span class="co">#&gt;             scale: [1, 1, 1, 2, 2]</span></span>
-<span><span class="co">#&gt;             type : scale</span></span>
-<span><span class="co">#&gt;         path                     : 1</span></span>
-<span><span class="co">#&gt;       [3]</span></span>
-<span><span class="co">#&gt;         coordinateTransformations:</span></span>
-<span><span class="co">#&gt;           [1]</span></span>
-<span><span class="co">#&gt;             scale: [1, 1, 1, 4, 4]</span></span>
-<span><span class="co">#&gt;             type : scale</span></span>
-<span><span class="co">#&gt;         path                     : 2</span></span>
-<span><span class="co">#&gt;       [4]</span></span>
-<span><span class="co">#&gt;         coordinateTransformations:</span></span>
-<span><span class="co">#&gt;           [1]</span></span>
-<span><span class="co">#&gt;             scale: [1, 1, 1, 8, 8]</span></span>
-<span><span class="co">#&gt;             type : scale</span></span>
-<span><span class="co">#&gt;         path                     : 3</span></span>
-<span><span class="co">#&gt;       [5]</span></span>
-<span><span class="co">#&gt;         coordinateTransformations:</span></span>
-<span><span class="co">#&gt;           [1]</span></span>
-<span><span class="co">#&gt;             scale: [1, 1, 1, 16, 16]</span></span>
-<span><span class="co">#&gt;             type : scale</span></span>
-<span><span class="co">#&gt;         path                     : 4</span></span>
-<span><span class="co">#&gt;     metadata:</span></span>
-<span><span class="co">#&gt;       method : loci.common.image.SimpleImageScaler</span></span>
-<span><span class="co">#&gt;       version: Bio-Formats 6.9.1</span></span>
-<span><span class="co">#&gt;     version : 0.4</span></span>
-<span><span class="co">#&gt; omero      :</span></span>
-<span><span class="co">#&gt;   channels:</span></span>
-<span><span class="co">#&gt;     [1]</span></span>
-<span><span class="co">#&gt;       active     : TRUE</span></span>
-<span><span class="co">#&gt;       coefficient: 1</span></span>
-<span><span class="co">#&gt;       color      : 00FF00</span></span>
-<span><span class="co">#&gt;       family     : linear</span></span>
-<span><span class="co">#&gt;       inverted   : FALSE</span></span>
-<span><span class="co">#&gt;       label      : H2B-eGFP</span></span>
-<span><span class="co">#&gt;       window     :</span></span>
-<span><span class="co">#&gt;         end  : 1093</span></span>
-<span><span class="co">#&gt;         max  : 65535</span></span>
-<span><span class="co">#&gt;         min  : 0</span></span>
-<span><span class="co">#&gt;         start: 0</span></span>
-<span><span class="co">#&gt;     [2]</span></span>
-<span><span class="co">#&gt;       active     : TRUE</span></span>
-<span><span class="co">#&gt;       coefficient: 1</span></span>
-<span><span class="co">#&gt;       color      : FF0000</span></span>
-<span><span class="co">#&gt;       family     : linear</span></span>
-<span><span class="co">#&gt;       inverted   : FALSE</span></span>
-<span><span class="co">#&gt;       label      : myr-tdTomato</span></span>
-<span><span class="co">#&gt;       window     :</span></span>
-<span><span class="co">#&gt;         end  : 439</span></span>
-<span><span class="co">#&gt;         max  : 65535</span></span>
-<span><span class="co">#&gt;         min  : 0</span></span>
-<span><span class="co">#&gt;         start: 0</span></span>
-<span><span class="co">#&gt;   id      : 1</span></span>
-<span><span class="co">#&gt;   rdefs   :</span></span>
-<span><span class="co">#&gt;     defaultT: 265</span></span>
-<span><span class="co">#&gt;     defaultZ: 494</span></span>
-<span><span class="co">#&gt;     model   : color</span></span>
-<span><span class="co">#&gt;   version : 0.4</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">HTTP store</span> - version 2 - read-only ──────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Listing <span style="color: #BB0000;">✖</span> Writing <span style="color: #BB0000;">✖</span> Deleting <span style="color: #00BB00;">✔</span> Consolidated metadata</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> URL: https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr</span></span>
+<span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays: 0</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • _creator:</span></span>
+<span><span class="co">#&gt;   • name: omero-zarr</span></span>
+<span><span class="co">#&gt;   • version: 0.3.0</span></span>
+<span><span class="co">#&gt; • multiscales:</span></span>
+<span><span class="co">#&gt;   • Item 1</span></span>
+<span><span class="co">#&gt;     • axes:</span></span>
+<span><span class="co">#&gt;       • Item 1</span></span>
+<span><span class="co">#&gt;         • name: t</span></span>
+<span><span class="co">#&gt;         • type: time</span></span>
+<span><span class="co">#&gt;       • Item 2</span></span>
+<span><span class="co">#&gt;         • name: c</span></span>
+<span><span class="co">#&gt;         • type: channel</span></span>
+<span><span class="co">#&gt;       • Item 3</span></span>
+<span><span class="co">#&gt;         • name: z</span></span>
+<span><span class="co">#&gt;         • type: space</span></span>
+<span><span class="co">#&gt;         • unit: micrometer</span></span>
+<span><span class="co">#&gt;       • Item 4</span></span>
+<span><span class="co">#&gt;         • name: y</span></span>
+<span><span class="co">#&gt;         • type: space</span></span>
+<span><span class="co">#&gt;         • unit: micrometer</span></span>
+<span><span class="co">#&gt;       • Item 5</span></span>
+<span><span class="co">#&gt;         • name: x</span></span>
+<span><span class="co">#&gt;         • type: space</span></span>
+<span><span class="co">#&gt;         • unit: micrometer</span></span>
+<span><span class="co">#&gt;     • datasets:</span></span>
+<span><span class="co">#&gt;       • Item 1</span></span>
+<span><span class="co">#&gt;         • coordinateTransformations:</span></span>
+<span><span class="co">#&gt;           • Item 1</span></span>
+<span><span class="co">#&gt;             • scale: [1, 1, 1, 1, 1]</span></span>
+<span><span class="co">#&gt;             • type: scale</span></span>
+<span><span class="co">#&gt;         • path: 0</span></span>
+<span><span class="co">#&gt;       • Item 2</span></span>
+<span><span class="co">#&gt;         • coordinateTransformations:</span></span>
+<span><span class="co">#&gt;           • Item 1</span></span>
+<span><span class="co">#&gt;             • scale: [1, 1, 1, 2, 2]</span></span>
+<span><span class="co">#&gt;             • type: scale</span></span>
+<span><span class="co">#&gt;         • path: 1</span></span>
+<span><span class="co">#&gt;       • Item 3</span></span>
+<span><span class="co">#&gt;         • coordinateTransformations:</span></span>
+<span><span class="co">#&gt;           • Item 1</span></span>
+<span><span class="co">#&gt;             • scale: [1, 1, 1, 4, 4]</span></span>
+<span><span class="co">#&gt;             • type: scale</span></span>
+<span><span class="co">#&gt;         • path: 2</span></span>
+<span><span class="co">#&gt;       • Item 4</span></span>
+<span><span class="co">#&gt;         • coordinateTransformations:</span></span>
+<span><span class="co">#&gt;           • Item 1</span></span>
+<span><span class="co">#&gt;             • scale: [1, 1, 1, 8, 8]</span></span>
+<span><span class="co">#&gt;             • type: scale</span></span>
+<span><span class="co">#&gt;         • path: 3</span></span>
+<span><span class="co">#&gt;       • Item 5</span></span>
+<span><span class="co">#&gt;         • coordinateTransformations:</span></span>
+<span><span class="co">#&gt;           • Item 1</span></span>
+<span><span class="co">#&gt;             • scale: [1, 1, 1, 16, 16]</span></span>
+<span><span class="co">#&gt;             • type: scale</span></span>
+<span><span class="co">#&gt;         • path: 4</span></span>
+<span><span class="co">#&gt;     • metadata:</span></span>
+<span><span class="co">#&gt;       • method: loci.common.image.SimpleImageScaler</span></span>
+<span><span class="co">#&gt;       • version: Bio-Formats 6.9.1</span></span>
+<span><span class="co">#&gt;     • version: 0.4</span></span>
+<span><span class="co">#&gt; • omero:</span></span>
+<span><span class="co">#&gt;   • channels:</span></span>
+<span><span class="co">#&gt;     • Item 1</span></span>
+<span><span class="co">#&gt;       • active: TRUE</span></span>
+<span><span class="co">#&gt;       • coefficient: 1</span></span>
+<span><span class="co">#&gt;       • color: 00FF00</span></span>
+<span><span class="co">#&gt;       • family: linear</span></span>
+<span><span class="co">#&gt;       • inverted: FALSE</span></span>
+<span><span class="co">#&gt;       • label: H2B-eGFP</span></span>
+<span><span class="co">#&gt;       • window:</span></span>
+<span><span class="co">#&gt;         • end: 1093</span></span>
+<span><span class="co">#&gt;         • max: 65535</span></span>
+<span><span class="co">#&gt;         • min: 0</span></span>
+<span><span class="co">#&gt;         • start: 0</span></span>
+<span><span class="co">#&gt;     • Item 2</span></span>
+<span><span class="co">#&gt;       • active: TRUE</span></span>
+<span><span class="co">#&gt;       • coefficient: 1</span></span>
+<span><span class="co">#&gt;       • color: FF0000</span></span>
+<span><span class="co">#&gt;       • family: linear</span></span>
+<span><span class="co">#&gt;       • inverted: FALSE</span></span>
+<span><span class="co">#&gt;       • label: myr-tdTomato</span></span>
+<span><span class="co">#&gt;       • window:</span></span>
+<span><span class="co">#&gt;         • end: 439</span></span>
+<span><span class="co">#&gt;         • max: 65535</span></span>
+<span><span class="co">#&gt;         • min: 0</span></span>
+<span><span class="co">#&gt;         • start: 0</span></span>
+<span><span class="co">#&gt;   • id: 1</span></span>
+<span><span class="co">#&gt;   • rdefs:</span></span>
+<span><span class="co">#&gt;     • defaultT: 265</span></span>
+<span><span class="co">#&gt;     • defaultZ: 494</span></span>
+<span><span class="co">#&gt;     • model: color</span></span>
+<span><span class="co">#&gt;   • version: 0.4</span></span>
 <span></span>
 <span><span class="co"># The attribute "multiscales" indicates the details of the data sets in the store</span></span>
 <span><span class="co"># The "path" element is the path to the individual arrays</span></span>
@@ -359,11 +362,12 @@ specification to interpret the data.</p>
 <span><span class="co"># Open the array at path "3"</span></span>
 <span><span class="va">z3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/open_zarr.html">open_zarr</a></span><span class="op">(</span><span class="st">"https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr/3"</span><span class="op">)</span></span>
 <span><span class="va">z3</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗  </span></span>
-<span><span class="co">#&gt; Path      : / </span></span>
-<span><span class="co">#&gt; Data type : uint16 </span></span>
-<span><span class="co">#&gt; Shape     : 532 2 988 256 271</span></span>
-<span><span class="co">#&gt; Chunking  : 1 1 1 256 271</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr array ⌗ </span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Data type : uint16</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Shape     : 532, 2, 988, 256, 271</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Chunking  : 1, 1, 1, 256, 271</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

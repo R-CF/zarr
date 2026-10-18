@@ -24,10 +24,12 @@ x <- 1:500
 
 z <- as_zarr(x)
 z
-#> <Zarr>
-#> Version   : 3 
-#> Store     : memory store 
-#> Arrays    : 1 (single array store)
+#> 
+#> ── Zarr ────────────────────────────────────────────────────────────────────────
+#> ── Memory store - version 3 ────────────────────────────────────────────────────
+#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ── Contents ────────────────────────────────────────────────────────────────────
+#> ℹ Arrays: 1 (single array store)
 ```
 
 This creates a Zarr array in memory from an R vector of integers with a
@@ -53,21 +55,24 @@ x <- array(1:10000, c(500, 10, 2))
 fn <- tempfile(fileext = ".zarr")
 z <- as_zarr(x, name = "top_array", location = fn)
 z
-#> <Zarr>
-#> Version   : 3 
-#> Store     : Local file system store 
-#> Location  : /tmp/RtmpubyeZy/file1d671b0bcd17.zarr 
-#> Arrays    : 1 
-#> Total size: 2.81 KB
+#> 
+#> ── Zarr ────────────────────────────────────────────────────────────────────────
+#> ── Local file system store - version 3 ─────────────────────────────────────────
+#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ℹ Location  : /tmp/RtmpOb0Jpt/file1d5221f330bf.zarr
+#> ℹ Total size: 2.81 KB
+#> ── Contents ────────────────────────────────────────────────────────────────────
+#> ℹ Arrays: 1
 
 # Print the hierarchy of objects
 # Zarr groups are identified by the ☰ glyph
 # Zarr arrays use the ⌗ glyph
 # (Domains may use other glyphs)
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpubyeZy/file1d671b0bcd17.zarr 
+#> 
+#> ── Zarr hierarchy /tmp/RtmpOb0Jpt/file1d5221f330bf.zarr ────────────────────────
 #> ☰ / (root group)
-#> └ ⌗ top_array
+#>   ⌗ top_array [500, 10, 2]
 ```
 
 If you have multiple R objects that you want to store in the Zarr
@@ -90,12 +95,13 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> <Zarr hierarchy> /tmp/RtmpubyeZy/file1d671b0bcd17.zarr 
+#> 
+#> ── Zarr hierarchy /tmp/RtmpOb0Jpt/file1d5221f330bf.zarr ────────────────────────
 #> ☰ / (root group)
-#> ├ ⌗ top_array
-#> ├ ⌗ a_vector
-#> └ ☰ サブグループ
-#>   └ ⌗ 空の行列
+#>   ⌗ top_array [500, 10, 2]
+#>   ⌗ a_vector [500]
+#>   ☰ サブグループ
+#>     ⌗ 空の行列 [5, 3]
 ```
 
 Directories with Zarr arrays have data files with names like `c.1.0.0`,
@@ -115,12 +121,14 @@ list.files(path = z$store$root, recursive = TRUE)
 #> [13] "zarr.json"                       "サブグループ/zarr.json"         
 #> [15] "サブグループ/空の行列/zarr.json"
 z
-#> <Zarr>
-#> Version   : 3 
-#> Store     : Local file system store 
-#> Location  : /tmp/RtmpubyeZy/file1d671b0bcd17.zarr 
-#> Arrays    : 3 
-#> Total size: 6.73 KB
+#> 
+#> ── Zarr ────────────────────────────────────────────────────────────────────────
+#> ── Local file system store - version 3 ─────────────────────────────────────────
+#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ℹ Location  : /tmp/RtmpOb0Jpt/file1d5221f330bf.zarr
+#> ℹ Total size: 6.73 KB
+#> ── Contents ────────────────────────────────────────────────────────────────────
+#> ℹ Arrays: 3
 unlink(fn)
 ```
 
@@ -371,25 +379,28 @@ z <- create_zarr()
 
 # Create a first array in the root group
 z$add_array("/", "first_array", arr_def)
-#> <Zarr array> ⌗ first_array 
-#> Path      : /first_array 
-#> Data type : int16 
-#> Shape     : 240 310 5
-#> Chunking  : 120 31 5
+#> 
+#> ── Zarr array ⌗ first_array ────────────────────────────────────────────────────
+#> ℹ Path      : /first_array
+#> ℹ Data type : int16
+#> ℹ Shape     : 240, 310, 5
+#> ℹ Chunking  : 120, 31, 5
 
 # Re-use the array definition
 z$add_array("/", "another_array", arr_def)
-#> <Zarr array> ⌗ another_array 
-#> Path      : /another_array 
-#> Data type : int16 
-#> Shape     : 240 310 5
-#> Chunking  : 120 31 5
+#> 
+#> ── Zarr array ⌗ another_array ──────────────────────────────────────────────────
+#> ℹ Path      : /another_array
+#> ℹ Data type : int16
+#> ℹ Shape     : 240, 310, 5
+#> ℹ Chunking  : 120, 31, 5
 
 z$hierarchy()
-#> <Zarr hierarchy>  
+#> 
+#> ── Zarr hierarchy  ─────────────────────────────────────────────────────────────
 #> ☰ / (root group)
-#> ├ ⌗ first_array
-#> └ ⌗ another_array
+#>   ⌗ first_array [240, 310, 5]
+#>   ⌗ another_array [240, 310, 5]
 ```
 
 ## Reading and writing Zarr arrays
@@ -411,11 +422,12 @@ z <- as_zarr(x, location = fn)
 # Get the array using list-like access on the Zarr object
 arr <- z[["/"]]
 arr
-#> <Zarr array> ⌗  
-#> Path      : / 
-#> Data type : int32 
-#> Shape     : 5 20 4
-#> Chunking  : 5 20 4
+#> 
+#> ── Zarr array ⌗  ───────────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ℹ Data type : int32
+#> ℹ Shape     : 5, 20, 4
+#> ℹ Chunking  : 5, 20, 4
 
 # Index the Zarr array like a regular R array
 # Indexes are 1-based, as usual in R (Zarr specifies everything as 0-based)

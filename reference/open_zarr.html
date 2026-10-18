@@ -102,19 +102,21 @@ plain HTTP locations.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"africa.zarr"</span>, package <span class="op">=</span> <span class="st">"zarr"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">africa</span> <span class="op">&lt;-</span> <span class="fu">open_zarr</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">africa</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Zarr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Version   : 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Store     : Local file system store </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Location  : /home/runner/work/_temp/Library/zarr/extdata/africa.zarr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Arrays    : 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Total size: 540.36 KB </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Attributes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> title      : CRU TS4.08 Mean Temperature</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> institution: Data held at British Atmospheric Data Centre, RAL, UK.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> source     : Test data for the R zarr package</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> comment    : Do not use this data for any practical purpose other than testing the zarr package</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> contact    : https://github.com/R-CF/zarr/issues</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Listing <span style="color: #00BB00;">✔</span> Writing <span style="color: #00BB00;">✔</span> Deleting <span style="color: #BB0000;">✖</span> Consolidated metadata</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Location  : <span style="color: #0000BB;">/home/runner/work/_temp/Library/zarr/extdata/africa.zarr</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Total size: 540.36 KB</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Contents ────────────────────────────────────────────────────────────────────</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Arrays: 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Attributes ──────────────────────────────────────────────────────────────────</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • title: CRU TS4.08 Mean Temperature</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • institution: Data held at British Atmospheric Data Centre, RAL, UK.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • source: Test data for the R zarr package</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • comment: Do not use this data for any practical purpose other than testing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> the zarr package</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • contact: https://github.com/R-CF/zarr/issues</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

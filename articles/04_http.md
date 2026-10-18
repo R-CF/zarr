@@ -22,15 +22,16 @@ object to represent the contents of the HTTP store.
 z <- open_zarr('https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1', protocol = 'http')
 #> Loading required namespace: curl
 z$hierarchy()
-#> <Zarr hierarchy> https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1 
+#> 
+#> ── Zarr hierarchy https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1 ───────────
 #> ☰ / (root group)
-#> ├ ⌗ analysed_sst
-#> ├ ⌗ analysis_error
-#> ├ ⌗ lat
-#> ├ ⌗ lon
-#> ├ ⌗ mask
-#> ├ ⌗ sea_ice_fraction
-#> └ ⌗ time
+#>   ⌗ analysed_sst [time = 6443, lat = 17999, lon = 36000]
+#>   ⌗ analysis_error [time = 6443, lat = 17999, lon = 36000]
+#>   ⌗ lat [lat = 17999]
+#>   ⌗ lon [lon = 36000]
+#>   ⌗ mask [time = 6443, lat = 17999, lon = 36000]
+#>   ⌗ sea_ice_fraction [time = 6443, lat = 17999, lon = 36000]
+#>   ⌗ time [time = 6443]
 ```
 
 ### Single-array store
@@ -47,15 +48,15 @@ standards for attribute contents.
 
 z <- open_zarr("https://raw.githubusercontent.com/R-CF/zarr/main/inst/extdata/africa.zarr/tas")
 z[["/"]]
-#> <Zarr array> ⌗  
-#> Path      : / 
-#> Data type : float32 
-#> Shape     : 160 260 12
-#> Chunking  : 80 65 12 
 #> 
-#> Attributes:
-#> long_name: near-surface temperature
-#> units    : degrees Celsius
+#> ── Zarr array ⌗  ───────────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ℹ Data type : float32
+#> ℹ Shape     : 160, 260, 12
+#> ℹ Chunking  : 80, 65, 12
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • long_name: near-surface temperature
+#> • units: degrees Celsius
 ```
 
 The downside of this approach is that you need to have knowledge of the
@@ -78,103 +79,105 @@ the data.
 
 # A publicly accessible OME-Zarr data set
 (z <- open_zarr("https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr"))
-#> <Zarr>
-#> Version   : 2 
-#> Store     : HTTP store 
-#> Arrays    : 0 
 #> 
-#> Attributes:
-#> _creator   :
-#>   name   : omero-zarr
-#>   version: 0.3.0
-#> multiscales:
-#>   [1]
-#>     axes    :
-#>       [1]
-#>         name: t
-#>         type: time
-#>       [2]
-#>         name: c
-#>         type: channel
-#>       [3]
-#>         name: z
-#>         type: space
-#>         unit: micrometer
-#>       [4]
-#>         name: y
-#>         type: space
-#>         unit: micrometer
-#>       [5]
-#>         name: x
-#>         type: space
-#>         unit: micrometer
-#>     datasets:
-#>       [1]
-#>         coordinateTransformations:
-#>           [1]
-#>             scale: [1, 1, 1, 1, 1]
-#>             type : scale
-#>         path                     : 0
-#>       [2]
-#>         coordinateTransformations:
-#>           [1]
-#>             scale: [1, 1, 1, 2, 2]
-#>             type : scale
-#>         path                     : 1
-#>       [3]
-#>         coordinateTransformations:
-#>           [1]
-#>             scale: [1, 1, 1, 4, 4]
-#>             type : scale
-#>         path                     : 2
-#>       [4]
-#>         coordinateTransformations:
-#>           [1]
-#>             scale: [1, 1, 1, 8, 8]
-#>             type : scale
-#>         path                     : 3
-#>       [5]
-#>         coordinateTransformations:
-#>           [1]
-#>             scale: [1, 1, 1, 16, 16]
-#>             type : scale
-#>         path                     : 4
-#>     metadata:
-#>       method : loci.common.image.SimpleImageScaler
-#>       version: Bio-Formats 6.9.1
-#>     version : 0.4
-#> omero      :
-#>   channels:
-#>     [1]
-#>       active     : TRUE
-#>       coefficient: 1
-#>       color      : 00FF00
-#>       family     : linear
-#>       inverted   : FALSE
-#>       label      : H2B-eGFP
-#>       window     :
-#>         end  : 1093
-#>         max  : 65535
-#>         min  : 0
-#>         start: 0
-#>     [2]
-#>       active     : TRUE
-#>       coefficient: 1
-#>       color      : FF0000
-#>       family     : linear
-#>       inverted   : FALSE
-#>       label      : myr-tdTomato
-#>       window     :
-#>         end  : 439
-#>         max  : 65535
-#>         min  : 0
-#>         start: 0
-#>   id      : 1
-#>   rdefs   :
-#>     defaultT: 265
-#>     defaultZ: 494
-#>     model   : color
-#>   version : 0.4
+#> ── Zarr ────────────────────────────────────────────────────────────────────────
+#> ── HTTP store - version 2 - read-only ──────────────────────────────────────────
+#> ✖ Listing ✖ Writing ✖ Deleting ✔ Consolidated metadata
+#> ℹ URL: https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr
+#> ── Contents ────────────────────────────────────────────────────────────────────
+#> ℹ Arrays: 0
+#> ── Attributes ──────────────────────────────────────────────────────────────────
+#> • _creator:
+#>   • name: omero-zarr
+#>   • version: 0.3.0
+#> • multiscales:
+#>   • Item 1
+#>     • axes:
+#>       • Item 1
+#>         • name: t
+#>         • type: time
+#>       • Item 2
+#>         • name: c
+#>         • type: channel
+#>       • Item 3
+#>         • name: z
+#>         • type: space
+#>         • unit: micrometer
+#>       • Item 4
+#>         • name: y
+#>         • type: space
+#>         • unit: micrometer
+#>       • Item 5
+#>         • name: x
+#>         • type: space
+#>         • unit: micrometer
+#>     • datasets:
+#>       • Item 1
+#>         • coordinateTransformations:
+#>           • Item 1
+#>             • scale: [1, 1, 1, 1, 1]
+#>             • type: scale
+#>         • path: 0
+#>       • Item 2
+#>         • coordinateTransformations:
+#>           • Item 1
+#>             • scale: [1, 1, 1, 2, 2]
+#>             • type: scale
+#>         • path: 1
+#>       • Item 3
+#>         • coordinateTransformations:
+#>           • Item 1
+#>             • scale: [1, 1, 1, 4, 4]
+#>             • type: scale
+#>         • path: 2
+#>       • Item 4
+#>         • coordinateTransformations:
+#>           • Item 1
+#>             • scale: [1, 1, 1, 8, 8]
+#>             • type: scale
+#>         • path: 3
+#>       • Item 5
+#>         • coordinateTransformations:
+#>           • Item 1
+#>             • scale: [1, 1, 1, 16, 16]
+#>             • type: scale
+#>         • path: 4
+#>     • metadata:
+#>       • method: loci.common.image.SimpleImageScaler
+#>       • version: Bio-Formats 6.9.1
+#>     • version: 0.4
+#> • omero:
+#>   • channels:
+#>     • Item 1
+#>       • active: TRUE
+#>       • coefficient: 1
+#>       • color: 00FF00
+#>       • family: linear
+#>       • inverted: FALSE
+#>       • label: H2B-eGFP
+#>       • window:
+#>         • end: 1093
+#>         • max: 65535
+#>         • min: 0
+#>         • start: 0
+#>     • Item 2
+#>       • active: TRUE
+#>       • coefficient: 1
+#>       • color: FF0000
+#>       • family: linear
+#>       • inverted: FALSE
+#>       • label: myr-tdTomato
+#>       • window:
+#>         • end: 439
+#>         • max: 65535
+#>         • min: 0
+#>         • start: 0
+#>   • id: 1
+#>   • rdefs:
+#>     • defaultT: 265
+#>     • defaultZ: 494
+#>     • model: color
+#>   • version: 0.4
 
 # The attribute "multiscales" indicates the details of the data sets in the store
 # The "path" element is the path to the individual arrays
@@ -295,11 +298,12 @@ jsonlite::prettify(jsonlite::toJSON(z$root$attributes[["multiscales"]], auto_unb
 # Open the array at path "3"
 z3 <- open_zarr("https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr/3")
 z3[["/"]]
-#> <Zarr array> ⌗  
-#> Path      : / 
-#> Data type : uint16 
-#> Shape     : 532 2 988 256 271
-#> Chunking  : 1 1 1 256 271
+#> 
+#> ── Zarr array ⌗  ───────────────────────────────────────────────────────────────
+#> ℹ Path      : /
+#> ℹ Data type : uint16
+#> ℹ Shape     : 532, 2, 988, 256, 271
+#> ℹ Chunking  : 1, 1, 1, 256, 271
 ```
 
 ## Authentication

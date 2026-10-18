@@ -70,11 +70,13 @@ ensure that arguments are valid, in particular keys and prefixes.
 
 Inherited methods
 
+- [`zarr_store$brief()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-brief)
 - [`zarr_store$get_many()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-get_many)
 - [`zarr_store$getsize()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize)
 - [`zarr_store$getsize_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-getsize_prefix)
 - [`zarr_store$is_empty()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-is_empty)
 - [`zarr_store$list()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-list)
+- [`zarr_store$print()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-print)
 - [`zarr_store$rename_prefix()`](https://r-cf.github.io/zarr/reference/zarr_store.html#method-rename_prefix)
 
 ------------------------------------------------------------------------

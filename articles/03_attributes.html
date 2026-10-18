@@ -107,15 +107,16 @@ allows it. See the Extending Zarr article for more details.</p>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"creator"</span>, <span class="st">"ACME Inc."</span><span class="op">)</span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"license"</span>, <span class="st">"free (as in free lunch)"</span><span class="op">)</span></span>
 <span><span class="va">z</span></span>
-<span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
-<span><span class="co">#&gt; Version   : 3 </span></span>
-<span><span class="co">#&gt; Store     : memory store </span></span>
-<span><span class="co">#&gt; Arrays    : 0 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; title  : Data set for intelligent analysis of foo.</span></span>
-<span><span class="co">#&gt; creator: ACME Inc.</span></span>
-<span><span class="co">#&gt; license: free (as in free lunch)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Memory store</span> - version 3 ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Listing <span style="color: #00BB00;">✔</span> Writing <span style="color: #00BB00;">✔</span> Deleting <span style="color: #BB0000;">✖</span> Consolidated metadata</span></span>
+<span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays: 0</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • title: Data set for intelligent analysis of foo.</span></span>
+<span><span class="co">#&gt; • creator: ACME Inc.</span></span>
+<span><span class="co">#&gt; • license: free (as in free lunch)</span></span>
 <span></span>
 <span><span class="co"># Create an array and attach some attributes</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20000</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span><span class="op">)</span></span>
@@ -124,15 +125,16 @@ allows it. See the Extending Zarr article for more details.</p>
 <span><span class="va">arr</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"valid_range"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">arr</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"actual_range"</span>, <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">arr</span> </span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
-<span><span class="co">#&gt; Path     : / </span></span>
-<span><span class="co">#&gt; Arrays   : bar</span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; title       : Bar for foo</span></span>
-<span><span class="co">#&gt; creator     : ACME Inc.</span></span>
-<span><span class="co">#&gt; license     : free (as in free lunch)</span></span>
-<span><span class="co">#&gt; valid_range : [0, 1]</span></span>
-<span><span class="co">#&gt; actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ [root]</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays    : bar</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • title: Bar for foo</span></span>
+<span><span class="co">#&gt; • creator: ACME Inc.</span></span>
+<span><span class="co">#&gt; • license: free (as in free lunch)</span></span>
+<span><span class="co">#&gt; • valid_range: [0, 1]</span></span>
+<span><span class="co">#&gt; • actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
 <p>You can programmatically retrieve the full set of attributes with the
 <code>attributes</code> field of <code>zarr_group</code> and
 <code>zarr_array</code>. The attributes are returned to the caller as a
@@ -145,29 +147,31 @@ too.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">arr</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"title"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">arr</span><span class="op">$</span><span class="va">attributes</span><span class="op">[[</span><span class="st">"title"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"and baz too"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">arr</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
-<span><span class="co">#&gt; Path     : / </span></span>
-<span><span class="co">#&gt; Arrays   : bar</span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; title       : Bar for foo and baz too</span></span>
-<span><span class="co">#&gt; creator     : ACME Inc.</span></span>
-<span><span class="co">#&gt; license     : free (as in free lunch)</span></span>
-<span><span class="co">#&gt; valid_range : [0, 1]</span></span>
-<span><span class="co">#&gt; actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ [root]</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays    : bar</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • title: Bar for foo and baz too</span></span>
+<span><span class="co">#&gt; • creator: ACME Inc.</span></span>
+<span><span class="co">#&gt; • license: free (as in free lunch)</span></span>
+<span><span class="co">#&gt; • valid_range: [0, 1]</span></span>
+<span><span class="co">#&gt; • actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
 <p>If you want to delete an attribute, use the
 <code>delete_attribute()</code> method with the attribute name to delete
 as argument.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">arr</span><span class="op">$</span><span class="fu">delete_attribute</span><span class="op">(</span><span class="st">"valid_range"</span><span class="op">)</span></span>
 <span><span class="va">arr</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
-<span><span class="co">#&gt; Path     : / </span></span>
-<span><span class="co">#&gt; Arrays   : bar</span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; title       : Bar for foo and baz too</span></span>
-<span><span class="co">#&gt; creator     : ACME Inc.</span></span>
-<span><span class="co">#&gt; license     : free (as in free lunch)</span></span>
-<span><span class="co">#&gt; actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ [root]</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays    : bar</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • title: Bar for foo and baz too</span></span>
+<span><span class="co">#&gt; • creator: ACME Inc.</span></span>
+<span><span class="co">#&gt; • license: free (as in free lunch)</span></span>
+<span><span class="co">#&gt; • actual_range: [2.5581568479538e-05, 0.999872711254284]</span></span></code></pre></div>
 <p>The <code>(*)</code> after the the heading “Attributes:” indicates
 that there are unsaved changes to the attributes, meaning that the
 changes have not been persisted to a Zarr store. If you wish to persist
@@ -253,33 +257,33 @@ exist are automatically created.</p>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"compound/path/my_attribute"</span>, <span class="st">"nested attribute"</span><span class="op">)</span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">set_attribute</span><span class="op">(</span><span class="st">"compound/different/branch/goes/deeper/att"</span>, <span class="st">"buried attribute"</span><span class="op">)</span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
-<span><span class="co">#&gt; Path     : / </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; simple  : root level attribute</span></span>
-<span><span class="co">#&gt; compound:</span></span>
-<span><span class="co">#&gt;   path     :</span></span>
-<span><span class="co">#&gt;     my_attribute: nested attribute</span></span>
-<span><span class="co">#&gt;   different:</span></span>
-<span><span class="co">#&gt;     branch:</span></span>
-<span><span class="co">#&gt;       goes:</span></span>
-<span><span class="co">#&gt;         deeper:</span></span>
-<span><span class="co">#&gt;           att: buried attribute</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ [root]</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • simple: root level attribute</span></span>
+<span><span class="co">#&gt; • compound:</span></span>
+<span><span class="co">#&gt;   • path:</span></span>
+<span><span class="co">#&gt;     • my_attribute: nested attribute</span></span>
+<span><span class="co">#&gt;   • different:</span></span>
+<span><span class="co">#&gt;     • branch:</span></span>
+<span><span class="co">#&gt;       • goes:</span></span>
+<span><span class="co">#&gt;         • deeper:</span></span>
+<span><span class="co">#&gt;           • att: buried attribute</span></span></code></pre></div>
 <p>When you delete an attribute, you can provide a (partial) path and
 everything below that path will be deleted:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">delete_attribute</span><span class="op">(</span><span class="st">"compound/different/branch"</span><span class="op">)</span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
-<span><span class="co">#&gt; Path     : / </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; simple  : root level attribute</span></span>
-<span><span class="co">#&gt; compound:</span></span>
-<span><span class="co">#&gt;   path     :</span></span>
-<span><span class="co">#&gt;     my_attribute: nested attribute</span></span>
-<span><span class="co">#&gt;   different: []</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ [root]</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • simple: root level attribute</span></span>
+<span><span class="co">#&gt; • compound:</span></span>
+<span><span class="co">#&gt;   • path:</span></span>
+<span><span class="co">#&gt;     • my_attribute: nested attribute</span></span>
+<span><span class="co">#&gt;   • different: []</span></span></code></pre></div>
 <p>Note how the element <code>"different"</code> is still there, but it
 is an empty list.</p>
 </div>
@@ -296,16 +300,16 @@ in C and Python? You can create a JSON array with the
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">append_array_attribute</span><span class="op">(</span><span class="st">"compound/different/an_array"</span>, <span class="st">"first array element"</span><span class="op">)</span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
-<span><span class="co">#&gt; Path     : / </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; simple  : root level attribute</span></span>
-<span><span class="co">#&gt; compound:</span></span>
-<span><span class="co">#&gt;   path     :</span></span>
-<span><span class="co">#&gt;     my_attribute: nested attribute</span></span>
-<span><span class="co">#&gt;   different:</span></span>
-<span><span class="co">#&gt;     an_array: [first array element]</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ [root]</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • simple: root level attribute</span></span>
+<span><span class="co">#&gt; • compound:</span></span>
+<span><span class="co">#&gt;   • path:</span></span>
+<span><span class="co">#&gt;     • my_attribute: nested attribute</span></span>
+<span><span class="co">#&gt;   • different:</span></span>
+<span><span class="co">#&gt;     • an_array: [first array element]</span></span></code></pre></div>
 <p>You do not actually add an object that is an array (although you
 could pass a vector), but rather the object that you provide is stored
 in a JSON array. You can add further elements to the same array,
@@ -318,16 +322,17 @@ possibly selecting a specific location to insert the element:</p>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">append_array_attribute</span><span class="op">(</span><span class="st">"compound/different/an_array"</span>, <span class="st">"very first array element"</span>, after <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
-<span><span class="co">#&gt; Path     : / </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; simple  : root level attribute</span></span>
-<span><span class="co">#&gt; compound:</span></span>
-<span><span class="co">#&gt;   path     :</span></span>
-<span><span class="co">#&gt;     my_attribute: nested attribute</span></span>
-<span><span class="co">#&gt;   different:</span></span>
-<span><span class="co">#&gt;     an_array: [very first array element, first array element, second array element]</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ [root]</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • simple: root level attribute</span></span>
+<span><span class="co">#&gt; • compound:</span></span>
+<span><span class="co">#&gt;   • path:</span></span>
+<span><span class="co">#&gt;     • my_attribute: nested attribute</span></span>
+<span><span class="co">#&gt;   • different:</span></span>
+<span><span class="co">#&gt;     • an_array: [very first array element, first array element, second array</span></span>
+<span><span class="co">#&gt;     element]</span></span></code></pre></div>
 <p>Array elements can be of different type (unlike in R):</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">append_array_attribute</span><span class="op">(</span><span class="st">"compound/different/an_array"</span>, <span class="fl">4L</span><span class="op">)</span></span>
@@ -336,27 +341,27 @@ possibly selecting a specific location to insert the element:</p>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">append_array_attribute</span><span class="op">(</span><span class="st">"compound/different/an_array"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>string <span class="op">=</span> <span class="st">"an_item"</span>, array_in_array <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
-<span><span class="co">#&gt; Path     : / </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attributes:</span></span>
-<span><span class="co">#&gt; simple  : root level attribute</span></span>
-<span><span class="co">#&gt; compound:</span></span>
-<span><span class="co">#&gt;   path     :</span></span>
-<span><span class="co">#&gt;     my_attribute: nested attribute</span></span>
-<span><span class="co">#&gt;   different:</span></span>
-<span><span class="co">#&gt;     an_array:</span></span>
-<span><span class="co">#&gt;       [1]</span></span>
-<span><span class="co">#&gt;         very first array element</span></span>
-<span><span class="co">#&gt;       [2]</span></span>
-<span><span class="co">#&gt;         first array element</span></span>
-<span><span class="co">#&gt;       [3]</span></span>
-<span><span class="co">#&gt;         second array element</span></span>
-<span><span class="co">#&gt;       [4]</span></span>
-<span><span class="co">#&gt;         4</span></span>
-<span><span class="co">#&gt;       [5]</span></span>
-<span><span class="co">#&gt;         string        : an_item</span></span>
-<span><span class="co">#&gt;         array_in_array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ [root]</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
+<span><span class="co">#&gt; ── Attributes ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; • simple: root level attribute</span></span>
+<span><span class="co">#&gt; • compound:</span></span>
+<span><span class="co">#&gt;   • path:</span></span>
+<span><span class="co">#&gt;     • my_attribute: nested attribute</span></span>
+<span><span class="co">#&gt;   • different:</span></span>
+<span><span class="co">#&gt;     • an_array:</span></span>
+<span><span class="co">#&gt;       • Item 1</span></span>
+<span><span class="co">#&gt;         • very first array element</span></span>
+<span><span class="co">#&gt;       • Item 2</span></span>
+<span><span class="co">#&gt;         • first array element</span></span>
+<span><span class="co">#&gt;       • Item 3</span></span>
+<span><span class="co">#&gt;         • second array element</span></span>
+<span><span class="co">#&gt;       • Item 4</span></span>
+<span><span class="co">#&gt;         • 4</span></span>
+<span><span class="co">#&gt;       • Item 5</span></span>
+<span><span class="co">#&gt;         • string: an_item</span></span>
+<span><span class="co">#&gt;         • array_in_array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</span></span></code></pre></div>
 <p>The distinction between a JSON object and an array is that the former
 is a named list in R and the latter an unnamed list.</p>
 </div>

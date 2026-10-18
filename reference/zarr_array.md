@@ -49,6 +49,8 @@ object.
 
 - [`zarr_array$print()`](#method-zarr_array-print)
 
+- [`zarr_array$shard()`](#method-zarr_array-shard)
+
 - [`zarr_array$hierarchy_nodes()`](#method-zarr_array-hierarchy_nodes)
 
 - [`zarr_array$read()`](#method-zarr_array-read)
@@ -128,20 +130,38 @@ Print a summary of the array to the console.
 
 ------------------------------------------------------------------------
 
-### `zarr_array$hierarchy_nodes()`
+### `zarr_array$shard()`
 
-Prints the hierarchy of this array to a character string. Usually called
-from the Zarr object or a group to display the full group hierarchy.
+Produce a one-line summary of the array including its name and shape,
+with dimension names if available.
 
 #### Usage
 
-    zarr_array$hierarchy_nodes(idx, total)
+    zarr_array$shard()
+
+------------------------------------------------------------------------
+
+### `zarr_array$hierarchy_nodes()`
+
+Prints this array to a hierarchy. Usually called from the Zarr object or
+a group to display the full group hierarchy.
+
+#### Usage
+
+    zarr_array$hierarchy_nodes(idx, total, withCLI = FALSE)
 
 #### Arguments
 
 - `idx, total`:
 
-  Arguments to control indentation.
+  Arguments to control indentation. Ignored if argument
+  `withCLI == TRUE`.
+
+- `withCLI`:
+
+  Optional. Logical flag that indicates if the `cli` package should be
+  used for terminal output. The package must be installed when `TRUE`.
+  Default is `FALSE`.
 
 ------------------------------------------------------------------------
 

@@ -30,6 +30,7 @@ not found.
 ``` r
 z <- create_zarr()
 z[["/"]]
-#> <Zarr group> [root] 
-#> Path     : / 
+#> 
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
 ```

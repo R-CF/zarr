@@ -51,8 +51,10 @@ created.
 x <- array(1:400, c(5, 20, 4))
 z <- as_zarr(x)
 z
-#> <Zarr>
-#> Version   : 3 
-#> Store     : memory store 
-#> Arrays    : 1 (single array store) 
+#> 
+#> ── Zarr ────────────────────────────────────────────────────────────────────────
+#> ── Memory store - version 3 ────────────────────────────────────────────────────
+#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ── Contents ────────────────────────────────────────────────────────────────────
+#> ℹ Arrays: 1 (single array store)
 ```

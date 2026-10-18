@@ -146,6 +146,10 @@ Print a summary of the Zarr object to the console.
 
     zarr$print()
 
+#### Returns
+
+Self, invisibly.
+
 ------------------------------------------------------------------------
 
 ### `zarr$hierarchy()`

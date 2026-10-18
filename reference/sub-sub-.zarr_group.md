@@ -34,9 +34,11 @@ not found.
 z <- create_zarr()
 tst <- z$add_group("/", "tst")
 z$add_group("/tst", "subtst")
-#> <Zarr group> subtst 
-#> Path     : /tst/subtst 
+#> 
+#> ── Zarr group ☰ subtst ─────────────────────────────────────────────────────────
+#> ℹ Path      : /tst/subtst
 tst[["subtst"]]
-#> <Zarr group> subtst 
-#> Path     : /tst/subtst 
+#> 
+#> ── Zarr group ☰ subtst ─────────────────────────────────────────────────────────
+#> ℹ Path      : /tst/subtst
 ```

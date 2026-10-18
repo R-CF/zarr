@@ -162,20 +162,22 @@ store you should specify the root of the store, not its prefix.</p>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/open_zarr.html">open_zarr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"s3://ome-zarr-scivis"</span>, <span class="fu"><a href="https://rdrr.io/r/base/trimws.html" class="external-link">trimws</a></span><span class="op">(</span><span class="va">ome</span><span class="op">[</span><span class="fl">22</span><span class="op">]</span>, <span class="st">"right"</span>, <span class="st">"/"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required namespace: qs2</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt; s3://ome-zarr-scivis/v0.5/128x4/lobster.ome.zarr/ </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy s3://ome-zarr-scivis/v0.5/128x4/lobster.ome.zarr/</span> <span style="color: #00BBBB;">────────────</span></span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
-<span><span class="co">#&gt; ├ ☰ scale0</span></span>
-<span><span class="co">#&gt; │ └ ⌗ lobster</span></span>
-<span><span class="co">#&gt; └ ☰ scale1</span></span>
-<span><span class="co">#&gt;   └ ⌗ lobster</span></span>
+<span><span class="co">#&gt;   ☰ scale0</span></span>
+<span><span class="co">#&gt;     ⌗ lobster [z = 56, y = 324, x = 301]</span></span>
+<span><span class="co">#&gt;   ☰ scale1</span></span>
+<span><span class="co">#&gt;     ⌗ lobster [z = 56, y = 162, x = 150]</span></span>
 <span></span>
 <span><span class="co"># Let's study the lobster ("scale1" is reduced resolution)</span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">'/scale1/lobster'</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗ lobster </span></span>
-<span><span class="co">#&gt; Path      : /scale1/lobster </span></span>
-<span><span class="co">#&gt; Data type : uint8 </span></span>
-<span><span class="co">#&gt; Shape     : 56 162 150 [z, y, x]</span></span>
-<span><span class="co">#&gt; Chunking  : 28 81 150</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr array ⌗ lobster</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /scale1/lobster</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Data type : uint8</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Shape     : 56, 162, 150 [z, y, x]</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Chunking  : 28, 81, 150</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">z</span><span class="op">[[</span><span class="st">'/scale1/lobster'</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">22</span>,,<span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="05_s3_files/figure-html/open-1.png" class="r-plt" alt="" width="700"></p>
 </div>

@@ -63,6 +63,10 @@ https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html#abstract-store-in
 
 - [`zarr_store$new()`](#method-zarr_store-initialize)
 
+- [`zarr_store$print()`](#method-zarr_store-print)
+
+- [`zarr_store$brief()`](#method-zarr_store-brief)
+
 - [`zarr_store$clear()`](#method-zarr_store-clear)
 
 - [`zarr_store$erase()`](#method-zarr_store-erase)
@@ -132,6 +136,41 @@ descendant classes, exclusively.
 #### Returns
 
 An instance of this class.
+
+------------------------------------------------------------------------
+
+### `zarr_store$print()`
+
+Print a summary of the store to the console. This will use `cli` if
+available.
+
+#### Usage
+
+    zarr_store$print()
+
+#### Returns
+
+Self, invisibly.
+
+------------------------------------------------------------------------
+
+### `zarr_store$brief()`
+
+Print a brief summary of the store to the console. This will use `cli`
+if available. Specialised store classes can override this method to
+provide more details.
+
+#### Usage
+
+    zarr_store$brief(withCLI = FALSE)
+
+#### Arguments
+
+- `withCLI`:
+
+  Optional. Logical flag that indicates if the `cli` package should be
+  used for terminal output. The package must be installed when `TRUE`.
+  Default is `FALSE`.
 
 ------------------------------------------------------------------------
 

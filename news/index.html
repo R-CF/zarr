@@ -55,11 +55,15 @@
 <code>zarr_group$new()</code> and <code>zarr_array$new()</code> no longer have the <code>store</code> argument.</li>
 <li>Several other methods in these three classes have related signature changes, but these changes are not relevant for end users or application developers of this package.</li>
 </ul><p>Other features:</p>
-<ul><li>Writing a <code>zarr_array</code> by indices can use <code>[&lt;-.zarr_array</code>.</li>
+<ul><li>R version bumped to 4.4.</li>
+<li>Writing a <code>zarr_array</code> by indices can use <code>[&lt;-.zarr_array</code>.</li>
 <li>Can create a single array store.</li>
 <li>New <code>zarr$save_to()</code> method can save a <code>zarr</code> object to a new store. This is handy to save a memory store to disk, to convert a v.2 store to a v.3 store, or to get a local copy of a remote store, among other uses. Parallel reads from HTTP and S3 stores speeds up the copying.</li>
+<li>New <code>zarr_array$shard()</code> method will produce a 1-line summary of the array.</li>
 <li>New field <code>zarr</code> in class <code>zarr_node</code> to retrieve the <code>zarr</code> instance that manages the node.</li>
 <li>Zarr v.2 filters as defined in Python’s numcodecs are supported.</li>
+<li>The <code>glyph</code> private field has moved from <code>zarr_array</code> to <code>zarr_node</code> such that <code>zarr_group</code> can have the same flexibility when printing.</li>
+<li>The <code>cli</code> package is used for printing to the console of most objects, if installed.</li>
 </ul><p>Minor changes:</p>
 <ul><li>The <code>array_builder</code> class has a field <code>data_type_from_storage.mode</code> that can make a Zarr data type from an R storage mode.</li>
 <li>

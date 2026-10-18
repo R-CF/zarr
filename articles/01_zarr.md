@@ -18,15 +18,18 @@ library(zarr)
 
 z <- create_zarr()
 z
-#> <Zarr>
-#> Version   : 3 
-#> Store     : memory store 
-#> Arrays    : 0
+#> 
+#> ── Zarr ────────────────────────────────────────────────────────────────────────
+#> ── Memory store - version 3 ────────────────────────────────────────────────────
+#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ── Contents ────────────────────────────────────────────────────────────────────
+#> ℹ Arrays: 0
 
 # The root group in the Zarr object
 z[["/"]]
-#> <Zarr group> [root] 
-#> Path     : /
+#> 
+#> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
+#> ℹ Path      : /
 ```
 
 With
@@ -46,28 +49,32 @@ grp2 <- z$add_group(path = "/", name = "second_group")
 
 # Path can be compound
 z$add_group(path = "/second_group", name = "grp2_subgroup")
-#> <Zarr group> grp2_subgroup 
-#> Path     : /second_group/grp2_subgroup
+#> 
+#> ── Zarr group ☰ grp2_subgroup ──────────────────────────────────────────────────
+#> ℹ Path      : /second_group/grp2_subgroup
 
 # Add sub-groups directly to a group
 grp1$add_group(name = "grp1_subgroup")
-#> <Zarr group> grp1_subgroup 
-#> Path     : /first_group/grp1_subgroup
+#> 
+#> ── Zarr group ☰ grp1_subgroup ──────────────────────────────────────────────────
+#> ℹ Path      : /first_group/grp1_subgroup
 
 # Names may use the UTF-8 encoding
 grp1$add_group(name = "กลุ่มย่อย") # = subgroup in Thai
-#> <Zarr group> กลุ่มย่อย 
-#> Path     : /first_group/กลุ่มย่อย
+#> 
+#> ── Zarr group ☰ กลุ่มย่อย ─────────────────────────────────────────────────────────
+#> ℹ Path      : /first_group/กลุ่มย่อย
 
 # The hierarchy of groups
 z$hierarchy()
-#> <Zarr hierarchy>  
+#> 
+#> ── Zarr hierarchy  ─────────────────────────────────────────────────────────────
 #> ☰ / (root group)
-#> ├ ☰ first_group
-#> │ ├ ☰ grp1_subgroup
-#> │ └ ☰ กลุ่มย่อย
-#> └ ☰ second_group
-#>   └ ☰ grp2_subgroup
+#>   ☰ first_group
+#>     ☰ grp1_subgroup
+#>     ☰ กลุ่มย่อย
+#>   ☰ second_group
+#>     ☰ grp2_subgroup
 ```
 
 Group names may use UTF-8 encoded strings. This means that a large
@@ -92,12 +99,14 @@ fn <- tempfile(fileext = ".zarr")
 # Create the Zarr object on disk
 z <- create_zarr(location = fn)
 z
-#> <Zarr>
-#> Version   : 3 
-#> Store     : Local file system store 
-#> Location  : /tmp/RtmpVULFSK/file1d2f784f874d.zarr 
-#> Arrays    : 0 
-#> Total size: 47 Bytes
+#> 
+#> ── Zarr ────────────────────────────────────────────────────────────────────────
+#> ── Local file system store - version 3 ─────────────────────────────────────────
+#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ℹ Location  : /tmp/RtmpU0o0kA/file1d1a50f6d4f3.zarr
+#> ℹ Total size: 47 Bytes
+#> ── Contents ────────────────────────────────────────────────────────────────────
+#> ℹ Arrays: 0
 ```
 
 The 47 bytes of storage are taken up by a “zarr.json” file. Every

@@ -169,8 +169,8 @@ objects. - `Zarr.options` — environment with `chunk_length` (default
 - `chunk_grid_regular` and `chunk_grid_sharded` cache their IO objects
   per chunk/shard key in a `.chunk_map` environment to avoid repeated
   allocation.
-- The `%||%` null-coalescing operator and `.size_string()`,
-  `.protocol()`, `.buildNode()` helpers live in `R/utils.R`.
+- The `.size_string()`, `.protocol()`, `.buildNode()` helpers live in
+  `R/utils.R`.
 - `.build_codec_pipeline()` is a package-level utility that instantiates
   a codec list from raw metadata configuration; used by
   `array_builder$add_codec()` for sharding inner and index codec

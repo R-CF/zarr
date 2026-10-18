@@ -89,15 +89,18 @@ read Zarr version 2 stores.</p>
 <span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_zarr.html">create_zarr</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">z</span></span>
-<span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
-<span><span class="co">#&gt; Version   : 3 </span></span>
-<span><span class="co">#&gt; Store     : memory store </span></span>
-<span><span class="co">#&gt; Arrays    : 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Memory store</span> - version 3 ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Listing <span style="color: #00BB00;">✔</span> Writing <span style="color: #00BB00;">✔</span> Deleting <span style="color: #BB0000;">✖</span> Consolidated metadata</span></span>
+<span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays: 0</span></span>
 <span></span>
 <span><span class="co"># The root group in the Zarr object</span></span>
 <span><span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; [root] </span></span>
-<span><span class="co">#&gt; Path     : /</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ [root]</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span></code></pre></div>
 <p>With <code><a href="../reference/create_zarr.html">create_zarr()</a></code> you create a new Zarr object as a
 Zarr store in memory. The Zarr object will have a root group to which
 you can add other groups and arrays, or metadata in the form of
@@ -112,28 +115,32 @@ groups as your data requires to any other group:</p>
 <span></span>
 <span><span class="co"># Path can be compound</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/second_group"</span>, name <span class="op">=</span> <span class="st">"grp2_subgroup"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; grp2_subgroup </span></span>
-<span><span class="co">#&gt; Path     : /second_group/grp2_subgroup</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ grp2_subgroup</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /second_group/grp2_subgroup</span></span>
 <span></span>
 <span><span class="co"># Add sub-groups directly to a group</span></span>
 <span><span class="va">grp1</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"grp1_subgroup"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; grp1_subgroup </span></span>
-<span><span class="co">#&gt; Path     : /first_group/grp1_subgroup</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ grp1_subgroup</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /first_group/grp1_subgroup</span></span>
 <span></span>
 <span><span class="co"># Names may use the UTF-8 encoding</span></span>
 <span><span class="va">grp1</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"กลุ่มย่อย"</span><span class="op">)</span> <span class="co"># = subgroup in Thai</span></span>
-<span><span class="co">#&gt; &lt;Zarr group&gt; กลุ่มย่อย </span></span>
-<span><span class="co">#&gt; Path     : /first_group/กลุ่มย่อย</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr group ☰ กลุ่มย่อย</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /first_group/กลุ่มย่อย</span></span>
 <span></span>
 <span><span class="co"># The hierarchy of groups</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;Zarr hierarchy&gt;  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy </span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ☰ / (root group)</span></span>
-<span><span class="co">#&gt; ├ ☰ first_group</span></span>
-<span><span class="co">#&gt; │ ├ ☰ grp1_subgroup</span></span>
-<span><span class="co">#&gt; │ └ ☰ กลุ่มย่อย</span></span>
-<span><span class="co">#&gt; └ ☰ second_group</span></span>
-<span><span class="co">#&gt;   └ ☰ grp2_subgroup</span></span></code></pre></div>
+<span><span class="co">#&gt;   ☰ first_group</span></span>
+<span><span class="co">#&gt;     ☰ grp1_subgroup</span></span>
+<span><span class="co">#&gt;     ☰ กลุ่มย่อย</span></span>
+<span><span class="co">#&gt;   ☰ second_group</span></span>
+<span><span class="co">#&gt;     ☰ grp2_subgroup</span></span></code></pre></div>
 <p>Group names may use UTF-8 encoded strings. This means that a large
 number of languages is supported, including Latin-based languages
 (<code>øßñğłþéèçàôãœčšžđńęř</code> all work), Cyrillic
@@ -155,12 +162,14 @@ groups and arrays. It is recommended that the name of the location has a
 <span><span class="co"># Create the Zarr object on disk</span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_zarr.html">create_zarr</a></span><span class="op">(</span>location <span class="op">=</span> <span class="va">fn</span><span class="op">)</span></span>
 <span><span class="va">z</span></span>
-<span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
-<span><span class="co">#&gt; Version   : 3 </span></span>
-<span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /tmp/RtmpVULFSK/file1d2f784f874d.zarr </span></span>
-<span><span class="co">#&gt; Arrays    : 0 </span></span>
-<span><span class="co">#&gt; Total size: 47 Bytes</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Listing <span style="color: #00BB00;">✔</span> Writing <span style="color: #00BB00;">✔</span> Deleting <span style="color: #BB0000;">✖</span> Consolidated metadata</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Location  : <span style="color: #0000BB;">/tmp/RtmpU0o0kA/file1d1a50f6d4f3.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Total size: 47 Bytes</span></span>
+<span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays: 0</span></span></code></pre></div>
 <p>The 47 bytes of storage are taken up by a “zarr.json” file. Every
 directory in a Zarr store has such a file that identifies the directory
 as a Zarr group or Zarr array. For Zarr arrays the “zarr.json” file is

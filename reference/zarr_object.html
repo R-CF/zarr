@@ -137,12 +137,17 @@ names.</p>
 <p>Print attributes to the console. Usually called by the
 <a href="zarr_group.html">zarr_group</a> and <a href="zarr_array.html">zarr_array</a> <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_object</span><span class="op">$</span><span class="fu">print_attributes</span><span class="op">(</span>dirty <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_object</span><span class="op">$</span><span class="fu">print_attributes</span><span class="op">(</span>dirty <span class="op">=</span> <span class="cn">FALSE</span>, withCLI <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>dirty</code></dt>
 <dd><p>Optional. Logical flag that indicates if the attributes have
 unsaved edits. Default is <code>FALSE</code>.</p></dd>
+
+      <dt><code>withCLI</code></dt>
+<dd><p>Optional. Logical flag that indicates if the <code>cli</code> package
+should be used for terminal output. The package must be installed when
+<code>TRUE</code>. Default is <code>FALSE</code>.</p></dd>
 
       <dt><code>...</code></dt>
 <dd><p>Arguments passed to embedded functions. Of particular interest
