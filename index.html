@@ -75,22 +75,26 @@
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">400</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">20</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="va">z</span></span>
-<span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
-<span><span class="co">#&gt; Version   : 3 </span></span>
-<span><span class="co">#&gt; Store     : memory store </span></span>
-<span><span class="co">#&gt; Arrays    : 1 (single array store)</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Zarr ────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ── Memory store - version 3 ────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata</span></span>
+<span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ℹ Arrays: 1 (single array store)</span></span></code></pre></div>
 <p>This uses information from the array (data type, dimensions) in combination with default Zarr settings (chunk size, data layout, compression). <code>z</code> is an in-memory <code>zarr</code> object consisting of a single array, with the R object broken up into chunks (if the dimensions are substantially large enough to warrant that) and compressed.</p>
 <p>If you prefer to persist your R object to file, provide a location where you want to store the data. It is recommended that the name of the store uses the “.zarr” extension. At the same time you may give your Zarr array a name that you can later use to retrieve the array and its data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zarr"</span><span class="op">)</span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"my_array"</span>, location <span class="op">=</span> <span class="va">fn</span><span class="op">)</span></span>
 <span><span class="va">z</span></span>
-<span><span class="co">#&gt; &lt;Zarr&gt;</span></span>
-<span><span class="co">#&gt; Version   : 3 </span></span>
-<span><span class="co">#&gt; Store     : Local file system store </span></span>
-<span><span class="co">#&gt; Location  : /var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpZCt184/file10e0a7104b891.zarr </span></span>
-<span><span class="co">#&gt; Arrays    : 1 </span></span>
-<span><span class="co">#&gt; Total size: 1.08 KB</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Zarr ────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ── Local file system store - version 3 ─────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata</span></span>
+<span><span class="co">#&gt; ℹ Location  : '/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpcW41uC/file176fe74b4dc51.zarr'</span></span>
+<span><span class="co">#&gt; ℹ Total size: 1.08 KB</span></span>
+<span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ℹ Arrays: 1</span></span></code></pre></div>
 <p>The total size that is printed to the console when inspecting a Zarr object sums up the size of both types of files in the root directory and any sub-directories.</p>
 <div class="section level5">
 <h5 id="reading-and-writing-zarr-arrays">Reading and writing Zarr arrays<a class="anchor" aria-label="anchor" href="#reading-and-writing-zarr-arrays"></a>
@@ -100,22 +104,23 @@
 <code class="sourceCode R"><span><span class="co"># Get the array using list-like access on the Zarr object</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">[[</span><span class="st">"/my_array"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">arr</span></span>
-<span><span class="co">#&gt; &lt;Zarr array&gt; ⌗ my_array </span></span>
-<span><span class="co">#&gt; Path      : /my_array </span></span>
-<span><span class="co">#&gt; Data type : int32 </span></span>
-<span><span class="co">#&gt; Shape     : 5 20 4</span></span>
-<span><span class="co">#&gt; Chunking  : 5 20 4</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Zarr array ⌗ my_array ───────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ℹ Path      : /my_array</span></span>
+<span><span class="co">#&gt; ℹ Data type : int32</span></span>
+<span><span class="co">#&gt; ℹ Shape     : 5, 20, 4</span></span>
+<span><span class="co">#&gt; ℹ Chunking  : 5, 20, 4</span></span>
 <span></span>
 <span><span class="co"># Index the Zarr array like a regular R array</span></span>
 <span><span class="co"># Indexes are 1-based, as usual in R (Zarr specifies everything as 0-based)</span></span>
 <span><span class="va">arr</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">11</span><span class="op">:</span><span class="fl">16</span>, <span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]</span></span>
 <span><span class="co">#&gt; [1,]  251  256  261  266  271  276</span></span>
-<span><span class="co">#&gt; [2,]  252  257  262  267  272  277</span></span></code></pre></div>
-<p>You can also write to a Zarr array, but the process is a bit more complicated (due to a quirk in R):</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">arr</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="op">-</span><span class="fl">99L</span>, selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">5</span><span class="op">:</span><span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">arr</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="cn">NA_integer_</span>, selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [2,]  252  257  262  267  272  277</span></span>
+<span></span>
+<span><span class="co"># You can also write to a Zarr array using the usual R way</span></span>
+<span><span class="va">arr</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">5</span><span class="op">:</span><span class="fl">7</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">99L</span></span>
+<span><span class="va">arr</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA_integer_</span></span>
 <span><span class="va">arr</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">]</span></span>
 <span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
 <span><span class="co">#&gt; [1,]   NA    6   11   16   21   26   31   36   41    46</span></span>
@@ -130,10 +135,10 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>Installation from CRAN of the latest release:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"zarr"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"zarr"</span>)</span></code></pre></div>
 <p>You can install the development version of <code>zarr</code> from <a href="https://github.com/R-CF/zarr" class="external-link">GitHub</a> with:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># install.packages("devtools")</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"R-CF/zarr"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># install.packages("devtools")</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"R-CF/zarr"</span>)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a>

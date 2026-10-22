@@ -57,7 +57,7 @@ z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr
+#> ℹ Location  : /tmp/Rtmp6DyZwA/file1dd42debfe9f.zarr
 #> ℹ Total size: 2.81 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1
@@ -67,7 +67,7 @@ z
 # Zarr arrays use the ⌗ glyph
 # (Domains may use other glyphs)
 z$hierarchy()
-#> ── Zarr hierarchy /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr ────────────────────────
+#> ── Zarr hierarchy /tmp/Rtmp6DyZwA/file1dd42debfe9f.zarr ────────────────────────
 #> ☰ / (root group)
 #>   ⌗ top_array [int32] [500, 10, 2]
 ```
@@ -92,7 +92,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> ── Zarr hierarchy /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr ────────────────────────
+#> ── Zarr hierarchy /tmp/Rtmp6DyZwA/file1dd42debfe9f.zarr ────────────────────────
 #> ☰ / (root group)
 #>   ⌗ top_array [int32] [500, 10, 2]
 #>   ⌗ a_vector [float64] [500]
@@ -120,7 +120,7 @@ z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr
+#> ℹ Location  : /tmp/Rtmp6DyZwA/file1dd42debfe9f.zarr
 #> ℹ Total size: 6.73 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 3

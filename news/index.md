@@ -40,7 +40,14 @@ Other features:
 - New field `zarr` in class `zarr_node` to retrieve the `zarr` instance
   that manages the node.
 - Zarr v.2 filters as defined in Python’s numcodecs are supported.
-- Printing to the console will use the `cli` package when installed.
+- Printing to the console will use the `cli` package when installed. The
+  theme used can be modified by the user.
+- User options can be saved to the user config directory using the
+  [`save_options()`](https://r-cf.github.io/zarr/reference/save_options.md)
+  function. They will be automatically loaded in all future sessions.
+  Function
+  [`reset_options()`](https://r-cf.github.io/zarr/reference/reset_options.md)
+  will reset the options to their default values.
 - The `glyph` private field has moved from `zarr_array` to `zarr_node`
   such that `zarr_group` can have the same flexibility when printing.
 
@@ -48,6 +55,10 @@ Minor changes:
 
 - The `array_builder` class has a field `data_type_from_storage.mode`
   that can make a Zarr data type from an R storage mode.
+- The separation between classes `chunking` and `chunk_grid_regular` is
+  more robust. A new `grid` field will retrieve the chunk grid. The
+  chunk grid will be printed to the console for arrays and the chunking
+  scheme.
 - `zarr.json` writes arrays for `shape` and `chunk_shape` for 1D axes.
 - JSON writes use full numeric precision.
 - `ref` convention uses released version v2.0.0.

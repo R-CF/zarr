@@ -31,7 +31,9 @@
 <url><loc>https://r-cf.github.io/zarr/reference/is_valid_node_name.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/open_zarr.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/optimal_chunking.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/reset_options.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/s3_list_dir.html</loc></url>
+<url><loc>https://r-cf.github.io/zarr/reference/save_options.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/str.chunk_grid_regular.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/str.chunk_grid_sharded.html</loc></url>
 <url><loc>https://r-cf.github.io/zarr/reference/str.zarr.html</loc></url>

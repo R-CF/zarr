@@ -25,8 +25,12 @@
   Open a Zarr store
 - [`optimal_chunking()`](https://r-cf.github.io/zarr/reference/optimal_chunking.md)
   : Get optimal chunking size for an array.
+- [`reset_options()`](https://r-cf.github.io/zarr/reference/reset_options.md)
+  : Reset all options to their default value
 - [`s3_list_dir()`](https://r-cf.github.io/zarr/reference/s3_list_dir.md)
   : List objects/prefixes in an S3 bucket
+- [`save_options()`](https://r-cf.github.io/zarr/reference/save_options.md)
+  : Save the options to a file in the user config directory
 - [`str(`*`<chunk_grid_regular>`*`)`](https://r-cf.github.io/zarr/reference/str.chunk_grid_regular.md)
   : Compact display of a regular chunk grid
 - [`str(`*`<chunk_grid_sharded>`*`)`](https://r-cf.github.io/zarr/reference/str.chunk_grid_sharded.md)
