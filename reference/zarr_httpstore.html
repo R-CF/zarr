@@ -172,16 +172,7 @@ code points.</p></dd>
 <p>Print a brief summary of the HTTP store to the console. This
 will use <code>cli</code> if available.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">brief</span><span class="op">(</span>withCLI <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div><p></p><div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>withCLI</code></dt>
-<dd><p>Optional. Logical flag that indicates if the <code>cli</code> package
-should be used for terminal output. The package must be installed when
-<code>TRUE</code>. Default is <code>FALSE</code>.</p></dd>
-
-
-</dl><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">brief</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 </div>
@@ -195,7 +186,7 @@ or array will be at the root.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">exists</span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key that the store will be searched for.</p></dd>
 
@@ -226,7 +217,7 @@ or array will be at the root.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">erase</span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Ignored.</p></dd>
 
@@ -245,7 +236,7 @@ or array will be at the root.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">erase_prefix</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Ignored.</p></dd>
 
@@ -267,7 +258,7 @@ indicated by the prefix.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">list_dir</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Character string. The prefix whose nodes to list.</p></dd>
 
@@ -287,7 +278,7 @@ below the <code>prefix</code>, both for groups and arrays.</p>
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">list_prefix</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Character string. The prefix whose nodes to list.</p></dd>
 
@@ -307,7 +298,7 @@ below the <code>prefix</code>, both for groups and arrays.</p>
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Ignored.</p></dd>
 
@@ -329,7 +320,7 @@ below the <code>prefix</code>, both for groups and arrays.</p>
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">set_if_not_exists</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Ignored.</p></dd>
 
@@ -351,7 +342,7 @@ below the <code>prefix</code>, both for groups and arrays.</p>
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">key</span>, prototype <span class="op">=</span> <span class="cn">NULL</span>, byte_range <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key for which to get data.</p></dd>
 
@@ -384,7 +375,7 @@ starts after the end of the object, an error will be returned.</p></dd>
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">get_many</span><span class="op">(</span><span class="va">keys</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>keys</code></dt>
 <dd><p>Character vector of keys.</p></dd>
 
@@ -407,7 +398,7 @@ will be added.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to retrieve.</p></dd>
 
@@ -427,7 +418,7 @@ to a Zarr group or array.</p>
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span><span class="va">prefix</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Ignored.</p></dd>
 
@@ -449,7 +440,7 @@ to a Zarr group or array.</p>
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">is_group</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to test.</p></dd>
 
@@ -468,7 +459,7 @@ to a Zarr group or array.</p>
 <h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">create_group</span><span class="op">(</span><span class="va">path</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path, name</code></dt>
 <dd><p>Ignored.</p></dd>
 
@@ -487,7 +478,7 @@ to a Zarr group or array.</p>
 <h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_httpstore</span><span class="op">$</span><span class="fu">create_array</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
+<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent, name, metadata</code></dt>
 <dd><p>Ignored.</p></dd>
 

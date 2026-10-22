@@ -149,7 +149,7 @@ display the full group hierarchy.
 
 #### Usage
 
-    zarr_group$hierarchy_nodes(idx = 1L, total = 1L, withCLI = FALSE)
+    zarr_group$hierarchy_nodes(idx = 1L, total = 1L)
 
 #### Arguments
 
@@ -158,13 +158,7 @@ display the full group hierarchy.
   Optional arguments to control indentation. Should both be 1 (the
   default) when called interactively. The values will be updated during
   recursion when there are groups below the current group. Ignored if
-  argument `withCLI == TRUE`.
-
-- `withCLI`:
-
-  Optional. Logical flag that indicates if the `cli` package should be
-  used for terminal output. The package must be installed when `TRUE`.
-  Default is `FALSE`.
+  package `cli` is installed.
 
 ------------------------------------------------------------------------
 

@@ -75,7 +75,7 @@ Print attributes to the console. Usually called by the
 
 #### Usage
 
-    zarr_object$print_attributes(dirty = FALSE, withCLI = FALSE, ...)
+    zarr_object$print_attributes(dirty = FALSE, ...)
 
 #### Arguments
 
@@ -83,12 +83,6 @@ Print attributes to the console. Usually called by the
 
   Optional. Logical flag that indicates if the attributes have unsaved
   edits. Default is `FALSE`.
-
-- `withCLI`:
-
-  Optional. Logical flag that indicates if the `cli` package should be
-  used for terminal output. The package must be installed when `TRUE`.
-  Default is `FALSE`.
 
 - `...`:
 

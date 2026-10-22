@@ -162,15 +162,7 @@ provide more details.
 
 #### Usage
 
-    zarr_store$brief(withCLI = FALSE)
-
-#### Arguments
-
-- `withCLI`:
-
-  Optional. Logical flag that indicates if the `cli` package should be
-  used for terminal output. The package must be installed when `TRUE`.
-  Default is `FALSE`.
+    zarr_store$brief()
 
 ------------------------------------------------------------------------
 

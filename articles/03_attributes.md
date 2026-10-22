@@ -38,7 +38,6 @@ z[["/"]]$set_attribute("title", "Data set for intelligent analysis of foo.")
 z[["/"]]$set_attribute("creator", "ACME Inc.")
 z[["/"]]$set_attribute("license", "free (as in free lunch)")
 z
-#> 
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Memory store - version 3 ────────────────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
@@ -56,7 +55,6 @@ arr$set_attribute("title", "Bar for foo")
 arr$set_attribute("valid_range", c(0, 1))
 arr$set_attribute("actual_range", range(x))
 arr 
-#> 
 #> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ℹ Arrays    : bar
@@ -81,7 +79,6 @@ attributes this allows you to update an existing attribute value too.
 
 arr$set_attribute("title", paste(arr$attributes[["title"]], "and baz too"))
 arr
-#> 
 #> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ℹ Arrays    : bar
@@ -100,7 +97,6 @@ with the attribute name to delete as argument.
 
 arr$delete_attribute("valid_range")
 arr
-#> 
 #> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ℹ Arrays    : bar
@@ -200,7 +196,6 @@ z[["/"]]$set_attribute("simple", "root level attribute")
 z[["/"]]$set_attribute("compound/path/my_attribute", "nested attribute")
 z[["/"]]$set_attribute("compound/different/branch/goes/deeper/att", "buried attribute")
 z[["/"]]
-#> 
 #> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ── Attributes ──────────────────────────────────────────────────────────────────
@@ -222,7 +217,6 @@ everything below that path will be deleted:
 
 z[["/"]]$delete_attribute("compound/different/branch")
 z[["/"]]
-#> 
 #> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ── Attributes ──────────────────────────────────────────────────────────────────
@@ -249,7 +243,6 @@ Python? You can create a JSON array with the `append_array_attribute()`:
 
 z[["/"]]$append_array_attribute("compound/different/an_array", "first array element")
 z[["/"]]
-#> 
 #> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ── Attributes ──────────────────────────────────────────────────────────────────
@@ -275,7 +268,6 @@ z[["/"]]$append_array_attribute("compound/different/an_array", "second array ele
 z[["/"]]$append_array_attribute("compound/different/an_array", "very first array element", after = 0)
 
 z[["/"]]
-#> 
 #> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ── Attributes ──────────────────────────────────────────────────────────────────
@@ -298,7 +290,6 @@ z[["/"]]$append_array_attribute("compound/different/an_array", 4L)
 z[["/"]]$append_array_attribute("compound/different/an_array", list(string = "an_item", array_in_array = 1:10))
 
 z[["/"]]
-#> 
 #> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ── Attributes ──────────────────────────────────────────────────────────────────

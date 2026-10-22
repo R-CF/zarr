@@ -125,15 +125,7 @@ Print a brief summary of the HTTP store to the console. This will use
 
 #### Usage
 
-    zarr_httpstore$brief(withCLI = FALSE)
-
-#### Arguments
-
-- `withCLI`:
-
-  Optional. Logical flag that indicates if the `cli` package should be
-  used for terminal output. The package must be installed when `TRUE`.
-  Default is `FALSE`.
+    zarr_httpstore$brief()
 
 ------------------------------------------------------------------------
 

@@ -18,7 +18,6 @@ library(zarr)
 
 z <- create_zarr()
 z
-#> 
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Memory store - version 3 ────────────────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
@@ -27,7 +26,6 @@ z
 
 # The root group in the Zarr object
 z[["/"]]
-#> 
 #> ── Zarr group ☰ [root] ─────────────────────────────────────────────────────────
 #> ℹ Path      : /
 ```
@@ -49,25 +47,21 @@ grp2 <- z$add_group(path = "/", name = "second_group")
 
 # Path can be compound
 z$add_group(path = "/second_group", name = "grp2_subgroup")
-#> 
 #> ── Zarr group ☰ grp2_subgroup ──────────────────────────────────────────────────
 #> ℹ Path      : /second_group/grp2_subgroup
 
 # Add sub-groups directly to a group
 grp1$add_group(name = "grp1_subgroup")
-#> 
 #> ── Zarr group ☰ grp1_subgroup ──────────────────────────────────────────────────
 #> ℹ Path      : /first_group/grp1_subgroup
 
 # Names may use the UTF-8 encoding
 grp1$add_group(name = "กลุ่มย่อย") # = subgroup in Thai
-#> 
 #> ── Zarr group ☰ กลุ่มย่อย ─────────────────────────────────────────────────────────
 #> ℹ Path      : /first_group/กลุ่มย่อย
 
 # The hierarchy of groups
 z$hierarchy()
-#> 
 #> ── Zarr hierarchy  ─────────────────────────────────────────────────────────────
 #> ☰ / (root group)
 #>   ☰ first_group
@@ -99,11 +93,10 @@ fn <- tempfile(fileext = ".zarr")
 # Create the Zarr object on disk
 z <- create_zarr(location = fn)
 z
-#> 
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/RtmpU0o0kA/file1d1a50f6d4f3.zarr
+#> ℹ Location  : /tmp/RtmprmcHDL/file1d613d6d6042.zarr
 #> ℹ Total size: 47 Bytes
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 0

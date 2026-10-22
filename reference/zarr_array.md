@@ -49,7 +49,7 @@ object.
 
 - [`zarr_array$print()`](#method-zarr_array-print)
 
-- [`zarr_array$shard()`](#method-zarr_array-shard)
+- [`zarr_array$details()`](#method-zarr_array-details)
 
 - [`zarr_array$hierarchy_nodes()`](#method-zarr_array-hierarchy_nodes)
 
@@ -130,14 +130,19 @@ Print a summary of the array to the console.
 
 ------------------------------------------------------------------------
 
-### `zarr_array$shard()`
+### `zarr_array$details()`
 
-Produce a one-line summary of the array including its name and shape,
-with dimension names if available.
+Produce a named character vector with a summary of the array including
+its name, data type, shape (with dimension names if available) and the
+chunking.
 
 #### Usage
 
-    zarr_array$shard()
+    zarr_array$details()
+
+#### Returns
+
+Named character vector with details of the array.
 
 ------------------------------------------------------------------------
 
@@ -148,20 +153,14 @@ a group to display the full group hierarchy.
 
 #### Usage
 
-    zarr_array$hierarchy_nodes(idx, total, withCLI = FALSE)
+    zarr_array$hierarchy_nodes(idx, total)
 
 #### Arguments
 
 - `idx, total`:
 
-  Arguments to control indentation. Ignored if argument
-  `withCLI == TRUE`.
-
-- `withCLI`:
-
-  Optional. Logical flag that indicates if the `cli` package should be
-  used for terminal output. The package must be installed when `TRUE`.
-  Default is `FALSE`.
+  Arguments to control indentation. Ignored if package `cli` is
+  installed.
 
 ------------------------------------------------------------------------
 

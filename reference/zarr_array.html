@@ -99,7 +99,7 @@ applies to the array for all subsequent reads.</p></dd>
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 <p></p><ul><li><p><a href="#method-zarr_array-initialize"><code>zarr_array$new()</code></a></p></li>
 <li><p><a href="#method-zarr_array-print"><code>zarr_array$print()</code></a></p></li>
-<li><p><a href="#method-zarr_array-shard"><code>zarr_array$shard()</code></a></p></li>
+<li><p><a href="#method-zarr_array-details"><code>zarr_array$details()</code></a></p></li>
 <li><p><a href="#method-zarr_array-hierarchy_nodes"><code>zarr_array$hierarchy_nodes()</code></a></p></li>
 <li><p><a href="#method-zarr_array-read"><code>zarr_array$read()</code></a></p></li>
 <li><p><a href="#method-zarr_array-write"><code>zarr_array$write()</code></a></p></li>
@@ -160,12 +160,16 @@ this method.</p></dd>
 
 </div>
 
-<p></p><hr><a id="method-zarr_array-shard"></a><div class="section">
-<h3 id="zarr-array-shard-"><code>zarr_array$shard()</code><a class="anchor" aria-label="anchor" href="#zarr-array-shard-"></a></h3>
-<p>Produce a one-line summary of the array including its name
-and shape, with dimension names if available.</p><div class="section">
+<p></p><hr><a id="method-zarr_array-details"></a><div class="section">
+<h3 id="zarr-array-details-"><code>zarr_array$details()</code><a class="anchor" aria-label="anchor" href="#zarr-array-details-"></a></h3>
+<p>Produce a named character vector with a summary of the array
+including its name, data type, shape (with dimension names if
+available) and the chunking.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">shard</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">details</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>Named character vector with details of the array.</p>
 </div>
 
 </div>
@@ -175,17 +179,12 @@ and shape, with dimension names if available.</p><div class="section">
 <p>Prints this array to a hierarchy. Usually called from the
 Zarr object or a group to display the full group hierarchy.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">hierarchy_nodes</span><span class="op">(</span><span class="va">idx</span>, <span class="va">total</span>, withCLI <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_array</span><span class="op">$</span><span class="fu">hierarchy_nodes</span><span class="op">(</span><span class="va">idx</span>, <span class="va">total</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>idx, total</code></dt>
-<dd><p>Arguments to control indentation. Ignored if argument
-<code>withCLI == TRUE</code>.</p></dd>
-
-      <dt><code>withCLI</code></dt>
-<dd><p>Optional. Logical flag that indicates if the <code>cli</code> package
-should be used for terminal output. The package must be installed when
-<code>TRUE</code>. Default is <code>FALSE</code>.</p></dd>
+<dd><p>Arguments to control indentation. Ignored if package
+<code>cli</code> is installed.</p></dd>
 
 
 </dl><p></p></div>
@@ -210,7 +209,7 @@ or <code>NULL</code>, the entire array will be read.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>A vector, matrix or array of data.</p>
 </div>
 
@@ -248,7 +247,7 @@ persist data in stale chunks.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -289,7 +288,7 @@ feedback is requested.</p></dd>
 <code>save_to()</code> method.</p>
 <p>An error is raised if this array uses storage transformers.</p>
 </div><p></p><div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>The object in argument <code>dest</code> with this array copied into it.</p>
 </div>
 
@@ -318,7 +317,7 @@ it unchanged.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 
@@ -356,7 +355,7 @@ Default <code>1L</code>.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>Self, invisibly.</p>
 </div>
 

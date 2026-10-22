@@ -186,16 +186,7 @@ Default <code>FALSE</code>.</p></dd>
 <p>Print a brief summary of the local file system store to the
 console. This will use <code>cli</code> if available.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">brief</span><span class="op">(</span>withCLI <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div><p></p><div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>withCLI</code></dt>
-<dd><p>Optional. Logical flag that indicates if the <code>cli</code> package
-should be used for terminal output. The package must be installed when
-<code>TRUE</code>. Default is <code>FALSE</code>.</p></dd>
-
-
-</dl><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">brief</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 </div>
@@ -207,7 +198,7 @@ group, an array, or a chunk.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">exists</span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key that the store will be searched for.</p></dd>
 
@@ -242,7 +233,7 @@ are removed.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">erase</span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key to remove from the store.</p></dd>
 
@@ -265,7 +256,7 @@ group-identifying metadata file will remain.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">erase_prefix</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Character string. The prefix to groups or arrays to remove
 from the store, including in child groups.</p></dd>
@@ -288,7 +279,7 @@ indicated by the prefix.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">list_dir</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Character string. The prefix whose nodes to list.</p></dd>
 
@@ -308,7 +299,7 @@ below the <code>prefix</code>, both for groups and arrays.</p>
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">list_prefix</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>Character string. The prefix whose nodes to list.</p></dd>
 
@@ -330,7 +321,7 @@ promoting arrays.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">list_chunks</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the array whose chunk keys to retrieve.</p></dd>
 
@@ -352,7 +343,7 @@ the file system is concerned, no different from a directory.</p><div class="sect
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="va">old_key</span>, <span class="va">new_key</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>old_key, new_key</code></dt>
 <dd><p>Character strings, the source and destination
 keys. <code>old_key</code> must exist; <code>new_key</code> is overwritten if it exists.</p></dd>
@@ -372,7 +363,7 @@ directory (an outer chunk-grid dimension) or to a single chunk file
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">rename_prefix</span><span class="op">(</span><span class="va">old_prefix</span>, <span class="va">new_prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>old_prefix, new_prefix</code></dt>
 <dd><p>Character strings, relative to the store
 root.</p></dd>
@@ -395,7 +386,7 @@ will be overwritten.</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>The key whose value to set.</p></dd>
 
@@ -423,7 +414,7 @@ nothing will be written.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">set_if_not_exists</span><span class="op">(</span><span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>The key whose value to set.</p></dd>
 
@@ -445,7 +436,7 @@ nothing will be written.</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">key</span>, prototype <span class="op">=</span> <span class="cn">NULL</span>, byte_range <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>key</code></dt>
 <dd><p>Character string. The key for which to get data.</p></dd>
 
@@ -480,7 +471,7 @@ presented to the caller in the Zarr v.3 format.</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="va">prefix</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to retrieve.</p></dd>
 
@@ -503,7 +494,7 @@ if the store is Zarr v.2. If the metadata does not include an element</p><div cl
 <h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">set_metadata</span><span class="op">(</span><span class="va">prefix</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>prefix</code></dt>
 <dd><p>The prefix of the node whose metadata document to set.</p></dd>
 
@@ -526,7 +517,7 @@ of <a href="array_builder.html">array_builder</a>.</p></dd>
 <h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">is_group</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
+<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path</code></dt>
 <dd><p>The path to test.</p></dd>
 
@@ -545,7 +536,7 @@ of <a href="array_builder.html">array_builder</a>.</p></dd>
 <h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">create_group</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-16">Arguments<a class="anchor" aria-label="anchor" href="#arguments-16"></a></h4>
+<h4 id="arguments-15">Arguments<a class="anchor" aria-label="anchor" href="#arguments-15"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>The path to the parent group of the new group. Ignored when
 creating a root group.</p></dd>
@@ -572,7 +563,7 @@ the <code>parent</code> argument.</p><div class="section">
 <h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_localstore</span><span class="op">$</span><span class="fu">create_array</span><span class="op">(</span><span class="va">parent</span>, <span class="va">name</span>, <span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-17">Arguments<a class="anchor" aria-label="anchor" href="#arguments-17"></a></h4>
+<h4 id="arguments-16">Arguments<a class="anchor" aria-label="anchor" href="#arguments-16"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>parent</code></dt>
 <dd><p>The path to the parent group of the new array. Ignored when
 creating a root array.</p></dd>

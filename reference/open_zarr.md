@@ -53,7 +53,6 @@ A [zarr](https://r-cf.github.io/zarr/reference/zarr.md) object.
 fn <- system.file("extdata", "africa.zarr", package = "zarr")
 africa <- open_zarr(fn)
 africa
-#> 
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata

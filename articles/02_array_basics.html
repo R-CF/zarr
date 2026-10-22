@@ -94,12 +94,11 @@ object to a Zarr object.</p>
 <span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="va">z</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Memory store</span> - version 3 ────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Listing <span style="color: #00BB00;">✔</span> Writing <span style="color: #00BB00;">✔</span> Deleting <span style="color: #BB0000;">✖</span> Consolidated metadata</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays: 1 (single array store)</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">1 (single array store)</span></span></span></code></pre></div>
 <p>This creates a Zarr array in memory from an R vector of integers with
 a length of 500. The two vector properties <em>mode</em> and
 <em>length</em> are used to define the Zarr array, in combination with
@@ -121,24 +120,22 @@ alternative to “.Rdata” files.</p>
 <span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zarr"</span><span class="op">)</span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"top_array"</span>, location <span class="op">=</span> <span class="va">fn</span><span class="op">)</span></span>
 <span><span class="va">z</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Listing <span style="color: #00BB00;">✔</span> Writing <span style="color: #00BB00;">✔</span> Deleting <span style="color: #BB0000;">✖</span> Consolidated metadata</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Location  : <span style="color: #0000BB;">/tmp/RtmpOb0Jpt/file1d5221f330bf.zarr</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Total size: 2.81 KB</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpEsC7HM/file1d99310cf107.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">2.81 KB</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays: 1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">1</span></span></span>
 <span></span>
 <span><span class="co"># Print the hierarchy of objects</span></span>
 <span><span class="co"># Zarr groups are identified by the ☰ glyph</span></span>
 <span><span class="co"># Zarr arrays use the ⌗ glyph</span></span>
 <span><span class="co"># (Domains may use other glyphs)</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpOb0Jpt/file1d5221f330bf.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
-<span><span class="co">#&gt; ☰ / (root group)</span></span>
-<span><span class="co">#&gt;   ⌗ top_array [500, 10, 2]</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpEsC7HM/file1d99310cf107.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
+<span><span class="co">#&gt; ☰ <span style="color: #0000BB; font-weight: bold;">/ (root group)</span></span></span>
+<span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">top_array</span> <span style="color: #B2B2B2;">[int32] [500, 10, 2]</span></span></span></code></pre></div>
 <p>If you have multiple R objects that you want to store in the Zarr
 format, you can place them all in the same store. Adding an R object to
 an existing store requires you to indicate the group in the Zarr object
@@ -157,13 +154,12 @@ where you want to store the R object.</p>
 <span><span class="va">grp</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, name <span class="op">=</span> <span class="st">"サブグループ"</span><span class="op">)</span>  <span class="co"># = subgroup</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">w</span>, name <span class="op">=</span> <span class="st">"空の行列"</span>, location <span class="op">=</span> <span class="va">grp</span><span class="op">)</span>  <span class="co"># = empty matrix</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpOb0Jpt/file1d5221f330bf.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
-<span><span class="co">#&gt; ☰ / (root group)</span></span>
-<span><span class="co">#&gt;   ⌗ top_array [500, 10, 2]</span></span>
-<span><span class="co">#&gt;   ⌗ a_vector [500]</span></span>
-<span><span class="co">#&gt;   ☰ サブグループ</span></span>
-<span><span class="co">#&gt;     ⌗ 空の行列 [5, 3]</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpEsC7HM/file1d99310cf107.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
+<span><span class="co">#&gt; ☰ <span style="color: #0000BB; font-weight: bold;">/ (root group)</span></span></span>
+<span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">top_array</span> <span style="color: #B2B2B2;">[int32] [500, 10, 2]</span></span></span>
+<span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">a_vector</span> <span style="color: #B2B2B2;">[float64] [500]</span></span></span>
+<span><span class="co">#&gt;   ☰ <span style="color: #0000BB; font-weight: bold;">サブグループ</span></span></span>
+<span><span class="co">#&gt;     ⌗ <span style="color: #00BB00; font-weight: bold;">空の行列</span> <span style="color: #B2B2B2;">[bool] [5, 3]</span></span></span></code></pre></div>
 <p>Directories with Zarr arrays have data files with names like
 <code>c.1.0.0</code>, usually compressed to save disk space. (The chunks
 may also be stored in directory trees, like <code>c/1/0</code> with the
@@ -180,14 +176,13 @@ chunk in files like <code>0</code>, <code>1</code>, <code>2</code>,
 <span><span class="co">#&gt; [13] "zarr.json"                       "サブグループ/zarr.json"         </span></span>
 <span><span class="co">#&gt; [15] "サブグループ/空の行列/zarr.json"</span></span>
 <span><span class="va">z</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Listing <span style="color: #00BB00;">✔</span> Writing <span style="color: #00BB00;">✔</span> Deleting <span style="color: #BB0000;">✖</span> Consolidated metadata</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Location  : <span style="color: #0000BB;">/tmp/RtmpOb0Jpt/file1d5221f330bf.zarr</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Total size: 6.73 KB</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpEsC7HM/file1d99310cf107.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">6.73 KB</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Arrays: 3</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">3</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></code></pre></div>
 <p>A couple of things to note:</p>
 <ul>
@@ -220,7 +215,7 @@ metadata document that you need when creating the Zarr array.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">arr_def</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/define_array.html">define_array</a></span><span class="op">(</span>data_type <span class="op">=</span> <span class="st">"int16"</span>, shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">240</span>, <span class="fl">310</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">arr_def</span></span>
-<span><span class="co">#&gt; &lt;Zarr array metadata&gt; VALID </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr array metadata - VALID</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "zarr_format": 3,</span></span>
 <span><span class="co">#&gt;   "node_type": "array",</span></span>
@@ -370,7 +365,7 @@ example, let’s remove the <code>blosc</code> codec and insert the
 <span><span class="va">arr_def</span><span class="op">$</span><span class="fu">add_codec</span><span class="op">(</span>codec <span class="op">=</span> <span class="st">"gzip"</span>, configuration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required namespace: zlib</span></span>
 <span><span class="va">arr_def</span></span>
-<span><span class="co">#&gt; &lt;Zarr array metadata&gt; VALID </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr array metadata - VALID</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "zarr_format": 3,</span></span>
 <span><span class="co">#&gt;   "node_type": "array",</span></span>
@@ -416,28 +411,25 @@ create as many Zarr arrays with it as you need.</p>
 <span></span>
 <span><span class="co"># Create a first array in the root group</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">add_array</span><span class="op">(</span><span class="st">"/"</span>, <span class="st">"first_array"</span>, <span class="va">arr_def</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr array ⌗ first_array</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /first_array</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Data type : int16</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Shape     : 240, 310, 5</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Chunking  : 120, 31, 5</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Path      :</span> <span style="color: #0000BB;">/first_array</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Data type :</span> <span style="color: #0000BB;">int16</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Shape     :</span> <span style="color: #0000BB;">240, 310, 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Chunking  :</span> <span style="color: #0000BB;">120, 31, 5</span></span></span>
 <span></span>
 <span><span class="co"># Re-use the array definition</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">add_array</span><span class="op">(</span><span class="st">"/"</span>, <span class="st">"another_array"</span>, <span class="va">arr_def</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr array ⌗ another_array</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /another_array</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Data type : int16</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Shape     : 240, 310, 5</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Chunking  : 120, 31, 5</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Path      :</span> <span style="color: #0000BB;">/another_array</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Data type :</span> <span style="color: #0000BB;">int16</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Shape     :</span> <span style="color: #0000BB;">240, 310, 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Chunking  :</span> <span style="color: #0000BB;">120, 31, 5</span></span></span>
 <span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy </span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; ☰ / (root group)</span></span>
-<span><span class="co">#&gt;   ⌗ first_array [240, 310, 5]</span></span>
-<span><span class="co">#&gt;   ⌗ another_array [240, 310, 5]</span></span></code></pre></div>
+<span><span class="co">#&gt; ☰ <span style="color: #0000BB; font-weight: bold;">/ (root group)</span></span></span>
+<span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">first_array</span> <span style="color: #B2B2B2;">[int16] [240, 310, 5]</span></span></span>
+<span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">another_array</span> <span style="color: #B2B2B2;">[int16] [240, 310, 5]</span></span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -458,12 +450,11 @@ that.</p>
 <span><span class="co"># Get the array using list-like access on the Zarr object</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">[[</span><span class="st">"/"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">arr</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr array ⌗ </span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Path      : /</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Data type : int32</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Shape     : 5, 20, 4</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Chunking  : 5, 20, 4</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Path      :</span> <span style="color: #0000BB;">/</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Data type :</span> <span style="color: #0000BB;">int32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Shape     :</span> <span style="color: #0000BB;">5, 20, 4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Chunking  :</span> <span style="color: #0000BB;">5, 20, 4</span></span></span>
 <span></span>
 <span><span class="co"># Index the Zarr array like a regular R array</span></span>
 <span><span class="co"># Indexes are 1-based, as usual in R (Zarr specifies everything as 0-based)</span></span>

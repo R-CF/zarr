@@ -22,16 +22,15 @@ object to represent the contents of the HTTP store.
 z <- open_zarr('https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1', protocol = 'http')
 #> Loading required namespace: curl
 z$hierarchy()
-#> 
 #> ── Zarr hierarchy https://mur-sst.s3.us-west-2.amazonaws.com/zarr-v1 ───────────
 #> ☰ / (root group)
-#>   ⌗ analysed_sst [time = 6443, lat = 17999, lon = 36000]
-#>   ⌗ analysis_error [time = 6443, lat = 17999, lon = 36000]
-#>   ⌗ lat [lat = 17999]
-#>   ⌗ lon [lon = 36000]
-#>   ⌗ mask [time = 6443, lat = 17999, lon = 36000]
-#>   ⌗ sea_ice_fraction [time = 6443, lat = 17999, lon = 36000]
-#>   ⌗ time [time = 6443]
+#>   ⌗ analysed_sst [int16] [time = 6443, lat = 17999, lon = 36000]
+#>   ⌗ analysis_error [int16] [time = 6443, lat = 17999, lon = 36000]
+#>   ⌗ lat [float32] [lat = 17999]
+#>   ⌗ lon [float32] [lon = 36000]
+#>   ⌗ mask [int8] [time = 6443, lat = 17999, lon = 36000]
+#>   ⌗ sea_ice_fraction [int8] [time = 6443, lat = 17999, lon = 36000]
+#>   ⌗ time [int64] [time = 6443]
 ```
 
 ### Single-array store
@@ -48,7 +47,6 @@ standards for attribute contents.
 
 z <- open_zarr("https://raw.githubusercontent.com/R-CF/zarr/main/inst/extdata/africa.zarr/tas")
 z[["/"]]
-#> 
 #> ── Zarr array ⌗  ───────────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ℹ Data type : float32
@@ -79,11 +77,10 @@ the data.
 
 # A publicly accessible OME-Zarr data set
 (z <- open_zarr("https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr"))
-#> 
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── HTTP store - version 2 - read-only ──────────────────────────────────────────
 #> ✖ Listing ✖ Writing ✖ Deleting ✔ Consolidated metadata
-#> ℹ URL: https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr
+#> ℹ URL: <https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr>
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 0
 #> ── Attributes ──────────────────────────────────────────────────────────────────
@@ -298,7 +295,6 @@ jsonlite::prettify(jsonlite::toJSON(z$root$attributes[["multiscales"]], auto_unb
 # Open the array at path "3"
 z3 <- open_zarr("https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr/3")
 z3[["/"]]
-#> 
 #> ── Zarr array ⌗  ───────────────────────────────────────────────────────────────
 #> ℹ Path      : /
 #> ℹ Data type : uint16
