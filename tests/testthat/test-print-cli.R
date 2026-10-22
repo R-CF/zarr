@@ -125,7 +125,7 @@ test_that("cli print() of an array", {
   expect_true(any(grepl("Path      : /a", out, fixed = TRUE)))
   expect_true(any(grepl("Data type : float64", out, fixed = TRUE)))
   expect_true(any(grepl("Shape     : 4, 6", out, fixed = TRUE)))
-  expect_true(any(grepl("Chunking  : 2, 3", out, fixed = TRUE)))
+  expect_true(any(grepl("Chunk grid: 2, 2 [2 x 3]", out, fixed = TRUE)))
 })
 
 test_that("cli print() of an array shows dimension names", {
@@ -139,7 +139,7 @@ test_that("cli print() of an array shows dimension names", {
 test_that("cli print() of a scalar array", {
   out <- cli_out(print(make_tree()[["/grp/b"]]))
   expect_true(any(grepl("Shape     : (scalar)", out, fixed = TRUE)))
-  expect_true(any(grepl("Chunking  : (scalar)", out, fixed = TRUE)))
+  expect_true(any(grepl("Chunk grid: (scalar)", out, fixed = TRUE)))
 })
 
 # ==== Attributes ==============================================================
