@@ -132,29 +132,30 @@ zarr_store <- R6::R6Class('zarr_store',
     #'   use `cli` if available.
     #' @return Self, invisibly.
     print = function() {
-      withCLI <- .use_cli()
-      if (withCLI)  cli::cli_h1('{.strong Zarr store}')
-      else cat('<Zarr store>\n')
-      self$brief(withCLI = withCLI)
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
+        cli::cli_h1('{.strong Zarr store}')
+        cli::cli_end(this_div)
+      } else cat('<Zarr store>\n')
+      self$brief()
       invisible(self)
     },
 
     #' @description Print a brief summary of the store to the console. This will
     #'   use `cli` if available. Specialised store classes can override this
     #'   method to provide more details.
-    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
-    #'   should be used for terminal output. The package must be installed when
-    #'   `TRUE`. Default is `FALSE`.
-    brief = function(withCLI = FALSE) {
-      if (withCLI) {
+    brief = function() {
+      if (is.list(Zarr.options$zarr_theme)) {
         cli::cli_rule(paste0('{.strong {self$friendlyClassName}} - version {private$.version}',
                       if (private$.read_only) ' - read-only'))
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
         tick <- cli::col_green(cli::symbol$tick)
         cross <- cli::col_red(cli::symbol$cross)
-        cli::cli_text('{if (private$.supports_listing) tick else cross} Listing ',
-                      '{if (private$.supports_writes) tick else cross} Writing ',
-                      '{if (private$.supports_deletes) tick else cross} Deleting ',
-                      '{if (private$.supports_consolidated_metadata) tick else cross} Consolidated metadata')
+        cli::cli_text('{if (private$.supports_listing) tick else cross} {.label Listing} ',
+                      '{if (private$.supports_writes) tick else cross} {.label Writing} ',
+                      '{if (private$.supports_deletes) tick else cross} {.label Deleting} ',
+                      '{if (private$.supports_consolidated_metadata) tick else cross} {.label Consolidated metadata}')
+        cli::cli_end(this_div)
       } else {
         cat('Store     :', self$friendlyClassName, '- version', private$.version,
             if (private$.read_only) '- read-only\n' else '\n')

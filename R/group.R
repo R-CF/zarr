@@ -78,34 +78,34 @@ zarr_group <- R6::R6Class('zarr_group',
 
     #' @description Print a summary of the group to the console.
     print = function() {
-      withCLI <- .use_cli()
       name <- if (nzchar(self$name)) self$name else '[root]'
-      if (withCLI) {
+      arrays <- vapply(self$children, inherits, logical(1L), "zarr_array", USE.NAMES = FALSE)
+      grp_names <- if (any(!arrays)) paste(names(self$children)[!arrays], collapse = ', ') else character(0L)
+      arr_names <- if (any(arrays)) paste(names(self$children)[arrays], collapse = ', ') else character(0L)
+
+      if (!is.null(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
         cli::cli_h1('Zarr group {.strong {private$.glyph}} {.strong {name}}')
-        cli::cli_alert_info('Path      : {self$path}')
+        cli::cli_alert_info('{.label Path      :} {.text {self$path}}')
         if (nzchar(private$.domain))
-          cli::cli_alert_info('Domain    : {private$.domain}')
+          cli::cli_alert_info('{.label Domain    :} {.text {private$.domain}}')
+        if (length(grp_names))
+          cli::cli_alert_info('{.label Sub-groups:} {.text {grp_names}}')
+        if (length(arr_names))
+          cli::cli_alert_info('{.label Arrays    :} {.text {arr_names}}')
+        cli::cli_end(this_div)
       } else {
         cat('<Zarr group>', private$.glyph, name, '\n')
         cat('Path      :', self$path, '\n')
         if (nzchar(private$.domain))
           cat('Domain    :', private$.domain, '\n')
+        if (length(grp_names))
+          cat('Sub-groups:', grp_names, '\n')
+        if (length(arr_names))
+          cat('Arrays    :', arr_names)
       }
-      if (length(self$children)) {
-        arrays <- vapply(self$children, inherits, logical(1L), "zarr_array", USE.NAMES = FALSE)
-        if (any(!arrays)) {
-          grp_names <- paste(names(self$children)[!arrays], collapse = ', ')
-          if (withCLI) cli::cli_alert_info('Sub-groups: {grp_names}')
-          else cat('Sub-groups:', grp_names, '\n')
-        }
-        if (any(arrays)) {
-          arr_names <- paste(names(self$children)[arrays], collapse = ', ')
-          if (withCLI) cli::cli_alert_info('Arrays    : {arr_names}')
-          else cat('Arrays    :', arr_names)
-        }
-      }
-      private$print_details(withCLI = withCLI)
-      self$print_attributes(withCLI = withCLI)
+      private$print_details()
+      self$print_attributes()
       invisible(self)
     },
 
@@ -115,20 +115,17 @@ zarr_group <- R6::R6Class('zarr_group',
     #' @param idx,total Optional arguments to control indentation. Should both be 1 (the
     #'   default) when called interactively. The values will be updated during
     #'   recursion when there are groups below the current group. Ignored if
-    #'   argument `withCLI == TRUE`.
-    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
-    #'   should be used for terminal output. The package must be installed when
-    #'   `TRUE`. Default is `FALSE`.
-    hierarchy_nodes = function(idx = 1L, total = 1L, withCLI = FALSE) {
+    #'   package `cli` is installed.
+    hierarchy_nodes = function(idx = 1L, total = 1L) {
       nm <- private$.name
       if (!nzchar(nm))
         nm <- '/ (root group)'
 
-      if (withCLI) {
+      if (is.list(Zarr.options$zarr_theme)) {
         this_div <- cli::cli_div(theme = list('ul.group' = list('list-style-type' = private$.glyph)))
         this_grp <- cli::cli_ul(class = 'group')
-        cli::cli_li('{nm}')
-        lapply(private$.children, function(g) g$hierarchy_nodes(withCLI = TRUE))
+        cli::cli_li('{.group {nm}}')
+        lapply(private$.children, function(g) g$hierarchy_nodes())
         cli::cli_end(this_grp)
         cli::cli_end(this_div)
       } else {
@@ -158,10 +155,9 @@ zarr_group <- R6::R6Class('zarr_group',
     #' @description Print the Zarr hierarchy from the current group to the
     #'   console.
     hierarchy = function() {
-      withCLI <- .use_cli()
-      if (withCLI) {
+      if (is.list(Zarr.options$zarr_theme)) {
         cli::cli_h1('Zarr hierarchy from {private$.glyph} {self$path}')
-        self$hierarchy_nodes(withCLI = TRUE)
+        self$hierarchy_nodes()
       } else {
         cat('<Zarr hierarchy>', self$path, '\n')
         hier <- self$hierarchy_nodes(1L, 1L)
@@ -281,8 +277,10 @@ zarr_group <- R6::R6Class('zarr_group',
       name <- if (nzchar(self$name)) self$name else '/'
       if (!is.null(verbose)) {
         verbose$groups_done <- verbose$groups_done + 1L
-        if (verbose$cli) {
-          cli::cli_alert_success('Created group {private$.glyph} {.val {name}} ({verbose$groups_done}/{verbose$groups})')
+        if (is.list(Zarr.options$zarr_theme)) {
+          this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
+          cli::cli_alert_success('{.label Created group} {.group {private$.glyph} {name}} {.minor ({verbose$groups_done}/{verbose$groups})}')
+          cli::cli_end(this_div)
         } else cat(sprintf('Created group "%s" (%d/%d)\n', name, verbose$groups_done, verbose$groups))
       }
       for (c in seq_along(private$.children))

@@ -5,7 +5,6 @@
 # literal strings and are not affected.
 
 skip_if_not_installed("cli")
-local_mocked_bindings(.use_cli = function() TRUE)
 
 # ==== zarr object =============================================================
 
@@ -26,7 +25,7 @@ test_that("cli print() of a zarr object on the file system", {
 
 test_that("cli print() of an uninitialised zarr object", {
   z <- zarr$new(zarr_memorystore$new())
-  expect_true(any(grepl("Store is not initialised", cli_out(print(z)))))
+  expect_true(any(grepl("uninitialised", cli_out(print(z)))))
 })
 
 test_that("cli print() of a single-array store", {
@@ -48,7 +47,7 @@ test_that("cli hierarchy() nests groups and arrays", {
   out <- cli_out(make_tree()$hierarchy())
   expect_true(any(grepl("Zarr hierarchy", out)))
   expect_true(any(grepl("☰ / (root group)", out, fixed = TRUE)))
-  expect_true(any(grepl("⌗ a [4, 6]", out, fixed = TRUE)))
+  expect_true(any(grepl("⌗ a [float64] [4, 6]", out, fixed = TRUE)))
   expect_true(any(grepl("⌗ b", out, fixed = TRUE)))
   expect_lt(indent_of(out, "☰ /"), indent_of(out, "☰ grp"))
   expect_lt(indent_of(out, "☰ grp"), indent_of(out, "☰ sub"))
@@ -61,7 +60,7 @@ test_that("cli hierarchy() shows dimension names of arrays", {
   z <- create_zarr()
   z$add_array("/", "a", meta)
   out <- cli_out(z$hierarchy())
-  expect_true(any(grepl("⌗ a [y = 2, x = 3]", out, fixed = TRUE)))
+  expect_true(any(grepl("⌗ a [int32] [y = 2, x = 3]", out, fixed = TRUE)))
 })
 
 test_that("cli hierarchy() of a single-array store", {
@@ -184,7 +183,7 @@ test_that("cli print() itemises arrays of objects and scalars", {
 test_that("cli print_attributes() flags unsaved edits", {
   a <- make_tree()[["/a"]]
   a$set_attribute("units", "K")
-  out <- cli_out(a$print_attributes(dirty = TRUE, withCLI = TRUE))
+  out <- cli_out(a$print_attributes(dirty = TRUE))
   expect_true(any(grepl("Attributes (*)", out, fixed = TRUE)))
 })
 

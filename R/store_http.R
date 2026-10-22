@@ -124,13 +124,13 @@ zarr_httpstore <- R6::R6Class('zarr_httpstore',
 
     #' @description Print a brief summary of the HTTP store to the console. This
     #'   will use `cli` if available.
-    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
-    #'   should be used for terminal output. The package must be installed when
-    #'   `TRUE`. Default is `FALSE`.
-    brief = function(withCLI = FALSE) {
-      super$brief(withCLI)
-      if (withCLI) cli::cli_alert_info('URL: {private$.base_url}')
-      else cat('URL       :', private$.base_url, '\n')
+    brief = function() {
+      super$brief()
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
+        cli::cli_alert_info('{.label URL:} {.url {private$.base_url}}')
+        cli::cli_end()
+      } else cat('URL       :', private$.base_url, '\n')
     },
 
     #' @description Check if a key exists in the store. The key can point to a

@@ -17,8 +17,9 @@ zarr_codec <- R6::R6Class('zarr_codec',
     .from = 'array',
     .to   = 'bytes',
 
-    # Print the configuration of the codec. To be implemented by descendant classes.
-    print_configuration = function() {
+    # List the configuration of the codec. To be implemented by descendant
+    # classes. Returns a named list with configutaion parameters.
+    list_configuration = function() {
     }
   ),
   public = list(
@@ -40,9 +41,25 @@ zarr_codec <- R6::R6Class('zarr_codec',
 
     #' @description Print a summary of the codec to the console.
     print = function() {
-      cat('<Zarr codec>', private$.name, '\n')
-      cat('Mode         :', self$mode, '\n')
-      private$print_configuration()
+      conf <- private$list_configuration()
+      param <- names(conf)
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
+        cli::cli_h1('Zarr codec - {private$.name}')
+        cli::cli_alert_info('{.label Mode         :} {.text {self$mode}}')
+        if (length(conf)) {
+          cli::cli_alert_info('{.label Configuration:}')
+          mapply(function(nm, value) cli::cli_li('{.label {nm}:} {.text {value}}'), param, conf)
+        }
+        cli::cli_end(this_div)
+      } else {
+        cat('<Zarr codec>', private$.name, '\n')
+        cat('Mode         :', self$mode, '\n')
+        if (length(conf)) {
+          cat('Configuration:\n')
+          mapply(function(nm, value) cat('  ', nm, ': ', value, '\n', sep = ''), param, conf)
+        }
+      }
       invisible(self)
     },
 
@@ -135,11 +152,9 @@ zarr_codec_transpose <- R6::R6Class('zarr_codec_transpose',
   inherit = zarr_codec,
   cloneable = FALSE,
   private = list (
-    # Print the configuration information to the console. This is called by
-    # zarr_codec$print().
-    print_configuration = function() {
-      cat('Configuration:\n')
-      cat('  order: [', paste(private$.configuration$order, collapse = ', '), ']\n', sep = '')
+    # List the configuration information. This is called by zarr_codec$print().
+    list_configuration = function() {
+      list(order = paste(private$.configuration$order, collapse = ', '))
     },
 
     # Check if the "order" argument is valid. Returns TRUE or FALSE. "order"
@@ -244,11 +259,9 @@ zarr_codec_bytes <- R6::R6Class('zarr_codec_bytes',
       if (private$.configuration$endian == 'little') 256^(0:3) else 256^(3:0)
     },
 
-    # Print the configuration information to the console. This is called by
-    # zarr_codec$print().
-    print_configuration = function() {
-      cat('Configuration:\n')
-      cat('  endian:', private$.configuration$endian, '\n')
+    # List the configuration information. This is called by zarr_codec$print().
+    list_configuration = function() {
+      list(endian = private$.configuration$endian)
     }
   ),
   public = list(
@@ -577,15 +590,13 @@ zarr_codec_blosc <- R6::R6Class('zarr_codec_blosc',
     # The zarr_data_type of the array using this codec.
     .data_type = NULL,
 
-    # Print the configuration information to the console. This is called by
-    # zarr_codec$print().
-    print_configuration = function() {
-      cat('Configuration:\n')
-      cat('  compressor:', private$.configuration$cname, '\n')
-      cat('  level     :', private$.configuration$clevel, '\n')
-      cat('  shuffle   :', private$.configuration$shuffle, '\n')
-      cat('  typesize  :', private$.configuration$typesize, '\n')
-      cat('  blocksize :', private$.configuration$blocksize, '\n')
+    # List the configuration information. This is called by zarr_codec$print().
+    list_configuration = function() {
+      list(compressor = private$.configuration$cname,
+           level      = private$.configuration$clevel,
+           shuffle    = private$.configuration$shuffle,
+           typesize   = private$.configuration$typesize,
+           blocksize  = private$.configuration$blocksize)
     },
 
     # Check the configuration parameters. Conf must be a list. If ok, the list
@@ -765,11 +776,9 @@ zarr_codec_zstd <- R6::R6Class('zarr_codec_zstd',
   inherit = zarr_codec,
   cloneable = FALSE,
   private = list(
-   # Print the configuration information to the console. This is called by
-   # zarr_codec$print().
-   print_configuration = function() {
-     cat('Configuration:\n')
-     cat('  level:', private$.configuration$level, '\n')
+   # List the configuration information. This is called by zarr_codec$print().
+   list_configuration = function() {
+     list(level = private$.configuration$level)
    }
   ),
   public = list(
@@ -843,11 +852,9 @@ zarr_codec_gzip <- R6::R6Class('zarr_codec_gzip',
   inherit = zarr_codec,
   cloneable = FALSE,
   private = list(
-    # Print the configuration information to the console. This is called by
-    # zarr_codec$print().
-    print_configuration = function() {
-      cat('Configuration:\n')
-      cat('  level:', private$.configuration$level, '\n')
+    # List the configuration information. This is called by zarr_codec$print().
+    list_configuration = function() {
+      list(level = private$.configuration$level)
     }
   ),
   public = list(
@@ -986,12 +993,11 @@ zarr_codec_sharding <- R6::R6Class('zarr_codec_sharding',
   inherit = zarr_codec,
   cloneable = FALSE,
   private = list(
-    print_configuration = function() {
-      cat('Configuration:\n')
+    list_configuration = function() {
       conf <- private$.configuration
-      cat('  chunk_shape:    [', paste(conf$chunk_shape, collapse = ', '), ']\n', sep = '')
-      cat('  index_location: ',  conf$index_location %||% 'end', '\n', sep = '')
-      cat('  codecs:         [', paste(sapply(conf$codecs, function(c) c$name), collapse = ', '), ']\n', sep = '')
+      list(chunk_shape = conf$chunk_shape,
+           index_location = conf$index_location %||% 'end',
+           codecs = paste(sapply(conf$codecs, function(c) c$name), collapse = ', '))
     }
   ),
   public = list(

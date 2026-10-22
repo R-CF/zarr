@@ -5,6 +5,9 @@
 
 skip_if_not_installed("paws.storage")
 
+# Theme management for printing
+thm <- Zarr.options$zarr_theme
+
 # A fake S3 client. Objects live in `objects` keyed by "bucket/key". Listings
 # are paginated two entries at a time to exercise continuation tokens. The
 # config passed to s3() is kept in `state$config` for inspection.
@@ -341,7 +344,7 @@ test_that("s3_list_dir() lists prefixes and keys across pages", {
 # ==== print() =================================================================
 
 test_that("print() of an S3 store shows bucket, prefix, region and endpoint", {
-  local_mocked_bindings(.use_cli = function() FALSE)
+  Zarr.options$zarr_theme <- NULL
   state <- local_fake_s3()
   new_bucket_store(state)
   s <- zarr_s3store$new("bkt", "data/store.zarr", endpoint = "https://minio.local", region = "x")
@@ -353,7 +356,7 @@ test_that("print() of an S3 store shows bucket, prefix, region and endpoint", {
 })
 
 test_that("print() of an S3 store omits an unset region and endpoint", {
-  local_mocked_bindings(.use_cli = function() FALSE)
+  Zarr.options$zarr_theme <- NULL
   state <- local_fake_s3()
   new_bucket_store(state)
   out <- capture.output(print(zarr_s3store$new("bkt", "data/store.zarr")))
@@ -363,7 +366,7 @@ test_that("print() of an S3 store omits an unset region and endpoint", {
 
 test_that("cli print() of an S3 store shows bucket, prefix, region and endpoint", {
   skip_if_not_installed("cli")
-  local_mocked_bindings(.use_cli = function() TRUE)
+  Zarr.options$zarr_theme <- thm
   state <- local_fake_s3()
   new_bucket_store(state)
   s <- zarr_s3store$new("bkt", "data/store.zarr", endpoint = "https://minio.local", region = "x")
@@ -381,3 +384,5 @@ test_that("S3 store exposes its client", {
   s <- zarr_s3store$new("bkt", "data/store.zarr")
   expect_true(is.function(s$service$get_object))
 })
+
+Zarr.options$zarr_theme <- thm

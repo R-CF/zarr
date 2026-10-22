@@ -40,7 +40,7 @@ applies to the array for all subsequent reads.}
   \itemize{
     \item \href{#method-zarr_array-initialize}{\code{zarr_array$new()}}
     \item \href{#method-zarr_array-print}{\code{zarr_array$print()}}
-    \item \href{#method-zarr_array-shard}{\code{zarr_array$shard()}}
+    \item \href{#method-zarr_array-details}{\code{zarr_array$details()}}
     \item \href{#method-zarr_array-hierarchy_nodes}{\code{zarr_array$hierarchy_nodes()}}
     \item \href{#method-zarr_array-read}{\code{zarr_array$read()}}
     \item \href{#method-zarr_array-write}{\code{zarr_array$write()}}
@@ -108,15 +108,19 @@ this method.}
 }
 
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-zarr_array-shard"></a>}}
-\if{latex}{\out{\hypertarget{method-zarr_array-shard}{}}}
-\subsection{\code{zarr_array$shard()}}{
-  Produce a one-line summary of the array including its name
-and shape, with dimension names if available.
+\if{html}{\out{<a id="method-zarr_array-details"></a>}}
+\if{latex}{\out{\hypertarget{method-zarr_array-details}{}}}
+\subsection{\code{zarr_array$details()}}{
+  Produce a named character vector with a summary of the array
+including its name, data type, shape (with dimension names if
+available) and the chunking.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_array$shard()}
+    \preformatted{zarr_array$details()}
     \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Named character vector with details of the array.
   }
 }
 
@@ -128,17 +132,14 @@ and shape, with dimension names if available.
 Zarr object or a group to display the full group hierarchy.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_array$hierarchy_nodes(idx, total, withCLI = FALSE)}
+    \preformatted{zarr_array$hierarchy_nodes(idx, total)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{idx, total}}{Arguments to control indentation. Ignored if argument
-\code{withCLI == TRUE}.}
-      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
-should be used for terminal output. The package must be installed when
-\code{TRUE}. Default is \code{FALSE}.}
+      \item{\code{idx, total}}{Arguments to control indentation. Ignored if package
+\code{cli} is installed.}
     }
     \if{html}{\out{</div>}}
   }

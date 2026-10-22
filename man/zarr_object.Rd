@@ -71,7 +71,7 @@ names.
 \link{zarr_group} and \link{zarr_array} \code{print()} methods.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_object$print_attributes(dirty = FALSE, withCLI = FALSE, ...)}
+    \preformatted{zarr_object$print_attributes(dirty = FALSE, ...)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -79,9 +79,6 @@ names.
     \describe{
       \item{\code{dirty}}{Optional. Logical flag that indicates if the attributes have
 unsaved edits. Default is \code{FALSE}.}
-      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
-should be used for terminal output. The package must be installed when
-\code{TRUE}. Default is \code{FALSE}.}
       \item{\code{...}}{Arguments passed to embedded functions. Of particular interest
 is \code{width = .} to specify the maximum width of the columns.}
     }

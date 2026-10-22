@@ -132,7 +132,7 @@ arrays in a character vector. Usually called from the Zarr object or
 a group to display the full group hierarchy.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_group$hierarchy_nodes(idx = 1L, total = 1L, withCLI = FALSE)}
+    \preformatted{zarr_group$hierarchy_nodes(idx = 1L, total = 1L)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -141,10 +141,7 @@ a group to display the full group hierarchy.
       \item{\code{idx, total}}{Optional arguments to control indentation. Should both be 1 (the
 default) when called interactively. The values will be updated during
 recursion when there are groups below the current group. Ignored if
-argument \code{withCLI == TRUE}.}
-      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
-should be used for terminal output. The package must be installed when
-\code{TRUE}. Default is \code{FALSE}.}
+package \code{cli} is installed.}
     }
     \if{html}{\out{</div>}}
   }

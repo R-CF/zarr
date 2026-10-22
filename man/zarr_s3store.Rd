@@ -161,16 +161,7 @@ permissions of the underlying credentials. Default \code{FALSE}.}
 will use \code{cli} if available.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_s3store$brief(withCLI = FALSE)}
-    \if{html}{\out{</div>}}
-  }
-  \subsection{Arguments}{
-    \if{html}{\out{<div class="arguments">}}
-    \describe{
-      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
-should be used for terminal output. The package must be installed when
-\code{TRUE}. Default is \code{FALSE}.}
-    }
+    \preformatted{zarr_s3store$brief()}
     \if{html}{\out{</div>}}
   }
 }

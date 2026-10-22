@@ -86,27 +86,28 @@ zarr_array <- R6::R6Class('zarr_array',
 
     #' @description Print a summary of the array to the console.
     print = function() {
-      withCLI <- .use_cli()
       meta <- private$.metadata
       shp <- meta$shape
       dim_names <- meta$dimension_names %||% meta$attributes$`_ARRAY_DIMENSIONS`
 
-      if (withCLI) {
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
         cli::cli_h1('Zarr array {.strong {private$.glyph}} {.strong {private$.name}}')
-        cli::cli_alert_info('Path      : {self$path}')
+        cli::cli_alert_info('{.label Path      :} {.text {self$path}}')
         if (nzchar(private$.domain))
-          cli::cli_alert_info('Domain    : {private$.domain}')
-        cli::cli_alert_info('Data type : {private$.data_type$data_type}')
+          cli::cli_alert_info('{.label Domain    :} {.text {private$.domain}}')
+        cli::cli_alert_info('{.label Data type :} {.text {private$.data_type$data_type}}')
         if (len <- length(shp)) {
           shp <- paste(shp, collapse = ', ')
           if (!is.null(dim_names))
             shp <- paste0(shp, ' [', paste(dim_names[1:len], collapse = ', '), ']')
-          cli::cli_alert_info('Shape     : {shp}')
-          cli::cli_alert_info('Chunking  : {paste(meta$chunk_grid$configuration$chunk_shape, collapse = ", ")}')
+          cli::cli_alert_info('{.label Shape     :} {.text {shp}}')
+          cli::cli_alert_info('{.label Chunking  :} {.text {paste(meta$chunk_grid$configuration$chunk_shape, collapse = ", ")}}')
         } else {
-          cli::cli_alert_info('Shape     : (scalar)')
-          cli::cli_alert_info('Chunking  : (scalar)')
+          cli::cli_alert_info('{.label Shape     :} {.text (scalar)}')
+          cli::cli_alert_info('{.label Chunking  :} {.text (scalar)}')
         }
+        cli::cli_end(this_div)
       } else {
         cat('<Zarr array>', private$.glyph, private$.name, '\n')
         cat('Path      :', self$path, '\n')
@@ -123,43 +124,47 @@ zarr_array <- R6::R6Class('zarr_array',
           cat('Chunking  : (scalar)\n')
         }
       }
-      private$print_details(withCLI = withCLI)
-      self$print_attributes(withCLI = withCLI)
+      private$print_details()
+      self$print_attributes()
       invisible(self)
     },
 
-    #' @description Produce a one-line summary of the array including its name
-    #'   and shape, with dimension names if available.
-    shard = function() {
-      dim_names <- private$.metadata$dimension_names %||% private$.metadata$attributes$`_ARRAY_DIMENSIONS`
-      if (is.null(dim_names))
-        paste0(private$.name, ' [', paste(private$.metadata$shape, collapse = ', '), ']')
-      else {
-        dims <- mapply(function(nm, shp) paste(nm, shp, sep = ' = '), dim_names, private$.metadata$shape)
-        paste0(private$.name, ' [', paste(dims, collapse = ', '), ']')
-      }
+    #' @description Produce a named character vector with a summary of the array
+    #'   including its name, data type, shape (with dimension names if
+    #'   available) and the chunking.
+    #' @return Named character vector with details of the array.
+    details = function() {
+      nm <- private$.name
+      if (!nzchar(nm))
+        nm <- '(root array)'
+      shp <- private$.metadata$shape
+      shp <- if (length(shp)) {
+        dim_names <- private$.metadata$dimension_names %||% private$.metadata$attributes$`_ARRAY_DIMENSIONS`
+        if (is.null(dim_names)) paste(shp, collapse = ', ')
+        else  paste(mapply(function(dn, shp) paste(dn, shp, sep = ' = '), dim_names, shp), collapse = ', ')
+      } else '(scalar)'
+      c(name = nm, data_type = private$.data_type$data_type, shape = shp)
     },
 
     #' @description Prints this array to a hierarchy. Usually called from the
     #'   Zarr object or a group to display the full group hierarchy.
-    #' @param idx,total Arguments to control indentation. Ignored if argument
-    #'   `withCLI == TRUE`.
-    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
-    #'   should be used for terminal output. The package must be installed when
-    #'   `TRUE`. Default is `FALSE`.
-    hierarchy_nodes = function(idx, total, withCLI = FALSE) {
-      if (withCLI) {
-        this_div <- cli::cli_div(theme = list('ul.group' = list('list-style-type' = private$.glyph)))
-        this_grp <- cli::cli_ul(class = 'group')
-        cli::cli_li('{self$shard()}')
+    #' @param idx,total Arguments to control indentation. Ignored if package
+    #'   `cli` is installed.
+    hierarchy_nodes = function(idx, total) {
+      details <- self$details()
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = append(Zarr.options$zarr_theme,
+                                                list('ul.array' = list('list-style-type' = private$.glyph))))
+        this_grp <- cli::cli_ul(class = 'array')
+        cli::cli_li('{.array {details["name"]}} {.minor [{details["data_type"]}] [{details["shape"]}]}')
         cli::cli_end(this_grp)
         cli::cli_end(this_div)
       } else {
         if (!nzchar(private$.name))
-          paste(private$.glyph, '(root array)', self$shard(), '\n')
+          paste(private$.glyph, details["name"], details["shape"], '\n')
         else {
           knot <- if (idx == total) '\u2514 ' else '\u251C '
-          paste0(knot, private$.glyph, ' ', self$shard(), '\n')
+          paste0(knot, private$.glyph, ' ', details["name"], ' [', details["shape"], ']\n')
         }
       }
     },
@@ -295,10 +300,12 @@ zarr_array <- R6::R6Class('zarr_array',
       pb <- FALSE
       if (!is.null(verbose)) {
         verbose$arrays_done <- verbose$arrays_done + 1L
-        if (verbose$cli) {
+        if (is.list(Zarr.options$zarr_theme)) {
+          this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
+
           if (length(keys) > 2L) {
             pb <- TRUE
-            cli::cli_progress_bar(format = 'Array {.val {self$name}} | {pb_bar} | {pb_percent}', total = length(keys))
+            cli::cli_progress_bar(format = '{.label Array} {.array {self$name}} {.label | {pb_bar} | {pb_percent}}', total = length(keys))
           }
         } else
           cat(sprintf('Copying array "%s" (%d/%d)\n', self$name, verbose$arrays_done, verbose$arrays))
@@ -312,8 +319,10 @@ zarr_array <- R6::R6Class('zarr_array',
           if (pb) cli::cli_progress_update()
         }
       }
-      if (!is.null(verbose) && verbose$cli)
-        cli::cli_alert_success('Created array {private$.glyph} {.val {self$name}} ({verbose$arrays_done}/{verbose$arrays})')
+      if (!is.null(verbose) && is.list(Zarr.options$zarr_theme)) {
+        cli::cli_alert_success('{.label Created array} {.array {private$.glyph} {self$name}} {.minor ({verbose$arrays_done}/{verbose$arrays})}')
+        cli::cli_end(this_div)
+      }
 
       dest
     },

@@ -129,16 +129,7 @@ use \code{cli} if available. Specialised store classes can override this
 method to provide more details.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_store$brief(withCLI = FALSE)}
-    \if{html}{\out{</div>}}
-  }
-  \subsection{Arguments}{
-    \if{html}{\out{<div class="arguments">}}
-    \describe{
-      \item{\code{withCLI}}{Optional. Logical flag that indicates if the \code{cli} package
-should be used for terminal output. The package must be installed when
-\code{TRUE}. Default is \code{FALSE}.}
-    }
+    \preformatted{zarr_store$brief()}
     \if{html}{\out{</div>}}
   }
 }

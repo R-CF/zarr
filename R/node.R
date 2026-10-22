@@ -37,13 +37,12 @@ zarr_node <- R6::R6Class('zarr_node',
 
     # Print domain-specific details, if any. A domain can print any details for
     # a group or an array. Details are printed after the Zarr object details and
-    # before the attributes. If printing details, implementations should start
-    # with an empty line to create visual separation between sections. This
-    # implementation on the base class prints nothing.
-    # @param withCLI Optional. Logical flag that indicates if the `cli` package
-    #   should be used for terminal output. The package must be installed when
-    #   `TRUE`. Default is `FALSE`.
-    print_details = function(withCLI = FALSE) {
+    # before the attributes. If printing details using text mode, domain
+    # implementations should start with an empty line to create visual
+    # separation between sections. For printing with `cli`, use should be made
+    # of the theme set in this package. This implementation on the base class
+    # prints nothing.
+    print_details = function() {
       # Intentionally empty method
     },
 

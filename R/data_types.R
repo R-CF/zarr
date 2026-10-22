@@ -68,9 +68,17 @@ zarr_data_type <- R6::R6Class('zarr_data_type',
 
     #' @description Print a summary of the data type to the console.
     print = function() {
-      cat('<Zarr data type> ', private$.data_type,
-          ' (', private$.byte_size, ' byte', if (private$.byte_size > 1L) 's',
-          ' - fill value: ', private$.fill_value, ')\n', sep = '')
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
+        cli::cli_h1('Zarr data type')
+        cli::cli_alert_info('{.label Data type :} {.text {private$.data_type}}')
+        cli::cli_alert_info('{.label Data size :} {.text {paste0(private$.byte_size, " byte", if (private$.byte_size > 1L) "s")}}')
+        cli::cli_alert_info('{.label Fill value:} {.text {private$.fill_value}}')
+        cli::cli_end(this_div)
+      } else
+        cat('<Zarr data type> ', private$.data_type,
+            ' (', private$.byte_size, ' byte', if (private$.byte_size > 1L) 's',
+            ' - fill value: ', private$.fill_value, ')\n', sep = '')
       invisible(self)
     },
 

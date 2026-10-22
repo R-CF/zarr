@@ -134,9 +134,18 @@ array_builder <- R6::R6Class('array_builder',
 
     #' @description Print the array metadata to the console.
     print = function() {
-      cat('<Zarr array metadata>', if (self$is_valid()) 'VALID' else 'INCOMPLETE', '\n')
       meta <- private$build_metadata()
-      cat(jsonlite::toJSON(meta, auto_unbox = TRUE, pretty = TRUE, digits = NA))
+      json_meta <- jsonlite::toJSON(meta, auto_unbox = TRUE, pretty = TRUE, digits = NA)
+
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
+        cli::cli_h1('Zarr array metadata - {if (self$is_valid()) "VALID" else "INCOMPLETE"}')
+        cli::cli_code(json_meta, language = 'json')
+        cli::cli_end(this_div)
+      } else {
+        cat('<Zarr array metadata>', if (self$is_valid()) 'VALID' else 'INCOMPLETE', '\n')
+        cat(json_meta)
+      }
       invisible(self)
     },
 

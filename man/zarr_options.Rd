@@ -17,7 +17,9 @@ Nothing if argument \code{value} is provided. The value of argument \code{key}
 if it is provided, or a \code{list} with all options otherwise.
 }
 \description{
-Use this function to read or modify package options.
+Use this function to read or modify package options. On modifying an option,
+if the new value is not valid then it is silently discarded and the original
+setting remains.
 }
 \examples{
 zarr_options()

@@ -252,19 +252,18 @@ zarr_s3store <- R6::R6Class('zarr_s3store',
 
     #' @description Print a brief summary of the S3 store to the console. This
     #'   will use `cli` if available.
-    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
-    #'   should be used for terminal output. The package must be installed when
-    #'   `TRUE`. Default is `FALSE`.
-    brief = function(withCLI = FALSE) {
+    brief = function() {
       cfg <- private$.client$.internal$config
-      super$brief(withCLI)
-      if (withCLI) {
+      super$brief()
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
         if (isTRUE(nzchar(cfg$region)))
-          cli::cli_alert_info('Region    : {cfg$region}')
+          cli::cli_alert_info('{.label Region    :} {.text {cfg$region}}')
         if (isTRUE(nzchar(cfg$endpoint)))
-          cli::cli_alert_info('Endpoint  : {cfg$endpoint}')
-        cli::cli_alert_info('Bucket    : {private$.bucket}')
-        cli::cli_alert_info('Key prefix: {private$.key_prefix}')
+          cli::cli_alert_info('{.label Endpoint  :} {.text {cfg$endpoint}}')
+        cli::cli_alert_info('{.label Bucket    :} {.text {private$.bucket}}')
+        cli::cli_alert_info('{.label Key prefix:} {.text {private$.key_prefix}}')
+        cli::cli_end(this_div)
       } else {
         if (isTRUE(nzchar(cfg$region)))
           cat('Region    :', cfg$region, '\n')

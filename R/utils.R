@@ -1,6 +1,8 @@
 #' Zarr package options
 #'
-#' Use this function to read or modify package options.
+#' Use this function to read or modify package options. On modifying an option,
+#' if the new value is not valid then it is silently discarded and the original
+#' setting remains.
 #'
 #' @param key Character. A key whose value to retrieve or modify. If missing,
 #'   all options are returned.
@@ -17,12 +19,31 @@ zarr_options <- function(key, value) {
     Zarr.options[[key]]
   else {
     switch(key,
-           'chunk_length'      = if (is.numeric(value)) Zarr.options$chunk_length <- as.integer(value[1L]),
-           'chunk_cache_bytes' = if (is.numeric(value)) Zarr.options$chunk_cache_bytes <- as.numeric(value[1L]),
-           'min_compress'      = if (is.numeric(value)) Zarr.options$min_compress <- as.integer(value[1L]),
-           'eps'               = if (is.numeric(value)) Zarr.options$eps <- value[1L]
+           'chunk_length'      = if (is.numeric(value) && value[1L] > 0) Zarr.options$chunk_length <- as.integer(value[1L]),
+           'chunk_cache_bytes' = if (is.numeric(value) && value[1L] > 0) Zarr.options$chunk_cache_bytes <- as.numeric(value[1L]),
+           'min_compress'      = if (is.numeric(value) && value[1L] > 0) Zarr.options$min_compress <- as.integer(value[1L]),
+           'eps'               = if (is.numeric(value) && value[1L] > 0) Zarr.options$eps <- value[1L],
+           'group_style'       = if (is.character(value)) Zarr.options$group_style <- value,
+           'array_style'       = if (is.character(value)) Zarr.options$array_style <- value,
+           'label_style'       = if (is.character(value)) Zarr.options$label_style <- value,
+           'text_style'        = if (is.character(value)) Zarr.options$array_style <- value,
+           'minor_style'       = if (is.character(value)) Zarr.options$minor_style <- value
     )
+    if (requireNamespace('cli', quietly = TRUE))
+      Zarr.options$zarr_theme <- .make_zarr_theme()
   }
+}
+
+# Internal function to make a Zarr theme for use with cli after any style has
+# changed. Return a named list with ANSI styles that can be assigned to
+# Zarr.options$zarr_theme
+.make_zarr_theme <- function() {
+  list('h1' = list('margin-top' = 0),
+       'span.group' = list(fmt = do.call(cli::combine_ansi_styles, as.list(Zarr.options$group_style))),
+       'span.array' = list(fmt = do.call(cli::combine_ansi_styles, as.list(Zarr.options$array_style))),
+       'span.label' = list(fmt = do.call(cli::combine_ansi_styles, as.list(Zarr.options$label_style))),
+       'span.text' = list(fmt = do.call(cli::combine_ansi_styles, as.list(Zarr.options$text_style))),
+       'span.minor' = list(fmt = do.call(cli::combine_ansi_styles, as.list(Zarr.options$minor_style))))
 }
 
 #' Check if the name of a node is valid in Zarr
@@ -363,8 +384,3 @@ zarr_conventions <- function() {
     .aperm(raw, order(perm))
   }
 }
-
-# Helper function to test code without package cli. Not useful in any production
-# process.
-.use_cli <- function()
-  isTRUE(getOption("zarr.cli", TRUE)) && requireNamespace("cli", quietly = TRUE)

@@ -4,6 +4,9 @@
 skip_if_not_installed("webfakes")
 skip_if_not_installed("curl")
 
+# Theme management for printing
+thm <- Zarr.options$zarr_theme
+
 # Start a server for directory `root` for the duration of the calling test.
 serve_dir <- function(root, .local_envir = parent.frame()) {
   app <- webfakes::new_app()
@@ -163,7 +166,7 @@ test_that("HTTP store reads a v2 single-array store without consolidated metadat
 # ==== print() =================================================================
 
 test_that("print() of an HTTP store shows the URL", {
-  local_mocked_bindings(.use_cli = function() FALSE)
+  Zarr.options$zarr_theme <- NULL
   fn <- tempfile(fileext = ".zarr")
   as_zarr(1:10, location = fn)
   srv <- serve_dir(fn)
@@ -174,14 +177,16 @@ test_that("print() of an HTTP store shows the URL", {
 
 test_that("cli print() of an HTTP store shows the URL and capabilities", {
   skip_if_not_installed("cli")
-  local_mocked_bindings(.use_cli = function() TRUE)
+  Zarr.options$zarr_theme <- thm
   fn <- tempfile(fileext = ".zarr")
   as_zarr(1:10, location = fn)
   srv <- serve_dir(fn)
   s <- open_zarr(srv$url())$store
   out <- paste(cli_out(print(s)), collapse = "\n")
   expect_match(out, "HTTP store - version 3 - read-only", fixed = TRUE)
-  expect_match(out, paste0("URL: ", s$root), fixed = TRUE)
+  expect_match(out, paste0("i URL: <", s$root, ">"), fixed = TRUE)
   expect_match(out, paste(cli::symbol$cross, "Listing"), fixed = TRUE)
   expect_match(out, paste(cli::symbol$cross, "Writing"), fixed = TRUE)
 })
+
+Zarr.options$zarr_theme <- thm

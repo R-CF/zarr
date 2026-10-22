@@ -1,5 +1,8 @@
 # Tests for the convention agents and for domain registration.
 
+# Theme management for printing
+thm <- Zarr.options$zarr_theme
+
 # ==== zarr_convention (base class) ============================================
 
 test_that("convention base class exposes its identity", {
@@ -119,6 +122,7 @@ test_that("ref as_list() requires a node, also after clear()", {
 # to the generic classes.
 special_group <- R6::R6Class("special_group",
   inherit = zarr_group,
+  cloneable = FALSE,
   public = list(
     initialize = function(name, metadata, parent) {
       super$initialize(name, metadata, parent, no_create_check = TRUE)
@@ -128,6 +132,7 @@ special_group <- R6::R6Class("special_group",
 )
 special_domain <- R6::R6Class("special_domain",
   inherit = zarr_domain,
+  cloneable = FALSE,
   public = list(
     initialize = function() super$initialize("special"),
     build = function(name, metadata, parent, store) {
@@ -158,13 +163,13 @@ test_that("registered domain builds the nodes it claims", {
   z2 <- open_zarr(fn)
   expect_s3_class(z2[["/special"]], "special_group")
   expect_false(inherits(z2[["/plain"]], "special_group"))
-  local_mocked_bindings(.use_cli = function() FALSE)
+  Zarr.options$zarr_theme <- NULL
   expect_output(print(z2[["/special"]]), "Domain    : special")
 })
 
 test_that("cli print() of a domain node shows the domain", {
   skip_if_not_installed("cli")
-  local_mocked_bindings(.use_cli = function() TRUE)
+  Zarr.options$zarr_theme <- thm
   fn <- tempfile(fileext = ".zarr")
   create_zarr(fn)$add_group("/", "special")
   zarr_register_domain(special_domain$new())
@@ -175,6 +180,7 @@ test_that("cli print() of a domain node shows the domain", {
 
 special_array <- R6::R6Class("special_array",
   inherit = zarr_array,
+  cloneable = FALSE,
   public = list(
     initialize = function(name, metadata, parent) {
       super$initialize(name, metadata, parent, no_create_check = TRUE)
@@ -184,7 +190,7 @@ special_array <- R6::R6Class("special_array",
 )
 
 test_that("print() of a domain array shows the domain", {
-  local_mocked_bindings(.use_cli = function() FALSE)
+  Zarr.options$zarr_theme <- NULL
   z <- create_zarr()
   meta <- z$add_array("/", "a", define_array("int32", 3L))$metadata
   a <- special_array$new("a", meta, z$root)
@@ -193,7 +199,7 @@ test_that("print() of a domain array shows the domain", {
 
 test_that("cli print() of a domain array shows the domain", {
   skip_if_not_installed("cli")
-  local_mocked_bindings(.use_cli = function() TRUE)
+  Zarr.options$zarr_theme <- thm
   z <- create_zarr()
   meta <- z$add_array("/", "a", define_array("int32", 3L))$metadata
   a <- special_array$new("a", meta, z$root)
@@ -215,3 +221,5 @@ test_that("zarr_register_domain() ignores objects that are not domains", {
   zarr_register_domain(list(name = "fake"))
   expect_length(zarr_domains(), n)
 })
+
+Zarr.options$zarr_theme <- thm

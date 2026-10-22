@@ -44,41 +44,43 @@ zarr_object <- R6::R6Class('zarr_object',
 
     # Print one level of attributes to the console. Calls itself recursively to
     # print nested attributes.
-    print_attribute_levels = function(atts, indent = 0L, withCLI = FALSE) {
-      if (withCLI) {
+    print_attribute_levels = function(atts, indent = 0L) {
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
         for (nm in names(atts)) {
           val <- atts[[nm]]
 
           if (is.list(val) && !is.null(names(val)) && any(nzchar(names(val)))) {
             # Named list: JSON object, recurse
-            cli::cli_li('{nm}:')
+            cli::cli_li('{.label {nm}:}')
             sub <- cli::cli_ul()
-            private$print_attribute_levels(val, indent + 1L, withCLI = TRUE)
+            private$print_attribute_levels(val, indent + 1L)
             cli::cli_end(sub)
           } else if (is.list(val) && any(vapply(val, is.list, logical(1L)))) {
             # Unnamed list containing lists: JSON array of objects, recurse each element
-            cli::cli_li('{nm}:')
+            cli::cli_li('{.label {nm}:}')
             sub_arr <- cli::cli_ul()
             for (i in seq_along(val)) {
-              cli::cli_li('Item {i}')
+              cli::cli_li('{.label Item {i}}')
               elem <- val[[i]]
               sub_item <- cli::cli_ul()
               if (is.list(elem) && !is.null(names(elem)) && any(nzchar(names(elem))))
-                private$print_attribute_levels(elem, indent + 2L, withCLI = TRUE)
+                private$print_attribute_levels(elem, indent + 2L)
               else
-                cli::cli_li('{elem}')
+                cli::cli_li('{.text {elem}}')
               cli::cli_end(sub_item)
             }
             cli::cli_end(sub_arr)
           } else if (is.list(val)) {
             # Unnamed list of scalars: flat JSON array
-            cli::cli_li('{nm}: [{paste(unlist(val), collapse = ", ")}]')
+            cli::cli_li('{.label {nm}:} {.text [{paste(unlist(val), collapse = ", ")}]}')
           } else if (length(val) > 1L) {
-            cli::cli_li('{nm}: [{paste(val, collapse = ", ")}]')
+            cli::cli_li('{.label {nm}:} {.text [{paste(val, collapse = ", ")}]}')
           } else {
-            cli::cli_li('{nm}: {val}')
+            cli::cli_li('{.label {nm}:} {.text {val}}')
           }
         }
+        cli::cli_end(this_div)
       } else {
         pad   <- strrep("  ", indent)
         width <- max(nchar(names(atts)))
@@ -162,20 +164,17 @@ zarr_object <- R6::R6Class('zarr_object',
     #'   [zarr_group] and [zarr_array] `print()` methods.
     #' @param dirty Optional. Logical flag that indicates if the attributes have
     #'   unsaved edits. Default is `FALSE`.
-    #' @param withCLI Optional. Logical flag that indicates if the `cli` package
-    #'   should be used for terminal output. The package must be installed when
-    #'   `TRUE`. Default is `FALSE`.
     #' @param ... Arguments passed to embedded functions. Of particular interest
     #'   is `width = .` to specify the maximum width of the columns.
     #' @return A (multi-line) character string with the attributes of the Zarr
     #'   object.
-    print_attributes = function(dirty = FALSE, withCLI = FALSE, ...) {
+    print_attributes = function(dirty = FALSE, ...) {
       atts <- private$display_attributes()
       if (length(atts)) {
         title <- if (dirty) 'Attributes (*)' else 'Attributes'
-        if (withCLI) cli::cli_rule('{title}')
+        if (is.list(Zarr.options$zarr_theme)) cli::cli_rule('{title}')
         else cat(paste0('\n', title, '\n'))
-        private$print_attribute_levels(atts, withCLI = withCLI)
+        private$print_attribute_levels(atts)
       }
     },
 

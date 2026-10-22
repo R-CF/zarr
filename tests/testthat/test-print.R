@@ -5,9 +5,9 @@
 # This file tests the plain-text output; the cli output is tested in
 # test-print-cli.R. make_tree() is in helper-print.R.
 
-local_mocked_bindings(.use_cli = function() FALSE)
-
 # ==== zarr object =============================================================
+thm <- Zarr.options$zarr_theme
+Zarr.options$zarr_theme <- NULL
 
 test_that("print() of a zarr object in memory", {
   z <- make_tree()
@@ -26,7 +26,7 @@ test_that("print() of a zarr object on the file system adds location and size", 
 
 test_that("print() of an uninitialised zarr object", {
   z <- zarr$new(zarr_memorystore$new())
-  expect_output(print(z), "Arrays    : \\(unitialised\\)")
+  expect_output(print(z), "Arrays    : \\(uninitialised\\)")
   expect_output(z$hierarchy(), "\\(uninitialised\\)")
 })
 
@@ -215,3 +215,5 @@ test_that("delete_attribute() ignores paths through non-list values", {
   a$delete_attribute("history/1/deeper")
   expect_equal(a$attributes, list(units = "K", history = list("plain note")))
 })
+
+Zarr.options$zarr_theme <- thm
