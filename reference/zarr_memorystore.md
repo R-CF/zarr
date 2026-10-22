@@ -237,8 +237,9 @@ prefix. Used internally to support resizing and promoting arrays.
 
 #### Returns
 
-A character vector of full store keys for chunk/shard files, excluding
-the array's own metadata document.
+A character vector of full store keys under `prefix`. This may include
+keys that are not chunks, such as the metadata document of the array;
+the chunking scheme of the array selects the chunk keys.
 
 ------------------------------------------------------------------------
 

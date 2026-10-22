@@ -247,6 +247,12 @@ persist data in stale chunks.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>An error is thrown when the selection extends beyond the
+shape of the array, including when <code>selection</code> is missing and
+<code>data</code> is larger than the array. Use <code>resize()</code> first to grow the
+array.</p>
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>Self, invisibly.</p>
 </div>
@@ -282,7 +288,7 @@ feedback is requested.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
 <p>This is a method for internal use. It is called by the
 <a href="zarr_group.html">zarr_group</a> <code>copy_to()</code> method, which itself is called by the <a href="zarr.html">zarr</a>
 <code>save_to()</code> method.</p>

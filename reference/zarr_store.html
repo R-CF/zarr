@@ -458,8 +458,10 @@ promoting arrays.</p><div class="section">
 </dl><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
-<p>A character vector of full store keys for chunk/shard files,
-excluding the array's own metadata document.</p>
+<p>A character vector of full store keys under <code>prefix</code>. This
+may include keys that are not chunks, such as the metadata document
+of the array; the chunking scheme of the array selects the chunk
+keys.</p>
 </div>
 
 </div>

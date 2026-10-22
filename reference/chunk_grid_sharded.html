@@ -3,11 +3,17 @@
 arrays. It manages reading from Zarr stores, using the
 codecs for data transformation included in the sharding configuration.
 Writing is not supported with this codec. Storing a scalar array in a
-sharded grid is not possible either and totally useless anyway."><meta property="og:description" content="This class implements the sharded chunk grid for Zarr
+sharded grid is not possible either and totally useless anyway.
+The sharding codec requires a regular grid of shards, so the geometry of
+the shard grid is inherited from chunk_grid_regular, with the chunk
+shape being the shape of a shard."><meta property="og:description" content="This class implements the sharded chunk grid for Zarr
 arrays. It manages reading from Zarr stores, using the
 codecs for data transformation included in the sharding configuration.
 Writing is not supported with this codec. Storing a scalar array in a
-sharded grid is not possible either and totally useless anyway."></head><body>
+sharded grid is not possible either and totally useless anyway.
+The sharding codec requires a regular grid of shards, so the geometry of
+the shard grid is inherited from chunk_grid_regular, with the chunk
+shape being the shape of a shard."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -57,12 +63,15 @@ arrays. It manages reading from Zarr stores, using the
 codecs for data transformation included in the sharding configuration.
 Writing is not supported with this codec. Storing a scalar array in a
 sharded grid is not possible either and totally useless anyway.</p>
+<p>The sharding codec requires a regular grid of shards, so the geometry of
+the shard grid is inherited from <a href="chunk_grid_regular.html">chunk_grid_regular</a>, with the chunk
+shape being the shape of a shard.</p>
     </div>
 
 
     <div class="section level2">
     <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
-    <p><code><a href="zarr_extension.html">zarr_extension</a></code> -&gt; <code><a href="chunking.html">chunking</a></code> -&gt; <code>chunk_grid_sharded</code></p>
+    <p><code><a href="zarr_extension.html">zarr_extension</a></code> -&gt; <code><a href="chunking.html">chunking</a></code> -&gt; <code><a href="chunk_grid_regular.html">chunk_grid_regular</a></code> -&gt; <code>chunk_grid_sharded</code></p>
     </div>
     <div class="section level2">
     <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
@@ -90,11 +99,13 @@ scheme for the indexing of the internal chunks.</p></dd>
 <li><p><a href="#method-chunk_grid_sharded-print"><code>chunk_grid_sharded$print()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_sharded-metadata_fragment"><code>chunk_grid_sharded$metadata_fragment()</code></a></p></li>
 <li><p><a href="#method-chunk_grid_sharded-read"><code>chunk_grid_sharded$read()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="chunk_keys"><a href="chunking.html#method-chunk_keys"><code>chunking$chunk_keys()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="flush"><a href="chunking.html#method-flush"><code>chunking$flush()</code></a></span></li>
+<li><p><a href="#method-chunk_grid_sharded-write"><code>chunk_grid_sharded$write()</code></a></p></li>
+</ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="chunk_keys"><a href="chunking.html#method-chunk_keys"><code>chunking$chunk_keys()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="insert_dimension"><a href="chunking.html#method-insert_dimension"><code>chunking$insert_dimension()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="read_raw"><a href="chunking.html#method-read_raw"><code>chunking$read_raw()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="resize"><a href="chunking.html#method-resize"><code>chunking$resize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="write_raw"><a href="chunking.html#method-write_raw"><code>chunking$write_raw()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunk_grid_regular" data-id="flush"><a href="chunk_grid_regular.html#method-flush"><code>chunk_grid_regular$flush()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunk_grid_regular" data-id="resize"><a href="chunk_grid_regular.html#method-resize"><code>chunk_grid_regular$resize()</code></a></span></li>
 </ul></details></p><hr><a id="method-chunk_grid_sharded-initialize"></a><div class="section">
 <h3 id="chunk-grid-sharded-new-"><code>chunk_grid_sharded$new()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-sharded-new-"></a></h3>
 <p>Initialize a new sharded chunking scheme for an array.</p><div class="section">
@@ -180,6 +191,25 @@ dimensionality of the Zarr array, indicating the starting and ending
 </div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>A vector, matrix or array of data.</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-chunk_grid_sharded-write"></a><div class="section">
+<h3 id="chunk-grid-sharded-write-"><code>chunk_grid_sharded$write()</code><a class="anchor" aria-label="anchor" href="#chunk-grid-sharded-write-"></a></h3>
+<p>Writing to a sharded array is not supported.</p><div class="section">
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">chunk_grid_sharded</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>...</code></dt>
+<dd><p>Ignored.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>This method always throws an error.</p>
 </div>
 
 </div>

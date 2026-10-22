@@ -6,11 +6,17 @@ included in the sharding configuration. Writing is not supported with
 this codec. Storing a scalar array in a sharded grid is not possible
 either and totally useless anyway.
 
+The sharding codec requires a regular grid of shards, so the geometry of
+the shard grid is inherited from
+[chunk_grid_regular](https://r-cf.github.io/zarr/reference/chunk_grid_regular.md),
+with the chunk shape being the shape of a shard.
+
 ## Super classes
 
 [`zarr_extension`](https://r-cf.github.io/zarr/reference/zarr_extension.md)
 -\> [`chunking`](https://r-cf.github.io/zarr/reference/chunking.md) -\>
-`chunk_grid_sharded`
+[`chunk_grid_regular`](https://r-cf.github.io/zarr/reference/chunk_grid_regular.md)
+-\> `chunk_grid_sharded`
 
 ## Active bindings
 
@@ -39,13 +45,16 @@ either and totally useless anyway.
 
 - [`chunk_grid_sharded$read()`](#method-chunk_grid_sharded-read)
 
+- [`chunk_grid_sharded$write()`](#method-chunk_grid_sharded-write)
+
 Inherited methods
 
 - [`chunking$chunk_keys()`](https://r-cf.github.io/zarr/reference/chunking.html#method-chunk_keys)
-- [`chunking$flush()`](https://r-cf.github.io/zarr/reference/chunking.html#method-flush)
+- [`chunking$insert_dimension()`](https://r-cf.github.io/zarr/reference/chunking.html#method-insert_dimension)
 - [`chunking$read_raw()`](https://r-cf.github.io/zarr/reference/chunking.html#method-read_raw)
-- [`chunking$resize()`](https://r-cf.github.io/zarr/reference/chunking.html#method-resize)
 - [`chunking$write_raw()`](https://r-cf.github.io/zarr/reference/chunking.html#method-write_raw)
+- [`chunk_grid_regular$flush()`](https://r-cf.github.io/zarr/reference/chunk_grid_regular.html#method-flush)
+- [`chunk_grid_regular$resize()`](https://r-cf.github.io/zarr/reference/chunk_grid_regular.html#method-resize)
 
 ------------------------------------------------------------------------
 
@@ -144,3 +153,23 @@ Read data from the Zarr array into an R object.
 #### Returns
 
 A vector, matrix or array of data.
+
+------------------------------------------------------------------------
+
+### `chunk_grid_sharded$write()`
+
+Writing to a sharded array is not supported.
+
+#### Usage
+
+    chunk_grid_sharded$write(...)
+
+#### Arguments
+
+- `...`:
+
+  Ignored.
+
+#### Details
+
+This method always throws an error.

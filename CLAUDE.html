@@ -82,9 +82,9 @@
     zarr_codec_blosc, zarr_codec_zstd, zarr_codec_gzip, zarr_codec_crc32c,
     zarr_codec_ucs4,    # not a real codec, included to support the &lt;U* data type
     zarr_codec_sharding # display-only placeholder; real logic in chunk_grid_sharded
-  chunking              # base class for all chunk grid management
-    chunk_grid_regular  # regular chunking: manages chunk I/O for one array
-    chunk_grid_sharded  # sharded chunking: manages shard I/O for one array (read-only)
+  chunking              # chunk mechanism: keys, cache, raw I/O, chunk relocation; no grid geometry
+    chunk_grid_regular  # regular grid geometry; manages chunk I/O for one array
+      chunk_grid_sharded  # regular grid of shards; manages shard I/O for one array (read-only)
   zarr_data_type        # maps Zarr types to R storage modes
 
 zarr_store              # abstract key-value store interface
@@ -114,7 +114,7 @@ array_builder           # mutable builder for array metadata documents</code></p
 <p><strong>Zarr v2 compatibility:</strong> <code>zarr_store</code> has a private <code>metadata_v2_to_v3()</code> method that converts v2 metadata on the fly. Stores detect the version from <code>zarr.json</code> vs <code>.zarray</code>/<code>.zgroup</code> keys. Internally everything is represented as v3.</p>
 <p><strong>Ordering:</strong> R uses column-major (Fortran) order; Zarr canonical is row-major (C order). By default <code>array_builder</code> inserts a <code>transpose</code> codec so data is stored in native R order without permutation. Setting <code>array_builder$portable &lt;- TRUE</code> removes the transpose codec, causing data to be permuted on write/read for cross-language compatibility. Sharded arrays produced by other tools (Python/zarr-python) are always in C order; <code>chunk_grid_sharded_IO$load_inner()</code> handles the permutation via <code><a href="https://rdrr.io/r/base/aperm.html" class="external-link">aperm()</a></code> when no transpose codec is present.</p>
 <p><strong>HTTP byte-range reads:</strong> <code>zarr_httpstore$get()</code> supports the same <code>byte_range</code> interface as <code>zarr_localstore$get()</code>: <code>NULL</code> (whole object), single negative integer (suffix range), single positive integer (offset to end), or length-2 vector <code>c(start, end)</code> with exclusive end. Implemented via curl <code>Range</code> header; servers must support HTTP range requests (206 Partial Content). This is a hard requirement for sharded HTTP stores.</p>
-<p><strong>Extension points:</strong> New stores inherit <code>zarr_store</code>; new codecs inherit <code>zarr_codec</code>; new domains inherit <code>zarr_domain</code> and must be registered via <code><a href="reference/zarr_register_domain.html">zarr_register_domain()</a></code>; new conventions inherit <code>zarr_convention</code>; new chunking schemes inherit <code>chunking</code>.</p>
+<p><strong>Extension points:</strong> New stores inherit <code>zarr_store</code>; new codecs inherit <code>zarr_codec</code>; new domains inherit <code>zarr_domain</code> and must be registered via <code><a href="reference/zarr_register_domain.html">zarr_register_domain()</a></code>; new conventions inherit <code>zarr_convention</code>; new chunking schemes inherit <code>chunking</code>, set its private <code>.grid</code> (number of chunks per dimension) and implement <code>max_chunk_length()</code>, <code>resize()</code>, <code>read()</code> and <code><a href="https://rdrr.io/r/base/write.html" class="external-link">write()</a></code>.</p>
 <p><strong>Global state:</strong> - <code>Zarr.domains</code> — environment of registered domain objects. - <code>Zarr.options</code> — environment with <code>chunk_length</code> (default 100L) and <code>eps</code> (float comparison tolerance).</p>
 </div>
 <div class="section level2">

@@ -51,7 +51,7 @@ z[["/"]]
 #> ℹ Path      : /
 #> ℹ Data type : float32
 #> ℹ Shape     : 160, 260, 12
-#> ℹ Chunking  : 80, 65, 12
+#> ℹ Chunk grid: 2, 4, 1 [80 x 65 x 12]
 #> ── Attributes ──────────────────────────────────────────────────────────────────
 #> • long_name: near-surface temperature
 #> • units: degrees Celsius
@@ -299,7 +299,7 @@ z3[["/"]]
 #> ℹ Path      : /
 #> ℹ Data type : uint16
 #> ℹ Shape     : 532, 2, 988, 256, 271
-#> ℹ Chunking  : 1, 1, 1, 256, 271
+#> ℹ Chunk grid: 532, 2, 988, 1, 1 [1 x 1 x 1 x 256 x 271]
 ```
 
 ## Authentication

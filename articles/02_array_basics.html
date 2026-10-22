@@ -123,7 +123,7 @@ alternative to “.Rdata” files.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpEsC7HM/file1d99310cf107.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">2.81 KB</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">1</span></span></span>
@@ -133,7 +133,7 @@ alternative to “.Rdata” files.</p>
 <span><span class="co"># Zarr arrays use the ⌗ glyph</span></span>
 <span><span class="co"># (Domains may use other glyphs)</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpEsC7HM/file1d99310cf107.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
 <span><span class="co">#&gt; ☰ <span style="color: #0000BB; font-weight: bold;">/ (root group)</span></span></span>
 <span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">top_array</span> <span style="color: #B2B2B2;">[int32] [500, 10, 2]</span></span></span></code></pre></div>
 <p>If you have multiple R objects that you want to store in the Zarr
@@ -154,7 +154,7 @@ where you want to store the R object.</p>
 <span><span class="va">grp</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, name <span class="op">=</span> <span class="st">"サブグループ"</span><span class="op">)</span>  <span class="co"># = subgroup</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">w</span>, name <span class="op">=</span> <span class="st">"空の行列"</span>, location <span class="op">=</span> <span class="va">grp</span><span class="op">)</span>  <span class="co"># = empty matrix</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpEsC7HM/file1d99310cf107.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
 <span><span class="co">#&gt; ☰ <span style="color: #0000BB; font-weight: bold;">/ (root group)</span></span></span>
 <span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">top_array</span> <span style="color: #B2B2B2;">[int32] [500, 10, 2]</span></span></span>
 <span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">a_vector</span> <span style="color: #B2B2B2;">[float64] [500]</span></span></span>
@@ -179,7 +179,7 @@ chunk in files like <code>0</code>, <code>1</code>, <code>2</code>,
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpEsC7HM/file1d99310cf107.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">6.73 KB</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">3</span></span></span>
@@ -415,7 +415,7 @@ create as many Zarr arrays with it as you need.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Path      :</span> <span style="color: #0000BB;">/first_array</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Data type :</span> <span style="color: #0000BB;">int16</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Shape     :</span> <span style="color: #0000BB;">240, 310, 5</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Chunking  :</span> <span style="color: #0000BB;">120, 31, 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Chunk grid:</span> <span style="color: #0000BB;">2, 10, 1</span> <span style="color: #B2B2B2;">[120 x 31 x 5]</span></span></span>
 <span></span>
 <span><span class="co"># Re-use the array definition</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">add_array</span><span class="op">(</span><span class="st">"/"</span>, <span class="st">"another_array"</span>, <span class="va">arr_def</span><span class="op">)</span></span>
@@ -423,7 +423,7 @@ create as many Zarr arrays with it as you need.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Path      :</span> <span style="color: #0000BB;">/another_array</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Data type :</span> <span style="color: #0000BB;">int16</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Shape     :</span> <span style="color: #0000BB;">240, 310, 5</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Chunking  :</span> <span style="color: #0000BB;">120, 31, 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Chunk grid:</span> <span style="color: #0000BB;">2, 10, 1</span> <span style="color: #B2B2B2;">[120 x 31 x 5]</span></span></span>
 <span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy </span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────</span></span></span>
@@ -454,7 +454,7 @@ that.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Path      :</span> <span style="color: #0000BB;">/</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Data type :</span> <span style="color: #0000BB;">int32</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Shape     :</span> <span style="color: #0000BB;">5, 20, 4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Chunking  :</span> <span style="color: #0000BB;">5, 20, 4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Chunk grid:</span> <span style="color: #0000BB;">1, 1, 1</span> <span style="color: #B2B2B2;">[5 x 20 x 4]</span></span></span>
 <span></span>
 <span><span class="co"># Index the Zarr array like a regular R array</span></span>
 <span><span class="co"># Indexes are 1-based, as usual in R (Zarr specifies everything as 0-based)</span></span>

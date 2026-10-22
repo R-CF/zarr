@@ -1,20 +1,28 @@
 # Chunk management
 
 This class implements the basic ancestor for chunking the data of Zarr
-arrays. It provides the basic scaffolding chunk and shard access in the
-Zarr store and stores objects for topology operations on the chunk grid
-of the array.
+arrays. It provides the mechanism for chunk access in the Zarr store
+that is independent of the geometry of the chunk grid: addressing chunks
+by their grid index through the chunk key encoding, caching chunk I/O
+objects, raw chunk access and relocating chunks in the store.
 
-Descendant classes implement specific chunking schemes. Apart from the
-"regular" chunking that is a required component of Zarr v.3, implemented
-through the `chunk_grid_regular` class, Zarr arrays that use sharding
-are also treated as a chunk manager, the `chunk_grid_sharded` class,
-even though sharding is a codec in the Zarr v.3 specification. The
-reason for this is that the sharding "codec" has to do the same
-topological operations as a regular chunk manager to map a user request
-for data to ranges across multiple chunks (and shards) and then apply
-the set of codecs that apply. These codecs for sharded data are embedded
-in the sharding configuration.
+The geometry of the chunk grid - how the array is partitioned into
+chunks along each dimension - is the responsibility of descendant
+classes. The "regular" chunk grid that is a required component of Zarr
+v.3 is implemented by the `chunk_grid_regular` class. Zarr arrays that
+use sharding are managed by the `chunk_grid_sharded` class, a descendant
+of `chunk_grid_regular` because the sharding codec requires a regular
+grid of shards. Sharding is treated as a chunking scheme rather than as
+a codec because it has to do the same topological operations as a
+regular chunk manager to map a user request for data to ranges across
+multiple chunks (and shards) and then apply the set of codecs that
+apply. These codecs for sharded data are embedded in the sharding
+configuration.
+
+A descendant class must set the private field `.grid` and implement the
+private method `max_chunk_length()` and the public methods `resize()`,
+`read()` and, if supported,
+[`write()`](https://rdrr.io/r/base/write.html).
 
 There is no point instantiating this class directly, other than in the
 `initialize()` method of a descendant class.
@@ -26,10 +34,14 @@ There is no point instantiating this class directly, other than in the
 
 ## Active bindings
 
-- `chunk_shape`:
+- `array_shape`:
 
-  (read-only) The dimensions of each chunk in the chunk grid of the
-  associated array.
+  (read-only) The shape of the array, `NULL` for a scalar array.
+
+- `grid`:
+
+  (read-only) The number of chunks along each dimension of the array.
+  This is an empty integer vector for a scalar array.
 
 - `chunk_encoding`:
 
@@ -59,6 +71,8 @@ There is no point instantiating this class directly, other than in the
 
 - [`chunking$resize()`](#method-chunking-resize)
 
+- [`chunking$insert_dimension()`](#method-chunking-insert_dimension)
+
 - [`chunking$chunk_keys()`](#method-chunking-chunk_keys)
 
 - [`chunking$read_raw()`](#method-chunking-read_raw)
@@ -76,11 +90,12 @@ Inherited methods
 ### `chunking$new()`
 
 Initialize a new chunking scheme for an array. This should only be
-called by descendant classes.
+called by descendant classes, which must also set the grid of chunks of
+a non-scalar array.
 
 #### Usage
 
-    chunking$new(class_name, array_shape, chunk_shape)
+    chunking$new(class_name, array_shape)
 
 #### Arguments
 
@@ -93,11 +108,6 @@ called by descendant classes.
   Integer vector of the array dimensions. This may be `NA` for a scalar
   array.
 
-- `chunk_shape`:
-
-  Integer vector of the dimensions of each chunk (or shard). Ignored for
-  a scalar array.
-
 #### Returns
 
 An instance of `chunking`.
@@ -106,31 +116,48 @@ An instance of `chunking`.
 
 ### `chunking$resize()`
 
-Physically resize the on-disk chunk grid: rename chunks whose grid index
-moved, delete chunks that fell entirely outside the new shape, and `NA`
-the excess tail of a chunk left partly outside a shrinking,
-non-chunk-aligned high boundary. No chunk payload is re-encoded except
-for that trailing clip.
+Resize the array by growing or shrinking any combination of dimensions
+at either end, updating the chunks in the store accordingly. How a
+requested change maps onto the chunk grid is determined by the
+descendant class.
 
 #### Usage
 
-    chunking$resize(new_shape, shift, high)
+    chunking$resize(low, high)
 
 #### Arguments
 
-- `new_shape`:
+- `low, high`:
 
-  Integer vector, the array's new shape.
+  Integer vectors, one element per array dimension, with the requested
+  change in extent at the low and high end of each dimension. Positive
+  grows that end, negative shrinks it.
 
-- `shift`:
+#### Returns
 
-  Integer vector, whole chunks by which the origin moves per dimension
-  (positive = grew at the low end, negative = shrank).
+Self, invisibly.
 
-- `high`:
+------------------------------------------------------------------------
 
-  Integer vector, the requested high-end element deltas (used only to
-  decide which boundary chunks need NA-clipping).
+### `chunking$insert_dimension()`
+
+Move the chunks in the store to the grid of an array whose rank is one
+higher, by inserting a new dimension that holds exactly one chunk. A
+scalar array has its single chunk moved to the first chunk of a rank-1
+grid. Chunk payload is never touched. The chunking scheme itself is not
+updated: the caller must create a new chunking scheme for the promoted
+array.
+
+#### Usage
+
+    chunking$insert_dimension(dimension)
+
+#### Arguments
+
+- `dimension`:
+
+  Integer, the 1-based position of the new dimension in the grid of the
+  promoted array.
 
 #### Returns
 

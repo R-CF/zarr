@@ -224,6 +224,12 @@ logical type cannot encode `NA` in Zarr and any `NA` values are set to
   [`flush()`](https://rdrr.io/r/base/connections.html) method to persist
   data in stale chunks.
 
+#### Details
+
+An error is thrown when the selection extends beyond the shape of the
+array, including when `selection` is missing and `data` is larger than
+the array. Use `resize()` first to grow the array.
+
 #### Returns
 
 Self, invisibly.

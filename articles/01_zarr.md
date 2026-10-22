@@ -96,7 +96,7 @@ z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/RtmprmcHDL/file1d613d6d6042.zarr
+#> ℹ Location  : /tmp/RtmpnZAN8K/file1e802e84b4f8.zarr
 #> ℹ Total size: 47 Bytes
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 0

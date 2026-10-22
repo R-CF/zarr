@@ -57,7 +57,7 @@ z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/RtmpEsC7HM/file1d99310cf107.zarr
+#> ℹ Location  : /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr
 #> ℹ Total size: 2.81 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1
@@ -67,7 +67,7 @@ z
 # Zarr arrays use the ⌗ glyph
 # (Domains may use other glyphs)
 z$hierarchy()
-#> ── Zarr hierarchy /tmp/RtmpEsC7HM/file1d99310cf107.zarr ────────────────────────
+#> ── Zarr hierarchy /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr ────────────────────────
 #> ☰ / (root group)
 #>   ⌗ top_array [int32] [500, 10, 2]
 ```
@@ -92,7 +92,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> ── Zarr hierarchy /tmp/RtmpEsC7HM/file1d99310cf107.zarr ────────────────────────
+#> ── Zarr hierarchy /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr ────────────────────────
 #> ☰ / (root group)
 #>   ⌗ top_array [int32] [500, 10, 2]
 #>   ⌗ a_vector [float64] [500]
@@ -120,7 +120,7 @@ z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/RtmpEsC7HM/file1d99310cf107.zarr
+#> ℹ Location  : /tmp/Rtmp71VlbX/file1eb8180bc6fa.zarr
 #> ℹ Total size: 6.73 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 3
@@ -378,7 +378,7 @@ z$add_array("/", "first_array", arr_def)
 #> ℹ Path      : /first_array
 #> ℹ Data type : int16
 #> ℹ Shape     : 240, 310, 5
-#> ℹ Chunking  : 120, 31, 5
+#> ℹ Chunk grid: 2, 10, 1 [120 x 31 x 5]
 
 # Re-use the array definition
 z$add_array("/", "another_array", arr_def)
@@ -386,7 +386,7 @@ z$add_array("/", "another_array", arr_def)
 #> ℹ Path      : /another_array
 #> ℹ Data type : int16
 #> ℹ Shape     : 240, 310, 5
-#> ℹ Chunking  : 120, 31, 5
+#> ℹ Chunk grid: 2, 10, 1 [120 x 31 x 5]
 
 z$hierarchy()
 #> ── Zarr hierarchy  ─────────────────────────────────────────────────────────────
@@ -418,7 +418,7 @@ arr
 #> ℹ Path      : /
 #> ℹ Data type : int32
 #> ℹ Shape     : 5, 20, 4
-#> ℹ Chunking  : 5, 20, 4
+#> ℹ Chunk grid: 1, 1, 1 [5 x 20 x 4]
 
 # Index the Zarr array like a regular R array
 # Indexes are 1-based, as usual in R (Zarr specifies everything as 0-based)

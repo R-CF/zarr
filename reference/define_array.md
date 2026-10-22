@@ -41,5 +41,5 @@ arr
 #> ℹ Path      : /my_array
 #> ℹ Data type : int32
 #> ℹ Shape     : 3, 8, 5
-#> ℹ Chunking  : 4, 4, 4
+#> ℹ Chunk grid: 1, 2, 2 [4 x 4 x 4]
 ```

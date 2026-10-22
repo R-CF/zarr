@@ -1,8 +1,10 @@
 # Chunk management
 
-This class implements the regular chunk grid for Zarr arrays. It manages
-reading from and writing to Zarr stores, using the codecs for data
-transformation.
+This class implements the regular chunk grid for Zarr arrays, in which
+all chunks have the same shape. Chunks along the high end of a dimension
+extend beyond the array when the array shape is not a multiple of the
+chunk shape. It manages reading from and writing to Zarr stores, using
+the codecs for data transformation.
 
 ## Super classes
 
@@ -11,6 +13,11 @@ transformation.
 `chunk_grid_regular`
 
 ## Active bindings
+
+- `chunk_shape`:
+
+  (read-only) The dimensions of each chunk in the chunk grid of the
+  associated array.
 
 - `codecs`:
 
@@ -28,6 +35,8 @@ transformation.
 
 - [`chunk_grid_regular$metadata_fragment()`](#method-chunk_grid_regular-metadata_fragment)
 
+- [`chunk_grid_regular$resize()`](#method-chunk_grid_regular-resize)
+
 - [`chunk_grid_regular$read()`](#method-chunk_grid_regular-read)
 
 - [`chunk_grid_regular$write()`](#method-chunk_grid_regular-write)
@@ -37,8 +46,8 @@ transformation.
 Inherited methods
 
 - [`chunking$chunk_keys()`](https://r-cf.github.io/zarr/reference/chunking.html#method-chunk_keys)
+- [`chunking$insert_dimension()`](https://r-cf.github.io/zarr/reference/chunking.html#method-insert_dimension)
 - [`chunking$read_raw()`](https://r-cf.github.io/zarr/reference/chunking.html#method-read_raw)
-- [`chunking$resize()`](https://r-cf.github.io/zarr/reference/chunking.html#method-resize)
 - [`chunking$write_raw()`](https://r-cf.github.io/zarr/reference/chunking.html#method-write_raw)
 
 ------------------------------------------------------------------------
@@ -95,6 +104,44 @@ Return the metadata fragment that describes this chunking scheme.
 #### Returns
 
 A list with the metadata of this chunking scheme.
+
+------------------------------------------------------------------------
+
+### `chunk_grid_regular$resize()`
+
+Resize the array, growing or shrinking any combination of dimensions at
+either end in one pass. Chunks are renamed in the store when their grid
+index moves and erased when they fall outside the new grid. No chunk
+payload is re-encoded except for a chunk left straddling a shrinking,
+non-chunk-aligned high-end boundary, whose excess elements are set to
+the fill value.
+
+Because chunks have a fixed position on the grid, `low` can only move in
+whole chunks: values are rounded outward to the nearest chunk (more
+space added when growing, less removed when shrinking). `high` is not
+constrained this way.
+
+#### Usage
+
+    chunk_grid_regular$resize(low, high)
+
+#### Arguments
+
+- `low, high`:
+
+  Integer vectors, one element per array dimension. Positive grows that
+  end, negative shrinks it, `0` leaves it unchanged.
+
+#### Details
+
+An error is thrown when the resize would produce a non-positive extent
+along any dimension, or when the array would shrink to a high boundary
+that is not aligned to the chunk boundary while the chunking scheme
+cannot clip chunks.
+
+#### Returns
+
+Self, invisibly.
 
 ------------------------------------------------------------------------
 
