@@ -10,9 +10,13 @@ arrays. It manages reading from Zarr stores, using the
 codecs for data transformation included in the sharding configuration.
 Writing is not supported with this codec. Storing a scalar array in a
 sharded grid is not possible either and totally useless anyway.
+
+The sharding codec requires a regular grid of shards, so the geometry of
+the shard grid is inherited from \link{chunk_grid_regular}, with the chunk
+shape being the shape of a shard.
 }
 \section{Super classes}{
-\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:chunking]{chunking}} -> \code{chunk_grid_sharded}
+\code{\link[zarr:zarr_extension]{zarr_extension}} -> \code{\link[zarr:chunking]{chunking}} -> \code{\link[zarr:chunk_grid_regular]{chunk_grid_regular}} -> \code{chunk_grid_sharded}
 }
 \section{Active bindings}{
   \if{html}{\out{<div class="r6-active-bindings">}}
@@ -33,15 +37,17 @@ scheme for the indexing of the internal chunks.}
     \item \href{#method-chunk_grid_sharded-print}{\code{chunk_grid_sharded$print()}}
     \item \href{#method-chunk_grid_sharded-metadata_fragment}{\code{chunk_grid_sharded$metadata_fragment()}}
     \item \href{#method-chunk_grid_sharded-read}{\code{chunk_grid_sharded$read()}}
+    \item \href{#method-chunk_grid_sharded-write}{\code{chunk_grid_sharded$write()}}
   }
 }
-\if{html}{\out{<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="chunk_keys"><a href='../../zarr/html/chunking.html#method-chunking-chunk_keys'><code>chunking$chunk_keys()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="flush"><a href='../../zarr/html/chunking.html#method-chunking-flush'><code>chunking$flush()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="insert_dimension"><a href='../../zarr/html/chunking.html#method-chunking-insert_dimension'><code>chunking$insert_dimension()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="read_raw"><a href='../../zarr/html/chunking.html#method-chunking-read_raw'><code>chunking$read_raw()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="resize"><a href='../../zarr/html/chunking.html#method-chunking-resize'><code>chunking$resize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="zarr" data-topic="chunking" data-id="write_raw"><a href='../../zarr/html/chunking.html#method-chunking-write_raw'><code>chunking$write_raw()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunk_grid_regular" data-id="flush"><a href='../../zarr/html/chunk_grid_regular.html#method-chunk_grid_regular-flush'><code>chunk_grid_regular$flush()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="zarr" data-topic="chunk_grid_regular" data-id="resize"><a href='../../zarr/html/chunk_grid_regular.html#method-chunk_grid_regular-resize'><code>chunk_grid_regular$resize()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}
@@ -134,6 +140,28 @@ dimensionality of the Zarr array, indicating the starting and ending
   }
   \subsection{Returns}{
     A vector, matrix or array of data.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-chunk_grid_sharded-write"></a>}}
+\if{latex}{\out{\hypertarget{method-chunk_grid_sharded-write}{}}}
+\subsection{\code{chunk_grid_sharded$write()}}{
+  Writing to a sharded array is not supported.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunk_grid_sharded$write(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Ignored.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Details}{
+    This method always throws an error.
   }
 }
 

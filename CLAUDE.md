@@ -46,9 +46,9 @@ zarr_extension          # base for all named extension points
     zarr_codec_blosc, zarr_codec_zstd, zarr_codec_gzip, zarr_codec_crc32c,
     zarr_codec_ucs4,    # not a real codec, included to support the <U* data type
     zarr_codec_sharding # display-only placeholder; real logic in chunk_grid_sharded
-  chunking              # base class for all chunk grid management
-    chunk_grid_regular  # regular chunking: manages chunk I/O for one array
-    chunk_grid_sharded  # sharded chunking: manages shard I/O for one array (read-only)
+  chunking              # chunk mechanism: keys, cache, raw I/O, chunk relocation; no grid geometry
+    chunk_grid_regular  # regular grid geometry; manages chunk I/O for one array
+      chunk_grid_sharded  # regular grid of shards; manages shard I/O for one array (read-only)
   zarr_data_type        # maps Zarr types to R storage modes
 
 zarr_store              # abstract key-value store interface
@@ -102,7 +102,7 @@ Writing sharded arrays is not implemented (read-only). If a user requests write 
 
 **HTTP byte-range reads:** `zarr_httpstore$get()` supports the same `byte_range` interface as `zarr_localstore$get()`: `NULL` (whole object), single negative integer (suffix range), single positive integer (offset to end), or length-2 vector `c(start, end)` with exclusive end. Implemented via curl `Range` header; servers must support HTTP range requests (206 Partial Content). This is a hard requirement for sharded HTTP stores.
 
-**Extension points:** New stores inherit `zarr_store`; new codecs inherit `zarr_codec`; new domains inherit `zarr_domain` and must be registered via `zarr_register_domain()`; new conventions inherit `zarr_convention`; new chunking schemes inherit `chunking`.
+**Extension points:** New stores inherit `zarr_store`; new codecs inherit `zarr_codec`; new domains inherit `zarr_domain` and must be registered via `zarr_register_domain()`; new conventions inherit `zarr_convention`; new chunking schemes inherit `chunking`, set its private `.grid` (number of chunks per dimension) and implement `max_chunk_length()`, `resize()`, `read()` and `write()`.
 
 **Global state:**
 - `Zarr.domains` — environment of registered domain objects.

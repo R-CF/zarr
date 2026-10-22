@@ -276,8 +276,10 @@ zarr_store <- R6::R6Class('zarr_store',
     #'   at the given prefix. Used internally to support resizing and
     #'   promoting arrays.
     #' @param prefix The prefix of the array whose chunk keys to retrieve.
-    #' @return A character vector of full store keys for chunk/shard files,
-    #'   excluding the array's own metadata document.
+    #' @return A character vector of full store keys under `prefix`. This
+    #'   may include keys that are not chunks, such as the metadata document
+    #'   of the array; the chunking scheme of the array selects the chunk
+    #'   keys.
     list_chunks = function(prefix) {
       stop('Class', class(self)[1L], 'must implement this method') # nocov
     },

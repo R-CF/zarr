@@ -102,10 +102,10 @@ zarr_array <- R6::R6Class('zarr_array',
           if (!is.null(dim_names))
             shp <- paste0(shp, ' [', paste(dim_names[1:len], collapse = ', '), ']')
           cli::cli_alert_info('{.label Shape     :} {.text {shp}}')
-          cli::cli_alert_info('{.label Chunking  :} {.text {paste(meta$chunk_grid$configuration$chunk_shape, collapse = ", ")}}')
+          cli::cli_alert_info('{.label Chunk grid:} {.text {paste(private$.chunking$grid, collapse = ", ")}} {.minor [{paste(private$.chunking$chunk_shape, collapse = " x ")}]}')
         } else {
           cli::cli_alert_info('{.label Shape     :} {.text (scalar)}')
-          cli::cli_alert_info('{.label Chunking  :} {.text (scalar)}')
+          cli::cli_alert_info('{.label Chunk grid:} {.text (scalar)}')
         }
         cli::cli_end(this_div)
       } else {
@@ -220,6 +220,10 @@ zarr_array <- R6::R6Class('zarr_array',
     #'   chunks stale for further writing leads to better performance when
     #'   chunks are written to multiple times. Call the `flush()` method to
     #'   persist data in stale chunks.
+    #' @details An error is thrown when the selection extends beyond the
+    #'   shape of the array, including when `selection` is missing and
+    #'   `data` is larger than the array. Use `resize()` first to grow the
+    #'   array.
     #' @return Self, invisibly.
     write = function(data, selection, flush = TRUE) {
       if (private$.store$read_only)
@@ -247,6 +251,8 @@ zarr_array <- R6::R6Class('zarr_array',
         stop('`selection` list must have the same length as the shape of the array', call. = FALSE) # nocov
       start <- sapply(selection, min)
       stop  <- sapply(selection, max)
+      if (any(start < 1L | stop > array_shape))
+        stop('Array selection indices are out of bounds', call. = FALSE)
       sdim  <- stop - start + 1L
 
       if (nsel < ndata)
@@ -352,14 +358,8 @@ zarr_array <- R6::R6Class('zarr_array',
       if (length(low) != nd || length(high) != nd)
         stop('`low` and `high` must have one element per dimension of the array', call. = FALSE)
 
-      chunk_shape <- private$.chunking$chunk_shape
-      shift <- ifelse(low >= 0L, ceiling(low / chunk_shape), -floor(-low / chunk_shape))
-      new_shape <- as.integer(shape + shift * chunk_shape + high)
-      if (any(new_shape < 1L))
-        stop('Resizing would produce a non-positive extent along one or more dimensions', call. = FALSE)
-
-      private$.chunking$resize(new_shape, as.integer(shift), high)
-      private$.metadata$shape <- new_shape
+      private$.chunking$resize(low, high)
+      private$.metadata$shape <- private$.chunking$array_shape
       private$.meta_dirty <- TRUE
       self$save()
       invisible(self)
@@ -428,22 +428,7 @@ zarr_array <- R6::R6Class('zarr_array',
       # set_attribute()/the dedicated field once the new axis has a name.
 
       cke <- private$chunk_key_encoding()
-      if (r == 0L) {
-        scalar_key <- paste0(self$prefix, cke$scalar)
-        chunk_key  <- paste0(self$prefix, cke$pre, '0')
-        if (private$.store$exists(scalar_key))
-          private$.store$rename(scalar_key, chunk_key)
-      } else {
-        keys <- private$.store$list_chunks(self$prefix)
-        lead <- paste0(self$prefix, cke$pre)
-        for (old_key in keys) {
-          cidx     <- as.integer(strsplit(substring(old_key, nchar(lead) + 1L), cke$sep, fixed = TRUE)[[1L]])
-          new_cidx <- append(cidx, 0L, after = dimension - 1L)
-          new_key  <- paste0(lead, paste(new_cidx, collapse = cke$sep))
-          if (old_key != new_key) private$.store$rename(old_key, new_key)
-        }
-      }
-
+      private$.chunking$insert_dimension(dimension)
       private$.store$set_metadata(self$prefix, new_meta)
 
       # Rebuild live objects from the persisted metadata, exactly as

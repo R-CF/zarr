@@ -5,13 +5,17 @@
 #'   codecs for data transformation included in the sharding configuration.
 #'   Writing is not supported with this codec. Storing a scalar array in a
 #'   sharded grid is not possible either and totally useless anyway.
+#'
+#'   The sharding codec requires a regular grid of shards, so the geometry of
+#'   the shard grid is inherited from [chunk_grid_regular], with the chunk
+#'   shape being the shape of a shard.
 #' @docType class
 chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
-  inherit = chunking,
+  inherit = chunk_grid_regular,
   cloneable = FALSE,
   private = list(
     .inner_shape  = NULL,  # inner chunk shape
-    .inner_grid   = NULL,  # prod(.chunk_shape / .inner_shape) inner chunks
+    .inner_grid   = NULL,  # number of inner chunks along each dimension of a shard
     .index_loc    = NULL,  # "end" or "start"
     .inner_codecs = NULL,  # instantiated inner codec pipeline
     .index_codecs = NULL   # instantiated index codec pipeline
@@ -30,10 +34,11 @@ chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
     #' @return An instance of `chunk_grid_sharded`.
     initialize = function(array_shape, chunk_shape, inner_shape, index_loc,
                           inner_codecs, index_codecs) {
-      super$initialize('sharding_indexed', array_shape, chunk_shape)
-      private$.clip_supported <- FALSE
-      if (private$.scalar)
+      if (is.na(array_shape[1L]))
         stop('Cannot use sharding on a scalar array', call. = FALSE) # nocov
+      super$initialize(array_shape, chunk_shape)
+      private$set_name('sharding_indexed')
+      private$.clip_supported <- FALSE
 
       private$.inner_shape  <- inner_shape
       private$.inner_grid   <- as.integer(chunk_shape / inner_shape)
@@ -166,6 +171,13 @@ chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
       }
 
       data
+    },
+
+    #' @description Writing to a sharded array is not supported.
+    #' @details This method always throws an error.
+    #' @param ... Ignored.
+    write = function(...) {
+      stop('Writing to a sharded array is not supported', call. = FALSE)
     }
   ),
   active = list(
@@ -413,5 +425,5 @@ chunk_grid_sharded_IO <- R6::R6Class('chunk_grid_sharded_IO',
 #' @param ... Ignored.
 #' @export
 str.chunk_grid_sharded <- function(object, ...) {
-  cat('Zarr sharded chunk grid: [', paste(object$shard_shape, collapse = ', '), ']\n', sep = '')
+  cat('Zarr sharded chunk grid: [', paste(object$chunk_shape, collapse = ', '), ']\n', sep = '')
 }

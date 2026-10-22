@@ -115,6 +115,32 @@ test_that("[<- errors on non-consecutive indices", {
   expect_identical(arr[, , ], x)
 })
 
+test_that("[<- errors on out-of-bounds indices", {
+  arr <- new_arr()
+  expect_error(arr[4:5, 1, 1] <- 99L, "out of bounds")
+  expect_identical(arr[, , ], x)
+})
+
+test_that("$write() errors on a selection beyond the array", {
+  arr <- new_arr()
+  expect_error(arr$write(array(99L, c(2L, 1L, 1L)), list(c(4L, 5L), c(1L, 1L), c(1L, 1L))),
+               "out of bounds")
+})
+
+test_that("$write() errors on data larger than the array without selection", {
+  arr <- new_arr()
+  expect_error(arr$write(array(99L, c(5L, 5L, 6L))), "out of bounds")
+})
+
+test_that("$write() out of bounds leaves nothing for resize() to expose", {
+  z <- create_zarr()
+  arr <- z$add_array('/', 'sub', define_array('int32', dim(x)))
+  arr$write(x)
+  try(arr$write(array(99L, c(2L, 1L, 1L)), list(c(4L, 5L), c(1L, 1L), c(1L, 1L))), silent = TRUE)
+  arr$resize(high = c(1L, 0L, 0L))
+  expect_true(all(is.na(arr[5, , ])))
+})
+
 test_that("[<- errors on data of the wrong type", {
   arr <- new_arr()
   expect_error(arr[1, 1, 1] <- 1.5, "different type")

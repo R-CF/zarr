@@ -995,7 +995,7 @@ zarr_codec_sharding <- R6::R6Class('zarr_codec_sharding',
   private = list(
     list_configuration = function() {
       conf <- private$.configuration
-      list(chunk_shape = conf$chunk_shape,
+      list(chunk_shape = paste(conf$chunk_shape, collapse = ', '),
            index_location = conf$index_location %||% 'end',
            codecs = paste(sapply(conf$codecs, function(c) c$name), collapse = ', '))
     }

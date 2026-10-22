@@ -203,6 +203,12 @@ persist data in stale chunks.}
     }
     \if{html}{\out{</div>}}
   }
+  \subsection{Details}{
+    An error is thrown when the selection extends beyond the
+shape of the array, including when \code{selection} is missing and
+\code{data} is larger than the array. Use \code{resize()} first to grow the
+array.
+  }
   \subsection{Returns}{
     Self, invisibly.
   }

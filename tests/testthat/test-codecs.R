@@ -1,5 +1,9 @@
 # Tests for the individual codecs and for codec chains in array_builder.
 
+# Theme management for printing
+thm <- Zarr.options$zarr_theme
+Zarr.options$zarr_theme <- NULL
+
 dt_f64 <- function() zarr_data_type$new("float64")
 
 # ==== Codec base class and printing ===========================================
@@ -14,7 +18,8 @@ test_that("codec mode and metadata fragment", {
 })
 
 test_that("print() shows each codec's configuration", {
-  expect_output(print(zarr_codec_transpose$new(3L)), "order: \\[2, 1, 0\\]")
+  Zarr.options$zarr_theme <- NULL
+  expect_output(print(zarr_codec_transpose$new(3L)), "order: 2, 1, 0")
   expect_output(print(zarr_codec_bytes$new(dt_f64(), 4L, list(endian = "big"))), "endian: big")
   expect_output(print(zarr_codec_blosc$new(dt_f64())), "compressor: zstd")
   expect_output(print(zarr_codec_zstd$new()), "level: 6")
@@ -23,11 +28,12 @@ test_that("print() shows each codec's configuration", {
 })
 
 test_that("print() of the sharding codec shows its configuration", {
+  Zarr.options$zarr_theme <- NULL
   cdc <- zarr_codec_sharding$new(list(chunk_shape = c(2L, 2L), index_location = "end",
                                       codecs = list(list(name = "bytes"), list(name = "gzip"))))
-  expect_output(print(cdc), "chunk_shape: +\\[2, 2\\]")
+  expect_output(print(cdc), "chunk_shape: 2, 2")
   expect_output(print(cdc), "index_location: end")
-  expect_output(print(cdc), "codecs: +\\[bytes, gzip\\]")
+  expect_output(print(cdc), "codecs: bytes, gzip")
 })
 
 test_that("copy() returns an equivalent, independent codec", {
@@ -162,6 +168,7 @@ test_that("string arrays round-trip through vlen-utf8 after re-opening", {
 # ==== array_builder ===========================================================
 
 test_that("array_builder print() and JSON metadata", {
+  Zarr.options$zarr_theme <- NULL
   def <- define_array("int16", c(10L, 20L))
   expect_output(print(def), "<Zarr array metadata> VALID")
   expect_output(print(array_builder$new()), "INCOMPLETE")
@@ -235,3 +242,5 @@ test_that("array_builder fill values for special floats and uint types", {
   def$data_type <- "int32"
   expect_error(def$fill_value <- "x", "Invalid `fill_value`")
 })
+
+Zarr.options$zarr_theme <- thm

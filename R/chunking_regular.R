@@ -1,16 +1,24 @@
 #' Chunk management
 #'
 #' @description This class implements the regular chunk grid for Zarr
-#'   arrays. It manages reading from and writing to Zarr stores, using the
-#'   codecs for data transformation.
+#'   arrays, in which all chunks have the same shape. Chunks along the high
+#'   end of a dimension extend beyond the array when the array shape is not a
+#'   multiple of the chunk shape. It manages reading from and writing to Zarr
+#'   stores, using the codecs for data transformation.
 #' @docType class
 chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
   inherit = chunking,
   cloneable = FALSE,
   private = list(
-    # The underlying properties of the array
-    .codecs = list(),
+    .chunk_shape    = NULL,  # Shape of every chunk in the grid
+    .codecs         = list(),
+    .clip_supported = TRUE,  # Can a chunk be clipped on resize?
 
+    max_chunk_length = function() {
+      prod(private$.chunk_shape)
+    },
+
+    # NA the excess tail of a chunk left partly outside the new shape.
     clip_chunk = function(cidx, new_shape, clip_dims) {
       chunk_shape  <- private$.chunk_shape
       chunk_origin <- cidx * chunk_shape + 1L
@@ -38,19 +46,38 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     #'   Ignored for a scalar array.
     #' @return An instance of `chunk_grid_regular`.
     initialize = function(array_shape, chunk_shape) {
-      if (!is.na(array_shape[1L]) && missing(chunk_shape))
-        chunk_shape <- auto_chunk(array_shape)
-      super$initialize('regular', array_shape, chunk_shape)
+      super$initialize('regular', array_shape)
+
+      if (private$.scalar)
+        private$.chunk_shape <- 1L
+      else {
+        if (missing(chunk_shape))
+          chunk_shape <- auto_chunk(array_shape)
+        if (is.integer(chunk_shape) && all(chunk_shape > 0L) && length(array_shape) == length(chunk_shape)) {
+          private$.chunk_shape <- chunk_shape
+          private$.grid <- (array_shape - 1L) %/% chunk_shape + 1L
+        } else
+          stop('Chunk shape is not valid for `array_shape`', call. = FALSE) # nocov
+      }
     },
 
     #' @description Print a short description of this chunking scheme to the
     #'   console.
     #' @return Self, invisibly.
     print = function() {
-      if (private$.scalar)
-        cat('<Zarr regular chunk grid> []\n', sep = '')
-      else
-        cat('<Zarr regular chunk grid> [', paste(private$.chunk_shape, collapse = ', '), ']\n', sep = '')
+      if (is.list(Zarr.options$zarr_theme)) {
+        this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
+        cli::cli_h1('Zarr regular chunk grid')
+        if (length(private$.grid))
+          cli::cli_alert_info('{.label Chunk grid:} {.text {paste(private$.grid, collapse = ", ")}}')
+        cli::cli_alert_info('{.label Chunk size:} {.text {paste(private$.chunk_shape, collapse = ", ")}}')
+        cli::cli_end(this_div)
+      } else {
+        cat('<Zarr regular chunk grid>\n')
+        if (!private$.scalar)
+          cat('  Chunk grid: [', paste(private$.grid, collapse = ', '), ']\n', sep = '')
+        cat('  Chunk size: [', paste(private$.chunk_shape, collapse = ', '), ']\n', sep = '')
+      }
       invisible(self)
     },
 
@@ -61,6 +88,51 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       list(chunk_grid = list(name = 'regular',
                              configuration = list(chunk_shape = if (private$.scalar) list()
                                                                 else private$.chunk_shape)))
+    },
+
+    #' @description Resize the array, growing or shrinking any combination of
+    #'   dimensions at either end in one pass. Chunks are renamed in the store
+    #'   when their grid index moves and erased when they fall outside the new
+    #'   grid. No chunk payload is re-encoded except for a chunk left straddling
+    #'   a shrinking, non-chunk-aligned high-end boundary, whose excess
+    #'   elements are set to the fill value.
+    #'
+    #'   Because chunks have a fixed position on the grid, `low` can only move
+    #'   in whole chunks: values are rounded outward to the nearest chunk (more
+    #'   space added when growing, less removed when shrinking). `high` is not
+    #'   constrained this way.
+    #' @details An error is thrown when the resize would produce a non-positive
+    #'   extent along any dimension, or when the array would shrink to a high
+    #'   boundary that is not aligned to the chunk boundary while the chunking
+    #'   scheme cannot clip chunks.
+    #' @param low,high Integer vectors, one element per array dimension.
+    #'   Positive grows that end, negative shrinks it, `0` leaves it unchanged.
+    #' @return Self, invisibly.
+    resize = function(low, high) {
+      chunk_shape <- private$.chunk_shape
+      shift <- as.integer(ifelse(low >= 0L, ceiling(low / chunk_shape), -floor(-low / chunk_shape)))
+      new_shape <- as.integer(private$.array_shape + shift * chunk_shape + high)
+      if (any(new_shape < 1L))
+        stop('Resizing would produce a non-positive extent along one or more dimensions', call. = FALSE)
+
+      new_grid  <- (new_shape - 1L) %/% chunk_shape + 1L
+      clip_dims <- which(high < 0L & (new_shape %% chunk_shape) != 0L)
+      if (length(clip_dims) && !private$.clip_supported)
+        stop('Shrinking this array to a shape that is not aligned to the ',
+             'chunk (shard) boundary is not supported for this chunk grid',
+             call. = FALSE)
+
+      kept <- private$relocate_chunks(shift, new_grid)
+
+      if (length(clip_dims) && nrow(kept)) {
+        on_boundary <- Reduce(`|`, lapply(clip_dims, function(d) kept[, d] == new_grid[d] - 1L))
+        for (i in which(on_boundary))
+          private$clip_chunk(kept[i, ], new_shape, clip_dims)
+      }
+
+      private$.array_shape <- new_shape
+      private$.grid        <- new_grid
+      invisible(self)
     },
 
     #' @description Read data from the Zarr array into an R object. The read can
@@ -271,6 +343,13 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
     }
   ),
   active = list(
+    #' @field chunk_shape (read-only) The dimensions of each chunk in the chunk
+    #' grid of the associated array.
+    chunk_shape = function(value) {
+      if (missing(value))
+        private$.chunk_shape
+    },
+
     #' @field codecs The list of codecs used by the chunking scheme. These are
     #' set by the array when starting to use chunking for file I/O. Upon
     #' reading, the list of registered codecs.

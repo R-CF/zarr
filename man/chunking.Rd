@@ -6,19 +6,26 @@
 \title{Chunk management}
 \description{
 This class implements the basic ancestor for chunking the data
-of Zarr arrays. It provides the basic scaffolding chunk and shard access in
-the Zarr store and stores objects for topology operations on the chunk grid
-of the array.
+of Zarr arrays. It provides the mechanism for chunk access in the Zarr
+store that is independent of the geometry of the chunk grid: addressing
+chunks by their grid index through the chunk key encoding, caching chunk
+I/O objects, raw chunk access and relocating chunks in the store.
 
-Descendant classes implement specific chunking schemes. Apart from the
-"regular" chunking that is a required component of Zarr v.3, implemented
-through the \code{chunk_grid_regular} class, Zarr arrays that use sharding are
-also treated as a chunk manager, the \code{chunk_grid_sharded} class, even
-though sharding is a codec in the Zarr v.3 specification. The reason for
-this is that the sharding "codec" has to do the same topological operations
-as a regular chunk manager to map a user request for data to ranges across
-multiple chunks (and shards) and then apply the set of codecs that apply.
-These codecs for sharded data are embedded in the sharding configuration.
+The geometry of the chunk grid - how the array is partitioned into chunks
+along each dimension - is the responsibility of descendant classes. The
+"regular" chunk grid that is a required component of Zarr v.3 is
+implemented by the \code{chunk_grid_regular} class. Zarr arrays that use
+sharding are managed by the \code{chunk_grid_sharded} class, a descendant of
+\code{chunk_grid_regular} because the sharding codec requires a regular grid of
+shards. Sharding is treated as a chunking scheme rather than as a codec
+because it has to do the same topological operations as a regular chunk
+manager to map a user request for data to ranges across multiple chunks
+(and shards) and then apply the set of codecs that apply. These codecs for
+sharded data are embedded in the sharding configuration.
+
+A descendant class must set the private field \code{.grid} and implement the
+private method \code{max_chunk_length()} and the public methods \code{resize()},
+\code{read()} and, if supported, \code{write()}.
 
 There is no point instantiating this class directly, other than in the
 \code{initialize()} method of a descendant class.
@@ -30,8 +37,11 @@ There is no point instantiating this class directly, other than in the
 \section{Active bindings}{
   \if{html}{\out{<div class="r6-active-bindings">}}
   \describe{
-    \item{\code{chunk_shape}}{(read-only) The dimensions of each chunk in the chunk
-grid of the associated array.}
+    \item{\code{array_shape}}{(read-only) The shape of the array, \code{NULL} for a
+scalar array.}
+
+    \item{\code{grid}}{(read-only) The number of chunks along each dimension of the
+array. This is an empty integer vector for a scalar array.}
 
     \item{\code{chunk_encoding}}{Set or retrieve the chunk key encoding to be used
 for creating store keys for chunks.}
@@ -52,6 +62,7 @@ This is set by the array when starting to use chunking for file I/O.}
   \itemize{
     \item \href{#method-chunking-initialize}{\code{chunking$new()}}
     \item \href{#method-chunking-resize}{\code{chunking$resize()}}
+    \item \href{#method-chunking-insert_dimension}{\code{chunking$insert_dimension()}}
     \item \href{#method-chunking-chunk_keys}{\code{chunking$chunk_keys()}}
     \item \href{#method-chunking-read_raw}{\code{chunking$read_raw()}}
     \item \href{#method-chunking-write_raw}{\code{chunking$write_raw()}}
@@ -68,10 +79,11 @@ This is set by the array when starting to use chunking for file I/O.}
 \if{latex}{\out{\hypertarget{method-chunking-initialize}{}}}
 \subsection{\code{chunking$new()}}{
   Initialize a new chunking scheme for an array. This should
-only be called by descendant classes.
+only be called by descendant classes, which must also set the grid of
+chunks of a non-scalar array.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{chunking$new(class_name, array_shape, chunk_shape)}
+    \preformatted{chunking$new(class_name, array_shape)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -80,8 +92,6 @@ only be called by descendant classes.
       \item{\code{class_name}}{Character string given the name of the chunking scheme.}
       \item{\code{array_shape}}{Integer vector of the array dimensions. This may be
 \code{NA} for a scalar array.}
-      \item{\code{chunk_shape}}{Integer vector of the dimensions of each chunk (or
-shard). Ignored for a scalar array.}
     }
     \if{html}{\out{</div>}}
   }
@@ -94,24 +104,49 @@ shard). Ignored for a scalar array.}
 \if{html}{\out{<a id="method-chunking-resize"></a>}}
 \if{latex}{\out{\hypertarget{method-chunking-resize}{}}}
 \subsection{\code{chunking$resize()}}{
-  Physically resize the on-disk chunk grid: rename chunks
-whose grid index moved, delete chunks that fell entirely outside the
-new shape, and \code{NA} the excess tail of a chunk left partly outside a
-shrinking, non-chunk-aligned high boundary. No chunk payload is
-re-encoded except for that trailing clip.
+  Resize the array by growing or shrinking any combination
+of dimensions at either end, updating the chunks in the store
+accordingly. How a requested change maps onto the chunk grid is
+determined by the descendant class.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{chunking$resize(new_shape, shift, high)}
+    \preformatted{chunking$resize(low, high)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{new_shape}}{Integer vector, the array's new shape.}
-      \item{\code{shift}}{Integer vector, whole chunks by which the origin moves
-per dimension (positive = grew at the low end, negative = shrank).}
-      \item{\code{high}}{Integer vector, the requested high-end element deltas
-(used only to decide which boundary chunks need NA-clipping).}
+      \item{\code{low, high}}{Integer vectors, one element per array dimension, with
+the requested change in extent at the low and high end of each
+dimension. Positive grows that end, negative shrinks it.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Self, invisibly.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-chunking-insert_dimension"></a>}}
+\if{latex}{\out{\hypertarget{method-chunking-insert_dimension}{}}}
+\subsection{\code{chunking$insert_dimension()}}{
+  Move the chunks in the store to the grid of an array whose
+rank is one higher, by inserting a new dimension that holds exactly
+one chunk. A scalar array has its single chunk moved to the first
+chunk of a rank-1 grid. Chunk payload is never touched. The chunking
+scheme itself is not updated: the caller must create a new chunking
+scheme for the promoted array.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{chunking$insert_dimension(dimension)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{dimension}}{Integer, the 1-based position of the new dimension in
+the grid of the promoted array.}
     }
     \if{html}{\out{</div>}}
   }

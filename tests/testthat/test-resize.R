@@ -389,3 +389,58 @@ test_that("resize: independent and simultaneous shifts across dimensions", {
 
   run_on_stores(tests)
 })
+
+# ==== Chunk keys in the store ===============================================
+# A root array lives at the store prefix "", where the store also lists keys
+# that are not chunks, such as the metadata document of the array.
+
+test_that("resize: a root array keeps its data", {
+  x <- array(1:8L, c(4L, 2L))
+  arr <- as_zarr(x)[['/']]
+  arr$resize(high = c(1L, 0L))
+  expect_equal(arr$read(list(c(1L, 4L), c(1L, 2L))), x)
+  expect_true(all(is.na(arr$read(list(c(5L, 5L), c(1L, 2L))))))
+})
+
+test_that("resize: the metadata of a root array is not renamed", {
+  arr <- as_zarr(array(1:8L, c(4L, 2L)))[['/']]
+  arr$resize(high = c(1L, 0L))
+  expect_false(any(grepl('NA', arr$store$list_chunks(''))))
+  expect_false(is.null(arr$store$get_metadata('/')))
+})
+
+test_that("resize: keys that are not chunk keys are left alone", {
+  z <- create_zarr()
+  def <- define_array('int32', c(4L, 2L)); def$chunk_shape <- c(2L, 2L)
+  arr <- z$add_array('/', 'stray', def)
+  arr$write(array(1:8L, c(4L, 2L)))
+  arr$store$set('stray/c.notes', as.raw(1:3))
+  arr$resize(low = c(2L, 0L))
+  expect_true(arr$store$exists('stray/c.notes'))
+  expect_equal(arr$read(list(c(3L, 6L), c(1L, 2L))), array(1:8L, c(4L, 2L)))
+})
+
+test_that("promote: a root array keeps its data", {
+  x <- array(1:8L, c(4L, 2L))
+  arr <- as_zarr(x)[['/']]
+  arr$promote(dimension = 1L)
+  expect_equal(arr$shape, c(1L, 4L, 2L))
+  expect_equal(arr$read(), array(x, c(1L, 4L, 2L)))
+})
+
+test_that("promote: the metadata of a root array is not renamed", {
+  arr <- as_zarr(array(1:8L, c(4L, 2L)))[['/']]
+  arr$promote(dimension = 1L)
+  expect_false(any(grepl('NA', arr$store$list_chunks(''))))
+})
+
+test_that("promote: pending edits are persisted before chunks are moved", {
+  z <- create_zarr()
+  def <- define_array('int32', c(4L, 2L)); def$chunk_shape <- c(2L, 2L)
+  arr <- z$add_array('/', 'pending_promote', def)
+  x <- array(1:8L, c(4L, 2L))
+  arr$write(x, flush = FALSE)
+  arr$promote(dimension = 1L)
+  invisible(gc())
+  expect_equal(arr$read(), array(x, c(1L, 4L, 2L)))
+})
