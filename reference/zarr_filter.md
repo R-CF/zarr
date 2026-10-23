@@ -4,7 +4,7 @@ Zarr v.2 filters are transformations of chunk data that were not
 specified by Zarr v.2 itself but by the Numcodecs package that
 zarr-python uses. When a Zarr v.2 store is opened, the filters become
 codecs in the Zarr v.3 codec pipeline of an array, with a name of
-"numcodecs.". Because Zarr v.2 stores are read-only in this package,
+`numcodecs.<id>`. Because Zarr v.2 stores are read-only in this package,
 filters only decode data.
 
 This class is the ancestor of all filters. It also implements the lossy

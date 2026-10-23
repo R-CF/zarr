@@ -27,7 +27,7 @@ These changes impact the signature of several methods:
   changes, but these changes are not relevant for end users or
   application developers of this package.
 
-Other features:
+Other new features:
 
 - Writing a `zarr_array` by indices can use `[<-.zarr_array`.
 - Can create a single array store.
@@ -48,17 +48,17 @@ Other features:
   Function
   [`reset_options()`](https://r-cf.github.io/zarr/reference/reset_options.md)
   will reset the options to their default values.
-- The `glyph` private field has moved from `zarr_array` to `zarr_node`
-  such that `zarr_group` can have the same flexibility when printing.
-
-Minor changes:
-
 - The `array_builder` class has a field `data_type_from_storage.mode`
   that can make a Zarr data type from an R storage mode.
 - The separation between classes `chunking` and `chunk_grid_regular` is
   more robust. A new `grid` field will retrieve the chunk grid. The
   chunk grid will be printed to the console for arrays and the chunking
   scheme.
+- The `glyph` private field has moved from `zarr_array` to `zarr_node`
+  such that `zarr_group` can have the same flexibility when printing.
+
+Minor changes:
+
 - `zarr.json` writes arrays for `shape` and `chunk_shape` for 1D axes.
 - JSON writes use full numeric precision.
 - `ref` convention uses released version v2.0.0.

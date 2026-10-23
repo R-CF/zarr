@@ -54,7 +54,7 @@
 <li>
 <code>zarr_group$new()</code> and <code>zarr_array$new()</code> no longer have the <code>store</code> argument.</li>
 <li>Several other methods in these three classes have related signature changes, but these changes are not relevant for end users or application developers of this package.</li>
-</ul><p>Other features:</p>
+</ul><p>Other new features:</p>
 <ul><li>Writing a <code>zarr_array</code> by indices can use <code>[&lt;-.zarr_array</code>.</li>
 <li>Can create a single array store.</li>
 <li>New <code>zarr$save_to()</code> method can save a <code>zarr</code> object to a new store. This is handy to save a memory store to disk, to convert a v.2 store to a v.3 store, or to get a local copy of a remote store, among other uses. Parallel reads from HTTP and S3 stores speeds up the copying.</li>
@@ -63,11 +63,11 @@
 <li>Zarr v.2 filters as defined in Python’s numcodecs are supported.</li>
 <li>Printing to the console will use the <code>cli</code> package when installed. The theme used can be modified by the user.</li>
 <li>User options can be saved to the user config directory using the <code><a href="../reference/save_options.html">save_options()</a></code> function. They will be automatically loaded in all future sessions. Function <code><a href="../reference/reset_options.html">reset_options()</a></code> will reset the options to their default values.</li>
+<li>The <code>array_builder</code> class has a field <code>data_type_from_storage.mode</code> that can make a Zarr data type from an R storage mode.</li>
+<li>The separation between classes <code>chunking</code> and <code>chunk_grid_regular</code> is more robust. A new <code>grid</code> field will retrieve the chunk grid. The chunk grid will be printed to the console for arrays and the chunking scheme.</li>
 <li>The <code>glyph</code> private field has moved from <code>zarr_array</code> to <code>zarr_node</code> such that <code>zarr_group</code> can have the same flexibility when printing.</li>
 </ul><p>Minor changes:</p>
-<ul><li>The <code>array_builder</code> class has a field <code>data_type_from_storage.mode</code> that can make a Zarr data type from an R storage mode.</li>
-<li>The separation between classes <code>chunking</code> and <code>chunk_grid_regular</code> is more robust. A new <code>grid</code> field will retrieve the chunk grid. The chunk grid will be printed to the console for arrays and the chunking scheme.</li>
-<li>
+<ul><li>
 <code>zarr.json</code> writes arrays for <code>shape</code> and <code>chunk_shape</code> for 1D axes.</li>
 <li>JSON writes use full numeric precision.</li>
 <li>

@@ -159,7 +159,7 @@ groups and arrays. It is recommended that the name of the location has a
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpxH3FM6/file1d9c4f496cae.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/Rtmp3aRBzH/file1db47e099f82.zarr</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">47 Bytes</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">0</span></span></span></code></pre></div>
@@ -174,13 +174,197 @@ and arrays just as with a memory Zarr store.</p>
 giving the location of the Zarr store on disk.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="saving-to-another-zarr-store">Saving to another Zarr store<a class="anchor" aria-label="anchor" href="#saving-to-another-zarr-store"></a>
+</h3>
+<p>You can save an entire <code>zarr</code> object to a new Zarr store
+using the <code>zarr$save_to()</code> method. This method copies the
+entire hierarchy with all objects from the source <code>zarr</code>
+object to a new Zarr store. Typically that would be on a local file
+system but it could also be to a S3 server if you have the credentials
+for writing there. This operation has a few well-defined purposes:</p>
+<ul>
+<li>
+<strong>Persist a memory Zarr store to disk:</strong> While working
+on your data and repeatedly modifying array data, it is often faster to
+use a memory Zarr store, assuming it fits in your computer’s RAM. Once
+you have the final product you can persist it to disk.</li>
+<li>
+<strong>Convert a Zarr v.2 store to version 3:</strong> The
+<code>zarr</code> package uses the Zarr version 3 specification
+internally so all writing is done using the v.3 formatting.</li>
+<li>
+<strong>Get a local copy of an online Zarr store:</strong> You can
+open an online Zarr store and then save to a local disk. Make sure you
+know the size of the Zarr store before you do this (printing the online
+<code>zarr</code> object to the console will tell you) because Zarr
+stores may be huge and exhaust your disk space, or you may run into
+server-side limits on data transfers.</li>
+</ul>
 </div>
-<div class="section level2">
-<h2 id="other-zarr-stores">Other Zarr stores<a class="anchor" aria-label="anchor" href="#other-zarr-stores"></a>
-</h2>
+<div class="section level3">
+<h3 id="other-zarr-stores">Other Zarr stores<a class="anchor" aria-label="anchor" href="#other-zarr-stores"></a>
+</h3>
 <p>Currently, this package supports local file system stores, online
 HTTP and S3 stores and memory stores. Support for other stores may be
 added in the future.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="customisation">Customisation<a class="anchor" aria-label="anchor" href="#customisation"></a>
+</h2>
+<p>The <code>zarr</code> package uses a number of options to control
+processing of data.</p>
+<table class="table">
+<colgroup>
+<col width="7%">
+<col width="7%">
+<col width="10%">
+<col width="19%">
+<col width="55%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Option</th>
+<th align="center">Type</th>
+<th align="center">Default value</th>
+<th align="center">Reasonable values</th>
+<th align="left">Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">min_compress</td>
+<td align="center">integer</td>
+<td align="center">100</td>
+<td align="center">0 - 10000</td>
+<td align="left">Compressing small chunks of data is inefficient as it
+does not save much space but it does incur the processing overhead of
+compression and decompression. This setting gives the smallest chunk
+size that will be compressed upon writing.</td>
+</tr>
+<tr class="even">
+<td align="left">chunk_length</td>
+<td align="center">integer</td>
+<td align="center">100</td>
+<td align="center">100 - 10000</td>
+<td align="left">The maximum length of a chunk, along each dimension of
+the array, before the dimension is broken up. This is used for cases
+where there is no additional information to guide the chunking; the
+<code><a href="../reference/optimal_chunking.html">optimal_chunking()</a></code> function, for instance, will not use
+this option.</td>
+</tr>
+<tr class="odd">
+<td align="left">eps</td>
+<td align="center">numeric</td>
+<td align="center">1.49e-08</td>
+<td align="center">Several magnitudes smaller than typical data</td>
+<td align="left">Tolerance value to determine if two numeric values are
+considered to be the same. Default is equal to
+<code>.Machine$double.eps^0.5</code>.</td>
+</tr>
+<tr class="even">
+<td align="left">parallel_threshold</td>
+<td align="center">integer</td>
+<td align="center">20</td>
+<td align="center">4 - 30</td>
+<td align="left">Minimum number of chunks to be read before parallel
+processing is used, if a suitable plan is set.</td>
+</tr>
+<tr class="odd">
+<td align="left">chunk_cache_bytes</td>
+<td align="center">integer</td>
+<td align="center">64MB</td>
+<td align="center">0 - 25% of RAM</td>
+<td align="left">The size of the chunk cache before chunks get swapped
+out. Caching chunks makes multiple reads and writes to a single chunk
+much more efficient so the optimal size depends on the use scenario.
+Chunks that get read or written repeatedly (e.g. stream data to an array
+one time step per write) benefit from a larger cache.</td>
+</tr>
+</tbody>
+</table>
+<div class="section level3">
+<h3 id="printing">Printing<a class="anchor" aria-label="anchor" href="#printing"></a>
+</h3>
+<p>If package <code>cli</code> is installed (as is the case in RStudio
+by default), it will be used to print object properties to the console
+or other supported document types (such as the articles on this site).
+Themes will be constructed from 5 styles that can be set by the user,
+using the options available in the <code>cli</code> package, in
+particular in the <a href="https://cli.r-lib.org/reference/make_ansi_style.html" class="external-link"><code>make_ansi_style()</code></a>
+function.</p>
+<table class="table">
+<colgroup>
+<col width="9%">
+<col width="18%">
+<col width="72%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Option</th>
+<th align="center">Default value</th>
+<th align="left">Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">group_style</td>
+<td align="center"><code>c("blue", "bold")</code></td>
+<td align="left">Used for names of groups.</td>
+</tr>
+<tr class="even">
+<td align="left">array_style</td>
+<td align="center"><code>c("green", "bold")</code></td>
+<td align="left">Used for names of arrays.</td>
+</tr>
+<tr class="odd">
+<td align="left">label_style</td>
+<td align="center"><code>c("black", "bold")</code></td>
+<td align="left">Used for general labels, including attribute
+names.</td>
+</tr>
+<tr class="even">
+<td align="left">text_style</td>
+<td align="center"><code>"blue"</code></td>
+<td align="left">Used for general text, group and array properties and
+attribute values.</td>
+</tr>
+<tr class="odd">
+<td align="left">minor_style</td>
+<td align="center"><code>"grey"</code></td>
+<td align="left">Used for details of minor importance.</td>
+</tr>
+</tbody>
+</table>
+<p>These styles can be modified like any other option. It should be
+noted that styles and themes require careful management (start using a
+theme, end use of a theme) which is easy to get wrong (this is a
+<code>cli</code> issue). If you find your styles are not being applied
+properly, reload this package. If that still does not fix the issue, try
+repeated <code>cli_end()</code> calls. As a last resort you may have to
+restart the R session. In general use of this package those problems
+should not occur, but if you start experimenting with styles issues may
+arise during development and testing.</p>
+</div>
+<div class="section level3">
+<h3 id="querying-and-modifying-options">Querying and modifying options<a class="anchor" aria-label="anchor" href="#querying-and-modifying-options"></a>
+</h3>
+<p>Most options can be examined or modified by the user using the
+<code><a href="../reference/zarr_options.html">zarr_options()</a></code> function. Without any arguments the function
+will list all the options with their values. If the <code>key</code>
+argument is provided, the value of the corresponding option is returned.
+If both <code>key</code> and <code>value</code> arguments are provided,
+the corresponding option will be set, if the <code>value</code> is
+reasonable. Bad arguments will be silently dropped and no option will be
+modified.</p>
+</div>
+<div class="section level3">
+<h3 id="persisting-options">Persisting options<a class="anchor" aria-label="anchor" href="#persisting-options"></a>
+</h3>
+<p>You may save modified options by calling the
+<code><a href="../reference/save_options.html">save_options()</a></code> functions. This will create a small RDS file
+in your <code>config</code> directory. In subsequent sessions the RDS
+file will be read automatically and the options will be used. You can
+“forget” about modified options and revert to the package defaults by
+calling <code><a href="../reference/reset_options.html">reset_options()</a></code>.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
