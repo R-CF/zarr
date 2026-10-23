@@ -63,7 +63,7 @@ z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : '/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpcW41uC/file176fe74b4dc51.zarr'
+#> ℹ Location  : '/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpHwtBev/file357e7ec47231.zarr'
 #> ℹ Total size: 1.08 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1

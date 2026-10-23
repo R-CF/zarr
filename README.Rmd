@@ -59,7 +59,7 @@ arr[2:3, 5:7, 1] <- -99L
 arr[1:5, 1, 1] <- NA_integer_
 arr[, 1:10, 1]
 ```
-The data in the Zarr array is of type "int32", the standard R integer. When writing data you should make sure that the object to be written is of the correct type, so using "-99L" and "NA_integer_" here. Numeric data is stored by default as "float64", logical data as "int8".
+The data in the Zarr array is of type "int32", the standard R integer. When writing data you should make sure that the object to be written is of the correct type, so using "-99L" and "NA_integer_" here. Numeric data is stored by default as "float64", logical data as "int8". 
 ```{r, include = FALSE}
 unlink(fn)
 ```
