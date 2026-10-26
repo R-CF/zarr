@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -123,7 +123,7 @@ alternative to “.Rdata” files.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpyI9uGi/file1ded2327f9fd.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpstqtU8/file1e6f3ffab320.zarr</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">2.81 KB</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">1</span></span></span>
@@ -133,7 +133,7 @@ alternative to “.Rdata” files.</p>
 <span><span class="co"># Zarr arrays use the ⌗ glyph</span></span>
 <span><span class="co"># (Domains may use other glyphs)</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpyI9uGi/file1ded2327f9fd.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpstqtU8/file1e6f3ffab320.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
 <span><span class="co">#&gt; ☰ <span style="color: #0000BB; font-weight: bold;">/ (root group)</span></span></span>
 <span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">top_array</span> <span style="color: #B2B2B2;">[int32] [500, 10, 2]</span></span></span></code></pre></div>
 <p>If you have multiple R objects that you want to store in the Zarr
@@ -154,7 +154,7 @@ where you want to store the R object.</p>
 <span><span class="va">grp</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, name <span class="op">=</span> <span class="st">"サブグループ"</span><span class="op">)</span>  <span class="co"># = subgroup</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">w</span>, name <span class="op">=</span> <span class="st">"空の行列"</span>, location <span class="op">=</span> <span class="va">grp</span><span class="op">)</span>  <span class="co"># = empty matrix</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpyI9uGi/file1ded2327f9fd.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpstqtU8/file1e6f3ffab320.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
 <span><span class="co">#&gt; ☰ <span style="color: #0000BB; font-weight: bold;">/ (root group)</span></span></span>
 <span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">top_array</span> <span style="color: #B2B2B2;">[int32] [500, 10, 2]</span></span></span>
 <span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">a_vector</span> <span style="color: #B2B2B2;">[float64] [500]</span></span></span>
@@ -179,7 +179,7 @@ chunk in files like <code>0</code>, <code>1</code>, <code>2</code>,
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpyI9uGi/file1ded2327f9fd.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpstqtU8/file1e6f3ffab320.zarr</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">6.73 KB</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">3</span></span></span>
