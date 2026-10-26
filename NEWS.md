@@ -1,3 +1,5 @@
+# zarr (development version)
+
 # zarr 1.0.0
 
 This is the first stable release. This major release contains **API breaking changes** and the dependency on R has bumped to version 4.4.
