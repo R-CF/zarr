@@ -106,7 +106,7 @@ as_zarr <- function(x, name = '', location = NULL) {
   if (inherits(location, 'zarr_group')) {
     arr <- location$add_array(name, ab)
     arr$write(x)
-    return(location)
+    return(arr)
   }
 
   out <- zarr$new(location)
@@ -146,7 +146,8 @@ define_array <- function(data_type, shape) {
   ab <- array_builder$new()
   ab$data_type <- data_type
   ab$shape <- as.integer(shape)
-  ab$add_codec('blosc', list(clevel = 6L))
+  if (prod(shape) >= Zarr.options$min_compress)
+    ab$add_codec('blosc', list(clevel = 6L))
   ab
 }
 

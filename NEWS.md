@@ -1,5 +1,15 @@
 # zarr (development version)
 
+Maintenance release.
+
+## API
+
+- Fixed bad return value in `as_zarr(location = my_zarr_group)`. As per the API, the new `zarr_array` should be returned - corrected.
+
+## Code
+
+- The fill_value for the string data type has been set to a default value of "missing", to align with the type specification in the Zarr spec.
+
 # zarr 1.0.0
 
 This is the first stable release. This major release contains **API breaking changes** and the dependency on R has bumped to version 4.4.

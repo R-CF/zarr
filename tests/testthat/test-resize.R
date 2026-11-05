@@ -226,7 +226,9 @@ test_that("promote: inserting a new axis preserves data and codecs", {
   z <- create_zarr()
   x <- array(1:12L, c(4L, 3L))
 
-  def <- define_array('int32', c(4L, 3L)); def$chunk_shape <- c(4L, 3L)  # keeps the default blosc codec
+  def <- define_array('int32', c(4L, 3L))
+  def$chunk_shape <- c(4L, 3L)
+  def$add_codec('blosc', list(clevel = 6L))
   arr <- z$add_array('/', 'lead', def)
   arr$write(x)
   expect_true('blosc' %in% vapply(arr$codecs, function(c) c$name, character(1L)))

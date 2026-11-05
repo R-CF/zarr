@@ -15,7 +15,7 @@ zarr_v3_datatypes <- list(
   float64 = list(Rtype = 'double',    size = 8L, signed = TRUE,  fill_value = 9.9692099683868690e+36),
   # complex64
   # complex128
-  string  = list(Rtype = 'character', size = 1L, signed = FALSE, fill_value = NA)
+  string  = list(Rtype = 'character', size = 1L, signed = FALSE, fill_value = 'missing')
 )
 
 #' Zarr data types
