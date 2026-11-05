@@ -44,6 +44,15 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="zarr-development-version">zarr (development version)<a class="anchor" aria-label="anchor" href="#zarr-development-version"></a></h2>
+<p>Maintenance release.</p>
+<div class="section level3">
+<h3 id="api-development-version">API<a class="anchor" aria-label="anchor" href="#api-development-version"></a></h3>
+<ul><li>Fixed bad return value in <code>as_zarr(location = my_zarr_group)</code>. As per the API, the new <code>zarr_array</code> should be returned - corrected.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="code-development-version">Code<a class="anchor" aria-label="anchor" href="#code-development-version"></a></h3>
+<ul><li>The fill_value for the string data type has been set to a default value of “missing”, to align with the type specification in the Zarr spec.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="zarr-100">zarr 1.0.0<a class="anchor" aria-label="anchor" href="#zarr-100"></a></h2><p class="text-muted">CRAN release: 2026-10-23</p>
