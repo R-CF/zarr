@@ -98,7 +98,7 @@ as_zarr <- function(x, name = '', location = NULL) {
   ab$data_type_from_storage.mode <- storage.mode(x)
   d <- dim(x) %||% length(x)
   ab$shape <- d
-  ab$chunk_shape <- auto_chunk(d)
+  ab$chunk_shape <- optimal_chunking(d)
   if (prod(d) > Zarr.options$min_compress)
     ab$add_codec('blosc', list(clevel = 6L))
 

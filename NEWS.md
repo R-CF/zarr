@@ -5,10 +5,13 @@ Maintenance release.
 ## API
 
 - Fixed bad return value in `as_zarr(location = my_zarr_group)`. As per the API, the new `zarr_array` should be returned - corrected.
+- The `auto_chunk()` function has been deprecated; the `chunk_length` option in `Zarr.options` is now useless. Use `optimal_chunking()` instead.
 
 ## Code
 
 - The fill_value for the string data type has been set to a default value of "missing", to align with the type specification in the Zarr spec.
+- `zarr_convention_ref$set()` now strictly applies `node` format when using an `uri` argument.
+- Better convention identification, following the zarr-conventions spec.
 
 # zarr 1.0.0
 

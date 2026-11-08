@@ -41,6 +41,24 @@ test_that("register() does not add the same convention twice", {
   expect_length(atts$zarr_conventions, 2L)
 })
 
+test_that("register() accepts existing entries without a uuid", {
+  ref <- zarr_convention_ref$new()
+  atts <- list(zarr_conventions = list(list(schema_url = "https://example.org/other/schema.json", name = "other")))
+  expect_length(ref$register(atts)$zarr_conventions, 2L)
+})
+
+test_that("register() matches a brief entry by its schema_url", {
+  ref <- zarr_convention_ref$new()
+  atts <- ref$register(list(), brief = TRUE)
+  expect_length(ref$register(atts, brief = TRUE)$zarr_conventions, 1L)
+  expect_length(ref$register(atts)$zarr_conventions, 1L)
+})
+
+test_that("ref registers the description required by its schema", {
+  atts <- zarr_convention_ref$new()$register(list())
+  expect_equal(atts$zarr_conventions[[1L]]$description, "External Reference Convention")
+})
+
 test_that("zarr_conventions() lists the supported conventions", {
   cv <- zarr_conventions()
   expect_s3_class(cv, "data.frame")
@@ -108,10 +126,40 @@ test_that("ref set() validates its arguments", {
   expect_error(ref$set("lat", attribute = 1), "single character string")
 })
 
+test_that("ref set() requires a relative node without uri", {
+  ref <- zarr_convention_ref$new()
+  expect_error(ref$set("/lat"), "relative path when `uri` is not given")
+})
+
+test_that("ref set() requires an absolute node with uri", {
+  ref <- zarr_convention_ref$new()
+  expect_error(ref$set("lat", uri = "https://example.org/a.zarr"), "absolute path when `uri` is given")
+})
+
+test_that("ref set() replaces all previous fields", {
+  ref <- zarr_convention_ref$new()
+  ref$set("/grp/lat", uri = "https://example.org/a.zarr", attribute = "/units")
+  ref$set("../lat")
+  expect_equal(ref$as_list(), list(node = "../lat"))
+})
+
+test_that("ref set() leaves fields unchanged on error", {
+  ref <- zarr_convention_ref$new()
+  ref$set("../lat")
+  expect_error(ref$set("/lat"))
+  expect_equal(ref$as_list(), list(node = "../lat"))
+})
+
+test_that("ref set() returns self invisibly", {
+  ref <- zarr_convention_ref$new()
+  expect_invisible(ref$set("../lat"))
+  expect_identical(ref$set("../lat"), ref)
+})
+
 test_that("ref as_list() requires a node, also after clear()", {
   ref <- zarr_convention_ref$new()
   expect_error(ref$as_list(), "`node` field must be set")
-  ref$set("lat", uri = "https://example.org/a.zarr")
+  ref$set("/lat", uri = "https://example.org/a.zarr")
   ref$clear()
   expect_error(ref$as_list(), "`node` field must be set")
 })

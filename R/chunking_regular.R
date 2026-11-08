@@ -52,7 +52,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
         private$.chunk_shape <- 1L
       else {
         if (missing(chunk_shape))
-          chunk_shape <- auto_chunk(array_shape)
+          chunk_shape <- optimal_chunking(array_shape)
         if (is.integer(chunk_shape) && all(chunk_shape > 0L) && length(array_shape) == length(chunk_shape)) {
           private$.chunk_shape <- chunk_shape
           private$.grid <- (array_shape - 1L) %/% chunk_shape + 1L

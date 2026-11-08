@@ -94,9 +94,13 @@ test_that(".slim.data.frame() collapses and truncates entries", {
   expect_equal(nrow(.slim.data.frame(list())), 0L)
 })
 
+test_that("auto_chunk() is deprecated", {
+  expect_warning(auto_chunk(1000L, 1000L), class = "deprecatedWarning")
+})
+
 test_that("auto_chunk() splits dimensions into near-equal chunks", {
-  expect_equal(auto_chunk(c(250L, 50L), 100L), c(84L, 50L))
-  expect_equal(auto_chunk(1000L, 1000L), 1000L)
+  expect_equal(suppressWarnings(auto_chunk(c(250L, 50L), 100L)), c(84L, 50L))
+  expect_equal(suppressWarnings(auto_chunk(1000L, 1000L)), 1000L)
 })
 
 test_that(".near() uses a tolerance relative to each element, not the vector maximum", {

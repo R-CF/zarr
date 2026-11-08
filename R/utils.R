@@ -242,24 +242,10 @@ is_valid_node_name <- function(name) {
   out
 }
 
-#' Optimal chunking for an array
-#'
-#' This function computes the optimal dimension lengths of a single chunk from
-#' the array dimensions as given in argument `dims`. "Optimal" means that the
-#' provided solution is as close as possible to the `max_chunk` size.
-#'
-#' @param dims Integer array with the lengths along every dimension of the
-#'   array.
-#' @param max_chunk Optional. Integer giving the maximum number of elements per
-#'   chunk. Defaults to `Zarr.options$chunk_length`.
-#' @return An integer array with the same length as argument `dims` giving the
-#'   length of a chunk along each dimension of the array.
+#' @rdname zarr-deprecated
 #' @export
-#' @examples
-#' shape <- c(5000L, 43L, 12800L, 4L)
-#' auto_chunk(shape)
-#' auto_chunk(shape, 10000L)
 auto_chunk <- function(dims, max_chunk = Zarr.options$chunk_length) {
+  .Deprecated("optimal_chunking", package = "zarr")
   nchunks <- ceiling(dims / max_chunk)
   as.integer(ceiling(dims / nchunks))
 }

@@ -66,7 +66,7 @@ unlink(fn)
 ## Installation
 Installation from CRAN of the latest release: 
 ```
-install.packages("zarr")
+install.packages("zarr") 
 ```
 You can install the development version of `zarr` from [GitHub](https://github.com/R-CF/zarr) with:
 ```

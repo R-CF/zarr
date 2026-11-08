@@ -36,7 +36,6 @@ library(zarr)
 x <- array(1:400, c(5, 20, 4))
 z <- as_zarr(x)
 z
-#> 
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Memory store - version 3 ────────────────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
@@ -59,11 +58,10 @@ array a name that you can later use to retrieve the array and its data.
 fn <- tempfile(fileext = ".zarr")
 z <- as_zarr(x, name = "my_array", location = fn)
 z
-#> 
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : '/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpHwtBev/file357e7ec47231.zarr'
+#> ℹ Location  : '/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpizLuIF/file9565792abfb0.zarr'
 #> ℹ Total size: 1.08 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1
@@ -85,12 +83,11 @@ starting with a slash `"/"` for the root:
 # Get the array using list-like access on the Zarr object
 arr <- z[["/my_array"]]
 arr
-#> 
 #> ── Zarr array ⌗ my_array ───────────────────────────────────────────────────────
 #> ℹ Path      : /my_array
 #> ℹ Data type : int32
 #> ℹ Shape     : 5, 20, 4
-#> ℹ Chunking  : 5, 20, 4
+#> ℹ Chunk grid: 1, 1, 1 [5 x 20 x 4]
 
 # Index the Zarr array like a regular R array
 # Indexes are 1-based, as usual in R (Zarr specifies everything as 0-based)
@@ -120,7 +117,7 @@ data is stored by default as “float64”, logical data as “int8”.
 
 Installation from CRAN of the latest release:
 
-    install.packages("zarr")
+    install.packages("zarr") 
 
 You can install the development version of `zarr` from
 [GitHub](https://github.com/R-CF/zarr) with:

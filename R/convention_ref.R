@@ -12,7 +12,7 @@
 #'  "spec_url": "https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md",
 #'  "uuid": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786",
 #'  "name": "ref",
-#'  "description": "Referencing Zarr objects external to the current Zarr object"
+#'  "description": "External Reference Convention"
 #' }
 #' ```
 #' @docType class
@@ -66,11 +66,16 @@ zarr_convention_ref <- R6::R6Class('zarr_convention_ref',
                        schema = 'https://raw.githubusercontent.com/R-CF/zarr_convention_ref/refs/tags/v2.0.0/schema.json',
                        uuid   = 'd89b30cf-ed8c-43d5-9a16-b492f0cd8786')
       private$.spec <- 'https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md'
-      private$.description <- 'Referencing Zarr objects external to the current Zarr object'
+      private$.description <- 'External Reference Convention'
     },
 
     #' @description Set the attributes for this convention for use in a Zarr
-    #'   node.
+    #'   node. Any attributes set previously are replaced.
+    #' @details The `node` path must be relative (not starting with "/") when
+    #'   `uri` is not given, and absolute (starting with "/") when it is. An
+    #'   error is thrown when this is not the case, when `node` or `uri` is not
+    #'   a non-empty character string, or when `attribute` is not a valid JSON
+    #'   pointer.
     #' @param node Character string. Path to the Zarr node containing the data
     #'   of interest. The path is relative to the referring node when argument
     #'   `uri` is missing, absolute from the root of the Zarr store otherwise.
@@ -78,23 +83,24 @@ zarr_convention_ref <- R6::R6Class('zarr_convention_ref',
     #'   Omit for nodes that are in the same local store as the referring node.
     #' @param attribute Optional, a character string with a JSON pointer to a
     #'   referenced attribute in the metadata of the referenced `node`.
+    #' @return Self, invisibly.
     set = function(node, uri, attribute) {
-      if (is.character(node) && length(node) == 1L && nzchar(node))
-        private$.node <- node
-      else
+      if (missing(uri)) uri <- NULL
+      if (missing(attribute)) attribute <- NULL
+      if (!is.character(node) || length(node) != 1L || !nzchar(node))
         stop('Argument `node` must be a character string', call. = FALSE)
-
-      if (!(missing(uri) || is.null(uri))) {
-        if (is.character(uri) && length(uri) == 1L && nzchar(uri)) # FIXME: Must test for URI formatting
-          private$.uri <- uri
-        else
-          stop('Argument `uri` must be a character string representing a URI', call. = FALSE)
-      }
-
-      if (!(missing(attribute) || is.null(attribute))) {
+      if (!is.null(uri) && (!is.character(uri) || length(uri) != 1L || !nzchar(uri))) # FIXME: Must test for URI formatting
+        stop('Argument `uri` must be a character string representing a URI', call. = FALSE)
+      if (is.null(uri) == startsWith(node, '/'))
+        stop(if (is.null(uri)) 'Argument `node` must be a relative path when `uri` is not given'
+             else 'Argument `node` must be an absolute path when `uri` is given', call. = FALSE)
+      if (!is.null(attribute))
         private$parse_json_pointer(attribute) # Errors on an invalid pointer
-        private$.attribute <- attribute
-      }
+
+      private$.node <- node
+      private$.uri <- uri
+      private$.attribute <- attribute
+      invisible(self)
     },
 
     #' @description Clear any attributes that may have been set. Only the

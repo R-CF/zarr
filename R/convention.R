@@ -49,7 +49,11 @@ zarr_convention <- R6::R6Class('zarr_convention',
     #' @return The updated attributes.
     register = function(attributes, brief = FALSE) {
       conv <- attributes$zarr_conventions %||% list()
-      if (any(vapply(conv, function(c) { c$uuid == private$.uuid }, logical(1L))))
+      # Identify an existing entry by its uuid, or by its schema_url when it has no uuid
+      if (any(vapply(conv, function(c) {
+            if (is.null(c$uuid)) identical(c$schema_url, private$.schema)
+            else identical(c$uuid, private$.uuid)
+          }, logical(1L))))
         return(attributes)
 
       entry <- if (brief)

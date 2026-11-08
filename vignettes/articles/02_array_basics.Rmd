@@ -72,7 +72,7 @@ unlink(fn)
 A couple of things to note:
 
 - The total size that is printed to the console when inspecting a Zarr object sums up the size of both types of files in the root directory and any sub-directories. Note that the compression here is spectacular: 10,000 integers in the R array `x` take up 40,000 bytes, vector `v` and matrix `w` another 4,120 bytes. Inclusive of the non-compressed JSON files, the Zarr store takes up only a small fraction of that.
-- By default, R objects are broken up into chunks of length 100 along each dimension of the R object. Vector `v` thus has chunks named `c.0`, `c.1`, `c.2`, `c.3`, `c.4`. Array `x` has three dimensions, so the names are like `c.0.0.0`. The indices for the chunks names are 0-based, a requirement from the Zarr specification. Note that our Japanese Zarr array `/サブグループ/空の行列` does not have any data files at all: matrix `w` was created with `data = NA` and chunks with only `NA` values are not written to disk for added efficiency.
+- By default, R objects are broken up into chunks of 4 million elements by default. Chunks are named `c.0`, `c.1`, etc. Array `x` has three dimensions, so the names are like `c.0.0.0`. The indices for the chunks names are 0-based, a requirement from the Zarr specification. Note that our Japanese Zarr array `/サブグループ/空の行列` does not have any data files at all: matrix `w` was created with `data = NA` and chunks with only `NA` values are not written to disk for added efficiency.
 
 # Creating your own Zarr arrays
 You can define your own Zarr arrays with full control over the parameters to be used. A special utility class, `array_builder`, helps you construct a valid "zarr.json" metadata document that you need when creating the Zarr array.
@@ -121,7 +121,7 @@ Every Zarr array has a `fill_value` for parts of the array that have not yet bee
     }
   }
 ```  
-A Zarr array is stored in "chunked" format, where the array is cut up into chunks along each dimension. The default setting is to have chunks that are an even part of the shape length in each dimension, with a length of at most 100 along each dimension (or smaller if the Zarr array is smaller, as is the case here). This results in chunks with a maximum size of 8MB for numeric data, 4MB for integer data and 1MB for logical data, before compression, for a 3D Zarr array with shape `[100, 100, 100]`. You may set this to a set of values that better aligns with your array size and your retrieval pattern.
+A Zarr array is stored in "chunked" format, where the array is cut up into chunks along each dimension. The default setting is to have chunks that have at most 4 million elements. This results in chunks with a maximum size of 32MB for numeric data, 16MB for integer data and 4MB for logical data, before compression. You may set this to a set of values that better aligns with your array size and your retrieval pattern.
 
 ```
 "codecs"

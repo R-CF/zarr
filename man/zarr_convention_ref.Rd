@@ -16,7 +16,7 @@ convention is implemented here:
  "spec_url": "https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md",
  "uuid": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786",
  "name": "ref",
- "description": "Referencing Zarr objects external to the current Zarr object"
+ "description": "External Reference Convention"
 \}
 }\if{html}{\out{</div>}}
 }
@@ -57,7 +57,7 @@ convention is implemented here:
 \if{latex}{\out{\hypertarget{method-zarr_convention_ref-set}{}}}
 \subsection{\code{zarr_convention_ref$set()}}{
   Set the attributes for this convention for use in a Zarr
-node.
+node. Any attributes set previously are replaced.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_convention_ref$set(node, uri, attribute)}
@@ -75,6 +75,16 @@ Omit for nodes that are in the same local store as the referring node.}
 referenced attribute in the metadata of the referenced \code{node}.}
     }
     \if{html}{\out{</div>}}
+  }
+  \subsection{Details}{
+    The \code{node} path must be relative (not starting with "/") when
+\code{uri} is not given, and absolute (starting with "/") when it is. An
+error is thrown when this is not the case, when \code{node} or \code{uri} is not
+a non-empty character string, or when \code{attribute} is not a valid JSON
+pointer.
+  }
+  \subsection{Returns}{
+    Self, invisibly.
   }
 }
 
