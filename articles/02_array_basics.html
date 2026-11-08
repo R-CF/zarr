@@ -65,7 +65,7 @@
       <h1>2. Working with arrays</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/R-CF/zarr/blob/v1.0.0.9000/vignettes/articles/02_array_basics.Rmd" class="external-link"><code>vignettes/articles/02_array_basics.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/R-CF/zarr/blob/main/vignettes/articles/02_array_basics.Rmd" class="external-link"><code>vignettes/articles/02_array_basics.Rmd</code></a></small>
       <div class="d-none name"><code>02_array_basics.Rmd</code></div>
     </div>
 
@@ -123,8 +123,8 @@ alternative to “.Rdata” files.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/Rtmpui6kZQ/file1d6a2390de29.zarr</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">2.81 KB</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpTmkWD2/file1ca46efe17e3.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">2.12 KB</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">1</span></span></span>
 <span></span>
@@ -133,7 +133,7 @@ alternative to “.Rdata” files.</p>
 <span><span class="co"># Zarr arrays use the ⌗ glyph</span></span>
 <span><span class="co"># (Domains may use other glyphs)</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/Rtmpui6kZQ/file1d6a2390de29.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpTmkWD2/file1ca46efe17e3.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
 <span><span class="co">#&gt; ☰ <span style="color: #0000BB; font-weight: bold;">/ (root group)</span></span></span>
 <span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">top_array</span> <span style="color: #B2B2B2;">[int32] [500, 10, 2]</span></span></span></code></pre></div>
 <p>If you have multiple R objects that you want to store in the Zarr
@@ -154,7 +154,7 @@ where you want to store the R object.</p>
 <span><span class="va">grp</span> <span class="op">&lt;-</span> <span class="va">z</span><span class="op">$</span><span class="fu">add_group</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, name <span class="op">=</span> <span class="st">"サブグループ"</span><span class="op">)</span>  <span class="co"># = subgroup</span></span>
 <span><span class="va">arr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_zarr.html">as_zarr</a></span><span class="op">(</span><span class="va">w</span>, name <span class="op">=</span> <span class="st">"空の行列"</span>, location <span class="op">=</span> <span class="va">grp</span><span class="op">)</span>  <span class="co"># = empty matrix</span></span>
 <span><span class="va">z</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/Rtmpui6kZQ/file1d6a2390de29.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr hierarchy /tmp/RtmpTmkWD2/file1ca46efe17e3.zarr</span> <span style="color: #00BBBB;">────────────────────────</span></span></span>
 <span><span class="co">#&gt; ☰ <span style="color: #0000BB; font-weight: bold;">/ (root group)</span></span></span>
 <span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">top_array</span> <span style="color: #B2B2B2;">[int32] [500, 10, 2]</span></span></span>
 <span><span class="co">#&gt;   ⌗ <span style="color: #00BB00; font-weight: bold;">a_vector</span> <span style="color: #B2B2B2;">[float64] [500]</span></span></span>
@@ -167,20 +167,17 @@ chunk in files like <code>0</code>, <code>1</code>, <code>2</code>,
 …)</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">z</span><span class="op">$</span><span class="va">store</span><span class="op">$</span><span class="va">root</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "a_vector/c.0"                    "a_vector/c.1"                   </span></span>
-<span><span class="co">#&gt;  [3] "a_vector/c.2"                    "a_vector/c.3"                   </span></span>
-<span><span class="co">#&gt;  [5] "a_vector/c.4"                    "a_vector/zarr.json"             </span></span>
-<span><span class="co">#&gt;  [7] "top_array/c.0.0.0"               "top_array/c.1.0.0"              </span></span>
-<span><span class="co">#&gt;  [9] "top_array/c.2.0.0"               "top_array/c.3.0.0"              </span></span>
-<span><span class="co">#&gt; [11] "top_array/c.4.0.0"               "top_array/zarr.json"            </span></span>
-<span><span class="co">#&gt; [13] "zarr.json"                       "サブグループ/zarr.json"         </span></span>
-<span><span class="co">#&gt; [15] "サブグループ/空の行列/zarr.json"</span></span>
+<span><span class="co">#&gt; [1] "a_vector/c.0"                    "a_vector/zarr.json"             </span></span>
+<span><span class="co">#&gt; [3] "top_array/c.0.0.0"               "top_array/c.1.0.0"              </span></span>
+<span><span class="co">#&gt; [5] "top_array/c.2.0.0"               "top_array/zarr.json"            </span></span>
+<span><span class="co">#&gt; [7] "zarr.json"                       "サブグループ/zarr.json"         </span></span>
+<span><span class="co">#&gt; [9] "サブグループ/空の行列/zarr.json"</span></span>
 <span><span class="va">z</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Zarr</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Local file system store</span> - version 3 ─────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Listing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Writing</span> <span style="color: #00BB00;">✔</span> <span style="color: #000000; font-weight: bold;">Deleting</span> <span style="color: #BB0000;">✖</span> <span style="color: #000000; font-weight: bold;">Consolidated metadata</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/Rtmpui6kZQ/file1d6a2390de29.zarr</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">6.73 KB</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Location  :</span> <span style="color: #0000BB;">/tmp/RtmpTmkWD2/file1ca46efe17e3.zarr</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Total size:</span> <span style="color: #0000BB;">5.7 KB</span></span></span>
 <span><span class="co">#&gt; ── Contents ────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #000000; font-weight: bold;">Arrays:</span> <span style="color: #0000BB;">3</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></code></pre></div>
@@ -193,16 +190,15 @@ any sub-directories. Note that the compression here is spectacular:
 vector <code>v</code> and matrix <code>w</code> another 4,120 bytes.
 Inclusive of the non-compressed JSON files, the Zarr store takes up only
 a small fraction of that.</li>
-<li>By default, R objects are broken up into chunks of length 100 along
-each dimension of the R object. Vector <code>v</code> thus has chunks
-named <code>c.0</code>, <code>c.1</code>, <code>c.2</code>,
-<code>c.3</code>, <code>c.4</code>. Array <code>x</code> has three
-dimensions, so the names are like <code>c.0.0.0</code>. The indices for
-the chunks names are 0-based, a requirement from the Zarr specification.
-Note that our Japanese Zarr array <code>/サブグループ/空の行列</code>
-does not have any data files at all: matrix <code>w</code> was created
-with <code>data = NA</code> and chunks with only <code>NA</code> values
-are not written to disk for added efficiency.</li>
+<li>By default, R objects are broken up into chunks of 4 million
+elements by default. Chunks are named <code>c.0</code>,
+<code>c.1</code>, etc. Array <code>x</code> has three dimensions, so the
+names are like <code>c.0.0.0</code>. The indices for the chunks names
+are 0-based, a requirement from the Zarr specification. Note that our
+Japanese Zarr array <code>/サブグループ/空の行列</code> does not have
+any data files at all: matrix <code>w</code> was created with
+<code>data = NA</code> and chunks with only <code>NA</code> values are
+not written to disk for added efficiency.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -225,7 +221,7 @@ metadata document that you need when creating the Zarr array.</p>
 <span><span class="co">#&gt;   "chunk_grid": {</span></span>
 <span><span class="co">#&gt;     "name": "regular",</span></span>
 <span><span class="co">#&gt;     "configuration": {</span></span>
-<span><span class="co">#&gt;       "chunk_shape": [80, 78, 5]</span></span>
+<span><span class="co">#&gt;       "chunk_shape": [240, 155, 5]</span></span>
 <span><span class="co">#&gt;     }</span></span>
 <span><span class="co">#&gt;   },</span></span>
 <span><span class="co">#&gt;   "codecs": [</span></span>
@@ -293,13 +289,10 @@ and <em>vice-versa</em>.</p>
   }</code></pre>
 <p>A Zarr array is stored in “chunked” format, where the array is cut up
 into chunks along each dimension. The default setting is to have chunks
-that are an even part of the shape length in each dimension, with a
-length of at most 100 along each dimension (or smaller if the Zarr array
-is smaller, as is the case here). This results in chunks with a maximum
-size of 8MB for numeric data, 4MB for integer data and 1MB for logical
-data, before compression, for a 3D Zarr array with shape
-<code>[100, 100, 100]</code>. You may set this to a set of values that
-better aligns with your array size and your retrieval pattern.</p>
+that have at most 4 million elements. This results in chunks with a
+maximum size of 32MB for numeric data, 16MB for integer data and 4MB for
+logical data, before compression. You may set this to a set of values
+that better aligns with your array size and your retrieval pattern.</p>
 <pre><code><span><span class="st">"codecs"</span></span></code></pre>
 <p>The codecs are a list of operations that are executed when writing a
 Zarr array to a Zarr store (“encoding”) and in reverse order when

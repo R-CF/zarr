@@ -11,7 +11,7 @@ convention is implemented here:
      "spec_url": "https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md",
      "uuid": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786",
      "name": "ref",
-     "description": "Referencing Zarr objects external to the current Zarr object"
+     "description": "External Reference Convention"
     }
 
 ## Super class
@@ -53,7 +53,8 @@ A new instance of a "ref" convention agent.
 
 ### `zarr_convention_ref$set()`
 
-Set the attributes for this convention for use in a Zarr node.
+Set the attributes for this convention for use in a Zarr node. Any
+attributes set previously are replaced.
 
 #### Usage
 
@@ -76,6 +77,18 @@ Set the attributes for this convention for use in a Zarr node.
 
   Optional, a character string with a JSON pointer to a referenced
   attribute in the metadata of the referenced `node`.
+
+#### Details
+
+The `node` path must be relative (not starting with "/") when `uri` is
+not given, and absolute (starting with "/") when it is. An error is
+thrown when this is not the case, when `node` or `uri` is not a
+non-empty character string, or when `attribute` is not a valid JSON
+pointer.
+
+#### Returns
+
+Self, invisibly.
 
 ------------------------------------------------------------------------
 

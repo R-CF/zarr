@@ -57,8 +57,8 @@ z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/Rtmpui6kZQ/file1d6a2390de29.zarr
-#> ℹ Total size: 2.81 KB
+#> ℹ Location  : /tmp/RtmpTmkWD2/file1ca46efe17e3.zarr
+#> ℹ Total size: 2.12 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1
 
@@ -67,7 +67,7 @@ z
 # Zarr arrays use the ⌗ glyph
 # (Domains may use other glyphs)
 z$hierarchy()
-#> ── Zarr hierarchy /tmp/Rtmpui6kZQ/file1d6a2390de29.zarr ────────────────────────
+#> ── Zarr hierarchy /tmp/RtmpTmkWD2/file1ca46efe17e3.zarr ────────────────────────
 #> ☰ / (root group)
 #>   ⌗ top_array [int32] [500, 10, 2]
 ```
@@ -92,7 +92,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> ── Zarr hierarchy /tmp/Rtmpui6kZQ/file1d6a2390de29.zarr ────────────────────────
+#> ── Zarr hierarchy /tmp/RtmpTmkWD2/file1ca46efe17e3.zarr ────────────────────────
 #> ☰ / (root group)
 #>   ⌗ top_array [int32] [500, 10, 2]
 #>   ⌗ a_vector [float64] [500]
@@ -108,20 +108,17 @@ directory trees, like `c/1/0` with the chunk in files like `0`, `1`,
 ``` r
 
 list.files(path = z$store$root, recursive = TRUE)
-#>  [1] "a_vector/c.0"                    "a_vector/c.1"                   
-#>  [3] "a_vector/c.2"                    "a_vector/c.3"                   
-#>  [5] "a_vector/c.4"                    "a_vector/zarr.json"             
-#>  [7] "top_array/c.0.0.0"               "top_array/c.1.0.0"              
-#>  [9] "top_array/c.2.0.0"               "top_array/c.3.0.0"              
-#> [11] "top_array/c.4.0.0"               "top_array/zarr.json"            
-#> [13] "zarr.json"                       "サブグループ/zarr.json"         
-#> [15] "サブグループ/空の行列/zarr.json"
+#> [1] "a_vector/c.0"                    "a_vector/zarr.json"             
+#> [3] "top_array/c.0.0.0"               "top_array/c.1.0.0"              
+#> [5] "top_array/c.2.0.0"               "top_array/zarr.json"            
+#> [7] "zarr.json"                       "サブグループ/zarr.json"         
+#> [9] "サブグループ/空の行列/zarr.json"
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
 #> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/Rtmpui6kZQ/file1d6a2390de29.zarr
-#> ℹ Total size: 6.73 KB
+#> ℹ Location  : /tmp/RtmpTmkWD2/file1ca46efe17e3.zarr
+#> ℹ Total size: 5.7 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 3
 unlink(fn)
@@ -136,14 +133,14 @@ A couple of things to note:
   vector `v` and matrix `w` another 4,120 bytes. Inclusive of the
   non-compressed JSON files, the Zarr store takes up only a small
   fraction of that.
-- By default, R objects are broken up into chunks of length 100 along
-  each dimension of the R object. Vector `v` thus has chunks named
-  `c.0`, `c.1`, `c.2`, `c.3`, `c.4`. Array `x` has three dimensions, so
-  the names are like `c.0.0.0`. The indices for the chunks names are
-  0-based, a requirement from the Zarr specification. Note that our
-  Japanese Zarr array `/サブグループ/空の行列` does not have any data
-  files at all: matrix `w` was created with `data = NA` and chunks with
-  only `NA` values are not written to disk for added efficiency.
+- By default, R objects are broken up into chunks of 4 million elements
+  by default. Chunks are named `c.0`, `c.1`, etc. Array `x` has three
+  dimensions, so the names are like `c.0.0.0`. The indices for the
+  chunks names are 0-based, a requirement from the Zarr specification.
+  Note that our Japanese Zarr array `/サブグループ/空の行列` does not
+  have any data files at all: matrix `w` was created with `data = NA`
+  and chunks with only `NA` values are not written to disk for added
+  efficiency.
 
 ## Creating your own Zarr arrays
 
@@ -166,7 +163,7 @@ arr_def
 #>   "chunk_grid": {
 #>     "name": "regular",
 #>     "configuration": {
-#>       "chunk_shape": [80, 78, 5]
+#>       "chunk_shape": [240, 155, 5]
 #>     }
 #>   },
 #>   "codecs": [
@@ -250,13 +247,10 @@ automatically transformed from `NA` in R to `fill_value` in Zarr and
 
 A Zarr array is stored in “chunked” format, where the array is cut up
 into chunks along each dimension. The default setting is to have chunks
-that are an even part of the shape length in each dimension, with a
-length of at most 100 along each dimension (or smaller if the Zarr array
-is smaller, as is the case here). This results in chunks with a maximum
-size of 8MB for numeric data, 4MB for integer data and 1MB for logical
-data, before compression, for a 3D Zarr array with shape
-`[100, 100, 100]`. You may set this to a set of values that better
-aligns with your array size and your retrieval pattern.
+that have at most 4 million elements. This results in chunks with a
+maximum size of 32MB for numeric data, 16MB for integer data and 4MB for
+logical data, before compression. You may set this to a set of values
+that better aligns with your array size and your retrieval pattern.
 
     "codecs"
 

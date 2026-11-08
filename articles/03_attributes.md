@@ -59,7 +59,7 @@ arr
 #> ℹ Path      : /bar
 #> ℹ Data type : float64
 #> ℹ Shape     : 100, 200
-#> ℹ Chunk grid: 1, 2 [100 x 100]
+#> ℹ Chunk grid: 1, 1 [100 x 200]
 #> ── Attributes ──────────────────────────────────────────────────────────────────
 #> • title: Bar for foo
 #> • valid_range: [0, 1]
@@ -83,7 +83,7 @@ arr
 #> ℹ Path      : /bar
 #> ℹ Data type : float64
 #> ℹ Shape     : 100, 200
-#> ℹ Chunk grid: 1, 2 [100 x 100]
+#> ℹ Chunk grid: 1, 1 [100 x 200]
 #> ── Attributes ──────────────────────────────────────────────────────────────────
 #> • title: Bar for foo and baz too
 #> • valid_range: [0, 1]
@@ -101,7 +101,7 @@ arr
 #> ℹ Path      : /bar
 #> ℹ Data type : float64
 #> ℹ Shape     : 100, 200
-#> ℹ Chunk grid: 1, 2 [100 x 100]
+#> ℹ Chunk grid: 1, 1 [100 x 200]
 #> ── Attributes ──────────────────────────────────────────────────────────────────
 #> • title: Bar for foo and baz too
 #> • actual_range: [2.5581568479538e-05, 0.999872711254284]

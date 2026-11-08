@@ -9,7 +9,7 @@ convention is implemented here:
  "spec_url": "https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md",
  "uuid": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786",
  "name": "ref",
- "description": "Referencing Zarr objects external to the current Zarr object"
+ "description": "External Reference Convention"
 }
 '><meta property="og:description" content='This class implements the "ref" convention. This convention
 provides a standard way of referring to objects from a referring group or
@@ -21,7 +21,7 @@ convention is implemented here:
  "spec_url": "https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md",
  "uuid": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786",
  "name": "ref",
- "description": "Referencing Zarr objects external to the current Zarr object"
+ "description": "External Reference Convention"
 }
 '></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -63,7 +63,7 @@ convention is implemented here:
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Convention "ref"</h1>
-      <small class="dont-index">Source: <a href="https://github.com/R-CF/zarr/blob/v1.0.0.9000/R/convention_ref.R" class="external-link"><code>R/convention_ref.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/R-CF/zarr/blob/main/R/convention_ref.R" class="external-link"><code>R/convention_ref.R</code></a></small>
       <div class="d-none name"><code>zarr_convention_ref.Rd</code></div>
     </div>
 
@@ -78,7 +78,7 @@ convention is implemented here:</p>
  "spec_url": "https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md",
  "uuid": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786",
  "name": "ref",
- "description": "Referencing Zarr objects external to the current Zarr object"
+ "description": "External Reference Convention"
 }
 </code></pre><p></p></div>
     </div>
@@ -113,7 +113,7 @@ convention is implemented here:</p>
 <p></p><hr><a id="method-zarr_convention_ref-set"></a><div class="section">
 <h3 id="zarr-convention-ref-set-"><code>zarr_convention_ref$set()</code><a class="anchor" aria-label="anchor" href="#zarr-convention-ref-set-"></a></h3>
 <p>Set the attributes for this convention for use in a Zarr
-node.</p><div class="section">
+node. Any attributes set previously are replaced.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_convention_ref</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">node</span>, <span class="va">uri</span>, <span class="va">attribute</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
@@ -133,6 +133,16 @@ referenced attribute in the metadata of the referenced <code>node</code>.</p></d
 
 
 </dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>The <code>node</code> path must be relative (not starting with "/") when
+<code>uri</code> is not given, and absolute (starting with "/") when it is. An
+error is thrown when this is not the case, when <code>node</code> or <code>uri</code> is not
+a non-empty character string, or when <code>attribute</code> is not a valid JSON
+pointer.</p>
+</div><p></p><div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>Self, invisibly.</p>
 </div>
 
 </div>
@@ -154,7 +164,7 @@ attributes of a Zarr object.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_convention_ref</span><span class="op">$</span><span class="fu">as_list</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>A <code>list</code> with Zarr attributes for a group or array.</p>
 </div>
 
