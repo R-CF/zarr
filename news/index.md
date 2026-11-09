@@ -2,6 +2,10 @@
 
 ## zarr (development version)
 
+## zarr 1.0.1
+
+CRAN release: 2026-11-08
+
 Maintenance release.
 
 ### API

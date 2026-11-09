@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">zarr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,19 +39,22 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/R-CF/zarr/blob/v1.0.1/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/R-CF/zarr/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="zarr-development-version">zarr (development version)<a class="anchor" aria-label="anchor" href="#zarr-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.1" id="zarr-101">zarr 1.0.1<a class="anchor" aria-label="anchor" href="#zarr-101"></a></h2><p class="text-muted">CRAN release: 2026-11-08</p>
 <p>Maintenance release.</p>
 <div class="section level3">
-<h3 id="api-development-version">API<a class="anchor" aria-label="anchor" href="#api-development-version"></a></h3>
+<h3 id="api-1-0-1">API<a class="anchor" aria-label="anchor" href="#api-1-0-1"></a></h3>
 <ul><li>Fixed bad return value in <code>as_zarr(location = my_zarr_group)</code>. As per the API, the new <code>zarr_array</code> should be returned - corrected.</li>
 <li>The <code><a href="../reference/zarr-deprecated.html">auto_chunk()</a></code> function has been deprecated; the <code>chunk_length</code> option in <code>Zarr.options</code> is now useless. Use <code><a href="../reference/optimal_chunking.html">optimal_chunking()</a></code> instead.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="code-development-version">Code<a class="anchor" aria-label="anchor" href="#code-development-version"></a></h3>
+<h3 id="code-1-0-1">Code<a class="anchor" aria-label="anchor" href="#code-1-0-1"></a></h3>
 <ul><li>The fill_value for the string data type has been set to a default value of “missing”, to align with the type specification in the Zarr spec.</li>
 <li>
 <code>zarr_convention_ref$set()</code> now strictly applies <code>node</code> format when using an <code>uri</code> argument.</li>
