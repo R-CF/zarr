@@ -1,5 +1,7 @@
 # zarr (development version)
 
+# zarr 1.0.1
+
 Maintenance release.
 
 ## API

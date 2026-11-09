@@ -1,5 +1,6 @@
 ## Release details
-This is a major release of the package with significant new functionality.
+This is a patch release of the package to fix an erroneous function result and
+minor other improvements.
 
 ### API BREAKING CHANGES
 The revdepcheck, details below, shows one failing dependency. This is expected 
@@ -26,5 +27,5 @@ Issues with CRAN packages are summarised below.
 (This reports the first line of each new failure)
 
 * geozarr
-  checking examples ... ERROR
   checking tests ...
+  checking examples ... WARNING
