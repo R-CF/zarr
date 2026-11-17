@@ -4,9 +4,12 @@
 \name{[[.zarr_group}
 \alias{[[.zarr_group}
 \alias{[[,zarr-group-method}
+\alias{[[<-.zarr_group}
 \title{Get a group or array from a Zarr group}
 \usage{
 \method{[[}{zarr_group}(x, i)
+
+\method{[[}{zarr_group}(x, i) <- value
 }
 \arguments{
 \item{x}{A \code{zarr_group} object to extract a group or array from.}
@@ -15,6 +18,8 @@
 group, it must not start with a slash "/". The path may start with any
 number of double dots ".." separated by slashes "/" to denote groups
 higher up in the hierarchy.}
+
+\item{value}{The node at path \code{i}, i.e. the node returned by \code{x[[i]]}.}
 }
 \value{
 An instance of \code{zarr_group} or \code{zarr_array}, or \code{NULL} if the path is
@@ -23,6 +28,14 @@ not found.
 \description{
 This method can be used to retrieve a group or array from the Zarr group by
 a relative path to the desired group or array.
+}
+\details{
+Assignment with \verb{[[<-} exists only so that chained assignments to a
+field of a node, such as \code{grp[["t"]]$field <- value}, work: R assigns the
+node back to \code{x} as the last step of such an expression. Nothing is
+changed in \code{x}. An error is raised if \code{value} is not the very node at path
+\code{i}; use the \code{add_group()} and \code{add_array()} methods to add nodes to the
+hierarchy.
 }
 \examples{
 z <- create_zarr()

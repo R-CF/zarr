@@ -95,7 +95,14 @@ the inner chunks and the index, respectively.}
 the console.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{chunk_grid_sharded$print()}
+    \preformatted{chunk_grid_sharded$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Ignored.}
+    }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{

@@ -112,7 +112,14 @@ opened in read-only mode.}
 use \code{cli} if available.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_store$print()}
+    \preformatted{zarr_store$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Ignored.}
+    }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{

@@ -49,8 +49,9 @@ chunk_grid_sharded <- R6::R6Class('chunk_grid_sharded',
 
     #' @description Print a short description of this sharded chunking scheme to
     #'   the console.
+    #' @param ... Ignored.
     #' @return Self, invisibly.
-    print = function() {
+    print = function(...) {
       cat('<Zarr sharded chunk grid> [', paste(private$.chunk_shape, collapse = ', '), ']\n', sep = '')
       invisible(self)
     },

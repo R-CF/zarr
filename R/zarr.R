@@ -88,8 +88,10 @@ zarr <- R6::R6Class("zarr",
     },
 
     #' @description Print a summary of the Zarr object to the console.
+    #' @param ... Arguments passed on to the `print_attributes()` method, such as
+    #'   `max_attributes` and `root`.
     #' @return Self, invisibly.
-    print = function() {
+    print = function(...) {
       arrays <- if (is.null(private$.root)) '(uninitialised)'
                 else if (inherits(private$.root, 'zarr_array')) '1 (single array store)'
                 else private$.root$count_arrays()
@@ -107,7 +109,7 @@ zarr <- R6::R6Class("zarr",
         cat('Arrays    :', arrays, '\n')
       }
       if (!is.null(private$.root))
-        private$.root$print_attributes()
+        private$.root$print_attributes(...)
       invisible(self)
     },
 
@@ -355,4 +357,19 @@ str.zarr <- function(object, ...) {
 #' z[["/"]]
 `[[.zarr` <- function(x, i) {
   x$get_node(uri_to_path(i))
+}
+
+#' @rdname sub-sub-.zarr
+#' @param value The node at path `i`, i.e. the node returned by `x[[i]]`.
+#' @details Assignment with `[[<-` exists only so that chained assignments to a
+#'   field of a node, such as `z[["/t"]]$field <- value`, work: R assigns the
+#'   node back to `x` as the last step of such an expression. Nothing is
+#'   changed in `x`. An error is raised if `value` is not the very node at path
+#'   `i`; use the `add_group()` and `add_array()` methods to add nodes to the
+#'   hierarchy.
+#' @export
+`[[<-.zarr` <- function(x, i, value) {
+  if (!identical(x[[i]], value))
+    stop('Zarr nodes cannot be assigned with `[[<-`; use `add_group()` or `add_array()`', call. = FALSE)
+  x
 }

@@ -184,16 +184,23 @@ optimal_chunking <- function(dim_sizes, weights, chunk_values = 4L * 1024L * 102
   if (any(weights <= 0))
     stop('Weights must be positive', call. = FALSE)
 
-  W <- sum(weights[dim_sizes > 1L])
-  if (W == 0) # Every dimension is size 1; nothing to partition
-    return(as.integer(dim_sizes))
-
-  x <- chunk_values^(1 / W)
-
-  chunk_sizes <- vector("numeric", len)
-  for (d in seq_len(len))
-    chunk_sizes[d] <- if (dim_sizes[d] == 1L) 1
-                      else min(floor(x^weights[d]), dim_sizes[d])
+  # Share the budget of chunk values over the dimensions in proportion to
+  # their weights. A dimension that fits in its share entirely is not split;
+  # the unused part of its share goes to the other dimensions. Repeat until
+  # no remaining dimension fits.
+  chunk_sizes <- as.numeric(dim_sizes)
+  free <- which(dim_sizes > 1L)
+  budget <- chunk_values
+  while (length(free)) {
+    x <- budget^(1 / sum(weights[free]))
+    fits <- free[dim_sizes[free] <= x^weights[free]]
+    if (!length(fits)) {
+      chunk_sizes[free] <- floor(x^weights[free])
+      break
+    }
+    budget <- budget / prod(dim_sizes[fits])
+    free <- setdiff(free, fits)
+  }
 
   # Second pass: align chunk sizes to tile each dimension evenly,
   # avoiding a near-full chunk plus a small leftover remainder.

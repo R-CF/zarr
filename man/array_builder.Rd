@@ -133,7 +133,14 @@ any operation in this class.}
   Print the array metadata to the console.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{array_builder$print()}
+    \preformatted{array_builder$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Ignored.}
+    }
     \if{html}{\out{</div>}}
   }
 }

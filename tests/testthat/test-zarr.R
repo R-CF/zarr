@@ -173,9 +173,21 @@ test_that("Optimal chunking", {
   expect_true(prod(r) <= chunk_values * 1.2)
 
   # Higher relative weight yields a larger chunk along that dimension
-  dim_sizes <- c(2000L, 2000L)
+  dim_sizes <- c(20000L, 20000L)
   r <- optimal_chunking(dim_sizes, c(3, 1))
   expect_true(r[1] > r[2])
+
+  # An array that fits within the budget is a single chunk, whatever the weights
+  expect_equal(optimal_chunking(c(2000L, 2000L), c(3, 1)), c(2000L, 2000L))
+  expect_equal(optimal_chunking(c(4L, 424L, 412L)), c(4L, 424L, 412L))
+
+  # A small dimension that fits in its share passes the unused share on to
+  # the other dimensions
+  dim_sizes <- c(4L, 8605L, 424L, 412L)
+  r <- optimal_chunking(dim_sizes)
+  expect_equal(r[1], 4L)
+  expect_true(prod(r) > 4L * 1024L * 1024L * 0.8)
+  expect_true(prod(r) <= 4L * 1024L * 1024L * 1.2)
 
   # Alignment collapses a near-full chunk + tiny remainder into one chunk
   # regression test: raw target (9410) is just under the dimension size

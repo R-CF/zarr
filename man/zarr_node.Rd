@@ -189,7 +189,7 @@ indexing method of \code{zarr}, which are both easier to work with than this
 method.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_node$walk_path(node_names)}
+    \preformatted{zarr_node$walk_path(node_names, create = FALSE)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -201,12 +201,19 @@ of the current node, all other values must resolve to a child of the
 current node. The \code{node_names} vector is easily constructed from a
 relative path to the target node using \code{strsplit(., "/", fixed = TRUE)[[1L]]}.
 With an absolute path the first element ("") must be removed.}
+      \item{\code{create}}{Logical, default \code{FALSE}. If \code{TRUE}, any child node in
+\code{node_names} that does not exist is created as a new group.}
     }
     \if{html}{\out{</div>}}
   }
+  \subsection{Details}{
+    An error is raised when \code{node_names} walks above the root
+node, when a child node does not exist and \code{create = FALSE}, or when
+a node other than the last one in \code{node_names} is an array.
+  }
   \subsection{Returns}{
     The \code{zarr_node} that is found when the \code{node_names} vector is
-fully walked. If the node is not found, an error will be raised.
+fully walked.
   }
 }
 

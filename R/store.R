@@ -130,8 +130,9 @@ zarr_store <- R6::R6Class('zarr_store',
 
     #' @description Print a summary of the store to the console. This will
     #'   use `cli` if available.
+    #' @param ... Ignored.
     #' @return Self, invisibly.
-    print = function() {
+    print = function(...) {
       if (is.list(Zarr.options$zarr_theme)) {
         this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
         cli::cli_h1('{.strong Zarr store}')
@@ -151,7 +152,8 @@ zarr_store <- R6::R6Class('zarr_store',
         this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
         tick <- cli::col_green(cli::symbol$tick)
         cross <- cli::col_red(cli::symbol$cross)
-        cli::cli_text('{if (private$.supports_listing) tick else cross} {.label Listing} ',
+        cli::cli_text('Capabilities:',
+                      '{if (private$.supports_listing) tick else cross} {.label Listing} ',
                       '{if (private$.supports_writes) tick else cross} {.label Writing} ',
                       '{if (private$.supports_deletes) tick else cross} {.label Deleting} ',
                       '{if (private$.supports_consolidated_metadata) tick else cross} {.label Consolidated metadata}')

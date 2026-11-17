@@ -113,7 +113,15 @@ Ignored for memory, local and plain HTTP locations.}
   Print a summary of the Zarr object to the console.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr$print()}
+    \preformatted{zarr$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Arguments passed on to the \code{print_attributes()} method, such as
+\code{max_attributes} and \code{root}.}
+    }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{

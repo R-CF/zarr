@@ -77,7 +77,9 @@ zarr_group <- R6::R6Class('zarr_group',
     },
 
     #' @description Print a summary of the group to the console.
-    print = function() {
+    #' @param ... Arguments passed on to the `print_attributes()` method, such as
+    #'   `max_attributes` and `root`.
+    print = function(...) {
       name <- if (nzchar(self$name)) self$name else '[root]'
       arrays <- vapply(self$children, inherits, logical(1L), "zarr_array", USE.NAMES = FALSE)
       grp_names <- if (any(!arrays)) paste(names(self$children)[!arrays], collapse = ', ') else character(0L)
@@ -105,7 +107,7 @@ zarr_group <- R6::R6Class('zarr_group',
           cat('Arrays    :', arr_names)
       }
       private$print_details()
-      self$print_attributes()
+      self$print_attributes(...)
       invisible(self)
     },
 
@@ -182,10 +184,16 @@ zarr_group <- R6::R6Class('zarr_group',
           if (inherits(meta, "try-error"))
             warning(paste0('Error reading metadata from location ', dirs[i], ' - ignoring'), call. = FALSE) # nocov
           else if (!is.null(meta)) {
-            node <- .buildNode(name = dirs[i], metadata = meta, parent = self)
-            children[[i]] <- if (inherits(node, 'zarr_node')) node else NULL
-            if (meta$node_type == 'group')
-              node$build_hierarchy()
+            node <- tryCatch(.buildNode(name = dirs[i], metadata = meta, parent = self),
+                             error = function(e) {
+                               warning('Cannot build node ', prefix, dirs[i], ' - ignoring: ', conditionMessage(e), call. = FALSE)
+                               NULL
+                             })
+            if (inherits(node, 'zarr_node')) {
+              children[[i]] <- node
+              if (meta$node_type == 'group')
+                node$build_hierarchy()
+            }
           }
         }
         names(children) <- dirs
@@ -396,4 +404,19 @@ str.zarr_group <- function(object, ...) {
 #' tst[["subtst"]]
 `[[.zarr_group` <- function(x, i) {
   x$get_node(i)
+}
+
+#' @rdname sub-sub-.zarr_group
+#' @param value The node at path `i`, i.e. the node returned by `x[[i]]`.
+#' @details Assignment with `[[<-` exists only so that chained assignments to a
+#'   field of a node, such as `grp[["t"]]$field <- value`, work: R assigns the
+#'   node back to `x` as the last step of such an expression. Nothing is
+#'   changed in `x`. An error is raised if `value` is not the very node at path
+#'   `i`; use the `add_group()` and `add_array()` methods to add nodes to the
+#'   hierarchy.
+#' @export
+`[[<-.zarr_group` <- function(x, i, value) {
+  if (!identical(x[[i]], value))
+    stop('Zarr nodes cannot be assigned with `[[<-`; use `add_group()` or `add_array()`', call. = FALSE)
+  x
 }

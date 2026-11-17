@@ -88,7 +88,14 @@ codec.}
   Print a summary of the codec to the console.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_codec$print()}
+    \preformatted{zarr_codec$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Ignored.}
+    }
     \if{html}{\out{</div>}}
   }
 }

@@ -40,7 +40,8 @@ zarr_codec <- R6::R6Class('zarr_codec',
     },
 
     #' @description Print a summary of the codec to the console.
-    print = function() {
+    #' @param ... Ignored.
+    print = function(...) {
       conf <- private$list_configuration()
       param <- names(conf)
       if (is.list(Zarr.options$zarr_theme)) {

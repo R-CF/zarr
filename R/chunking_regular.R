@@ -63,8 +63,9 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
 
     #' @description Print a short description of this chunking scheme to the
     #'   console.
+    #' @param ... Ignored.
     #' @return Self, invisibly.
-    print = function() {
+    print = function(...) {
       if (is.list(Zarr.options$zarr_theme)) {
         this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
         cli::cli_h1('Zarr regular chunk grid')
@@ -253,7 +254,7 @@ chunk_grid_regular <- R6::R6Class('chunk_grid_regular',
       if (length(chunk_results) == 1L) {
         # Single chunk touched, return as-is
         data <- chunk_results[[1L]]$chunk_data
-        if (nd == 1L) dim(data) <- NULL # FIXME: Check if this works with integer64
+        if (nd == 1L) dim(data) <- NULL
       } else {
         # Sequential assembly into output array
         for (res in chunk_results) {

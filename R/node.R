@@ -148,21 +148,32 @@ zarr_node <- R6::R6Class('zarr_node',
     #'   current node. The `node_names` vector is easily constructed from a
     #'   relative path to the target node using `strsplit(., "/", fixed = TRUE)[[1L]]`.
     #'   With an absolute path the first element ("") must be removed.
+    #' @param create Logical, default `FALSE`. If `TRUE`, any child node in
+    #'   `node_names` that does not exist is created as a new group.
     #' @return The `zarr_node` that is found when the `node_names` vector is
-    #'   fully walked. If the node is not found, an error will be raised.
-    walk_path = function(node_names) {
+    #'   fully walked.
+    #' @details An error is raised when `node_names` walks above the root
+    #'   node, when a child node does not exist and `create = FALSE`, or when
+    #'   a node other than the last one in `node_names` is an array.
+    walk_path = function(node_names, create = FALSE) {
       if (!length(node_names)) return(self)
 
       if (node_names[1L] == '..') {
         # The parent of the root node is the `zarr` object, not a node
         if (!inherits(private$.parent, 'zarr_node'))
           stop('Target Zarr node specified beyond the root node', call. = FALSE)
-        private$.parent$walk_path(node_names[-1L])
+        private$.parent$walk_path(node_names[-1L], create)
       } else {
         # Node must be a zarr_group
-        if (!inherits(self, 'zarr_group') || !node_names[1L] %in% names(private$.children))
-          stop('Target Zarr node specifies non-existent child node', call. = FALSE)
-        self$children[[node_names[1L]]]$walk_path(node_names[-1L])
+        if (!inherits(self, 'zarr_group'))
+          stop('Target Zarr node specifies a child node of an array', call. = FALSE)
+        child <- if (node_names[1L] %in% names(private$.children))
+                   self$children[[node_names[1L]]]
+                 else if (create)
+                   self$add_group(node_names[1L])
+                 else
+                   stop('Target Zarr node specifies non-existent child node', call. = FALSE)
+        child$walk_path(node_names[-1L], create)
       }
     },
 

@@ -176,6 +176,99 @@ test_that("print_attributes() flags unsaved edits", {
   expect_silent(create_zarr()$root$print_attributes())
 })
 
+test_that("print_attributes() limits the top-level entries", {
+  out <- capture.output(make_atts()$print_attributes(max_attributes = 2))
+  expect_true(any(grepl("^units *: K$", out)))
+  expect_true(any(grepl("^  model *: EC-Earth3$", out)))
+  expect_true(any(grepl("^  run *: 1$", out)))
+  expect_false(any(grepl("history", out)))
+  expect_identical(out[length(out)], "... 1 more not shown")
+})
+
+test_that("print_attributes() limits every level separately", {
+  a <- make_atts()
+  a$delete_attribute("units")
+  out <- capture.output(a$print_attributes(max_attributes = 1))
+  expect_identical(out, c("", "Attributes", "source:", "  model: EC-Earth3",
+                          "  ... 1 more not shown", "... 1 more not shown"))
+})
+
+test_that("print_attributes() limits the items of an array of objects", {
+  out <- capture.output(make_atts()$print_attributes(max_attributes = 1, root = "history"))
+  expect_identical(out, c("", "Attributes", "history:", "  [1]", "    step: regrid",
+                          "  ... 1 more not shown"))
+})
+
+test_that("print_attributes() prints everything within the limit", {
+  a <- make_atts()
+  for (n in c(3, Inf)) {
+    out <- capture.output(a$print_attributes(max_attributes = n))
+    expect_true(any(grepl("^    plain note$", out)))
+    expect_false(any(grepl("not shown", out)))
+  }
+})
+
+test_that("print_attributes() uses the max_attributes option", {
+  old <- Zarr.options$max_attributes
+  on.exit(Zarr.options$max_attributes <- old)
+  Zarr.options$max_attributes <- 2
+  a <- make_atts()
+  expect_output(a$print_attributes(), "\\.\\.\\. 1 more not shown")
+  expect_output(print(a), "\\.\\.\\. 1 more not shown")
+  expect_false(any(grepl("not shown", capture.output(a$print_attributes(max_attributes = 3)))))
+})
+
+test_that("print() passes arguments on to print_attributes()", {
+  z <- make_tree()
+  z$root$set_attribute("title", "test")
+  z$root$set_attribute("source/model", "EC-Earth3")
+  for (x in list(z, z$root)) {
+    expect_output(print(x, max_attributes = 1), "\\.\\.\\. 1 more not shown")
+    out <- capture.output(print(x, root = "source"))
+    expect_true(any(grepl("^source *:$", out)))
+    expect_false(any(grepl("title", out)))
+  }
+  out <- capture.output(print(make_atts(), root = "source/run"))
+  expect_identical(out[length(out)], "source/run: 1")
+})
+
+test_that("print() of objects without attributes accepts arguments", {
+  a <- make_tree()[["/a"]]
+  expect_output(print(a$data_type, 1), "float64")
+  expect_output(print(a$codecs[[1L]], 1))
+})
+
+test_that("print_attributes() prints the tree below an object", {
+  out <- capture.output(make_atts()$print_attributes(root = "source"))
+  expect_true(any(grepl("^source *:$", out)))
+  expect_true(any(grepl("^  model *: EC-Earth3$", out)))
+  expect_true(any(grepl("^  run *: 1$", out)))
+  expect_false(any(grepl("units|history", out)))
+})
+
+test_that("print_attributes() prints a nested leaf and an array item", {
+  a <- make_atts()
+  expect_identical(capture.output(a$print_attributes(root = "source/model")),
+                   c("", "Attributes", "source/model: EC-Earth3"))
+  out <- capture.output(a$print_attributes(root = "history/1"))
+  expect_true(any(grepl("^history/1:$", out)))
+  expect_true(any(grepl("^  step *: regrid$", out)))
+  expect_false(any(grepl("plain note", out)))
+})
+
+test_that("print_attributes() limits the tree below an entry", {
+  out <- capture.output(make_atts()$print_attributes(max_attributes = 1, root = "source"))
+  expect_identical(out, c("", "Attributes", "source:", "  model: EC-Earth3",
+                          "  ... 1 more not shown"))
+})
+
+test_that("print_attributes() prints nothing for a root that does not exist", {
+  a <- make_atts()
+  expect_silent(a$print_attributes(root = "source/nope"))
+  expect_silent(a$print_attributes(root = "/"))
+  expect_silent(create_zarr()$root$print_attributes(root = "units"))
+})
+
 test_that("attribute() retrieves values by path", {
   a <- make_tree()[["/a"]]
   a$set_attribute("source/model", "EC-Earth3")

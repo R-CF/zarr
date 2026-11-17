@@ -188,6 +188,74 @@ test_that("walk_path() errors beyond the root or on a missing child", {
   expect_error(z[["/a"]]$walk_path("nope"), "non-existent child node")
 })
 
+test_that("walk_path() errors on a child of an array", {
+  z <- create_zarr()
+  z$add_array("/", "arr", define_array("int32", 2L))
+  expect_error(z$root$walk_path(c("arr", "x")), "child node of an array")
+  expect_error(z$root$walk_path(c("arr", "x"), create = TRUE), "child node of an array")
+})
+
+test_that("walk_path(create = TRUE) creates missing groups", {
+  z <- create_zarr()
+  z$add_group("/", "a")
+  g <- z[["/a"]]$walk_path(c("b", "c"), create = TRUE)
+  expect_s3_class(g, "zarr_group")
+  expect_equal(g$path, "/a/b/c")
+  expect_identical(z[["/a/b/c"]], g)
+})
+
+test_that("walk_path(create = TRUE) walks up and reuses existing groups", {
+  z <- create_zarr()
+  z$add_group("/", "a")
+  z$add_group("/", "geo")
+  geo <- z[["/geo"]]
+  expect_identical(z[["/a"]]$walk_path(c("..", "geo"), create = TRUE), geo)
+  g <- z[["/a"]]$walk_path(c("..", "geo", "sub"), create = TRUE)
+  expect_equal(g$path, "/geo/sub")
+})
+
+test_that("walk_path(create = TRUE) still errors beyond the root", {
+  z <- create_zarr()
+  z$add_group("/", "a")
+  expect_error(z[["/a"]]$walk_path(c("..", "..", "x"), create = TRUE), "beyond the root node")
+})
+
+test_that("[[<- on a zarr object allows chained assignment to a node field", {
+  z <- create_zarr()
+  z$add_group("/", "a")
+  z[["/a"]]$dirty <- TRUE
+  expect_true(z[["/a"]]$dirty)
+  expect_identical(z[["/a"]], z$root$children[["a"]])
+})
+
+test_that("[[<- on a zarr object refuses other values", {
+  z <- create_zarr()
+  z$add_group("/", "a")
+  z$add_group("/", "b")
+  expect_error(z[["/a"]] <- z[["/b"]], "cannot be assigned")
+  expect_error(z[["/a"]] <- NULL, "cannot be assigned")
+  expect_error(z[["/new"]] <- z[["/b"]], "cannot be assigned")
+  expect_null(z[["/new"]])
+})
+
+test_that("[[<- on a zarr group allows chained assignment to a node field", {
+  z <- create_zarr()
+  z$add_group("/", "a")
+  z$add_group("/a", "b")
+  g <- z[["/a"]]
+  g[["b"]]$dirty <- TRUE
+  expect_true(z[["/a/b"]]$dirty)
+})
+
+test_that("[[<- on a zarr group refuses other values", {
+  z <- create_zarr()
+  z$add_group("/", "a")
+  z$add_group("/a", "b")
+  g <- z[["/a"]]
+  expect_error(g[["b"]] <- z[["/a"]], "cannot be assigned")
+  expect_error(g[["new"]] <- z[["/a"]], "cannot be assigned")
+})
+
 test_that("node accessors: zarr, parent, metadata, dirty", {
   z <- create_zarr()
   z$add_group("/", "a")

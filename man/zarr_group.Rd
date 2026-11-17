@@ -118,7 +118,15 @@ established. All contained children will be called similarly.
   Print a summary of the group to the console.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_group$print()}
+    \preformatted{zarr_group$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Arguments passed on to the \code{print_attributes()} method, such as
+\code{max_attributes} and \code{root}.}
+    }
     \if{html}{\out{</div>}}
   }
 }

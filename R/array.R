@@ -85,7 +85,9 @@ zarr_array <- R6::R6Class('zarr_array',
     },
 
     #' @description Print a summary of the array to the console.
-    print = function() {
+    #' @param ... Arguments passed on to the `print_attributes()` method, such as
+    #'   `max_attributes` and `root`.
+    print = function(...) {
       meta <- private$.metadata
       shp <- meta$shape
       dim_names <- meta$dimension_names %||% meta$attributes$`_ARRAY_DIMENSIONS`
@@ -125,7 +127,7 @@ zarr_array <- R6::R6Class('zarr_array',
         }
       }
       private$print_details()
-      self$print_attributes()
+      self$print_attributes(...)
       invisible(self)
     },
 
@@ -171,7 +173,9 @@ zarr_array <- R6::R6Class('zarr_array',
 
     #' @description Read some or all of the array data for the array. For all
     #'   types other than logical, any data elements with the `fill_value` of
-    #'   the Zarr data type are set to `NA` if the `raw_read` field is `TRUE`.
+    #'   the Zarr data type are set to `NA` unless the `raw_read` field is
+    #'   `TRUE`. Consequently, a value that was legitimately written and that is
+    #'   equal to the `fill_value` is also read as `NA`.
     #' @param selection A list as long as the array has dimensions where each
     #'   element is a range of indices along the dimension to read. If missing
     #'   or `NULL`, the entire array will be read.

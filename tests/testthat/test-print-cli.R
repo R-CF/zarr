@@ -187,6 +187,58 @@ test_that("cli print_attributes() flags unsaved edits", {
   expect_true(any(grepl("Attributes (*)", out, fixed = TRUE)))
 })
 
+test_that("cli print_attributes() limits the top-level entries", {
+  out <- cli_out(make_atts()$print_attributes(max_attributes = 2))
+  expect_true(any(grepl("units: K", out, fixed = TRUE)))
+  expect_true(any(grepl("run: 1", out, fixed = TRUE)))
+  expect_false(any(grepl("history", out, fixed = TRUE)))
+  expect_equal(sum(grepl("... 1 more not shown", out, fixed = TRUE)), 1L)
+})
+
+test_that("cli print_attributes() limits every level separately", {
+  a <- make_atts()
+  a$delete_attribute("units")
+  out <- cli_out(a$print_attributes(max_attributes = 1))
+  expect_true(any(grepl("model: EC-Earth3", out, fixed = TRUE)))
+  expect_false(any(grepl("run|history", out)))
+  more <- grep("... 1 more not shown", out, fixed = TRUE, value = TRUE)
+  expect_length(more, 2L)
+  expect_gt(indent_of(more[1L], "..."), indent_of(more[2L], "..."))
+})
+
+test_that("cli print_attributes() limits the items of an array of objects", {
+  out <- cli_out(make_atts()$print_attributes(max_attributes = 1, root = "history"))
+  expect_true(any(grepl("Item 1", out, fixed = TRUE)))
+  expect_true(any(grepl("step: regrid", out, fixed = TRUE)))
+  expect_false(any(grepl("Item 2|plain note", out)))
+  expect_true(any(grepl("... 1 more not shown", out, fixed = TRUE)))
+})
+
+test_that("cli print_attributes() prints everything within the limit", {
+  out <- cli_out(make_atts()$print_attributes(max_attributes = 3))
+  expect_true(any(grepl("plain note", out, fixed = TRUE)))
+  expect_false(any(grepl("not shown", out, fixed = TRUE)))
+})
+
+test_that("cli print_attributes() prints the tree below an entry", {
+  out <- cli_out(make_atts()$print_attributes(root = "source"))
+  expect_true(any(grepl("source:", out, fixed = TRUE)))
+  expect_true(any(grepl("run: 1", out, fixed = TRUE)))
+  expect_false(any(grepl("units|history", out)))
+  expect_lt(indent_of(out, "source:"), indent_of(out, "model:"))
+})
+
+test_that("cli print() passes arguments on to print_attributes()", {
+  z <- make_tree()
+  z$root$set_attribute("title", "test")
+  z$root$set_attribute("source/model", "EC-Earth3")
+  for (x in list(z, z$root, make_atts())) {
+    out <- cli_out(print(x, max_attributes = 1, root = "source"))
+    expect_true(any(grepl("source:", out, fixed = TRUE)))
+    expect_false(any(grepl("title|units", out)))
+  }
+})
+
 test_that("cli attribute values with braces are printed literally", {
   a <- make_tree()[["/a"]]
   a$set_attribute("template", "{x}")

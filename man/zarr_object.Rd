@@ -71,7 +71,12 @@ names.
 \link{zarr_group} and \link{zarr_array} \code{print()} methods.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_object$print_attributes(dirty = FALSE, ...)}
+    \preformatted{zarr_object$print_attributes(
+  dirty = FALSE,
+  max_attributes = Zarr.options$max_attributes,
+  root = "",
+  ...
+)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -79,14 +84,31 @@ names.
     \describe{
       \item{\code{dirty}}{Optional. Logical flag that indicates if the attributes have
 unsaved edits. Default is \code{FALSE}.}
-      \item{\code{...}}{Arguments passed to embedded functions. Of particular interest
-is \code{width = .} to specify the maximum width of the columns.}
+      \item{\code{max_attributes}}{Optional. The maximum number of attribute entries
+to print at each level of the attribute hierarchy. The default is the
+value of the \code{max_attributes} option, see \code{\link[=zarr_options]{zarr_options()}}. Use \code{Inf}
+to print all entries.}
+      \item{\code{root}}{Optional. The name (path) of the attribute to print, with
+everything below it, using \code{/} as separator for nested attributes and
+1-based indices for array elements, as in the \code{attribute()} method. The
+default \code{""} prints all attributes.}
+      \item{\code{...}}{Ignored.}
     }
     \if{html}{\out{</div>}}
   }
+  \subsection{Details}{
+    An attribute entry is a member of a JSON object or an item of
+a JSON array of objects; an array of scalar values is a single entry.
+The limit of \code{max_attributes} applies to each level of the attribute
+hierarchy separately: of every object and of every array of objects
+only the first \code{max_attributes} entries are printed, followed by the
+number of entries at that level that were not printed.
+
+Nothing is printed when \code{root} does not identify an existing attribute.
+  }
   \subsection{Returns}{
-    A (multi-line) character string with the attributes of the Zarr
-object.
+    Nothing. The attributes of the Zarr object are printed to the
+console.
   }
 }
 

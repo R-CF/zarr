@@ -9,6 +9,8 @@ dt_f64 <- function() zarr_data_type$new("float64")
 # ==== Codec base class and printing ===========================================
 
 test_that("codec mode and metadata fragment", {
+  skip_if_not_installed("zlib")
+  skip_if_not_installed("digest")
   cdc <- zarr_codec_gzip$new(list(level = 3))
   expect_equal(cdc$mode, "bytes -> bytes")
   expect_equal(cdc$from, "bytes")
@@ -18,6 +20,9 @@ test_that("codec mode and metadata fragment", {
 })
 
 test_that("print() shows each codec's configuration", {
+  skip_if_not_installed("qs2")
+  skip_if_not_installed("zlib")
+  skip_if_not_installed("digest")
   Zarr.options$zarr_theme <- NULL
   expect_output(print(zarr_codec_transpose$new(3L)), "order: 2, 1, 0")
   expect_output(print(zarr_codec_bytes$new(dt_f64(), 4L, list(endian = "big"))), "endian: big")
@@ -37,6 +42,9 @@ test_that("print() of the sharding codec shows its configuration", {
 })
 
 test_that("copy() returns an equivalent, independent codec", {
+  skip_if_not_installed("qs2")
+  skip_if_not_installed("zlib")
+  skip_if_not_installed("digest")
   for (cdc in list(zarr_codec_transpose$new(2L), zarr_codec_blosc$new(dt_f64()),
                    zarr_codec_zstd$new(list(level = 3)), zarr_codec_gzip$new(list(level = 2)),
                    zarr_codec_crc32c$new(), zarr_codec_vlenutf8$new(),
@@ -77,6 +85,7 @@ test_that("transpose order can be changed", {
 # ==== Bytes-to-bytes codecs ===================================================
 
 test_that("gzip round-trips and honours its level", {
+  skip_if_not_installed("zlib")
   raw <- as.raw(rep(1:50, 20))
   cdc <- zarr_codec_gzip$new()
   expect_identical(cdc$decode(cdc$encode(raw)), raw)
@@ -87,6 +96,7 @@ test_that("gzip round-trips and honours its level", {
 })
 
 test_that("zstd round-trips and honours its level", {
+  skip_if_not_installed("qs2")
   raw <- as.raw(rep(1:50, 20))
   cdc <- zarr_codec_zstd$new()
   expect_identical(cdc$decode(cdc$encode(raw)), raw)
@@ -97,6 +107,7 @@ test_that("zstd round-trips and honours its level", {
 })
 
 test_that("crc32c appends a checksum that decode() verifies", {
+  skip_if_not_installed("digest")
   cdc <- zarr_codec_crc32c$new()
   # Payloads whose CRC32C has the high bit clear and set, respectively
   for (raw in list(charToRaw("abc"), as.raw(0:255), charToRaw("zarr"))) {
@@ -110,6 +121,7 @@ test_that("crc32c appends a checksum that decode() verifies", {
 })
 
 test_that("crc32c warns on a corrupted payload", {
+  skip_if_not_installed("digest")
   cdc <- zarr_codec_crc32c$new()
   enc <- cdc$encode(charToRaw("zarr"))
   enc[1L] <- as.raw(0)
@@ -151,6 +163,9 @@ roundtrip_with <- function(codec, configuration = NULL, x = matrix(rnorm(60), 6L
 }
 
 test_that("arrays round-trip with gzip, zstd and crc32c", {
+  skip_if_not_installed("zlib")
+  skip_if_not_installed("qs2")
+  skip_if_not_installed("digest")
   x <- matrix(rnorm(60), 6L, 10L)
   expect_equal(roundtrip_with("gzip", list(level = 5), x), x)
   expect_equal(roundtrip_with("zstd", list(level = 3), x), x)
@@ -193,6 +208,8 @@ test_that("array_builder codec_info lists the codec chain", {
 })
 
 test_that("array_builder inserts codecs at a position", {
+  skip_if_not_installed("digest")
+  skip_if_not_installed("zlib")
   def <- define_array("float64", c(10L, 20L))
   def$add_codec("crc32c", NULL, .position = 3L)
   expect_equal(names(def$codecs), c("transpose", "bytes", "crc32c", "blosc"))
@@ -225,6 +242,7 @@ test_that("array_builder data type and format changes", {
 })
 
 test_that("array_builder fill values for special floats and uint types", {
+  skip_if_not_installed("bit64")
   def <- define_array("float64", 10L)
   def$fill_value <- "Infinity"
   expect_equal(def$fill_value, Inf)

@@ -80,7 +80,14 @@ Ignored for a scalar array.}
 console.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{chunk_grid_regular$print()}
+    \preformatted{chunk_grid_regular$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Ignored.}
+    }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{

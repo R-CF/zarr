@@ -107,3 +107,17 @@ test_that(".near() uses a tolerance relative to each element, not the vector max
   expect_equal(.near(c(0.5, 1e10, 1e10 + 1), 0), c(FALSE, FALSE, FALSE))
   expect_equal(.near(c(1, 1e10), c(1 + 1e-12, 1e10 * (1 + 1e-10))), c(TRUE, TRUE))
 })
+
+test_that("zarr_options() sets max_attributes and ignores invalid values", {
+  old <- zarr_options("max_attributes")
+  on.exit(zarr_options("max_attributes", old))
+
+  zarr_options("max_attributes", 10)
+  expect_identical(zarr_options("max_attributes"), 10)
+  zarr_options("max_attributes", Inf)
+  expect_identical(zarr_options("max_attributes"), Inf)
+  zarr_options("max_attributes", 0)
+  expect_identical(zarr_options("max_attributes"), Inf)
+  zarr_options("max_attributes", "all")
+  expect_identical(zarr_options("max_attributes"), Inf)
+})

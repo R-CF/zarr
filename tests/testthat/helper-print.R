@@ -13,6 +13,19 @@ make_tree <- function(location) {
   z
 }
 
+# Array /a of make_tree() with 3 top-level attributes: units (scalar), source
+# (object with model and run) and history (array of an object with step, and a
+# scalar).
+make_atts <- function() {
+  a <- make_tree()[["/a"]]
+  a$set_attribute("units", "K")
+  a$set_attribute("source/model", "EC-Earth3")
+  a$set_attribute("source/run", 1L)
+  a$append_array_attribute("history", list(step = "regrid"))
+  a$append_array_attribute("history", "plain note")
+  a
+}
+
 # Capture cli output as a character vector, one element per line.
 cli_out <- function(expr) cli::cli_fmt(expr)
 

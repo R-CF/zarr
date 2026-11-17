@@ -102,7 +102,15 @@ this method.}
   Print a summary of the array to the console.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_array$print()}
+    \preformatted{zarr_array$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Arguments passed on to the \code{print_attributes()} method, such as
+\code{max_attributes} and \code{root}.}
+    }
     \if{html}{\out{</div>}}
   }
 }
@@ -151,7 +159,9 @@ Zarr object or a group to display the full group hierarchy.
 \subsection{\code{zarr_array$read()}}{
   Read some or all of the array data for the array. For all
 types other than logical, any data elements with the \code{fill_value} of
-the Zarr data type are set to \code{NA} if the \code{raw_read} field is \code{TRUE}.
+the Zarr data type are set to \code{NA} unless the \code{raw_read} field is
+\code{TRUE}. Consequently, a value that was legitimately written and that is
+equal to the \code{fill_value} is also read as \code{NA}.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{zarr_array$read(selection)}

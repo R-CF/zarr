@@ -25,6 +25,7 @@ v2_filtered <- function(dtype, shape, filters, data, order = "C") {
 # ==== Pipeline construction ===================================================
 
 test_that("array -> array filters go before the bytes codec, bytes -> bytes after", {
+  skip_if_not_installed("digest")
   arr <- v2_filtered("<i4", 5, '[{"id": "delta", "dtype": "<i4", "astype": "<i2"},
     {"id": "shuffle", "elementsize": 2}, {"id": "crc32"}]', "0ab38f0b0a010203040000000000")
   expect_equal(names(arr$codecs),
@@ -75,11 +76,13 @@ test_that("delta wraps around for unsigned integers", {
 })
 
 test_that("delta decodes uint32", {
+  skip_if_not_installed("bit64")
   arr <- v2_filtered("<u4", 3, '[{"id": "delta", "dtype": "<u4", "astype": "<u4"}]', "00286bee0ad89411f5ffffff")
   expect_equal(as.character(arr$read()), c("4000000000", "10", "4294967295"))
 })
 
 test_that("delta decodes int64", {
+  skip_if_not_installed("bit64")
   arr <- v2_filtered("<i8", 3, '[{"id": "delta", "dtype": "<i8", "astype": "<i8"}]',
                      "0068e5cf8b010000f40100000000000006ffffffffffffff")
   expect_equal(as.character(arr$read()), c("1700000000000", "1700000000500", "1700000000250"))
@@ -155,11 +158,13 @@ test_that("shuffle restores the byte order of the elements", {
 # ==== Checksums ===============================================================
 
 test_that("crc32 strips a leading checksum", {
+  skip_if_not_installed("digest")
   arr <- v2_filtered("<i4", 3, '[{"id": "crc32"}]', "9322e0b0010000000200000003000000")
   expect_no_warning(expect_equal(arr$read(), 1:3))
 })
 
 test_that("crc32 strips a trailing checksum", {
+  skip_if_not_installed("digest")
   arr <- v2_filtered("<i4", 3, '[{"id": "crc32", "location": "end"}]', "0100000002000000030000009322e0b0")
   expect_no_warning(expect_equal(arr$read(), 1:3))
 })
@@ -184,6 +189,7 @@ test_that("checksums verify large chunks", {
 })
 
 test_that("a checksum mismatch gives a warning", {
+  skip_if_not_installed("digest")
   arr <- v2_filtered("<i4", 3, '[{"id": "crc32"}]', "9322e0b0010000000200000004000000")
   expect_warning(arr$read(), "Checksum failed")
 })
@@ -191,6 +197,7 @@ test_that("a checksum mismatch gives a warning", {
 # ==== Combined ================================================================
 
 test_that("delta, shuffle and crc32 decode in sequence", {
+  skip_if_not_installed("digest")
   arr <- v2_filtered("<i4", 5, '[{"id": "delta", "dtype": "<i4", "astype": "<i2"},
     {"id": "shuffle", "elementsize": 2}, {"id": "crc32"}]', "0ab38f0b0a010203040000000000")
   expect_equal(arr$read(), c(10L, 11L, 13L, 16L, 20L))
@@ -199,13 +206,13 @@ test_that("delta, shuffle and crc32 decode in sequence", {
 # ==== Read-only ===============================================================
 
 test_that("a v2 store is always read-only", {
-  arr <- v2_filtered("<i4", 3, '[{"id": "crc32"}]', "9322e0b0010000000200000003000000")
+  arr <- v2_filtered("<i4", 3, '[{"id": "adler32"}]', "07003400010000000200000003000000")
   expect_true(arr$store$read_only)
   expect_error(arr$write(4:6), "read-only")
 })
 
 test_that("a v2 store ignores read_only = FALSE", {
-  arr <- v2_filtered("<i4", 3, '[{"id": "crc32"}]', "9322e0b0010000000200000003000000")
+  arr <- v2_filtered("<i4", 3, '[{"id": "adler32"}]', "07003400010000000200000003000000")
   z <- open_zarr(arr$store$root, read_only = FALSE)
   expect_true(z$store$read_only)
 })

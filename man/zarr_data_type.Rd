@@ -70,7 +70,14 @@ agrees with the range of the \code{data_type}.}
   Print a summary of the data type to the console.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{zarr_data_type$print()}
+    \preformatted{zarr_data_type$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Ignored.}
+    }
     \if{html}{\out{</div>}}
   }
 }

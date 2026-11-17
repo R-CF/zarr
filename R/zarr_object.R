@@ -43,33 +43,41 @@ zarr_object <- R6::R6Class('zarr_object',
     },
 
     # Print one level of attributes to the console. Calls itself recursively to
-    # print nested attributes.
-    print_attribute_levels = function(atts, indent = 0L) {
+    # print nested attributes. At every level at most `n` entries are printed,
+    # an entry being a member of an object or an item of an array of objects,
+    # followed by a count of the entries at that level that were not printed.
+    print_attribute_levels = function(atts, indent = 0L, n = Inf) {
+      nms <- names(atts)
+      more <- length(nms) - n
+      if (more > 0) nms <- nms[seq_len(n)]
+
       if (is.list(Zarr.options$zarr_theme)) {
         this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
-        for (nm in names(atts)) {
+        for (nm in nms) {
           val <- atts[[nm]]
 
           if (is.list(val) && !is.null(names(val)) && any(nzchar(names(val)))) {
             # Named list: JSON object, recurse
             cli::cli_li('{.label {nm}:}')
             sub <- cli::cli_ul()
-            private$print_attribute_levels(val, indent + 1L)
+            private$print_attribute_levels(val, indent + 1L, n)
             cli::cli_end(sub)
           } else if (is.list(val) && any(vapply(val, is.list, logical(1L)))) {
             # Unnamed list containing lists: JSON array of objects, recurse each element
             cli::cli_li('{.label {nm}:}')
             sub_arr <- cli::cli_ul()
-            for (i in seq_along(val)) {
+            more_items <- length(val) - n
+            for (i in seq_len(min(n, length(val)))) {
               cli::cli_li('{.label Item {i}}')
               elem <- val[[i]]
               sub_item <- cli::cli_ul()
               if (is.list(elem) && !is.null(names(elem)) && any(nzchar(names(elem))))
-                private$print_attribute_levels(elem, indent + 2L)
+                private$print_attribute_levels(elem, indent + 2L, n)
               else
                 cli::cli_li('{.text {elem}}')
               cli::cli_end(sub_item)
             }
+            if (more_items > 0) cli::cli_li('{.minor ... {more_items} more not shown}')
             cli::cli_end(sub_arr)
           } else if (is.list(val)) {
             # Unnamed list of scalars: flat JSON array
@@ -80,30 +88,33 @@ zarr_object <- R6::R6Class('zarr_object',
             cli::cli_li('{.label {nm}:} {.text {val}}')
           }
         }
+        if (more > 0) cli::cli_li('{.minor ... {more} more not shown}')
         cli::cli_end(this_div)
       } else {
         pad   <- strrep("  ", indent)
-        width <- max(nchar(names(atts)))
+        width <- max(nchar(nms))
 
-        for (nm in names(atts)) {
+        for (nm in nms) {
           att <- formatC(nm, width = width, flag = "-")
           val <- atts[[nm]]
 
           if (is.list(val) && !is.null(names(val)) && any(nzchar(names(val)))) {
             # Named list: JSON object, recurse
             cat(pad, att, ":\n", sep = "")
-            private$print_attribute_levels(val, indent + 1L)
+            private$print_attribute_levels(val, indent + 1L, n)
           } else if (is.list(val) && any(vapply(val, is.list, logical(1L)))) {
             # Unnamed list containing lists: JSON array of objects, recurse each element
             cat(pad, att, ":\n", sep = "")
-            for (i in seq_along(val)) {
+            more_items <- length(val) - n
+            for (i in seq_len(min(n, length(val)))) {
               cat(pad, "  [", i, "]\n", sep = "")
               elem <- val[[i]]
               if (is.list(elem) && !is.null(names(elem)) && any(nzchar(names(elem))))
-                private$print_attribute_levels(elem, indent + 2L)
+                private$print_attribute_levels(elem, indent + 2L, n)
               else
                 cat(pad, "    ", elem, "\n", sep = "")
             }
+            if (more_items > 0) cat(pad, "  ... ", more_items, " more not shown\n", sep = "")
           } else if (is.list(val)) {
             # Unnamed list of scalars: flat JSON array
             cat(pad, att, ": [", paste(unlist(val), collapse = ", "), "]\n", sep = "")
@@ -113,7 +124,35 @@ zarr_object <- R6::R6Class('zarr_object',
             cat(pad, att, ": ", val, "\n", sep = "")
           }
         }
+        if (more > 0) cat(pad, "... ", more, " more not shown\n", sep = "")
       }
+    },
+
+    # Get the value at a nested path within a list, NULL if not found. This is
+    # the implementation of the public attribute() method, which descendant
+    # classes override with a different signature.
+    get_nested_attribute = function(atts, name) {
+      if (is.null(atts) || !length(atts)) return(NULL)
+
+      path <- strsplit(name, "/", fixed = TRUE)[[1L]]
+      path <- path[nzchar(path)]
+      if (!length(path)) return(NULL)
+
+      for (key in path) {
+        idx <- suppressWarnings(as.integer(key))
+        is_index <- !is.na(idx) && !private$is_named_list(atts)
+
+        if (is_index) {
+          if (!is.list(atts) && !is.atomic(atts)) return(NULL)
+          if (idx < 1L || idx > length(atts)) return(NULL)
+          atts <- atts[[idx]]
+        } else {
+          if (!is.list(atts)) return(NULL)
+          if (is.null(atts[[key]])) return(NULL)
+          atts <- atts[[key]]
+        }
+      }
+      atts
     },
 
     # Set a value at a nested path within a list, creating missing nodes
@@ -162,19 +201,39 @@ zarr_object <- R6::R6Class('zarr_object',
 
     #' @description Print attributes to the console. Usually called by the
     #'   [zarr_group] and [zarr_array] `print()` methods.
+    #' @details An attribute entry is a member of a JSON object or an item of
+    #'   a JSON array of objects; an array of scalar values is a single entry.
+    #'   The limit of `max_attributes` applies to each level of the attribute
+    #'   hierarchy separately: of every object and of every array of objects
+    #'   only the first `max_attributes` entries are printed, followed by the
+    #'   number of entries at that level that were not printed.
+    #'
+    #'   Nothing is printed when `root` does not identify an existing attribute.
     #' @param dirty Optional. Logical flag that indicates if the attributes have
     #'   unsaved edits. Default is `FALSE`.
-    #' @param ... Arguments passed to embedded functions. Of particular interest
-    #'   is `width = .` to specify the maximum width of the columns.
-    #' @return A (multi-line) character string with the attributes of the Zarr
-    #'   object.
-    print_attributes = function(dirty = FALSE, ...) {
+    #' @param max_attributes Optional. The maximum number of attribute entries
+    #'   to print at each level of the attribute hierarchy. The default is the
+    #'   value of the `max_attributes` option, see [zarr_options()]. Use `Inf`
+    #'   to print all entries.
+    #' @param root Optional. The name (path) of the attribute to print, with
+    #'   everything below it, using `/` as separator for nested attributes and
+    #'   1-based indices for array elements, as in the `attribute()` method. The
+    #'   default `""` prints all attributes.
+    #' @param ... Ignored.
+    #' @return Nothing. The attributes of the Zarr object are printed to the
+    #'   console.
+    print_attributes = function(dirty = FALSE, max_attributes = Zarr.options$max_attributes, root = "", ...) {
       atts <- private$display_attributes()
+      if (nzchar(root)) {
+        val <- private$get_nested_attribute(atts, root)
+        if (is.null(val)) return(invisible())
+        atts <- structure(list(val), names = root)
+      }
       if (length(atts)) {
         title <- if (dirty) 'Attributes (*)' else 'Attributes'
         if (is.list(Zarr.options$zarr_theme)) cli::cli_rule('{title}')
         else cat(paste0('\n', title, '\n'))
-        private$print_attribute_levels(atts)
+        private$print_attribute_levels(atts, n = max_attributes)
       }
     },
 
@@ -186,27 +245,7 @@ zarr_object <- R6::R6Class('zarr_object',
     #'   `name` field of the second convention object.
     #' @return The attribute value, or `NULL` if not found.
     attribute = function(atts, name) {
-      if (is.null(atts) || !length(atts)) return(NULL)
-
-      path <- strsplit(name, "/", fixed = TRUE)[[1L]]
-      path <- path[nzchar(path)]
-      if (!length(path)) return(NULL)
-
-      for (key in path) {
-        idx <- suppressWarnings(as.integer(key))
-        is_index <- !is.na(idx) && !private$is_named_list(atts)
-
-        if (is_index) {
-          if (!is.list(atts) && !is.atomic(atts)) return(NULL)
-          if (idx < 1L || idx > length(atts)) return(NULL)
-          atts <- atts[[idx]]
-        } else {
-          if (!is.list(atts)) return(NULL)
-          if (is.null(atts[[key]])) return(NULL)
-          atts <- atts[[key]]
-        }
-      }
-      atts
+      private$get_nested_attribute(atts, name)
     },
 
     #' @description Add an attribute to the metadata of the object. If an

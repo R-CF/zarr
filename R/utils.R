@@ -5,7 +5,10 @@
 #' setting remains.
 #'
 #' @param key Character. A key whose value to retrieve or modify. If missing,
-#'   all options are returned.
+#'   all options are returned. Option `use_cli` is a logical value that controls
+#'   how objects are printed to the console. With the default of `TRUE`, and if
+#'   package `cli` is installed, `cli` is used for formatted output. Set it to
+#'   `FALSE` for plain text output, e.g. in documentation.
 #' @param value Optional. The new value for the option.
 #' @return Nothing if argument `value` is provided. The value of argument `key`
 #'   if it is provided, or a `list` with all options otherwise.
@@ -23,15 +26,25 @@ zarr_options <- function(key, value) {
            'chunk_cache_bytes' = if (is.numeric(value) && value[1L] > 0) Zarr.options$chunk_cache_bytes <- as.numeric(value[1L]),
            'min_compress'      = if (is.numeric(value) && value[1L] > 0) Zarr.options$min_compress <- as.integer(value[1L]),
            'eps'               = if (is.numeric(value) && value[1L] > 0) Zarr.options$eps <- value[1L],
+           'max_attributes'    = if (is.numeric(value) && value[1L] > 0) Zarr.options$max_attributes <- value[1L],
            'group_style'       = if (is.character(value)) Zarr.options$group_style <- value,
            'array_style'       = if (is.character(value)) Zarr.options$array_style <- value,
            'label_style'       = if (is.character(value)) Zarr.options$label_style <- value,
-           'text_style'        = if (is.character(value)) Zarr.options$array_style <- value,
-           'minor_style'       = if (is.character(value)) Zarr.options$minor_style <- value
+           'text_style'        = if (is.character(value)) Zarr.options$text_style <- value,
+           'minor_style'       = if (is.character(value)) Zarr.options$minor_style <- value,
+           'use_cli'           = if (is.logical(value) && !is.na(value[1L])) Zarr.options$use_cli <- value[1L]
     )
-    if (requireNamespace('cli', quietly = TRUE))
-      Zarr.options$zarr_theme <- .make_zarr_theme()
+    .set_theme()
   }
+}
+
+# Set the theme for printing with cli, or NULL when cli is not to be used or is
+# not available. An option that is not set, as in a file with options saved by
+# an earlier version, is the same as TRUE.
+.set_theme <- function() {
+  assign('zarr_theme',
+         if (!isFALSE(Zarr.options$use_cli) && requireNamespace('cli', quietly = TRUE)) .make_zarr_theme(),
+         envir = Zarr.options)
 }
 
 # Internal function to make a Zarr theme for use with cli after any style has

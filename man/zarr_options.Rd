@@ -8,7 +8,10 @@ zarr_options(key, value)
 }
 \arguments{
 \item{key}{Character. A key whose value to retrieve or modify. If missing,
-all options are returned.}
+all options are returned. Option \code{use_cli} is a logical value that controls
+how objects are printed to the console. With the default of \code{TRUE}, and if
+package \code{cli} is installed, \code{cli} is used for formatted output. Set it to
+\code{FALSE} for plain text output, e.g. in documentation.}
 
 \item{value}{Optional. The new value for the option.}
 }

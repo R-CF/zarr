@@ -133,7 +133,8 @@ array_builder <- R6::R6Class('array_builder',
     },
 
     #' @description Print the array metadata to the console.
-    print = function() {
+    #' @param ... Ignored.
+    print = function(...) {
       meta <- private$build_metadata()
       json_meta <- jsonlite::toJSON(meta, auto_unbox = TRUE, pretty = TRUE, digits = NA)
 
