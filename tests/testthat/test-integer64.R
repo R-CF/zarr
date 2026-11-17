@@ -10,6 +10,8 @@
 #   /int64_2d   shape=(4,6)  dtype=int64   chunks=(2,3)  matrix(1:24, 4, 6)
 #   /uint32_1d  shape=(10)   dtype=uint32  chunks=(5)    nothing written
 
+skip_if_not_installed("bit64")
+
 z_i64 <- local({
   z <- create_zarr()
 
