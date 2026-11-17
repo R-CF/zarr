@@ -53,7 +53,7 @@ z <- as_zarr(x)
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Memory store - version 3 ────────────────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1 (single array store)
 ```

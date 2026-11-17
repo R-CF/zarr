@@ -79,7 +79,7 @@ the data.
 (z <- open_zarr("https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr"))
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── HTTP store - version 2 - read-only ──────────────────────────────────────────
-#> ✖ Listing ✖ Writing ✖ Deleting ✔ Consolidated metadata
+#> Capabilities:✖ Listing ✖ Writing ✖ Deleting ✔ Consolidated metadata
 #> ℹ URL: <https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0044A/4007801.zarr>
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 0

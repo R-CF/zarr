@@ -40,7 +40,7 @@ z[["/"]]$set_attribute("license", "free (as in free lunch)")
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Memory store - version 3 ────────────────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 0
 #> ── Attributes ──────────────────────────────────────────────────────────────────

@@ -147,7 +147,13 @@ Print the array metadata to the console.
 
 #### Usage
 
-    array_builder$print()
+    array_builder$print(...)
+
+#### Arguments
+
+- `...`:
+
+  Ignored.
 
 ------------------------------------------------------------------------
 

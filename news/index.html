@@ -44,6 +44,23 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="zarr-development-version">zarr (development version)<a class="anchor" aria-label="anchor" href="#zarr-development-version"></a></h2>
+<div class="section level3">
+<h3 id="api-development-version">API<a class="anchor" aria-label="anchor" href="#api-development-version"></a></h3>
+<ul><li>New option <code>use_cli</code>, set with <code>zarr_options("use_cli", FALSE)</code>, to print objects as plain text instead of with <code>cli</code>, e.g. for documentation.</li>
+<li>Fixed <code>zarr_options("text_style", ...)</code>, which set the array style instead of the text style.</li>
+<li>
+<code>[[&lt;-</code> methods for <code>zarr</code> and <code>zarr_group</code> objects make chained assignments to a field of a node work, such as <code>z[["/t"]]$field &lt;- value</code>. Assigning anything other than the node already at the path raises an error.</li>
+<li>
+<code>print_attributes()</code> prints at most <code>max_attributes</code> entries at each level of the attribute hierarchy, with the default taken from the new <code>max_attributes</code> option (20 entries). The new <code>root</code> argument prints only the given attribute and everything below it.</li>
+<li>All <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods have a <code>...</code> argument. For <code>zarr</code>, <code>zarr_group</code> and <code>zarr_array</code> objects the arguments are passed on to <code>print_attributes()</code>, as in <code>print(x, max_attributes = Inf, root = "my_convention")</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="code-development-version">Code<a class="anchor" aria-label="anchor" href="#code-development-version"></a></h3>
+<ul><li>The <code><a href="../reference/optimal_chunking.html">optimal_chunking()</a></code> function is even more optimal.</li>
+<li>
+<code>zarr_group$build_hierarchy()</code> catches malformed nodes rather than erroring.</li>
+<li>GHA workflow added to test for noSuggests.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.1" id="zarr-101">zarr 1.0.1<a class="anchor" aria-label="anchor" href="#zarr-101"></a></h2><p class="text-muted">CRAN release: 2026-11-08</p>

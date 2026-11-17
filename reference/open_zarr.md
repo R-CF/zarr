@@ -55,7 +55,7 @@ africa <- open_zarr(fn)
 africa
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
 #> ℹ Location  : /home/runner/work/_temp/Library/zarr/extdata/africa.zarr
 #> ℹ Total size: 540.36 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────

@@ -20,7 +20,7 @@ z <- create_zarr()
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Memory store - version 3 ────────────────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 0
 
@@ -95,8 +95,8 @@ z <- create_zarr(location = fn)
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/RtmpJBAcWW/file1c8c24750fa3.zarr
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ℹ Location  : /tmp/RtmppzzCh4/file1d2a399d4bd0.zarr
 #> ℹ Total size: 47 Bytes
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 0
@@ -154,13 +154,14 @@ in the future.
 The `zarr` package uses a number of options to control processing of
 data.
 
-| Option | Type | Default value | Reasonable values | Description |
+| Option | Type | Default value | Reasonable range | Description |
 |:---|:--:|:--:|:--:|:---|
 | min_compress | integer | 100 | 0 - 10000 | Compressing small chunks of data is inefficient as it does not save much space but it does incur the processing overhead of compression and decompression. This setting gives the smallest chunk size that will be compressed upon writing. |
 | chunk_length | integer | 100 | 100 - 10000 | The maximum length of a chunk, along each dimension of the array, before the dimension is broken up. This is used for cases where there is no additional information to guide the chunking; the [`optimal_chunking()`](https://r-cf.github.io/zarr/reference/optimal_chunking.md) function, for instance, will not use this option. |
 | eps | numeric | 1.49e-08 | Several magnitudes smaller than typical data | Tolerance value to determine if two numeric values are considered to be the same. Default is equal to `.Machine$double.eps^0.5`. |
 | parallel_threshold | integer | 20 | 4 - 30 | Minimum number of chunks to be read before parallel processing is used, if a suitable plan is set. |
 | chunk_cache_bytes | integer | 64MB | 0 - 25% of RAM | The size of the chunk cache before chunks get swapped out. Caching chunks makes multiple reads and writes to a single chunk much more efficient so the optimal size depends on the use scenario. Chunks that get read or written repeatedly (e.g. stream data to an array one time step per write) benefit from a larger cache. |
+| max_attributes | integer | 20 | 10 - 50 | The maximum number of attributes to print to the console, per level. Deeply nested hierarchies of attributes will thus print larger volumes of attributes than the value of the option. |
 
 ### Printing
 

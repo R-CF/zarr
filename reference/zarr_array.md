@@ -126,7 +126,14 @@ Print a summary of the array to the console.
 
 #### Usage
 
-    zarr_array$print()
+    zarr_array$print(...)
+
+#### Arguments
+
+- `...`:
+
+  Arguments passed on to the `print_attributes()` method, such as
+  `max_attributes` and `root`.
 
 ------------------------------------------------------------------------
 
@@ -168,7 +175,9 @@ a group to display the full group hierarchy.
 
 Read some or all of the array data for the array. For all types other
 than logical, any data elements with the `fill_value` of the Zarr data
-type are set to `NA` if the `raw_read` field is `TRUE`.
+type are set to `NA` unless the `raw_read` field is `TRUE`.
+Consequently, a value that was legitimately written and that is equal to
+the `fill_value` is also read as `NA`.
 
 #### Usage
 

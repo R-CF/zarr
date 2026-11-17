@@ -2,6 +2,35 @@
 
 ## zarr (development version)
 
+### API
+
+- New option `use_cli`, set with `zarr_options("use_cli", FALSE)`, to
+  print objects as plain text instead of with `cli`, e.g. for
+  documentation.
+- Fixed `zarr_options("text_style", ...)`, which set the array style
+  instead of the text style.
+- `[[<-` methods for `zarr` and `zarr_group` objects make chained
+  assignments to a field of a node work, such as
+  `z[["/t"]]$field <- value`. Assigning anything other than the node
+  already at the path raises an error.
+- `print_attributes()` prints at most `max_attributes` entries at each
+  level of the attribute hierarchy, with the default taken from the new
+  `max_attributes` option (20 entries). The new `root` argument prints
+  only the given attribute and everything below it.
+- All [`print()`](https://rdrr.io/r/base/print.html) methods have a
+  `...` argument. For `zarr`, `zarr_group` and `zarr_array` objects the
+  arguments are passed on to `print_attributes()`, as in
+  `print(x, max_attributes = Inf, root = "my_convention")`.
+
+### Code
+
+- The
+  [`optimal_chunking()`](https://r-cf.github.io/zarr/reference/optimal_chunking.md)
+  function is even more optimal.
+- `zarr_group$build_hierarchy()` catches malformed nodes rather than
+  erroring.
+- GHA workflow added to test for noSuggests.
+
 ## zarr 1.0.1
 
 CRAN release: 2026-11-08

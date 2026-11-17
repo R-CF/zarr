@@ -144,7 +144,14 @@ Print a summary of the Zarr object to the console.
 
 #### Usage
 
-    zarr$print()
+    zarr$print(...)
+
+#### Arguments
+
+- `...`:
+
+  Arguments passed on to the `print_attributes()` method, such as
+  `max_attributes` and `root`.
 
 #### Returns
 

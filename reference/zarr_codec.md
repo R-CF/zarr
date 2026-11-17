@@ -95,7 +95,13 @@ Print a summary of the codec to the console.
 
 #### Usage
 
-    zarr_codec$print()
+    zarr_codec$print(...)
+
+#### Arguments
+
+- `...`:
+
+  Ignored.
 
 ------------------------------------------------------------------------
 

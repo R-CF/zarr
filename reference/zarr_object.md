@@ -75,7 +75,12 @@ Print attributes to the console. Usually called by the
 
 #### Usage
 
-    zarr_object$print_attributes(dirty = FALSE, ...)
+    zarr_object$print_attributes(
+      dirty = FALSE,
+      max_attributes = Zarr.options$max_attributes,
+      root = "",
+      ...
+    )
 
 #### Arguments
 
@@ -84,14 +89,39 @@ Print attributes to the console. Usually called by the
   Optional. Logical flag that indicates if the attributes have unsaved
   edits. Default is `FALSE`.
 
+- `max_attributes`:
+
+  Optional. The maximum number of attribute entries to print at each
+  level of the attribute hierarchy. The default is the value of the
+  `max_attributes` option, see
+  [`zarr_options()`](https://r-cf.github.io/zarr/reference/zarr_options.md).
+  Use `Inf` to print all entries.
+
+- `root`:
+
+  Optional. The name (path) of the attribute to print, with everything
+  below it, using `/` as separator for nested attributes and 1-based
+  indices for array elements, as in the `attribute()` method. The
+  default `""` prints all attributes.
+
 - `...`:
 
-  Arguments passed to embedded functions. Of particular interest is
-  `width = .` to specify the maximum width of the columns.
+  Ignored.
+
+#### Details
+
+An attribute entry is a member of a JSON object or an item of a JSON
+array of objects; an array of scalar values is a single entry. The limit
+of `max_attributes` applies to each level of the attribute hierarchy
+separately: of every object and of every array of objects only the first
+`max_attributes` entries are printed, followed by the number of entries
+at that level that were not printed.
+
+Nothing is printed when `root` does not identify an existing attribute.
 
 #### Returns
 
-A (multi-line) character string with the attributes of the Zarr object.
+Nothing. The attributes of the Zarr object are printed to the console.
 
 ------------------------------------------------------------------------
 

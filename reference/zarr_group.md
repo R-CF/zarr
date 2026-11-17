@@ -137,7 +137,14 @@ Print a summary of the group to the console.
 
 #### Usage
 
-    zarr_group$print()
+    zarr_group$print(...)
+
+#### Arguments
+
+- `...`:
+
+  Arguments passed on to the `print_attributes()` method, such as
+  `max_attributes` and `root`.
 
 ------------------------------------------------------------------------
 

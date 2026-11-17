@@ -75,7 +75,13 @@ Print a summary of the data type to the console.
 
 #### Usage
 
-    zarr_data_type$print()
+    zarr_data_type$print(...)
+
+#### Arguments
+
+- `...`:
+
+  Ignored.
 
 ------------------------------------------------------------------------
 

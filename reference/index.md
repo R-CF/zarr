@@ -40,8 +40,10 @@
 - [`str(`*`<zarr_group>`*`)`](https://r-cf.github.io/zarr/reference/str.zarr_group.md)
   : Compact display of a Zarr group
 - [`` `[[`( ``*`<zarr>`*`)`](https://r-cf.github.io/zarr/reference/sub-sub-.zarr.md)
+  [`` `[[<-`( ``*`<zarr>`*`)`](https://r-cf.github.io/zarr/reference/sub-sub-.zarr.md)
   : Get a group or array from a Zarr object
 - [`` `[[`( ``*`<zarr_group>`*`)`](https://r-cf.github.io/zarr/reference/sub-sub-.zarr_group.md)
+  [`` `[[<-`( ``*`<zarr_group>`*`)`](https://r-cf.github.io/zarr/reference/sub-sub-.zarr_group.md)
   : Get a group or array from a Zarr group
 - [`zarr`](https://r-cf.github.io/zarr/reference/zarr.md) : Zarr object
 - [`zarr_array`](https://r-cf.github.io/zarr/reference/zarr_array.md) :

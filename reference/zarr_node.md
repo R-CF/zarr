@@ -208,7 +208,7 @@ called by `zarr_group$get_node()` and the `[[` indexing method of
 
 #### Usage
 
-    zarr_node$walk_path(node_names)
+    zarr_node$walk_path(node_names, create = FALSE)
 
 #### Arguments
 
@@ -221,10 +221,21 @@ called by `zarr_group$get_node()` and the `[[` indexing method of
   the target node using `strsplit(., "/", fixed = TRUE)[[1L]]`. With an
   absolute path the first element ("") must be removed.
 
+- `create`:
+
+  Logical, default `FALSE`. If `TRUE`, any child node in `node_names`
+  that does not exist is created as a new group.
+
+#### Details
+
+An error is raised when `node_names` walks above the root node, when a
+child node does not exist and `create = FALSE`, or when a node other
+than the last one in `node_names` is an array.
+
 #### Returns
 
 The `zarr_node` that is found when the `node_names` vector is fully
-walked. If the node is not found, an error will be raised.
+walked.
 
 ------------------------------------------------------------------------
 

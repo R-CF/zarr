@@ -53,7 +53,10 @@ its path.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'zarr'</span></span>
-<span><span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<span><span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'zarr'</span></span>
+<span><span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">value</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,11 +70,24 @@ its path.</p>
 <dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
 <dd><p>The path to a group or array in <code>x</code>.</p></dd>
 
+
+<dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
+<dd><p>The node at path <code>i</code>, i.e. the node returned by <code>x[[i]]</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An instance of <code>zarr_group</code> or <code>zarr_array</code>, or <code>NULL</code> if the path is
 not found.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Assignment with <code>[[&lt;-</code> exists only so that chained assignments to a
+field of a node, such as <code>z[["/t"]]$field &lt;- value</code>, work: R assigns the
+node back to <code>x</code> as the last step of such an expression. Nothing is
+changed in <code>x</code>. An error is raised if <code>value</code> is not the very node at path
+<code>i</code>; use the <code>add_group()</code> and <code>add_array()</code> methods to add nodes to the
+hierarchy.</p>
     </div>
 
     <div class="section level2">

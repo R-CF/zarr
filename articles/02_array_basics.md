@@ -26,7 +26,7 @@ z <- as_zarr(x)
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Memory store - version 3 ────────────────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1 (single array store)
 ```
@@ -56,9 +56,9 @@ z <- as_zarr(x, name = "top_array", location = fn)
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/RtmpyRog2Y/file1cc5663e4cfa.zarr
-#> ℹ Total size: 2.12 KB
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ℹ Location  : /tmp/RtmpXgr5HJ/file1d6352bba942.zarr
+#> ℹ Total size: 1.16 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1
 
@@ -67,7 +67,7 @@ z
 # Zarr arrays use the ⌗ glyph
 # (Domains may use other glyphs)
 z$hierarchy()
-#> ── Zarr hierarchy /tmp/RtmpyRog2Y/file1cc5663e4cfa.zarr ────────────────────────
+#> ── Zarr hierarchy /tmp/RtmpXgr5HJ/file1d6352bba942.zarr ────────────────────────
 #> ☰ / (root group)
 #>   ⌗ top_array [int32] [500, 10, 2]
 ```
@@ -92,7 +92,7 @@ arr <- as_zarr(v, name = "a_vector", location = grp)
 grp <- z$add_group(path = "/", name = "サブグループ")  # = subgroup
 arr <- as_zarr(w, name = "空の行列", location = grp)  # = empty matrix
 z$hierarchy()
-#> ── Zarr hierarchy /tmp/RtmpyRog2Y/file1cc5663e4cfa.zarr ────────────────────────
+#> ── Zarr hierarchy /tmp/RtmpXgr5HJ/file1d6352bba942.zarr ────────────────────────
 #> ☰ / (root group)
 #>   ⌗ top_array [int32] [500, 10, 2]
 #>   ⌗ a_vector [float64] [500]
@@ -109,16 +109,15 @@ directory trees, like `c/1/0` with the chunk in files like `0`, `1`,
 
 list.files(path = z$store$root, recursive = TRUE)
 #> [1] "a_vector/c.0"                    "a_vector/zarr.json"             
-#> [3] "top_array/c.0.0.0"               "top_array/c.1.0.0"              
-#> [5] "top_array/c.2.0.0"               "top_array/zarr.json"            
-#> [7] "zarr.json"                       "サブグループ/zarr.json"         
-#> [9] "サブグループ/空の行列/zarr.json"
+#> [3] "top_array/c.0.0.0"               "top_array/zarr.json"            
+#> [5] "zarr.json"                       "サブグループ/zarr.json"         
+#> [7] "サブグループ/空の行列/zarr.json"
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : /tmp/RtmpyRog2Y/file1cc5663e4cfa.zarr
-#> ℹ Total size: 5.7 KB
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ℹ Location  : /tmp/RtmpXgr5HJ/file1d6352bba942.zarr
+#> ℹ Total size: 4.74 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 3
 unlink(fn)
@@ -163,7 +162,7 @@ arr_def
 #>   "chunk_grid": {
 #>     "name": "regular",
 #>     "configuration": {
-#>       "chunk_shape": [240, 155, 5]
+#>       "chunk_shape": [240, 310, 5]
 #>     }
 #>   },
 #>   "codecs": [

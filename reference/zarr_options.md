@@ -15,7 +15,11 @@ zarr_options(key, value)
 - key:
 
   Character. A key whose value to retrieve or modify. If missing, all
-  options are returned.
+  options are returned. Option `use_cli` is a logical value that
+  controls how objects are printed to the console. With the default of
+  `TRUE`, and if package `cli` is installed, `cli` is used for formatted
+  output. Set it to `FALSE` for plain text output, e.g. in
+  documentation.
 
 - value:
 
@@ -75,6 +79,12 @@ zarr_options()
 #> Example output
 #> 
 #> 
+#> 
+#> $max_attributes
+#> [1] 20
+#> 
+#> $use_cli
+#> [1] TRUE
 #> 
 #> $label_style
 #> [1] "black" "bold" 

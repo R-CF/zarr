@@ -8,6 +8,9 @@ by a relative path to the desired group or array.
 ``` r
 # S3 method for class 'zarr_group'
 x[[i]]
+
+# S3 method for class 'zarr_group'
+x[[i]] <- value
 ```
 
 ## Arguments
@@ -23,10 +26,23 @@ x[[i]]
   number of double dots ".." separated by slashes "/" to denote groups
   higher up in the hierarchy.
 
+- value:
+
+  The node at path `i`, i.e. the node returned by `x[[i]]`.
+
 ## Value
 
 An instance of `zarr_group` or `zarr_array`, or `NULL` if the path is
 not found.
+
+## Details
+
+Assignment with `[[<-` exists only so that chained assignments to a
+field of a node, such as `grp[["t"]]$field <- value`, work: R assigns
+the node back to `x` as the last step of such an expression. Nothing is
+changed in `x`. An error is raised if `value` is not the very node at
+path `i`; use the `add_group()` and `add_array()` methods to add nodes
+to the hierarchy.
 
 ## Examples
 

@@ -248,7 +248,7 @@ hierarchy. The method is called by <code>zarr_group$get_node()</code> and the <c
 indexing method of <code>zarr</code>, which are both easier to work with than this
 method.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">walk_path</span><span class="op">(</span><span class="va">node_names</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_node</span><span class="op">$</span><span class="fu">walk_path</span><span class="op">(</span><span class="va">node_names</span>, create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>node_names</code></dt>
@@ -259,12 +259,21 @@ current node. The <code>node_names</code> vector is easily constructed from a
 relative path to the target node using <code>strsplit(., "/", fixed = TRUE)[[1L]]</code>.
 With an absolute path the first element ("") must be removed.</p></dd>
 
+      <dt><code>create</code></dt>
+<dd><p>Logical, default <code>FALSE</code>. If <code>TRUE</code>, any child node in
+<code>node_names</code> that does not exist is created as a new group.</p></dd>
+
 
 </dl><p></p></div>
 </div><p></p><div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>An error is raised when <code>node_names</code> walks above the root
+node, when a child node does not exist and <code>create = FALSE</code>, or when
+a node other than the last one in <code>node_names</code> is an array.</p>
+</div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>The <code>zarr_node</code> that is found when the <code>node_names</code> vector is
-fully walked. If the node is not found, an error will be raised.</p>
+fully walked.</p>
 </div>
 
 </div>

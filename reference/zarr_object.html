@@ -137,23 +137,48 @@ names.</p>
 <p>Print attributes to the console. Usually called by the
 <a href="zarr_group.html">zarr_group</a> and <a href="zarr_array.html">zarr_array</a> <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_object</span><span class="op">$</span><span class="fu">print_attributes</span><span class="op">(</span>dirty <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">zarr_object</span><span class="op">$</span><span class="fu">print_attributes</span><span class="op">(</span></span>
+<span>  dirty <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  max_attributes <span class="op">=</span> <span class="va">Zarr.options</span><span class="op">$</span><span class="va">max_attributes</span>,</span>
+<span>  root <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>dirty</code></dt>
 <dd><p>Optional. Logical flag that indicates if the attributes have
 unsaved edits. Default is <code>FALSE</code>.</p></dd>
 
+      <dt><code>max_attributes</code></dt>
+<dd><p>Optional. The maximum number of attribute entries
+to print at each level of the attribute hierarchy. The default is the
+value of the <code>max_attributes</code> option, see <code><a href="zarr_options.html">zarr_options()</a></code>. Use <code>Inf</code>
+to print all entries.</p></dd>
+
+      <dt><code>root</code></dt>
+<dd><p>Optional. The name (path) of the attribute to print, with
+everything below it, using <code>/</code> as separator for nested attributes and
+1-based indices for array elements, as in the <code>attribute()</code> method. The
+default <code>""</code> prints all attributes.</p></dd>
+
       <dt><code>...</code></dt>
-<dd><p>Arguments passed to embedded functions. Of particular interest
-is <code>width = .</code> to specify the maximum width of the columns.</p></dd>
+<dd><p>Ignored.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>An attribute entry is a member of a JSON object or an item of
+a JSON array of objects; an array of scalar values is a single entry.
+The limit of <code>max_attributes</code> applies to each level of the attribute
+hierarchy separately: of every object and of every array of objects
+only the first <code>max_attributes</code> entries are printed, followed by the
+number of entries at that level that were not printed.</p>
+<p>Nothing is printed when <code>root</code> does not identify an existing attribute.</p>
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
-<p>A (multi-line) character string with the attributes of the Zarr
-object.</p>
+<p>Nothing. The attributes of the Zarr object are printed to the
+console.</p>
 </div>
 
 </div>

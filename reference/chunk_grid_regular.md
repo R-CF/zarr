@@ -85,7 +85,13 @@ Print a short description of this chunking scheme to the console.
 
 #### Usage
 
-    chunk_grid_regular$print()
+    chunk_grid_regular$print(...)
+
+#### Arguments
+
+- `...`:
+
+  Ignored.
 
 #### Returns
 

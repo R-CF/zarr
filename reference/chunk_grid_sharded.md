@@ -112,7 +112,13 @@ console.
 
 #### Usage
 
-    chunk_grid_sharded$print()
+    chunk_grid_sharded$print(...)
+
+#### Arguments
+
+- `...`:
+
+  Ignored.
 
 #### Returns
 

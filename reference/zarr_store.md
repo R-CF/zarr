@@ -146,7 +146,13 @@ available.
 
 #### Usage
 
-    zarr_store$print()
+    zarr_store$print(...)
+
+#### Arguments
+
+- `...`:
+
+  Ignored.
 
 #### Returns
 

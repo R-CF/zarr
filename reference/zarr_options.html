@@ -64,7 +64,10 @@ setting remains.</p>
 
 <dl><dt id="arg-key">key<a class="anchor" aria-label="anchor" href="#arg-key"></a></dt>
 <dd><p>Character. A key whose value to retrieve or modify. If missing,
-all options are returned.</p></dd>
+all options are returned. Option <code>use_cli</code> is a logical value that controls
+how objects are printed to the console. With the default of <code>TRUE</code>, and if
+package <code>cli</code> is installed, <code>cli</code> is used for formatted output. Set it to
+<code>FALSE</code> for plain text output, e.g. in documentation.</p></dd>
 
 
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
@@ -125,6 +128,12 @@ if it is provided, or a <code>list</code> with all options otherwise.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #B2B2B2;">Example output</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $max_attributes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $use_cli</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $label_style</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "black" "bold" </span>
