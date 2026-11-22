@@ -38,7 +38,7 @@ z <- as_zarr(x)
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Memory store - version 3 ────────────────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1 (single array store)
 ```
@@ -60,8 +60,8 @@ z <- as_zarr(x, name = "my_array", location = fn)
 z
 #> ── Zarr ────────────────────────────────────────────────────────────────────────
 #> ── Local file system store - version 3 ─────────────────────────────────────────
-#> ✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
-#> ℹ Location  : '/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpizLuIF/file9565792abfb0.zarr'
+#> Capabilities:✔ Listing ✔ Writing ✔ Deleting ✖ Consolidated metadata
+#> ℹ Location  : '/var/folders/gs/s0mmlczn4l7bjbmwfrrhjlt80000gn/T//RtmpXeYVzK/file16cc195f1285.zarr'
 #> ℹ Total size: 1.08 KB
 #> ── Contents ────────────────────────────────────────────────────────────────────
 #> ℹ Arrays: 1
@@ -117,7 +117,7 @@ data is stored by default as “float64”, logical data as “int8”.
 
 Installation from CRAN of the latest release:
 
-    install.packages("zarr") 
+    install.packages("zarr")
 
 You can install the development version of `zarr` from
 [GitHub](https://github.com/R-CF/zarr) with:

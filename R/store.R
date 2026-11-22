@@ -152,7 +152,7 @@ zarr_store <- R6::R6Class('zarr_store',
         this_div <- cli::cli_div(theme = Zarr.options$zarr_theme)
         tick <- cli::col_green(cli::symbol$tick)
         cross <- cli::col_red(cli::symbol$cross)
-        cli::cli_text('Capabilities:',
+        cli::cli_text('Capabilities: ',
                       '{if (private$.supports_listing) tick else cross} {.label Listing} ',
                       '{if (private$.supports_writes) tick else cross} {.label Writing} ',
                       '{if (private$.supports_deletes) tick else cross} {.label Deleting} ',

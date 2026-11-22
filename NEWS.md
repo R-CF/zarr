@@ -1,5 +1,7 @@
 # zarr (development version)
 
+Maintenance release.
+
 ## API
 
 - New option `use_cli`, set with `zarr_options("use_cli", FALSE)`, to print objects as plain text instead of with `cli`, e.g. for documentation.

@@ -7,7 +7,6 @@ Description: The 'Zarr' specification is widely used to build libraries for the 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 8.0.0
 Imports: 
     Rcpp (>= 1.0.0),
     blosc,
@@ -33,3 +32,4 @@ Depends:
 LinkingTo: Rcpp
 URL: https://github.com/R-CF/zarr, https://r-cf.github.io/zarr/
 BugReports: https://github.com/R-CF/zarr/issues
+Config/roxygen2/version: 8.1.1

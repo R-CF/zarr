@@ -39,7 +39,7 @@ zarr_data_type <- R6::R6Class('zarr_data_type',
         stop('Data type name must be a single character string', call. = FALSE) # nocov
 
       if (data_type %in% names(zarr_v3_datatypes)) {
-        private$.data_type <- data_type
+        private$.data_type <- unname(data_type)
         private$.Rtype <- zarr_v3_datatypes[[data_type]]$Rtype
         private$.signed <- zarr_v3_datatypes[[data_type]]$signed
         private$.byte_size <- zarr_v3_datatypes[[data_type]]$size
