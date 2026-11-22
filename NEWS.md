@@ -1,4 +1,4 @@
-# zarr (development version)
+# zarr 1.0.2
 
 Maintenance release.
 
